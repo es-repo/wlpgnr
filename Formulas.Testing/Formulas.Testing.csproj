@@ -54,7 +54,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FormulaTests.cs" />
+    <Compile Include="Operands\VariableTests.cs" />
+    <Compile Include="Operators\MinusTests.cs" />
+    <Compile Include="Operators\SumTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Formulas\Formulas.csproj">
+      <Project>{190058E2-F017-4D78-B076-CB6AC313246D}</Project>
+      <Name>Formulas</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

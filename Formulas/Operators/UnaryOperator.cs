@@ -2,5 +2,8 @@
 {
     public abstract class UnaryOperator : Operator
     {
+        protected UnaryOperator() : base(1)
+        {
+        }
     }
 }

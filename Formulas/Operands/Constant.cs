@@ -1,6 +1,10 @@
 ﻿namespace WallpaperGenerator.Formulas.Operands
 {
-    public class Constant : Operand
+    public sealed class Constant : Operand
     {
+        public Constant(double value)
+        {
+            Value = value;
+        }
     }
 }

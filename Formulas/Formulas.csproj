@@ -55,6 +55,7 @@
     <Compile Include="IFormulaGenerator.cs" />
     <Compile Include="Operator.cs" />
     <Compile Include="Operators\BinaryOperator.cs" />
+    <Compile Include="Operators\IArithmeticOperation.cs" />
     <Compile Include="Operators\Minus.cs" />
     <Compile Include="Operators\Sum.cs" />
     <Compile Include="Operators\UnaryOperator.cs" />
