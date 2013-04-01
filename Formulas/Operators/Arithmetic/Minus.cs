@@ -1,6 +1,6 @@
-﻿namespace WallpaperGenerator.Formulas.Operators
+﻿namespace WallpaperGenerator.Formulas.Operators.Arithmetic
 {
-    public class Minus : UnaryOperator, IArithmeticOperation
+    public class Minus : UnaryOperator, IArithmeticOperator
     {
         protected override double CalculateCore(params Operand[] operands)
         {

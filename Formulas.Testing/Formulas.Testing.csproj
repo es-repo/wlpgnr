@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -54,9 +55,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FormulaTests.cs" />
+    <Compile Include="FormulaTreeNodeTests.cs" />
     <Compile Include="Operands\VariableTests.cs" />
-    <Compile Include="Operators\MinusTests.cs" />
-    <Compile Include="Operators\SumTests.cs" />
+    <Compile Include="Operators\Arithmetic\MinusTests.cs" />
+    <Compile Include="Operators\Arithmetic\SumTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

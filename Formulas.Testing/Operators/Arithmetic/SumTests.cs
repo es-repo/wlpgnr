@@ -1,9 +1,9 @@
 ﻿using MbUnit.Framework;
 using WallpaperGenerator.Formulas;
 using WallpaperGenerator.Formulas.Operands;
-using WallpaperGenerator.Formulas.Operators;
+using WallpaperGenerator.Formulas.Operators.Arithmetic;
 
-namespace Formulas.Testing.Operators
+namespace Formulas.Testing.Operators.Arithmetic
 {
     [TestFixture]
     public class SumTests

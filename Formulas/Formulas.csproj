@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -53,11 +54,14 @@
     <Compile Include="FormulaTreeNodes\OperatorNode.cs" />
     <Compile Include="IFormula.cs" />
     <Compile Include="IFormulaGenerator.cs" />
+    <Compile Include="Operands\Constants.cs" />
     <Compile Include="Operator.cs" />
     <Compile Include="Operators\BinaryOperator.cs" />
-    <Compile Include="Operators\IArithmeticOperation.cs" />
-    <Compile Include="Operators\Minus.cs" />
-    <Compile Include="Operators\Sum.cs" />
+    <Compile Include="Operators\IArithmeticOperator.cs" />
+    <Compile Include="Operators\Arithmetic\Minus.cs" />
+    <Compile Include="Operators\Arithmetic\Mul.cs" />
+    <Compile Include="Operators\OperatorsLibrary.cs" />
+    <Compile Include="Operators\Arithmetic\Sum.cs" />
     <Compile Include="Operators\UnaryOperator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Operands\Variable.cs" />
