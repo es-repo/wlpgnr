@@ -22,14 +22,12 @@ namespace WallpaperGenerator.Formulas.Operands
                 _value = value; 
             }
         }
-
-        public Variable()
-            : this (null)
-        {
-        }
-
+        
         public Variable(string name)
         {
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentException("Variable name can't be null or empty.");
+            
             Name = name;
         }
 

@@ -10,7 +10,7 @@ namespace Formulas.Testing.Operands
         [Test]
         public void TestValue()
         {
-            Variable variable = new Variable();
+            Variable variable = new Variable("x");
             const double value = 5.5;
             variable.SetValue(value);
             Assert.AreEqual(value, variable.Value); 
@@ -19,7 +19,7 @@ namespace Formulas.Testing.Operands
         [Test, ExpectedException(typeof (InvalidOperationException))]
         public void TestNonAssignedValueAccess()
         {
-            Variable variable = new Variable();
+            Variable variable = new Variable("x");
             Assert.AreEqual(0, variable.Value);
         }
     }

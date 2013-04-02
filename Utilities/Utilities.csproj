@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{190058E2-F017-4D78-B076-CB6AC313246D}</ProjectGuid>
+    <ProjectGuid>{7D4A8B31-9E0B-4C8A-914B-E469D622F21C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WallpaperGenerator.Formulas</RootNamespace>
-    <AssemblyName>Formulas</AssemblyName>
+    <RootNamespace>WallpaperGenerator.Utilities</RootNamespace>
+    <AssemblyName>Utilities</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -46,25 +46,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Operand.cs" />
-    <Compile Include="Operands\Constant.cs" />
-    <Compile Include="FormulaTree.cs" />
-    <Compile Include="FormulaTreeNode.cs" />
-    <Compile Include="FormulaTreeNodes\OperandNode.cs" />
-    <Compile Include="FormulaTreeNodes\OperatorNode.cs" />
-    <Compile Include="Formula.cs" />
-    <Compile Include="IFormulaGenerator.cs" />
-    <Compile Include="Operands\Constants.cs" />
-    <Compile Include="Operator.cs" />
-    <Compile Include="Operators\BinaryOperator.cs" />
-    <Compile Include="Operators\IArithmeticOperator.cs" />
-    <Compile Include="Operators\Arithmetic\Minus.cs" />
-    <Compile Include="Operators\Arithmetic\Mul.cs" />
-    <Compile Include="Operators\OperatorsLibrary.cs" />
-    <Compile Include="Operators\Arithmetic\Sum.cs" />
-    <Compile Include="Operators\UnaryOperator.cs" />
+    <Compile Include="DataStructures\Trees\TraversedTreeNodeInfo.cs" />
+    <Compile Include="DataStructures\Trees\Tree.cs" />
+    <Compile Include="DataStructures\Trees\TreeNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Operands\Variable.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

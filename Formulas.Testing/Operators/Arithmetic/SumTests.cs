@@ -16,7 +16,7 @@ namespace Formulas.Testing.Operators.Arithmetic
         {
             Operator sum = new Sum(); 
             Operand constantA = new Constant(a);
-            Variable variableB = new Variable();
+            Variable variableB = new Variable("x");
             variableB.SetValue(b);
             double result = sum.Calculate(constantA, variableB);
             Assert.AreEqual(expected, result);
