@@ -4,16 +4,9 @@ using System.Linq;
 
 namespace WallpaperGenerator.Utilities.DataStructures.Trees
 {    
-    public class Tree<T>
-    {
-        public TreeNode<T> Root { get; private set; } 
-
-        public Tree(TreeNode<T> root)
-        {
-            Root = root;
-        }
-
-        public static IEnumerable<TraversedTreeNodeInfo<T>> FilterInDepth(TreeNode<T> root, Predicate<TraversedTreeNodeInfo<T>> predicate)
+    public class Tree
+    {        
+        public static IEnumerable<TraversedTreeNodeInfo<T>> FilterInDepth<T>(TreeNode<T> root, Predicate<TraversedTreeNodeInfo<T>> predicate)
         {
             TraversedTreeNodeInfo<T> rootNodeInfo = new TraversedTreeNodeInfo<T>(root, 0, 0);
             Stack<TraversedTreeNodeInfo<T>> stack = new Stack<TraversedTreeNodeInfo<T>>(new[] { rootNodeInfo });
@@ -33,22 +26,12 @@ namespace WallpaperGenerator.Utilities.DataStructures.Trees
             }
         }
 
-        public IEnumerable<TraversedTreeNodeInfo<T>> FilterInDepth(Predicate<TraversedTreeNodeInfo<T>> predicate)
-        {
-            return FilterInDepth(Root, predicate);
-        }
-
-        public static IEnumerable<TraversedTreeNodeInfo<T>> TraverseInDepth(TreeNode<T> root)
+        public static IEnumerable<TraversedTreeNodeInfo<T>> TraverseInDepth<T>(TreeNode<T> root)
         {
             return FilterInDepth(root, null);
         }
 
-        public IEnumerable<TraversedTreeNodeInfo<T>> TraverseInDepth()
-        {
-            return TraverseInDepth(Root);
-        }
-
-        public static IEnumerable<TraversedTreeNodeInfo<T>> FilterInBreadth(TreeNode<T> root, Predicate<TraversedTreeNodeInfo<T>> predicate)
+        public static IEnumerable<TraversedTreeNodeInfo<T>> FilterInBreadth<T>(TreeNode<T> root, Predicate<TraversedTreeNodeInfo<T>> predicate)
         {
             TraversedTreeNodeInfo<T> rootNodeInfo = new TraversedTreeNodeInfo<T>(root, 0, 0);
             Queue<TraversedTreeNodeInfo<T>> queue = new Queue<TraversedTreeNodeInfo<T>>(new[] { rootNodeInfo });
@@ -68,22 +51,12 @@ namespace WallpaperGenerator.Utilities.DataStructures.Trees
             }
         }
 
-        public IEnumerable<TraversedTreeNodeInfo<T>> FilterInBreadth(Predicate<TraversedTreeNodeInfo<T>> predicate)
-        {
-            return FilterInBreadth(Root, predicate);
-        }
-
-        public static IEnumerable<TraversedTreeNodeInfo<T>> TraverseInBreadth(TreeNode<T> root)
+        public static IEnumerable<TraversedTreeNodeInfo<T>> TraverseInBreadth<T>(TreeNode<T> root)
         {
             return FilterInBreadth(root, null);
         }
 
-        public IEnumerable<TraversedTreeNodeInfo<T>> TraverseInBreadth()
-        {
-            return TraverseInBreadth(Root);
-        }
-
-        public static int GetNodeHeight(TreeNode<T> node)
+        public static int GetNodeHeight<T>(TreeNode<T> node)
         {
             return TraverseInDepth(node).Max(ni => ni.Depth + 1);
         }

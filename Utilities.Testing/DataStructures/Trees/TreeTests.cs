@@ -8,8 +8,8 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees
     [TestFixture]
     public class TreeTests
     {
-        private Tree<int> _treeForTraverseInDepth;
-        private Tree<int> _treeForTraverseInBreadth;
+        private TreeNode<int> _treeForTraverseInDepth;
+        private TreeNode<int> _treeForTraverseInBreadth;
         
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
@@ -17,7 +17,7 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees
             //                      0
             //      1               5               9
             //  2   3   4       6   7   8       10  11  12           
-            TreeNode<int> rootForTraverseInDepth = new TreeNode<int>(
+            _treeForTraverseInDepth = new TreeNode<int>(
                 0, 
                 new TreeNode<int>(1, 
                     new TreeNode<int>(2),
@@ -31,12 +31,11 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees
                     new TreeNode<int>(10),
                     new TreeNode<int>(11),
                     new TreeNode<int>(12)));
-            _treeForTraverseInDepth = new Tree<int>(rootForTraverseInDepth);
-
+            
             //                      0
             //      1               2               3
             //  4   5   6       7   8   9       10  11  12           
-            TreeNode<int> rootForTraverseInBreadth = new TreeNode<int>(
+            _treeForTraverseInBreadth = new TreeNode<int>(
                 0,
                 new TreeNode<int>(1,
                     new TreeNode<int>(4),
@@ -50,13 +49,12 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees
                     new TreeNode<int>(10),
                     new TreeNode<int>(11),
                     new TreeNode<int>(12)));
-            _treeForTraverseInBreadth = new Tree<int>(rootForTraverseInBreadth);
         }
 
         [Test]
         public void TestTraverseInDepth()
         {
-            IEnumerable<TraversedTreeNodeInfo<int>> traversedNodes = _treeForTraverseInDepth.TraverseInDepth();
+            IEnumerable<TraversedTreeNodeInfo<int>> traversedNodes = Tree.TraverseInDepth(_treeForTraverseInDepth);
             
             const int expectedNodesCount = 13;
             Assert.AreEqual(expectedNodesCount, traversedNodes.Count());
@@ -77,7 +75,7 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees
         [Test]
         public void TestFilterInDepth()
         {
-            IEnumerable<TraversedTreeNodeInfo<int>> traversedNodes = _treeForTraverseInDepth.FilterInDepth(ni => ni.Node.Value % 2 == 0);
+            IEnumerable<TraversedTreeNodeInfo<int>> traversedNodes = Tree.FilterInDepth(_treeForTraverseInDepth, ni => ni.Node.Value % 2 == 0);
 
             const int expectedNodesCount = 7;
             Assert.AreEqual(expectedNodesCount, traversedNodes.Count());
@@ -98,7 +96,7 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees
         [Test]
         public void TestTraverseInBreadth()
         {
-            IEnumerable<TraversedTreeNodeInfo<int>> traversedNodes = _treeForTraverseInBreadth.TraverseInBreadth();
+            IEnumerable<TraversedTreeNodeInfo<int>> traversedNodes = Tree.TraverseInBreadth(_treeForTraverseInBreadth);
 
             const int expectedNodesCount = 13;
             Assert.AreEqual(expectedNodesCount, traversedNodes.Count());
@@ -119,7 +117,7 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees
         [Test]
         public void TestFilterInBreadth()
         {
-            IEnumerable<TraversedTreeNodeInfo<int>> traversedNodes = _treeForTraverseInBreadth.FilterInBreadth(ni => ni.Node.Value % 2 == 0);
+            IEnumerable<TraversedTreeNodeInfo<int>> traversedNodes = Tree.FilterInBreadth(_treeForTraverseInBreadth, ni => ni.Node.Value % 2 == 0);
 
             const int expectedNodesCount = 7;
             Assert.AreEqual(expectedNodesCount, traversedNodes.Count());
@@ -164,10 +162,10 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees
                         new TreeNode<int>(15, 
                             new TreeNode<int>(16)))));
 
-            IEnumerable<TraversedTreeNodeInfo<int>> traversedNodes = Tree<int>.TraverseInDepth(root);
+            IEnumerable<TraversedTreeNodeInfo<int>> traversedNodes = Tree.TraverseInDepth(root);
             
             int[] expectedHeights = new [] {5, 3, 1, 2, 1, 1, 2, 1, 1, 1, 4, 1, 1, 3, 1, 2, 1};
-            int[] heights = traversedNodes.Select(ni => Tree<int>.GetNodeHeight(ni.Node)).ToArray();
+            int[] heights = traversedNodes.Select(ni => Tree.GetNodeHeight(ni.Node)).ToArray();
             Assert.AreEqual(expectedHeights, heights);
         }
     }

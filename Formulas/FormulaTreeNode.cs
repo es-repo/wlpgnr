@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace WallpaperGenerator.Formulas
 {
-    public abstract class FormulaTreeNode
+    public abstract class FormulaTreeNode //: TreeNode<>
     {
         public IList<FormulaTreeNode> Children { get; private set; }
 
