@@ -15,9 +15,7 @@ namespace WallpaperGenerator.Utilities.DataStructures.Trees
 
         public static IEnumerable<TraversedTreeNodeInfo<T>> FilterInDepth(TreeNode<T> root, Predicate<TraversedTreeNodeInfo<T>> predicate)
         {
-            int depth = 0;
-            int traversedIndex = 0;
-            TraversedTreeNodeInfo<T> rootNodeInfo = new TraversedTreeNodeInfo<T>(root, 0, traversedIndex++, depth++);
+            TraversedTreeNodeInfo<T> rootNodeInfo = new TraversedTreeNodeInfo<T>(root, 0, 0);
             Stack<TraversedTreeNodeInfo<T>> stack = new Stack<TraversedTreeNodeInfo<T>>(new[] { rootNodeInfo });
             while (stack.Any())
             {
@@ -28,13 +26,10 @@ namespace WallpaperGenerator.Utilities.DataStructures.Trees
                 int indexAmongSiblings = nodeInfo.Node.Children.Count - 1;
                 foreach (TreeNode<T> n in nodeInfo.Node.Children.Reverse())
                 {
-                    TraversedTreeNodeInfo<T> childNodeInfo = new TraversedTreeNodeInfo<T>(n, indexAmongSiblings, traversedIndex, depth);
+                    TraversedTreeNodeInfo<T> childNodeInfo = new TraversedTreeNodeInfo<T>(n, indexAmongSiblings, nodeInfo.Depth + 1);
                     stack.Push(childNodeInfo);
                     indexAmongSiblings--;
-                    traversedIndex++;
                 }
-                
-                depth++;
             }
         }
 
@@ -55,9 +50,7 @@ namespace WallpaperGenerator.Utilities.DataStructures.Trees
 
         public static IEnumerable<TraversedTreeNodeInfo<T>> FilterInBreadth(TreeNode<T> root, Predicate<TraversedTreeNodeInfo<T>> predicate)
         {
-            int depth = 0;
-            int traversedIndex = 0;
-            TraversedTreeNodeInfo<T> rootNodeInfo = new TraversedTreeNodeInfo<T>(root, 0, traversedIndex++, depth++);
+            TraversedTreeNodeInfo<T> rootNodeInfo = new TraversedTreeNodeInfo<T>(root, 0, 0);
             Queue<TraversedTreeNodeInfo<T>> queue = new Queue<TraversedTreeNodeInfo<T>>(new[] { rootNodeInfo });
             while (queue.Any())
             {
@@ -68,14 +61,10 @@ namespace WallpaperGenerator.Utilities.DataStructures.Trees
                 int indexAmongSiblings = 0;
                 foreach (TreeNode<T> n in nodeInfo.Node.Children)
                 {
-                    TraversedTreeNodeInfo<T> childNodeInfo = new TraversedTreeNodeInfo<T>(n, indexAmongSiblings, traversedIndex, depth);
+                    TraversedTreeNodeInfo<T> childNodeInfo = new TraversedTreeNodeInfo<T>(n, indexAmongSiblings, nodeInfo.Depth + 1);
                     queue.Enqueue(childNodeInfo);
                     indexAmongSiblings++;
-                    traversedIndex++;
                 }
-
-                traversedIndex++;
-                depth++;
             }
         }
 
@@ -96,7 +85,7 @@ namespace WallpaperGenerator.Utilities.DataStructures.Trees
 
         public static int GetNodeHeight(TreeNode<T> node)
         {
-            return TraverseInDepth(node).Max(ni => ni.Depth);
+            return TraverseInDepth(node).Max(ni => ni.Depth + 1);
         }
     }
 }
