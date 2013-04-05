@@ -11,14 +11,14 @@ namespace WallpaperGenerator.Formulas
             Arity = arity;
         }
 
-        public double Calculate(params Operand[] operands)
+        public double Evaluate(params double[] operands)
         {
             if (operands.Length != Arity)
                 throw new ArgumentException();
 
-            return CalculateCore(operands);
+            return EvaluateCore(operands);
         }
 
-        protected abstract double CalculateCore(params Operand[] operands);
+        protected abstract double EvaluateCore(params double[] operands);
     }
 }

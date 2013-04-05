@@ -1,9 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using WallpaperGenerator.Formulas.FormulaTreeNodes;
-using WallpaperGenerator.Formulas.Operands;
-
-namespace WallpaperGenerator.Formulas
+﻿namespace WallpaperGenerator.Formulas
 {
     public class FormulaTree 
     {

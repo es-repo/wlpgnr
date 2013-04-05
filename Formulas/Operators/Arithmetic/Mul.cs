@@ -1,12 +1,10 @@
 ﻿namespace WallpaperGenerator.Formulas.Operators.Arithmetic
 {
-    public class Mul : BinaryOperator, IArithmeticOperator
+    public class Mul : BinaryOperator
     {
-        protected override double CalculateCore(params Operand[] operands)
+        protected override double EvaluateCore(params double[] operands)
         {
-            double a = operands[0].Value;
-            double b = operands[1].Value;
-            return a * b;
+            return MathLibrary.Mul(operands[0], operands[1]);
         }
     }
 }

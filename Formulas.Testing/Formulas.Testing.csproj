@@ -56,9 +56,10 @@
   <ItemGroup>
     <Compile Include="FormulaTests.cs" />
     <Compile Include="FormulaTreeNodeTests.cs" />
-    <Compile Include="Operands\VariableTests.cs" />
-    <Compile Include="Operators\Arithmetic\MinusTests.cs" />
-    <Compile Include="Operators\Arithmetic\SumTests.cs" />
+    <Compile Include="MathLibraryTests.cs" />
+    <Compile Include="Operators\ConstantTests.cs" />
+    <Compile Include="Operators\OperatorTests.cs" />
+    <Compile Include="Operators\VariableTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

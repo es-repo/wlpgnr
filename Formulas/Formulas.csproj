@@ -46,25 +46,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Operand.cs" />
-    <Compile Include="Operands\Constant.cs" />
+    <Compile Include="MathLibrary.cs" />
+    <Compile Include="Operators\Constant.cs" />
     <Compile Include="FormulaTree.cs" />
     <Compile Include="FormulaTreeNode.cs" />
-    <Compile Include="FormulaTreeNodes\OperandNode.cs" />
-    <Compile Include="FormulaTreeNodes\OperatorNode.cs" />
     <Compile Include="Formula.cs" />
     <Compile Include="IFormulaGenerator.cs" />
-    <Compile Include="Operands\Constants.cs" />
     <Compile Include="Operator.cs" />
     <Compile Include="Operators\BinaryOperator.cs" />
-    <Compile Include="Operators\IArithmeticOperator.cs" />
     <Compile Include="Operators\Arithmetic\Minus.cs" />
     <Compile Include="Operators\Arithmetic\Mul.cs" />
     <Compile Include="Operators\OperatorsLibrary.cs" />
     <Compile Include="Operators\Arithmetic\Sum.cs" />
     <Compile Include="Operators\UnaryOperator.cs" />
+    <Compile Include="Operators\ZeroArityOperator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Operands\Variable.cs" />
+    <Compile Include="Operators\Variable.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
