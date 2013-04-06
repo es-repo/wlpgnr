@@ -1,30 +1,22 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using WallpaperGenerator.Utilities.DataStructures.Trees;
 
 namespace WallpaperGenerator.Formulas
 {
-    public abstract class FormulaTreeNode //: TreeNode<>
+    public class FormulaTreeNode : TreeNode<Operator>
     {
-        public IList<FormulaTreeNode> Children { get; private set; }
-
-        public bool IsLeaf 
+        public FormulaTreeNode(Operator value, IEnumerable<TreeNode<Operator>> children) 
+            : base(value, children)
         {
-            get { return Children.Count == 0; }
         }
 
-        protected FormulaTreeNode(IEnumerable<FormulaTreeNode> children)
+        public FormulaTreeNode(Operator value, params TreeNode<Operator>[] children) 
+            : base(value, children)
         {
-            Children = children.ToList();
         }
 
-        protected FormulaTreeNode(params FormulaTreeNode[] children)
+        public FormulaTreeNode(Operator value) : base(value)
         {
-            Children = children.ToList();
-        }
-
-        protected FormulaTreeNode()
-            : this(Enumerable.Empty<FormulaTreeNode>())
-        {            
         }
     }
 }

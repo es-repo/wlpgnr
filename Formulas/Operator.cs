@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace WallpaperGenerator.Formulas
 {
@@ -9,6 +11,11 @@ namespace WallpaperGenerator.Formulas
         protected Operator(int arity)
         {
             Arity = arity;
+        }
+
+        public double Evaluate(IEnumerable<double> operands)
+        {
+            return EvaluateCore(operands.ToArray());
         }
 
         public double Evaluate(params double[] operands)
