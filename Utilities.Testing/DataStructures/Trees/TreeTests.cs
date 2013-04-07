@@ -8,9 +8,9 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees
     [TestFixture]
     public class TreeTests
     {
-        private TreeNode<int> _treeForTraverseDepthFirstPreOrder;
-        private TreeNode<int> _treeForTraverseDepthFirstPostOrder;
-        private TreeNode<int> _treeForTraverseBredthFirstPreOrder;
+        private TreeNode<int> _rootForTraverseDepthFirstPreOrder;
+        private TreeNode<int> _rootForTraverseDepthFirstPostOrder;
+        private TreeNode<int> _rootForTraverseBredthFirstPreOrder;
         
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
@@ -18,7 +18,7 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees
             //                      0
             //      1               5               9
             //  2   3   4       6   7   8       10  11  12           
-            _treeForTraverseDepthFirstPreOrder = new TreeNode<int>(
+            _rootForTraverseDepthFirstPreOrder = new TreeNode<int>(
                 0, 
                 new TreeNode<int>(1, 
                     new TreeNode<int>(2),
@@ -36,7 +36,7 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees
             //                      12
             //      3               7               11
             //  0   1   2       4   5   6       8  9  10           
-            _treeForTraverseDepthFirstPostOrder = new TreeNode<int>(
+            _rootForTraverseDepthFirstPostOrder = new TreeNode<int>(
                 12,
                 new TreeNode<int>(3,
                     new TreeNode<int>(0),
@@ -54,7 +54,7 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees
             //                      0
             //      1               2               3
             //  4   5   6       7   8   9       10  11  12           
-            _treeForTraverseBredthFirstPreOrder = new TreeNode<int>(
+            _rootForTraverseBredthFirstPreOrder = new TreeNode<int>(
                 0,
                 new TreeNode<int>(1,
                     new TreeNode<int>(4),
@@ -73,7 +73,7 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees
         [Test]
         public void TestTraverseDepthFirstPreOrder()
         {
-            IEnumerable<TraversedTreeNodeInfo<int>> traversedNodes = Tree.TraverseDepthFirstPreOrder(_treeForTraverseDepthFirstPreOrder);
+            IEnumerable<TraversedTreeNodeInfo<int>> traversedNodes = Tree.TraverseDepthFirstPreOrder(_rootForTraverseDepthFirstPreOrder);
             
             const int expectedNodesCount = 13;
             Assert.AreEqual(expectedNodesCount, traversedNodes.Count());
@@ -92,30 +92,9 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees
         }
 
         [Test]
-        public void TestFilterDepthFirstPreOrder()
-        {
-            IEnumerable<TraversedTreeNodeInfo<int>> traversedNodes = Tree.FilterDepthFirstPreOrder(_treeForTraverseDepthFirstPreOrder, ni => ni.Node.Value % 2 == 0);
-
-            const int expectedNodesCount = 7;
-            Assert.AreEqual(expectedNodesCount, traversedNodes.Count());
-
-            int[] expectedValues = new[] { 0, 2, 4, 6, 8, 10, 12 };
-            int[] values = traversedNodes.Select(ni => ni.Node.Value).ToArray();
-            CollectionAssert.AreEqual(expectedValues, values);
-
-            int[] expectedIndexesAmongSiblings = new[] { 0, 0, 2, 0, 2, 0, 2 };
-            int[] indexesAmongSiblings = traversedNodes.Select(ni => ni.IndexAmongSiblings).ToArray();
-            CollectionAssert.AreEqual(expectedIndexesAmongSiblings, indexesAmongSiblings);
-
-            int[] expectedDepthes = new[] { 0, 2, 2, 2, 2, 2, 2 };
-            int[] depthes = traversedNodes.Select(ni => ni.Depth).ToArray();
-            CollectionAssert.AreEqual(expectedDepthes, depthes);
-        }
-
-        [Test]
         public void TestTraverseDepthFirstPostOrder()
         {
-            IEnumerable<TraversedTreeNodeInfo<int>> traversedNodes = Tree.TraverseDepthFirstPostOrder(_treeForTraverseDepthFirstPostOrder);
+            IEnumerable<TraversedTreeNodeInfo<int>> traversedNodes = Tree.TraverseDepthFirstPostOrder(_rootForTraverseDepthFirstPostOrder);
 
             const int expectedNodesCount = 13;
             Assert.AreEqual(expectedNodesCount, traversedNodes.Count());
@@ -134,30 +113,9 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees
         }
 
         [Test]
-        public void TestFilterDepthFirstPostOrder()
-        {
-            IEnumerable<TraversedTreeNodeInfo<int>> traversedNodes = Tree.FilterDepthFirstPostOrder(_treeForTraverseDepthFirstPostOrder, ni => ni.Node.Value % 2 == 0);
-
-            const int expectedNodesCount = 7;
-            Assert.AreEqual(expectedNodesCount, traversedNodes.Count());
-
-            int[] expectedValues = new[] { 0, 2, 4, 6, 8, 10, 12 };
-            int[] values = traversedNodes.Select(ni => ni.Node.Value).ToArray();
-            CollectionAssert.AreEqual(expectedValues, values);
-
-            int[] expectedIndexesAmongSiblings = new[] { 0, 2, 0, 2, 0, 2, 0 };
-            int[] indexesAmongSiblings = traversedNodes.Select(ni => ni.IndexAmongSiblings).ToArray();
-            CollectionAssert.AreEqual(expectedIndexesAmongSiblings, indexesAmongSiblings);
-
-            int[] expectedDepthes = new[] { 2, 2, 2, 2, 2, 2, 0 };
-            int[] depthes = traversedNodes.Select(ni => ni.Depth).ToArray();
-            CollectionAssert.AreEqual(expectedDepthes, depthes);
-        }
-
-        [Test]
         public void TestTraverseBreadthFirstPreOrder()
         {
-            IEnumerable<TraversedTreeNodeInfo<int>> traversedNodes = Tree.TraverseBredthFirstPreOrder(_treeForTraverseBredthFirstPreOrder);
+            IEnumerable<TraversedTreeNodeInfo<int>> traversedNodes = Tree.TraverseBredthFirstPreOrder(_rootForTraverseBredthFirstPreOrder);
 
             const int expectedNodesCount = 13;
             Assert.AreEqual(expectedNodesCount, traversedNodes.Count());
@@ -176,30 +134,9 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees
         }
 
         [Test]
-        public void TestFilterBreadthFirstPreOrder()
-        {
-            IEnumerable<TraversedTreeNodeInfo<int>> traversedNodes = Tree.FilterBredthFirstPreOrder(_treeForTraverseBredthFirstPreOrder, ni => ni.Node.Value % 2 == 0);
-
-            const int expectedNodesCount = 7;
-            Assert.AreEqual(expectedNodesCount, traversedNodes.Count());
-
-            int[] expectedValues = new[] { 0, 2, 4, 6, 8, 10, 12 };
-            int[] values = traversedNodes.Select(ni => ni.Node.Value).ToArray();
-            CollectionAssert.AreEqual(expectedValues, values);
-
-            int[] expectedIndexesAmongSiblings = new[] { 0, 1, 0, 2, 1, 0, 2 };
-            int[] indexesAmongSiblings = traversedNodes.Select(ni => ni.IndexAmongSiblings).ToArray();
-            CollectionAssert.AreEqual(expectedIndexesAmongSiblings, indexesAmongSiblings);
-
-            int[] expectedDepthes = new[] { 0, 1, 2, 2, 2, 2, 2 };
-            int[] depthes = traversedNodes.Select(ni => ni.Depth).ToArray();
-            CollectionAssert.AreEqual(expectedDepthes, depthes);
-        }
-
-        [Test]
         public void TestFold()
         {
-            int result = Tree.Fold<int, int>(_treeForTraverseDepthFirstPostOrder, (ni, c) => ni.Node.Value + c.Sum(i => i));
+            int result = Tree.Fold<int, int>(_rootForTraverseDepthFirstPostOrder, (ni, c) => ni.Node.Value + c.Sum(i => i));
             Assert.AreEqual(78, result);
         }
 

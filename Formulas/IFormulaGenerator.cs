@@ -2,6 +2,6 @@
 {
     public interface IFormulaGenerator
     {
-        Formula CreateFormula();
+        FormulaTreeNode CreateFormula();
     }
 }

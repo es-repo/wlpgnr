@@ -48,9 +48,8 @@
   <ItemGroup>
     <Compile Include="MathLibrary.cs" />
     <Compile Include="Operators\Constant.cs" />
-    <Compile Include="FormulaTree.cs" />
     <Compile Include="FormulaTreeNode.cs" />
-    <Compile Include="Formula.cs" />
+    <Compile Include="FormulaTree.cs" />
     <Compile Include="IFormulaGenerator.cs" />
     <Compile Include="Operator.cs" />
     <Compile Include="Operators\BinaryOperator.cs" />

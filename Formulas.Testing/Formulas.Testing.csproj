@@ -54,8 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FormulaTests.cs" />
-    <Compile Include="FormulaTreeNodeTests.cs" />
+    <Compile Include="FormulaTreeTests.cs" />
     <Compile Include="MathLibraryTests.cs" />
     <Compile Include="Operators\ConstantTests.cs" />
     <Compile Include="Operators\OperatorTests.cs" />
@@ -66,6 +65,10 @@
     <ProjectReference Include="..\Formulas\Formulas.csproj">
       <Project>{190058E2-F017-4D78-B076-CB6AC313246D}</Project>
       <Name>Formulas</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities\Utilities.csproj">
+      <Project>{7D4A8B31-9E0B-4C8A-914B-E469D622F21C}</Project>
+      <Name>Utilities</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
