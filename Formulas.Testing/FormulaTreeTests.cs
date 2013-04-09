@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;  
 using MbUnit.Framework;
 using WallpaperGenerator.Formulas;
 using WallpaperGenerator.Formulas.Operators;
-using System;
-using WallpaperGenerator.Utilities.DataStructures.Trees;
 
 namespace Formulas.Testing
 {
@@ -75,54 +74,6 @@ namespace Formulas.Testing
             _yVariable.Value = yVariableValue;
             double result = FormulaTree.Evaluate(_formulaRoot);
             Assert.AreEqual(expectedResult, result);
-        }
-
-        [Test]
-        public void TestSerialize()
-        {
-            TestSerialize(new FormulaTreeNode(OperatorsLibrary.C05), "(0.5)");
-
-            TestSerialize(new FormulaTreeNode(new Variable("x")), "(x)");
-
-            TestSerialize(
-                new FormulaTreeNode(OperatorsLibrary.Sum, 
-                    new TreeNode<Operator>(OperatorsLibrary.C2),
-                    new FormulaTreeNode(new Variable("y"))), "(Sum(2,y))");
-
-            TestSerialize(
-                new FormulaTreeNode(OperatorsLibrary.Sum,
-                    new TreeNode<Operator>(OperatorsLibrary.C2),
-                    new TreeNode<Operator>(OperatorsLibrary.Mul,
-                        new FormulaTreeNode(new Variable("y")),
-                        new FormulaTreeNode(new Variable("z")))), "(Sum(2,Mul(y,z)))");
-
-            TestSerialize(
-                new FormulaTreeNode(OperatorsLibrary.Sum,
-                    new TreeNode<Operator>(OperatorsLibrary.Minus,
-                        new TreeNode<Operator>(OperatorsLibrary.Mul,
-                            new TreeNode<Operator>(OperatorsLibrary.C3),
-                            new TreeNode<Operator>(OperatorsLibrary.Minus, 
-                                new TreeNode<Operator>(OperatorsLibrary.Minus,
-                                    new TreeNode<Operator>(OperatorsLibrary.Minus,
-                                        new TreeNode<Operator>(OperatorsLibrary.C05)))))),
-                    new TreeNode<Operator>(OperatorsLibrary.Minus,
-                         new TreeNode<Operator>(OperatorsLibrary.Minus,
-                            new TreeNode<Operator>(OperatorsLibrary.Minus,
-                                new TreeNode<Operator>(OperatorsLibrary.C7))))),
-                "(Sum(Minus(Mul(3,Minus(Minus(Minus(0.5))))),Minus(Minus(Minus(7)))))");
-
-            TestSerialize(_formulaRoot, "(Sum(Mul(2,x),Mul(7,Sum(Minus(y),5))))");
-        }
-
-        private static void TestSerialize(FormulaTreeNode formulaTree, string expected)
-        {
-            string str = FormulaTree.Serialize(formulaTree);
-            Assert.AreEqual(expected, str);
-        }
-
-        [Test]
-        public void TestDeserialize()
-        {
         }
     }
 }

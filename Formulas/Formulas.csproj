@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormulaTreeSerializer.cs" />
     <Compile Include="MathLibrary.cs" />
     <Compile Include="Operators\Constant.cs" />
     <Compile Include="FormulaTreeNode.cs" />
