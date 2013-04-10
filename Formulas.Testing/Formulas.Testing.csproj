@@ -60,6 +60,7 @@
     <Compile Include="Operators\ConstantTests.cs" />
     <Compile Include="Operators\OperatorTests.cs" />
     <Compile Include="Operators\VariableTests.cs" />
+    <Compile Include="Parsing\FormulaTreeTokenizerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

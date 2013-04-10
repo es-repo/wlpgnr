@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using WallpaperGenerator.Formulas.Operators;
@@ -43,11 +44,6 @@ namespace WallpaperGenerator.Formulas
             return sb.ToString();
         }
 
-        public static FormulaTreeNode Deserialize(string str)
-        {
-            return null;
-        }
-
         private static string OperatorToString(Operator op)
         {
             if (op is Constant)
@@ -60,6 +56,11 @@ namespace WallpaperGenerator.Formulas
             }
 
             return op.GetType().Name;
+        }
+
+        public static FormulaTreeNode Deserialize(string value)
+        {
+            return null;
         }
     }
 }
