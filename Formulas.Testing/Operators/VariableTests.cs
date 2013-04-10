@@ -19,5 +19,22 @@ namespace Formulas.Testing.Operators
             double result = constant.Evaluate();
             Assert.AreEqual(expected, result);
         }
+
+        [RowTest]
+        [Row(null, ExpectedException = typeof(ArgumentException))]
+        [Row("", ExpectedException = typeof(ArgumentException))]
+        [Row("123", ExpectedException = typeof(ArgumentException))]
+        [Row("_123")]
+        [Row("_")]
+        [Row("x")]
+        [Row("x1")]
+        [Row("x2y")]
+        [Row("xyz")]
+        [Row("x y", ExpectedException = typeof(ArgumentException))]
+        public void TestName(string name)
+        {
+            Variable v = new Variable(name);
+            Assert.AreEqual(name, v.Name);
+        }
     }
 }
