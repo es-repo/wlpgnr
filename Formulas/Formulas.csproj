@@ -60,6 +60,7 @@
     <Compile Include="Operators\Arithmetic\Sum.cs" />
     <Compile Include="Operators\UnaryOperator.cs" />
     <Compile Include="Operators\ZeroArityOperator.cs" />
+    <Compile Include="Parsing\FormulaTreeParser.cs" />
     <Compile Include="Parsing\FormulaTreeTokenizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Operators\Variable.cs" />

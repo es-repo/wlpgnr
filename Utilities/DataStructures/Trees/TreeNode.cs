@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace WallpaperGenerator.Utilities.DataStructures.Trees
 {
     public class TreeNode<T>
     {
+        private readonly List<TreeNode<T>> _children;
+
         public T Value { get; private set; }
 
-        public IList<TreeNode<T>> Children { get; private set; }
+        public IList<TreeNode<T>> Children { get { return _children.AsReadOnly(); } }
 
         public bool IsLeaf 
         {
@@ -20,7 +21,7 @@ namespace WallpaperGenerator.Utilities.DataStructures.Trees
 // ReSharper restore UnusedParameter.Local
         {
             Value = value;
-            Children = new ReadOnlyCollection<TreeNode<T>>(children.ToList());
+            _children = children.ToList();
         }
 
         public TreeNode(T value, IEnumerable<TreeNode<T>> children)
@@ -36,6 +37,16 @@ namespace WallpaperGenerator.Utilities.DataStructures.Trees
         public TreeNode(T value)
             : this(value, Enumerable.Empty<TreeNode<T>>())
         {                
+        }
+
+        public void AddChild(TreeNode<T> node)
+        {
+            _children.Add(node);
+        }
+
+        public void RemoveChild(TreeNode<T> node)
+        {
+            _children.Remove(node);
         }
     }
 }

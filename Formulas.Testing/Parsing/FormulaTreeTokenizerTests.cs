@@ -2,6 +2,7 @@
 using System.Linq;
 using MbUnit.Framework;
 using WallpaperGenerator.Formulas.Parsing;
+using System.Collections.Generic;
 
 namespace Formulas.Testing.Parsing
 {
@@ -9,26 +10,32 @@ namespace Formulas.Testing.Parsing
     public class FormulaTreeTokenizerTests
     {
         [RowTest]
-        [Row("", new FormulaTreeTokenType[] { })]
-        [Row("()", new[] 
-                    { 
-                        FormulaTreeTokenType.OpenningBracket, 
-                        FormulaTreeTokenType.ClosingBracket 
-                    })]
-        [Row("(x)", new[]
+        [Row("", new FormulaTreeTokenType[] { }, new string[] { })]
+        [Row("()",
+            new[] 
+            { 
+                FormulaTreeTokenType.OpenningBracket, 
+                FormulaTreeTokenType.ClosingBracket 
+            },
+            new[] { "(", ")" })]
+        [Row("(x)", 
+            new[]
             {
                 FormulaTreeTokenType.OpenningBracket, 
                 FormulaTreeTokenType.Word, 
                 FormulaTreeTokenType.ClosingBracket
-            })]
-        [Row("(xyz   123)", new[]
+            }, 
+            new[] { "(", "x", ")" })]
+        [Row("(xyz   123)", 
+            new[]
             {
                 FormulaTreeTokenType.OpenningBracket, 
                 FormulaTreeTokenType.Word, 
                 FormulaTreeTokenType.Whitespace,
                 FormulaTreeTokenType.Word, 
                 FormulaTreeTokenType.ClosingBracket
-            })]
+            },
+            new[] { "(", "xyz", "   ", "123", ")" })]
         [Row(
 @"(
 Sum(
@@ -36,7 +43,8 @@ Sum(
         x)
     Mul(
         2
-        _y12)))", new[]
+        _y12)))", 
+            new[]
             {
                 FormulaTreeTokenType.OpenningBracket, 
                 FormulaTreeTokenType.Whitespace,
@@ -58,12 +66,18 @@ Sum(
                 FormulaTreeTokenType.ClosingBracket,
                 FormulaTreeTokenType.ClosingBracket,
                 FormulaTreeTokenType.ClosingBracket
-            })]
-        [Row("(x y _e% )", new FormulaTreeTokenType[] { }, ExpectedException = typeof(ArgumentException))]
-        public void TestTokinize(string value, FormulaTreeTokenType[] expectedTokenTypes)
+            },
+            new[] { "(", "\r\n", "Sum", "(", "\r\n    ", "Minus", "(", "\r\n        ", "x", ")", "\r\n    ", "Mul", "(", "\r\n        ", "2", "\r\n        ", "_y12", ")", ")", ")" })]
+        [Row("(x y _e% )", new FormulaTreeTokenType[] { }, new string[] { }, ExpectedException = typeof(ArgumentException))]
+        public void TestTokinize(string value, FormulaTreeTokenType[] expectedTokenTypes, string[] expectedTokenValues)
         {
-            FormulaTreeTokenType[] tokenTypes = FormulaTreeTokenizer.Tokenize(value).Select(t => t.Type).ToArray();
+            IEnumerable<FormulaTreeToken> tokens = FormulaTreeTokenizer.Tokenize(value);
+            
+            FormulaTreeTokenType[] tokenTypes = tokens.Select(t => t.Type).ToArray();
             CollectionAssert.AreEqual(expectedTokenTypes, tokenTypes);
+
+            string[] tokenValues = tokens.Select(t => t.Value).ToArray();
+            CollectionAssert.AreEqual(expectedTokenValues, tokenValues);
         }
     }
 }

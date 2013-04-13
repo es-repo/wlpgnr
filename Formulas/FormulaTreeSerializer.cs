@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using WallpaperGenerator.Formulas.Operators;
+using WallpaperGenerator.Formulas.Parsing;
 using WallpaperGenerator.Utilities.DataStructures.Trees;
 
 namespace WallpaperGenerator.Formulas
@@ -60,7 +60,7 @@ namespace WallpaperGenerator.Formulas
 
         public static FormulaTreeNode Deserialize(string value)
         {
-            return null;
+            return FormulaTreeParser.Parse(value);
         }
     }
 }

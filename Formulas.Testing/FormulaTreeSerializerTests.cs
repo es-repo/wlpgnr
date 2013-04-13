@@ -102,10 +102,5 @@ Sum(
             expectedWithIndent = expectedWithIndent.Replace("\r\n", "\n");
             Assert.AreEqual(expectedWithIndent, withIndentResult);
         }
-
-        [Test]
-        public void TestDeserialize()
-        {
-        }
     }
 }

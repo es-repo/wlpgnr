@@ -29,66 +29,64 @@ namespace WallpaperGenerator.Formulas.Parsing
         public static IEnumerable<FormulaTreeToken> Tokenize(string value)
         {
             StringBuilder tokenSb = new StringBuilder();
-            FormulaTreeTokenType? tokenType = null;
+            FormulaTreeTokenType? prevTokenType = null;
             foreach (char ch in value)
             {
-                FormulaTreeTokenType? nextTokenType;
+                FormulaTreeTokenType tokenType;
                 if (ch == '(')
                 {
-                    nextTokenType = FormulaTreeTokenType.OpenningBracket;
+                    tokenType = FormulaTreeTokenType.OpenningBracket;
                 }
                 else if (ch == ')')
                 {
-                    nextTokenType = FormulaTreeTokenType.ClosingBracket;
+                    tokenType = FormulaTreeTokenType.ClosingBracket;
                 }
                 else if (IsWordCharacter(ch))
                 {
-                    nextTokenType = FormulaTreeTokenType.Word;
-                    tokenSb.Append(ch);
+                    tokenType = FormulaTreeTokenType.Word;
                 }
                 else if (IsWhitespaceCharacter(ch))
                 {
-                    nextTokenType = FormulaTreeTokenType.Whitespace;
-                    tokenSb.Append(ch);
+                    tokenType = FormulaTreeTokenType.Whitespace;
                 }
                 else
                 {
                     throw new ArgumentException(string.Format("Unexpected character \"{0}\"", ch));
                 }
 
-                if (tokenType != null)
+                if (prevTokenType != null)
                 {
-                    bool isTokenProcessed = false;
-                    switch (tokenType)
+                    bool isTokenEndRiched = false;
+                    switch (prevTokenType)
                     {
                         case FormulaTreeTokenType.OpenningBracket:
-                            isTokenProcessed = true;
+                            isTokenEndRiched = true;
                             break;
 
                         case FormulaTreeTokenType.ClosingBracket:
-                            isTokenProcessed = true;
+                            isTokenEndRiched = true;
                             break;
 
                         case FormulaTreeTokenType.Whitespace:
                         case FormulaTreeTokenType.Word:
-                            if (tokenType != nextTokenType)
-                                isTokenProcessed = true;
+                            if (prevTokenType != tokenType)
+                                isTokenEndRiched = true;
                             break;
                     }
 
-                    if (isTokenProcessed)
+                    if (isTokenEndRiched)
                     {
-                        yield return new FormulaTreeToken(tokenType.Value, tokenSb.ToString());
+                        yield return new FormulaTreeToken(prevTokenType.Value, tokenSb.ToString());
                         tokenSb = new StringBuilder();
                     }
                 }
 
                 tokenSb.Append(ch);
-                tokenType = nextTokenType;
+                prevTokenType = tokenType;
             }
 
-            if (tokenType != null)
-                yield return new FormulaTreeToken(tokenType.Value, tokenSb.ToString());
+            if (prevTokenType != null)
+                yield return new FormulaTreeToken(prevTokenType.Value, tokenSb.ToString());
         }
 
         private static bool IsWordCharacter(char ch)
