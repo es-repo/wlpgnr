@@ -24,14 +24,14 @@ namespace Formulas.Testing
             _formulaRoot =
                 new FormulaTreeNode(OperatorsLibrary.Sum,
                     new FormulaTreeNode(OperatorsLibrary.Mul,
-                        new FormulaTreeNode(OperatorsLibrary.C2),
+                        new FormulaTreeNode(ConstantsLibrary.C2),
                         new FormulaTreeNode(_xVariable)),
                     new FormulaTreeNode(OperatorsLibrary.Mul,
-                        new FormulaTreeNode(OperatorsLibrary.C7),
+                        new FormulaTreeNode(ConstantsLibrary.C7),
                         new FormulaTreeNode(OperatorsLibrary.Sum,
                             new FormulaTreeNode(OperatorsLibrary.Minus,
                                 new FormulaTreeNode(_yVariable)),
-                            new FormulaTreeNode(OperatorsLibrary.C5))));
+                            new FormulaTreeNode(ConstantsLibrary.C5))));
         }
         
         [Test]

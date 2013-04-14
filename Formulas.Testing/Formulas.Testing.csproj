@@ -54,6 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormulaGeneratorTests.cs" />
     <Compile Include="FormulaTreeSerializerTests.cs" />
     <Compile Include="FormulaTreeTests.cs" />
     <Compile Include="MathLibraryTests.cs" />

@@ -5,6 +5,7 @@ namespace WallpaperGenerator.Formulas
     public static class MathLibrary
     {
         public static readonly double C05 = 0.5;
+        public static readonly double C1 = 1;
         public static readonly double C2 = 2;
         public static readonly double C3 = 3;
         public static readonly double C5 = 5;

@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="DataStructures\Trees\TreeTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RandomExtensionsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utilities\Utilities.csproj">

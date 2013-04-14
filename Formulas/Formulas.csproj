@@ -46,12 +46,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Operators\ConstantsLibrary.cs" />
     <Compile Include="FormulaTreeSerializer.cs" />
     <Compile Include="MathLibrary.cs" />
     <Compile Include="Operators\Constant.cs" />
     <Compile Include="FormulaTreeNode.cs" />
     <Compile Include="FormulaTree.cs" />
-    <Compile Include="IFormulaGenerator.cs" />
+    <Compile Include="FormulaGenerator.cs" />
     <Compile Include="Operator.cs" />
     <Compile Include="Operators\BinaryOperator.cs" />
     <Compile Include="Operators\Arithmetic\Minus.cs" />
