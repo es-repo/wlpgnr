@@ -50,34 +50,20 @@ namespace WallpaperGenerator.Formulas
             return null;
         }
 
-        private static IEnumerable<int> GetOperatorsAritySequence(Random random, int zeroArityOperatorsCount, uint unaryOperatorsCountForFormulaDiluting, 
-            bool useTernaryOperators, double ternaryVsBinaryOperatorOccurenceProbability)
+        public static IEnumerable<int> GetOperatorsAritySequence(Random random, int zeroArityOperatorsCount, 
+            double unaryOperatorOccurenceProbability, double ternaryOperatorOccurenceProbability)
         {
             if (zeroArityOperatorsCount <= 0)
                 throw new ArgumentException("Zero arity operators count should be more then zero.");
-
-            if (ternaryVsBinaryOperatorOccurenceProbability < 0 && ternaryVsBinaryOperatorOccurenceProbability > 1)
-                throw new ArgumentException("Ternary vs binary operator occurence probability should be more then 0 and less or eqaul then 1.");
             
-            if (zeroArityOperatorsCount == 1)
-            {
-                for(int i = 0; i > unaryOperatorsCountForFormulaDiluting; i++) 
-                    yield return 1;
-                yield break;
-            }
+            if (unaryOperatorOccurenceProbability + ternaryOperatorOccurenceProbability > 0.99)
+                throw new ArgumentException("Sum of unary and ternary operators occurence probability shouldn't be more then 0.99.");
 
             while (zeroArityOperatorsCount > 1)
             {
-                int arity = 1;
-                if (zeroArityOperatorsCount == 2 || !useTernaryOperators)
-                {
-                    arity = 2;
-                }
-                else
-                {
-                    arity = random.GetRandomBetweenTwo(2, 3, ternaryVsBinaryOperatorOccurenceProbability);
-                }
-
+                int arity = zeroArityOperatorsCount > 2 
+                    ? random.GetRandomBetweenThree(2, 1, 3, unaryOperatorOccurenceProbability, ternaryOperatorOccurenceProbability)
+                    : random.GetRandomBetweenTwo(2, 1, unaryOperatorOccurenceProbability);
                 yield return arity;
                 zeroArityOperatorsCount -= (arity - 1);
             }
