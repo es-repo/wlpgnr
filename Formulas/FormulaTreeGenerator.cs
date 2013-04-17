@@ -4,12 +4,13 @@ using System.Linq;
 using WallpaperGenerator.Utilities;
 using System.Globalization;
 using WallpaperGenerator.Formulas.Operators;
+using WallpaperGenerator.Utilities.DataStructures.Trees;
 
 namespace WallpaperGenerator.Formulas
 {
-    public class FormulaGenerator
+    public class FormulaTreeGenerator
     {
-        public static FormulaTreeNode CreateRandomFormula(int variablesCount, int constantsCount, int unaryOperatorsCountForFormulaDiluting,
+        public static FormulaTreeNode CreateRandomFormulaTree(int variablesCount, int constantsCount, int unaryOperatorsCountForFormulaDiluting,
             Operator[] operatorsLibrary, Operator[] constantsLibrary)
         {
             if (variablesCount < 0)
@@ -39,35 +40,48 @@ namespace WallpaperGenerator.Formulas
             if (constantsCount > 0 && !constantsLibrary.Any())
                 throw new ArgumentException("Constants library can't be empty if constants count is more then 0.");
 
-            return CreateRandomFormulaCore(variablesCount, constantsCount, unaryOperatorsCountForFormulaDiluting, operatorsLibrary, constantsLibrary);
+            return CreateRandomFormulaTreeCore(variablesCount, constantsCount, unaryOperatorsCountForFormulaDiluting, operatorsLibrary, constantsLibrary);
         }
 
-        private static FormulaTreeNode CreateRandomFormulaCore(int variablesCount, int constantsCount, int unaryOperatorsCountForFormulaDiluting,
+        private static FormulaTreeNode CreateRandomFormulaTreeCore(int variablesCount, int constantsCount, int unaryOperatorsCountForFormulaDiluting,
             Operator[] operatorsLibrary, Operator[] constantsLibrary)
         {                        
-            Dictionary<int, Operator[]> availableOperatorsByArityMap = new Dictionary<int, Operator[]>();
-            for (int i = 1; i < 4; i++)
-            {
-                availableOperatorsByArityMap.Add(i, operatorsLibrary.Where(op => op.Arity == i).ToArray());
-            }
-
             int zeroOperatorsCount = variablesCount + constantsCount;
-            double ternaryVsBinaryOperatorOccurenceProbability = (double)availableOperatorsByArityMap[3].Length /
-                (availableOperatorsByArityMap[2].Length + availableOperatorsByArityMap[3].Length);
+            int availableBinaryOperatorsCount = operatorsLibrary.Count(op => op.Arity == 2);
+            int availableTernaryOperatorsCount = operatorsLibrary.Count(op => op.Arity == 3);
+            double ternaryVsBinaryOperatorOccurenceProbability = (double)availableTernaryOperatorsCount /
+                (availableBinaryOperatorsCount + availableTernaryOperatorsCount);
 
             Random random = new Random();
             int[] operatorsAritySequence = GetNonZeroOperatorsAritySequence(random, zeroOperatorsCount,
                 unaryOperatorsCountForFormulaDiluting, ternaryVsBinaryOperatorOccurenceProbability).ToArray();
-            IEnumerable<Operator> nonZeroOperators = operatorsAritySequence.Select(a => availableOperatorsByArityMap[a].TakeRandom(random));
+            IEnumerable<Operator> nonZeroArityOperators = operatorsAritySequence.Select(a => operatorsLibrary.Where(op => op.Arity == a).TakeRandom(random));
 
             IEnumerable<string> variableNames = EnumerableExtensions.Repeat(i => "x" + i.ToString(CultureInfo.InvariantCulture), variablesCount);
             IEnumerable<Operator> variables = variableNames.Select(n => new Variable(n)).Cast<Operator>();
             IEnumerable<Operator> constants = EnumerableExtensions.Repeat(i => constantsLibrary[random.Next(constantsLibrary.Length)], constantsCount);
-            IEnumerable<Operator> zeroArityOperators = variables.Concat(constants).Randomize(random); 
+            IEnumerable<Operator> zeroArityOperators = variables.Concat(constants).Randomize(random);
 
-            //
+            return CreateFormulaTree(zeroArityOperators, nonZeroArityOperators);
+        }
+
+        public static FormulaTreeNode CreateFormulaTree(IEnumerable<Operator> zeroArityOperators, IEnumerable<Operator> nonZeroArityOperators)
+        {
+            if (!zeroArityOperators.Any())
+                throw new ArgumentException("Zero-arity operators enumration can't be empty.");
             
-            return null;
+            if (nonZeroArityOperators.Count(op => op.Arity == 2)+ 
+                nonZeroArityOperators.Count(op => op.Arity == 3)*2 + 1 != zeroArityOperators.Count())
+                throw new ArgumentException("Number of zero and non-zero -arity operators is not balanced.");
+
+            Queue<FormulaTreeNode> nodes = new Queue<FormulaTreeNode>(zeroArityOperators.Select(op => new FormulaTreeNode(op)));
+            foreach (Operator op in nonZeroArityOperators)
+            {
+                FormulaTreeNode node = new FormulaTreeNode(op, nodes.Dequeue(op.Arity).Cast<TreeNode<Operator>>());
+                nodes.Enqueue(node);
+            }
+
+            return nodes.Dequeue();
         }
 
         public static IEnumerable<int> GetNonZeroOperatorsAritySequence(Random random, int zeroArityOperatorsCount, 

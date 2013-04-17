@@ -48,11 +48,25 @@ namespace WallpaperGenerator.Formulas.Operators
 
         #endregion
 
+        #region Conditional Operators
+
+        public static readonly Operator Conditional = new Conditional();
+
+        public static IEnumerable<Operator> Conditionals
+        {
+            get
+            {
+                yield return Conditional;
+            }
+        }
+
+        #endregion
+
         public static IEnumerable<Operator> All
         {
             get
             {
-                return Arithmetic;
+                return Arithmetic.Concat(Conditionals);
             }
         }
     }

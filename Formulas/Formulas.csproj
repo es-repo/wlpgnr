@@ -46,19 +46,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Operators\Conditional.cs" />
     <Compile Include="Operators\ConstantsLibrary.cs" />
     <Compile Include="FormulaTreeSerializer.cs" />
     <Compile Include="MathLibrary.cs" />
     <Compile Include="Operators\Constant.cs" />
     <Compile Include="FormulaTreeNode.cs" />
     <Compile Include="FormulaTree.cs" />
-    <Compile Include="FormulaGenerator.cs" />
+    <Compile Include="FormulaTreeGenerator.cs" />
     <Compile Include="Operator.cs" />
     <Compile Include="Operators\BinaryOperator.cs" />
     <Compile Include="Operators\Arithmetic\Minus.cs" />
     <Compile Include="Operators\Arithmetic\Mul.cs" />
     <Compile Include="Operators\OperatorsLibrary.cs" />
     <Compile Include="Operators\Arithmetic\Sum.cs" />
+    <Compile Include="Operators\TernaryOperator.cs" />
     <Compile Include="Operators\UnaryOperator.cs" />
     <Compile Include="Operators\ZeroArityOperator.cs" />
     <Compile Include="Parsing\FormulaTreeParser.cs" />
