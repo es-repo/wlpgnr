@@ -18,5 +18,10 @@ namespace WallpaperGenerator.Formulas
         public FormulaTreeNode(Operator value) : base(value)
         {
         }
+
+        public Operator Operator 
+        {
+            get { return Value; }
+        }
     }
 }

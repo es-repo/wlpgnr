@@ -6,6 +6,7 @@ using MbUnit.Framework;
 using WallpaperGenerator.Formulas;
 using WallpaperGenerator.Formulas.Operators;
 using WallpaperGenerator.Utilities;
+using WallpaperGenerator.Utilities.DataStructures.Trees;
 
 namespace Formulas.Testing
 {
@@ -19,31 +20,59 @@ namespace Formulas.Testing
         }
 
         [RowTest]
-        [Row(0, 0, 0, 0, ExpectedException=typeof(ArgumentException))]
-        [Row(1, 1, 1, 0, ExpectedException = typeof(ArgumentException))]
-        [Row(3, 3, 3, 3, ExpectedException = typeof(ArgumentException))]
-        //[Row(1, 0, ExpectedException = typeof(ArgumentException))]
-        //[Row(1, 0, ExpectedException = typeof(ArgumentException))]
-        public void TestCreateFormulaTree(int zeroArityOperatorsCount, int unaryOperatorsCount, int binaryOperatorsCount, int ternaryOperatorsCount)
+        [Row(0, new[] { 0, 0, 0 }, ExpectedException = typeof(ArgumentException))]
+        [Row(1, new[] { 1, 1, 0 }, ExpectedException = typeof(ArgumentException))]
+        [Row(3, new[] { 3, 3, 3 }, ExpectedException = typeof(ArgumentException))]
+        [Row(1, new []{0, 0, 0})]
+        [Row(2, new []{3, 1, 0 })]
+        [Row(3, new []{ 3, 0, 1 })]
+        [Row(9, new[] { 1, 6, 1 })]
+        public void TestCreateFormulaTree(int zeroArityOperatorsCount, int[] nonZeroOperatorsCountS)
         {
             Random random = new Random();
 
             IEnumerable<Operator> zeroArityOperators = EnumerableExtensions.Repeat(
                 i => new Variable("x" + i.ToString(CultureInfo.InvariantCulture)), zeroArityOperatorsCount).Cast<Operator>();
 
-            IEnumerable<Operator> unaryOperators = EnumerableExtensions.Repeat(
-                i => OperatorsLibrary.All.Where(op => op.Arity == 1).TakeRandom(random), unaryOperatorsCount);
+            IEnumerable<Operator> nonZeroArityOperators = nonZeroOperatorsCountS.Select((i, a) =>
+                EnumerableExtensions.Repeat(_ => OperatorsLibrary.All.Where(op => op.Arity == a + 1).TakeRandom(random), nonZeroOperatorsCountS[a])).
+                    SelectMany(_ => _);
+            
+            FormulaTreeNode formulaTree = FormulaTreeGenerator.CreateFormulaTree(zeroArityOperators, nonZeroArityOperators.Randomize(random));
+            
+            IEnumerable<TraversedTreeNodeInfo<Operator>> traversedNodes = Tree.TraverseBredthFirstPreOrder(formulaTree);
+            for (int a = 0; a < 4; a++)
+            {
+                IEnumerable<FormulaTreeNode> nArityNodes = traversedNodes.Select(ni => (FormulaTreeNode)ni.Node).Where(n => n.Operator.Arity == a);
+                Assert.IsTrue(nArityNodes.All(n => n.Children.Count == a));
+            }
+        }
 
-            IEnumerable<Operator> binaryOperators = EnumerableExtensions.Repeat(
-                i => OperatorsLibrary.All.Where(op => op.Arity == 2).TakeRandom(random), unaryOperatorsCount);
+        [Test]
+        public void TestCreateFormulaTreeSpecific()
+        {
+            IEnumerable<Operator> zeroArityOperators = EnumerableExtensions.Repeat(i => (Operator)new Variable("x" + i.ToString(CultureInfo.InvariantCulture)), 5);
+            IEnumerable<Operator> nonZeroArityOperators = new List<Operator>
+                {
+                    OperatorsLibrary.Mul,
+                    OperatorsLibrary.Conditional,
+                    OperatorsLibrary.Sum,
+                    OperatorsLibrary.Minus  
+                };
 
-            IEnumerable<Operator> ternaryOperators = EnumerableExtensions.Repeat(
-                i => OperatorsLibrary.All.Where(op => op.Arity == 2).TakeRandom(random), unaryOperatorsCount);
-
-            IEnumerable<Operator> nonZeroArityOperators = unaryOperators.Concat(binaryOperators).Concat(ternaryOperators);
-            IEnumerable<Operator> nonZeroArityOperatorsShuffled = EnumerableExtensions.Repeat(i => nonZeroArityOperators.TakeRandom(random), nonZeroArityOperators.Count());
-
-            FormulaTreeGenerator.CreateFormulaTree(zeroArityOperators, nonZeroArityOperatorsShuffled);
+            FormulaTreeNode formulaTree = FormulaTreeGenerator.CreateFormulaTree(zeroArityOperators, nonZeroArityOperators);
+            FormulaTreeNode formulaTreeExpected = new FormulaTreeNode(
+                OperatorsLibrary.Minus,
+                    new FormulaTreeNode(OperatorsLibrary.Sum,
+                        new FormulaTreeNode(OperatorsLibrary.Mul,
+                            new FormulaTreeNode(new Variable("x0")),
+                            new FormulaTreeNode(new Variable("x1"))),
+                        new FormulaTreeNode(OperatorsLibrary.Conditional,
+                            new FormulaTreeNode(new Variable("x2")),
+                            new FormulaTreeNode(new Variable("x3")),
+                            new FormulaTreeNode(new Variable("x4")))));
+            
+            Assert.IsTrue(Utilities.AreFormulaTreesEqual(formulaTreeExpected, formulaTree));
         }
 
         [RowTest]
