@@ -13,10 +13,22 @@ namespace Formulas.Testing
     [TestFixture]
     public class FormulaTreeGeneratorTests
     {
-        [Test]
-        public void TestCreateRandomFormulaTree()
+        [RowTest]
+        [Row(0, 0, 0, ExpectedException=typeof(ArgumentException))]
+        [Row(4, 3, 2)]
+        public void TestCreateRandomFormulaTree(int variablesCount, int constantsCount, int unaryOperatorsCountForFormulaDiluting)
         {
-            //FormulaTreeGenerator
+            FormulaTreeNode formulaTree = FormulaTreeGenerator.CreateRandomFormulaTree(variablesCount, constantsCount, unaryOperatorsCountForFormulaDiluting,
+                OperatorsLibrary.All.ToArray(), ConstantsLibrary.All);
+
+            IEnumerable<FormulaTreeNode> traversedNodes = Tree.TraverseBredthFirstPreOrder(formulaTree).Select(ni => (FormulaTreeNode)ni.Node);
+            IEnumerable<Variable> variables = traversedNodes.Where(n => n.Operator is Variable).Select(n => (Variable) n.Operator);
+            IEnumerable<Constant> constants = traversedNodes.Where(n => n.Operator is Constant).Select(n => (Constant)n.Operator);
+            IEnumerable<Operator> unaryOperatorNodes = traversedNodes.Where(n => n.Operator.Arity == 1).Select(n => n.Operator);
+
+            Assert.AreEqual(variablesCount, variables.Count());
+            Assert.AreEqual(constantsCount, constants.Count());
+            Assert.AreEqual(unaryOperatorsCountForFormulaDiluting, unaryOperatorNodes.Count());
         }
 
         [RowTest]

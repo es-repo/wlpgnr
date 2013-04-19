@@ -11,7 +11,7 @@ namespace WallpaperGenerator.Formulas
     public class FormulaTreeGenerator
     {
         public static FormulaTreeNode CreateRandomFormulaTree(int variablesCount, int constantsCount, int unaryOperatorsCountForFormulaDiluting,
-            Operator[] operatorsLibrary, Operator[] constantsLibrary)
+            IEnumerable<Operator> operatorsLibrary, IEnumerable<Operator> constantsLibrary)
         {
             if (variablesCount < 0)
                 throw new ArgumentException("Variables count can't be less then 0.");
@@ -44,7 +44,7 @@ namespace WallpaperGenerator.Formulas
         }
 
         private static FormulaTreeNode CreateRandomFormulaTreeCore(int variablesCount, int constantsCount, int unaryOperatorsCountForFormulaDiluting,
-            Operator[] operatorsLibrary, Operator[] constantsLibrary)
+            IEnumerable<Operator> operatorsLibrary, IEnumerable<Operator> constantsLibrary)
         {                        
             int zeroOperatorsCount = variablesCount + constantsCount;
             int availableBinaryOperatorsCount = operatorsLibrary.Count(op => op.Arity == 2);
@@ -59,7 +59,7 @@ namespace WallpaperGenerator.Formulas
 
             IEnumerable<string> variableNames = EnumerableExtensions.Repeat(i => "x" + i.ToString(CultureInfo.InvariantCulture), variablesCount);
             IEnumerable<Operator> variables = variableNames.Select(n => new Variable(n)).Cast<Operator>();
-            IEnumerable<Operator> constants = EnumerableExtensions.Repeat(i => constantsLibrary[random.Next(constantsLibrary.Length)], constantsCount);
+            IEnumerable<Operator> constants = EnumerableExtensions.Repeat(i => constantsLibrary.TakeRandom(random), constantsCount);
             IEnumerable<Operator> zeroArityOperators = variables.Concat(constants).Randomize(random);
 
             return CreateFormulaTree(zeroArityOperators, nonZeroArityOperators);
