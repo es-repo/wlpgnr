@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Operators\Arithmetic\Abs.cs" />
     <Compile Include="Operators\Conditional.cs" />
     <Compile Include="Operators\ConstantsLibrary.cs" />
     <Compile Include="FormulaTreeSerializer.cs" />
@@ -61,6 +62,8 @@
     <Compile Include="Operators\OperatorsLibrary.cs" />
     <Compile Include="Operators\Arithmetic\Sum.cs" />
     <Compile Include="Operators\TernaryOperator.cs" />
+    <Compile Include="Operators\Trigonometric\Cos.cs" />
+    <Compile Include="Operators\Trigonometric\Sin.cs" />
     <Compile Include="Operators\UnaryOperator.cs" />
     <Compile Include="Operators\ZeroArityOperator.cs" />
     <Compile Include="Parsing\FormulaTreeParser.cs" />

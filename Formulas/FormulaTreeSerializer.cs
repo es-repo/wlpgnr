@@ -44,7 +44,7 @@ namespace WallpaperGenerator.Formulas
             return sb.ToString();
         }
 
-        private static string OperatorToString(Operator op)
+        public static string OperatorToString(Operator op)
         {
             if (op is Constant)
             {

@@ -52,5 +52,13 @@ namespace WallpaperGenerator.Formulas.Operators
             }
         }
 
+        public static IEnumerable<KeyValuePair<string, IEnumerable<Operator>>> AllByCategories
+        {
+            get
+            {
+                yield return new KeyValuePair<string, IEnumerable<Operator>>("ConstantsBase", ConstantsBase);
+                yield return new KeyValuePair<string, IEnumerable<Operator>>("ConstantsExtra", ConstantsExtra);
+            }
+        }
     }
 }

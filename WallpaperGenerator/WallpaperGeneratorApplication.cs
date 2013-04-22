@@ -19,7 +19,7 @@ namespace WallpaperGenerator
         public WallpaperGeneratorApplication()
         {
             _wallpaperImage = new WallpaperImage();
-            _mainWindow = new MainWindow { Height = 800, Width = 800 };
+            _mainWindow = new MainWindow { WindowState = WindowState.Maximized };
 
             _dispatcherTimer = new DispatcherTimer
             {

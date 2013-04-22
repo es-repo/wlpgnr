@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using WallpaperGenerator.MainWindowControls;
 
 namespace WallpaperGenerator
 {
@@ -8,7 +9,11 @@ namespace WallpaperGenerator
     {
         #region Properties 
 
+        public ControlPanel ControlPanel { get; private set; }
+
         public Image WallpaperImage { get; private set; }
+
+        public TextBox FormulaTexBox { get; private set; }
 
         #endregion
 
@@ -18,26 +23,70 @@ namespace WallpaperGenerator
         {
             Title = "Wallpaper Generator";
 
-            WallpaperImage = new Image
+            StackPanel mainPanel = new StackPanel
             {
-                Stretch = Stretch.None, 
-                Margin = new Thickness(20)
+                Orientation = Orientation.Horizontal,
+                VerticalAlignment = VerticalAlignment.Stretch,
+                HorizontalAlignment = HorizontalAlignment.Stretch
             };
 
-            var stackPanel = new StackPanel
+            StackPanel formulaAndImagePanel = new StackPanel
             {
                 Orientation = Orientation.Vertical,
-                VerticalAlignment = VerticalAlignment.Top,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                Height = 800,
-                Width = 800
+                VerticalAlignment = VerticalAlignment.Stretch,
+                HorizontalAlignment = HorizontalAlignment.Stretch
             };
 
-            stackPanel.Children.Add(WallpaperImage);
-            Content = stackPanel;
+            Panel formulaPanel = CreateFormulaPanel();
+            formulaAndImagePanel.Children.Add(formulaPanel);
+
+            Panel imagePanel = CreateImagePanel();
+            formulaAndImagePanel.Children.Add(imagePanel);
+
+            mainPanel.Children.Add(formulaAndImagePanel);
+
+            ControlPanel = new ControlPanel();
+            mainPanel.Children.Add(ControlPanel);
+            
+            Content = mainPanel;
         }
 
         #endregion
 
+        private Panel CreateFormulaPanel()
+        {
+            StackPanel formulaPanel = new StackPanel
+            {
+                Orientation = Orientation.Vertical,
+                VerticalAlignment = VerticalAlignment.Top,
+            };
+
+            FormulaTexBox = new TextBox
+            {
+                AcceptsReturn = true,
+                Height = 200,
+                Width = 800
+            };
+
+            formulaPanel.Children.Add(FormulaTexBox);
+            return formulaPanel;
+        }
+
+        private Panel CreateImagePanel()
+        {
+            StackPanel imagePanel = new StackPanel
+            {
+                Orientation = Orientation.Vertical,
+                VerticalAlignment = VerticalAlignment.Stretch,
+            };
+            
+            WallpaperImage = new Image
+            {
+                Stretch = Stretch.Fill
+            };
+
+            imagePanel.Children.Add(WallpaperImage);
+            return imagePanel;
+        }
     }
 }
