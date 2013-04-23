@@ -6,7 +6,58 @@ using WallpaperGenerator.Formulas.Operators.Trigonometric;
 namespace WallpaperGenerator.Formulas.Operators
 {
     public static class OperatorsLibrary
-    {        
+    {
+        #region Constants
+
+        #region Base Constants
+
+        public static readonly Operator C05 = new Constant(MathLibrary.C05);
+        public static readonly Operator C1 = new Constant(MathLibrary.C1);
+        public static readonly Operator C2 = new Constant(MathLibrary.C2);
+        public static readonly Operator C3 = new Constant(MathLibrary.C3);
+        public static readonly Operator C5 = new Constant(MathLibrary.C5);
+        public static readonly Operator C7 = new Constant(MathLibrary.C7);
+        public static readonly Operator Pi = new Constant(MathLibrary.PI);
+        public static readonly Operator E = new Constant(MathLibrary.E);
+
+        public static IEnumerable<Operator> ConstantsBase
+        {
+            get
+            {
+                yield return C05;
+                yield return C1;
+                yield return C2;
+                yield return C3;
+                yield return C5;
+                yield return Pi;
+                yield return E;
+            }
+        }
+
+        #endregion
+
+        #region Extra Constants
+
+        public static IEnumerable<Operator> ConstantsExtra
+        {
+            get
+            {
+                return Enumerable.Empty<Operator>();
+            }
+        }
+
+        #endregion
+
+        public static IEnumerable<Operator> Constants
+        {
+            get
+            {
+                return ConstantsBase.Concat(ConstantsExtra);
+            }
+        }
+
+        #endregion
+        
         #region Arithmetic Operators
 
         #region Base Arithmetic Operators
@@ -117,6 +168,8 @@ namespace WallpaperGenerator.Formulas.Operators
         {
             get
             {
+                yield return new KeyValuePair<string, IEnumerable<Operator>>("ConstantsBase", ConstantsBase);
+                yield return new KeyValuePair<string, IEnumerable<Operator>>("ConstantsExtra", ConstantsExtra);
                 yield return new KeyValuePair<string, IEnumerable<Operator>>("ArithmeticBase", ArithmeticBase);
                 yield return new KeyValuePair<string, IEnumerable<Operator>>("ArithmeticExtra", ArithmeticExtra);
                 yield return new KeyValuePair<string, IEnumerable<Operator>>("TrigonometricBase", TrigonometricBase);

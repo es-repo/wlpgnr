@@ -19,7 +19,7 @@ namespace Formulas.Testing
         public void TestCreateRandomFormulaTree(int variablesCount, int constantsCount, int unaryOperatorsCountForFormulaDiluting)
         {
             FormulaTreeNode formulaTree = FormulaTreeGenerator.CreateRandomFormulaTree(variablesCount, constantsCount, unaryOperatorsCountForFormulaDiluting,
-                OperatorsLibrary.All.ToArray(), ConstantsLibrary.All);
+                OperatorsLibrary.All);
 
             IEnumerable<FormulaTreeNode> traversedNodes = Tree.TraverseBredthFirstPreOrder(formulaTree).Select(ni => (FormulaTreeNode)ni.Node);
             IEnumerable<Variable> variables = traversedNodes.Where(n => n.Operator is Variable).Select(n => (Variable) n.Operator);

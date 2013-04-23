@@ -73,7 +73,7 @@ namespace WallpaperGenerator.MainWindowControls
         {
             get
             {
-                return ConstantsLibrary.AllByCategories.Concat(OperatorsLibrary.AllByCategories);
+                return OperatorsLibrary.AllByCategories.Concat(OperatorsLibrary.AllByCategories);
             }
         }
     }

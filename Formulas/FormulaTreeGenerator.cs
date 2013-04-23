@@ -11,7 +11,7 @@ namespace WallpaperGenerator.Formulas
     public class FormulaTreeGenerator
     {
         public static FormulaTreeNode CreateRandomFormulaTree(int variablesCount, int constantsCount, int unaryOperatorsCountForFormulaDiluting,
-            IEnumerable<Operator> operatorsLibrary, IEnumerable<Operator> constantsLibrary)
+            IEnumerable<Operator> operatorsLibrary)
         {
             if (variablesCount < 0)
                 throw new ArgumentException("Variables count can't be less then 0.");
@@ -28,23 +28,20 @@ namespace WallpaperGenerator.Formulas
             if (!operatorsLibrary.Any())
                 throw new ArgumentException("Operators library can't be empty.");
             
-            if (operatorsLibrary.Any(op => op.Arity == 0))
-                throw new ArgumentException("Operators library can't contain operators with 0-arity.");
-
             if (variablesCount + constantsCount > 1 && operatorsLibrary.All(op => op.Arity != 2))
                 throw new ArgumentException("If sum of variables count and constants more than 1 then operators library should contain binary operators.");
 
             if (unaryOperatorsCountForFormulaDiluting > 0 && operatorsLibrary.All(op => op.Arity != 1))
                 throw new ArgumentException("If unary operators count for formula diluting is more then 0 then operators library should contina unary operators");
 
-            if (constantsCount > 0 && !constantsLibrary.Any())
+            if (constantsCount > 0 && !operatorsLibrary.Any(op => op is Constant))
                 throw new ArgumentException("Constants library can't be empty if constants count is more then 0.");
 
-            return CreateRandomFormulaTreeCore(variablesCount, constantsCount, unaryOperatorsCountForFormulaDiluting, operatorsLibrary, constantsLibrary);
+            return CreateRandomFormulaTreeCore(variablesCount, constantsCount, unaryOperatorsCountForFormulaDiluting, operatorsLibrary);
         }
 
         private static FormulaTreeNode CreateRandomFormulaTreeCore(int variablesCount, int constantsCount, int unaryOperatorsCountForFormulaDiluting,
-            IEnumerable<Operator> operatorsLibrary, IEnumerable<Operator> constantsLibrary)
+            IEnumerable<Operator> operatorsLibrary)
         {                        
             int zeroOperatorsCount = variablesCount + constantsCount;
             int availableBinaryOperatorsCount = operatorsLibrary.Count(op => op.Arity == 2);
@@ -59,7 +56,7 @@ namespace WallpaperGenerator.Formulas
 
             IEnumerable<string> variableNames = EnumerableExtensions.Repeat(i => "x" + i.ToString(CultureInfo.InvariantCulture), variablesCount);
             IEnumerable<Operator> variables = variableNames.Select(n => new Variable(n)).Cast<Operator>();
-            IEnumerable<Operator> constants = EnumerableExtensions.Repeat(i => constantsLibrary.TakeRandom(random), constantsCount);
+            IEnumerable<Operator> constants = EnumerableExtensions.Repeat(i => operatorsLibrary.Where(op => op is Constant).TakeRandom(random), constantsCount);
             IEnumerable<Operator> zeroArityOperators = variables.Concat(constants).Randomize(random);
 
             return CreateFormulaTree(zeroArityOperators, nonZeroArityOperators);
