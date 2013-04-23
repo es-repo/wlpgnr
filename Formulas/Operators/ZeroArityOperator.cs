@@ -2,8 +2,8 @@
 {
     public abstract class ZeroArityOperator : Operator
     {
-        protected ZeroArityOperator()
-            : base(0)
+        protected ZeroArityOperator(string name)
+            : base(0, name)
         {
         }
     }

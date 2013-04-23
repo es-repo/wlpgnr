@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Globalization;
 using System.Text;
-using WallpaperGenerator.Formulas.Operators;
 using WallpaperGenerator.Formulas.Parsing;
 using WallpaperGenerator.Utilities.DataStructures.Trees;
 
@@ -36,26 +34,11 @@ namespace WallpaperGenerator.Formulas
                 {
                     sb.Append("\n" + new string('\t', ni.Depth));
                 }
-                string opStr = OperatorToString(ni.Node.Value);
-                sb.Append(opStr);
+                sb.Append(ni.Node.Value.Name);
                 depth = ni.Depth;
             }
             sb.Append(new string(')', depth + 1));
             return sb.ToString();
-        }
-
-        public static string OperatorToString(Operator op)
-        {
-            if (op is Constant)
-            {
-                return ((Constant) op).Value.ToString(CultureInfo.InvariantCulture);
-            }
-            if (op is Variable)
-            {
-                return ((Variable)op).Name;
-            }
-
-            return op.GetType().Name;
         }
 
         public static FormulaTreeNode Deserialize(string value)

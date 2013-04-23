@@ -36,12 +36,7 @@ namespace Formulas.Testing
                 return ((Constant)opA).Value.Equals(((Constant)opB).Value);
             }
 
-            if (opA is Variable && opB is Variable)
-            {
-                return ((Variable)opA).Name == ((Variable)opB).Name;
-            }
-
-            return opA.GetType() == opB.GetType();
+            return opA.Name == opB.Name;
         }
     }
 }

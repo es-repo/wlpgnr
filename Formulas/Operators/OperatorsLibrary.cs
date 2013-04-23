@@ -17,8 +17,8 @@ namespace WallpaperGenerator.Formulas.Operators
         public static readonly Operator C3 = new Constant(MathLibrary.C3);
         public static readonly Operator C5 = new Constant(MathLibrary.C5);
         public static readonly Operator C7 = new Constant(MathLibrary.C7);
-        public static readonly Operator Pi = new Constant(MathLibrary.PI);
-        public static readonly Operator E = new Constant(MathLibrary.E);
+        public static readonly Operator Pi = new Constant(MathLibrary.PI, "Pi");
+        public static readonly Operator E = new Constant(MathLibrary.E, "e");
 
         public static IEnumerable<Operator> ConstantsBase
         {

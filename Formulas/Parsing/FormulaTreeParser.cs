@@ -1,4 +1,5 @@
-﻿using System.Linq;  
+﻿using System;
+using System.Linq;  
 using System.Collections.Generic;
 using System.Globalization;
 using WallpaperGenerator.Formulas.Operators;
@@ -68,7 +69,7 @@ namespace WallpaperGenerator.Formulas.Parsing
 
         private static Operator GetKnownOperator(string str)
         {
-            return OperatorsLibrary.All.FirstOrDefault(op => op.GetType().Name == str);
+            return OperatorsLibrary.All.FirstOrDefault(op => op.Name.Equals(str, StringComparison.OrdinalIgnoreCase));
         }
     }
 }

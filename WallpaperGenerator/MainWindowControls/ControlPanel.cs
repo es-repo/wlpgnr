@@ -65,7 +65,7 @@ namespace WallpaperGenerator.MainWindowControls
                     p.Value.Select(op => 
                         new CheckBox
                             {
-                                Content = FormulaTreeSerializer.OperatorToString(op)
+                                Content = op.Name
                             })));
         }
 

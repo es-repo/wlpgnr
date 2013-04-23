@@ -2,8 +2,7 @@
 {
     public abstract class TernaryOperator : Operator 
     {
-        protected TernaryOperator()
-            : base(3)
+        protected TernaryOperator() : base(3)
         {
         }
     }
