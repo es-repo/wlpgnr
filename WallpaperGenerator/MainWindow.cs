@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using WallpaperGenerator.Formulas;
 using WallpaperGenerator.MainWindowControls;
 
 namespace WallpaperGenerator
@@ -45,7 +46,7 @@ namespace WallpaperGenerator
 
             mainPanel.Children.Add(formulaAndImagePanel);
 
-            ControlPanel = new ControlPanel();
+            ControlPanel = CreateControlPanel();
             mainPanel.Children.Add(ControlPanel);
             
             Content = mainPanel;
@@ -87,6 +88,17 @@ namespace WallpaperGenerator
 
             imagePanel.Children.Add(WallpaperImage);
             return imagePanel;
+        }
+
+        private ControlPanel CreateControlPanel()
+        {
+            ControlPanel controlPanel = new ControlPanel();
+            controlPanel.FormulaGenerated += (s, a) =>
+            {
+                string formula = FormulaTreeSerializer.Serialize(a.Object, new FormulaTreeSerializationOptions { WithIndentation = true } );
+                FormulaTexBox.Text = formula;
+            };
+            return controlPanel;
         }
     }
 }
