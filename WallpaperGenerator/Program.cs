@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 
 namespace WallpaperGenerator
 {
@@ -7,7 +8,12 @@ namespace WallpaperGenerator
         [STAThread]
         private static void Main()
         {
-            var app = new WallpaperGeneratorApplication();
+            WallpaperGeneratorApplication app = new WallpaperGeneratorApplication();
+            app.DispatcherUnhandledException += (s, a) =>
+            {
+                MessageBox.Show(a.Exception.Message);
+                a.Handled = true;
+            };
             app.Run();
         }
     }
