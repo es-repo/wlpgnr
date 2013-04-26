@@ -9,7 +9,7 @@ namespace WallpaperGenerator.Utilities.DataStructures.Trees
 
         public T Value { get; private set; }
 
-        public IList<TreeNode<T>> Children { get { return _children.AsReadOnly(); } }
+        public IList<TreeNode<T>> Children { get { return _children; } }
 
         public bool IsLeaf 
         {

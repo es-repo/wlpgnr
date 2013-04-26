@@ -10,6 +10,8 @@ namespace WallpaperGenerator
 
         public ControlPanel ControlPanel { get; private set; }
 
+        public StatusPanel StatusPanel { get; private set; }
+
         public Image WallpaperImage { get; private set; }
 
         public TextBox FormulaTexBox { get; private set; }
@@ -46,6 +48,9 @@ namespace WallpaperGenerator
 
             ControlPanel = new ControlPanel();
             mainPanel.Children.Add(ControlPanel);
+
+            StatusPanel = new StatusPanel();
+            mainPanel.Children.Add(StatusPanel);
             
             Content = mainPanel;
         }
@@ -81,8 +86,8 @@ namespace WallpaperGenerator
             
             WallpaperImage = new Image
             {
-                Width = 400,
-                Height = 400
+                Width = 700,
+                Height = 700
             };
 
             imagePanel.Children.Add(WallpaperImage);

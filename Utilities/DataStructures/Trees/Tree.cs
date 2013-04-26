@@ -85,7 +85,7 @@ namespace WallpaperGenerator.Utilities.DataStructures.Trees
             return TraverseDepthFirstPreOrder(node).Max(ni => ni.Depth + 1);
         }
 
-        public static R Fold<T, R>(TreeNode<T> node, Func<TraversedTreeNodeInfo<T>, IEnumerable<R>, R> func)
+        public static R Fold<T, R>(TreeNode<T> node, Func<TraversedTreeNodeInfo<T>, R[], R> func)
         {
             Stack<R> foldedChildrenQueue = new Stack<R>();
             IEnumerable<TraversedTreeNodeInfo<T>> traversedDepthFirstPostOrderNodes = TraverseDepthFirstPostOrder(node);

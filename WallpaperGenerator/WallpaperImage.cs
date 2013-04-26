@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;  
 using System.Windows;
 using System.Windows.Media;
@@ -16,8 +15,7 @@ namespace WallpaperGenerator
         private readonly Int32Rect _rect;
         private readonly int _bytesPerPixel;
         private readonly int _stride;
-        private readonly byte[] _colorArray;
-
+        
         #endregion
 
         #region Properties
@@ -44,8 +42,6 @@ namespace WallpaperGenerator
             _rect = new Int32Rect(0, 0, _bitmap.PixelWidth, _bitmap.PixelHeight);
             _bytesPerPixel = (_bitmap.Format.BitsPerPixel + 7) / 8;
             _stride = _bitmap.PixelWidth * _bytesPerPixel;
-            int arraySize = _stride * _bitmap.PixelHeight;
-            _colorArray = new byte[arraySize];
         }
 
         #endregion

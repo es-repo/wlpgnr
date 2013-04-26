@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using WallpaperGenerator.Formulas;
 using WallpaperGenerator.Formulas.Operators;
 
@@ -10,14 +9,14 @@ namespace WallpaperGenerator.FormulaRendering
         public static RenderedFormulaImage Render(FormulaTreeNode formulaTree, int widthInPixels, int heightInPixels)
         {
             Rgb[] data = new Rgb[widthInPixels*heightInPixels];
-            IEnumerable<Variable> variables = FormulaTree.SelectVariables(formulaTree);
+            Variable[] variables = FormulaTree.SelectVariables(formulaTree).ToArray();
             
             for (int y = 0; y < heightInPixels; y++)
             {
                 for (int x = 0; x < widthInPixels; x++)
                 {
-                    variables.First().Value = x;
-                    variables.Skip(1).First().Value = y;
+                    variables[0].Value = x;
+                    variables[1].Value = y;
 
                     double value = FormulaTree.Evaluate(formulaTree);
                     

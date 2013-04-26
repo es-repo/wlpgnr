@@ -14,16 +14,6 @@ namespace WallpaperGenerator.Formulas
                        .Select(ni => (Variable) ni.Node.Value);
         }
 
-        public static void SetVariableValues(FormulaTreeNode node, IDictionary<string, double?> variableNamesAndValues)
-        {
-            IEnumerable<Variable> variables =
-                SelectVariables(node).Where(v => variableNamesAndValues.ContainsKey(v.Name));
-            foreach (Variable v in variables)
-            {
-                v.Value = variableNamesAndValues[v.Name];
-            }
-        }
-
         public static double Evaluate(FormulaTreeNode node)
         {
             return Tree.Fold<Operator, double>(node, (ni, c) => ni.Node.Value.Evaluate(c));

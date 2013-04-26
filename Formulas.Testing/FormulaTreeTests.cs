@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;  
 using MbUnit.Framework;
 using WallpaperGenerator.Formulas;
@@ -40,26 +39,6 @@ namespace Formulas.Testing
             string[] variableNames = FormulaTree.SelectVariables(_formulaRoot).Select(v => v.Name).ToArray();
             string[] expectedVariableNames = new []{_xVariable.Name, _yVariable.Name};
             CollectionAssert.AreElementsEqual(expectedVariableNames, variableNames);
-        }
-
-        [RowTest]
-        [Row(null, null)]
-        [Row(2.0, null)]
-        [Row(null, 3.0)]
-        [Row(2.0, 3.0)]
-        public void TestSetVariableValues(double? xVariableValue, double? yVariableValue)
-        {
-            IDictionary<string, double?> variableNamesAndValues = new Dictionary<string, double?>();
-            if (xVariableValue != null)
-                variableNamesAndValues.Add(_xVariable.Name, xVariableValue);
-
-            if (yVariableValue != null)
-                variableNamesAndValues.Add(_yVariable.Name, yVariableValue);
-
-            FormulaTree.SetVariableValues(_formulaRoot, variableNamesAndValues); 
-
-            Assert.AreEqual(xVariableValue, _xVariable.Value);
-            Assert.AreEqual(yVariableValue, _yVariable.Value);
         }
         
         [RowTest]
