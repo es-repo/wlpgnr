@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;  
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using WallpaperGenerator.FormulaRendering;
 
 namespace WallpaperGenerator
 {
@@ -17,20 +20,27 @@ namespace WallpaperGenerator
 
         #endregion
 
-        #region Constructors
-
         #region Properties
+
+        public int WidthInPixels { get; private set; }
+
+        public int HeightInPixels { get; private set; }
 
         public ImageSource Source
         {
             get { return _bitmap; }
         }
-        
+
         #endregion
 
-        public WallpaperImage()
+        #region Constructors
+
+        public WallpaperImage(int widthInPixels, int heightInPixels)
         {
-            _bitmap = new WriteableBitmap(800, 800, 96, 96, PixelFormats.Bgra32, null);
+            WidthInPixels = widthInPixels;
+            HeightInPixels = heightInPixels;
+
+            _bitmap = new WriteableBitmap(WidthInPixels, HeightInPixels, 96, 96, PixelFormats.Bgra32, null);
             _rect = new Int32Rect(0, 0, _bitmap.PixelWidth, _bitmap.PixelHeight);
             _bytesPerPixel = (_bitmap.Format.BitsPerPixel + 7) / 8;
             _stride = _bitmap.PixelWidth * _bytesPerPixel;
@@ -42,11 +52,10 @@ namespace WallpaperGenerator
 
         #region Public Methods
 
-        public void Update()
+        public void Update(RenderedFormulaImage renderedFormulaImage)
         {
-            var value = new Random();
-            value.NextBytes(_colorArray);
-            _bitmap.WritePixels(_rect, _colorArray, _stride, 0);
+            IEnumerable<byte> colors = renderedFormulaImage.Data.Select(rgb => new byte[] {rgb.B, rgb.G, rgb.R, 255}).SelectMany(b => b); 
+           _bitmap.WritePixels(_rect, colors.ToArray(), _stride, 0);
         }
 
         #endregion

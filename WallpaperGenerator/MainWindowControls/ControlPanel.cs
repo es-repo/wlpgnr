@@ -1,23 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using WallpaperGenerator.Formulas;
 using WallpaperGenerator.Formulas.Operators;
 using WallpaperGenerator.MainWindowControls.ControlPanelControls;
-using WallpaperGenerator.Utilities;
 
 namespace WallpaperGenerator.MainWindowControls
 {
     public class ControlPanel : StackPanel
     {
-        #region Events
-
-        public event EventHandler<GenericEventArgs<FormulaTreeNode>> FormulaGenerated;
-
-        #endregion
-
         #region Porperties
 
         public Button GenerateFormulaButton { get; private set; }
@@ -37,12 +28,8 @@ namespace WallpaperGenerator.MainWindowControls
             Width = 200;
 
             GenerateFormulaButton = CreateGenerateFormulaButton();
-            
-            RenderFormulaButton = new Button
-            {
-                Content = "Render",
-                Margin = new Thickness { Top = 10 },
-            };
+
+            RenderFormulaButton = CreateRenderFormulaButton();
 
             Children.Add(GenerateFormulaButton);
             Children.Add(RenderFormulaButton);
@@ -74,23 +61,21 @@ namespace WallpaperGenerator.MainWindowControls
         {
             Button button = new Button
             {
-                Content = "Generate formula",
+                Content = "Generate",
                 Margin = new Thickness { Top = 10 },
             };
 
-            button.Click += (s, a) =>
+            return button;
+        }
+
+        private Button CreateRenderFormulaButton()
+        {
+            Button button = new Button
             {
-                IEnumerable<OperatorCheckBox> checkedOperatorCheckBoxes = OperatorCheckBoxes.Where(cb => cb.IsChecked == true);
-                IEnumerable<Operator> operators = checkedOperatorCheckBoxes.Select(cb => cb.Operator);
-                FormulaTreeNode formulaTree = FormulaTreeGenerator.CreateRandomFormulaTree(2, 2, 2, operators);
-
-                if (FormulaGenerated != null)
-                {
-                    GenericEventArgs<FormulaTreeNode> formulaGeneratedEvetnArgs = new GenericEventArgs<FormulaTreeNode>(formulaTree);
-                    FormulaGenerated(this, formulaGeneratedEvetnArgs);
-                }
+                Content = "Render",
+                Margin = new Thickness { Top = 10 },
             };
-
+            
             return button;
         }
 
@@ -99,7 +84,7 @@ namespace WallpaperGenerator.MainWindowControls
             return OperatorsLibrary.AllByCategories.Select(p =>
                 new KeyValuePair<string, IEnumerable<OperatorCheckBox>>(
                     p.Key,
-                    p.Value.Select(op => new OperatorCheckBox(op))));
+                    p.Value.Select(op => new OperatorCheckBox(op) {IsChecked = true})));
         }
     }
 }

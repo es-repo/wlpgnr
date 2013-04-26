@@ -106,6 +106,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FormulaRendering\FormulaRendering.csproj">
+      <Project>{C4DD7AAC-ACFB-45CA-B1B3-7BEF7714DEB0}</Project>
+      <Name>FormulaRendering</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Formulas\Formulas.csproj">
       <Project>{190058E2-F017-4D78-B076-CB6AC313246D}</Project>
       <Name>Formulas</Name>
