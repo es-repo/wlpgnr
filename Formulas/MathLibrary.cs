@@ -39,6 +39,16 @@ namespace WallpaperGenerator.Formulas
             return a * b;
         }
 
+        public static double DivRem(double a, double b)
+        {
+            return a % b;
+        }
+
+        public static double Pow(double a, double b)
+        {
+            return Math.Pow(a, b);
+        }
+
         #endregion
 
         #region Trigonometric functions

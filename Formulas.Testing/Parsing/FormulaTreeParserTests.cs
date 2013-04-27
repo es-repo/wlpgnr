@@ -1,7 +1,10 @@
-﻿using MbUnit.Framework;
+﻿using System.Linq;  
+using System.Collections.Generic;
+using MbUnit.Framework;
 using WallpaperGenerator.Formulas;
 using WallpaperGenerator.Formulas.Operators;
 using WallpaperGenerator.Formulas.Parsing;
+using WallpaperGenerator.Utilities.DataStructures.Trees;
 
 namespace Formulas.Testing.Parsing
 {
@@ -16,10 +19,10 @@ namespace Formulas.Testing.Parsing
             TestParse("(2)", new FormulaTreeNode(OperatorsLibrary.C2));
 
             TestParse("(x)", new FormulaTreeNode(new Variable("x")));
-
-            TestParse("(Sum(x y)", 
+            
+            TestParse("(Sum(x y)",
                 new FormulaTreeNode(
-                    OperatorsLibrary.Sum, 
+                    OperatorsLibrary.Sum,
                         new FormulaTreeNode(new Variable("x")),
                         new FormulaTreeNode(new Variable("y"))));
 
@@ -45,6 +48,16 @@ Sum(
                             new FormulaTreeNode(OperatorsLibrary.Minus,
                                 new FormulaTreeNode(new Variable("y"))),
                             new FormulaTreeNode(OperatorsLibrary.C5)))));
+        }
+
+        [Test]
+        public void TestParseWithSameVariableSeveralOccurences()
+        {
+            const string formulaString = "Sum(x x)";
+            FormulaTreeNode formulaTreeRoot = FormulaTreeParser.Parse(formulaString);
+            IEnumerable<TraversedTreeNodeInfo<Operator>> traversedTree = Tree<Operator>.TraverseDepthFirstPostOrder(formulaTreeRoot);
+            Variable[] xVariables = traversedTree.Where(ni => ni.Node.Value is Variable).Select(ni => (Variable)ni.Node.Value).ToArray();
+            Assert.IsTrue(object.ReferenceEquals(xVariables[0], xVariables[1]));
         }
 
         private static void TestParse(string value, FormulaTreeNode expectedRoot)

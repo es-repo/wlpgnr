@@ -47,6 +47,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Operators\Arithmetic\Abs.cs" />
+    <Compile Include="Operators\Arithmetic\DivRem.cs" />
+    <Compile Include="Operators\Arithmetic\Pow.cs" />
     <Compile Include="Operators\Conditional.cs" />
     <Compile Include="FormulaTreeSerializer.cs" />
     <Compile Include="MathLibrary.cs" />

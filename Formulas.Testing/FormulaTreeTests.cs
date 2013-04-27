@@ -19,7 +19,7 @@ namespace Formulas.Testing
             _xVariable = new Variable("x");
             _yVariable = new Variable("y");
 
-            // 2*x + 7*(-y + 5)
+            // 2*x + 7*(-y + x)
             _formulaRoot =
                 new FormulaTreeNode(OperatorsLibrary.Sum,
                     new FormulaTreeNode(OperatorsLibrary.Mul,
@@ -30,7 +30,7 @@ namespace Formulas.Testing
                         new FormulaTreeNode(OperatorsLibrary.Sum,
                             new FormulaTreeNode(OperatorsLibrary.Minus,
                                 new FormulaTreeNode(_yVariable)),
-                            new FormulaTreeNode(OperatorsLibrary.C5))));
+                            new FormulaTreeNode(_xVariable))));
         }
         
         [Test]
@@ -46,7 +46,7 @@ namespace Formulas.Testing
         [Row(5.0, null, 0, ExpectedException = typeof(InvalidOperationException))]
         [Row(null, 3.0, 0, ExpectedException = typeof(InvalidOperationException))]
         [Row(5.0, 3.0, 24)]
-        [Row(0.0, 0.0, 35)]
+        [Row(0.0, 0.0, 0.0)]
         public void TestEvaluation(double? xVariableValue, double? yVariableValue, double expectedResult)
         {
             _xVariable.Value = xVariableValue;

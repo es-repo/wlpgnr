@@ -66,6 +66,7 @@ namespace WallpaperGenerator.Formulas.Operators
         public static readonly Operator Abs = new Abs();
         public static readonly Operator Sum = new Sum();
         public static readonly Operator Mul = new Mul();
+        public static readonly Operator DivRem = new DivRem();
 
         public static IEnumerable<Operator> ArithmeticBase
         {
@@ -75,6 +76,7 @@ namespace WallpaperGenerator.Formulas.Operators
                 yield return Abs;
                 yield return Sum;
                 yield return Mul;
+                yield return DivRem;
             }
         }
 
@@ -82,11 +84,13 @@ namespace WallpaperGenerator.Formulas.Operators
 
         #region Extra Arithmetic Operators
 
+        public static readonly Operator Pow = new Pow();
+
         public static IEnumerable<Operator> ArithmeticExtra
         {
             get
             {
-                return Enumerable.Empty<Operator>();
+                yield return Pow;
             }
         }
 

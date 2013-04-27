@@ -68,7 +68,7 @@ namespace WallpaperGenerator
             FormulaTexBox = new TextBox
             {
                 AcceptsReturn = true,
-                Height = 200,
+                Height = 300,
                 Width = 800
             };
 

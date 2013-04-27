@@ -45,7 +45,8 @@ namespace WallpaperGenerator.Formulas
         {
             return Tree<Operator>.TraverseBredthFirstPreOrder(node)
                        .Where(ni => ni.Node.Value is Variable)
-                       .Select(ni => (Variable) ni.Node.Value);
+                       .Select(ni => (Variable) ni.Node.Value)
+                       .Distinct();
         }
 
         public double Evaluate()

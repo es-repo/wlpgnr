@@ -13,6 +13,7 @@ namespace WallpaperGenerator.Formulas.Parsing
             Stack<FormulaTreeNode> parentNodes = new Stack<FormulaTreeNode>();
             FormulaTreeNode currentNode = null;
             IEnumerable<FormulaTreeToken> tokens = FormulaTreeTokenizer.Tokenize(value);
+            List<Operator> variables = new List<Operator>();
             foreach (FormulaTreeToken token in tokens)
             {
                 switch (token.Type)
@@ -30,7 +31,12 @@ namespace WallpaperGenerator.Formulas.Parsing
                         break;
 
                     case FormulaTreeTokenType.Word:
-                        currentNode = CreateNode(token.Value);
+                        currentNode = CreateNode(token.Value, variables);
+                        if (currentNode.Operator is Variable)
+                        {
+                            variables.Add(currentNode.Operator);
+                        }
+
                         FormulaTreeNode parentNode = parentNodes.Count > 0 ? parentNodes.Peek() : null;  
                         if (parentNode != null)
                         {
@@ -46,13 +52,13 @@ namespace WallpaperGenerator.Formulas.Parsing
             return currentNode;
         }
 
-        private static FormulaTreeNode CreateNode(string token)
+        private static FormulaTreeNode CreateNode(string token, IList<Operator> availableVariables)
         {
-            Operator op = OperatorFromString(token);
+            Operator op = OperatorFromString(token, availableVariables);
             return new FormulaTreeNode(op);
         }
 
-        private static Operator OperatorFromString(string str)
+        private static Operator OperatorFromString(string str, IEnumerable<Operator> availableVariables)
         {
             Operator knownOperator = GetKnownOperator(str);
             if (knownOperator != null)
@@ -64,7 +70,8 @@ namespace WallpaperGenerator.Formulas.Parsing
                 return new Constant(constant);
             }
 
-            return new Variable(str);
+            Operator availableVariable = availableVariables.FirstOrDefault(op => op.Name == str);
+            return availableVariable ?? new Variable(str);
         }
 
         private static Operator GetKnownOperator(string str)
