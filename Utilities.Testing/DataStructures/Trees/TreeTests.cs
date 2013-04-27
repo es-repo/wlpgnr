@@ -73,7 +73,7 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees
         [Test]
         public void TestTraverseDepthFirstPreOrder()
         {
-            IEnumerable<TraversedTreeNodeInfo<int>> traversedNodes = Tree.TraverseDepthFirstPreOrder(_rootForTraverseDepthFirstPreOrder);
+            IEnumerable<TraversedTreeNodeInfo<int>> traversedNodes = Tree<int>.TraverseDepthFirstPreOrder(_rootForTraverseDepthFirstPreOrder);
             
             const int expectedNodesCount = 13;
             Assert.AreEqual(expectedNodesCount, traversedNodes.Count());
@@ -98,7 +98,7 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees
         [Test]
         public void TestTraverseDepthFirstPostOrder()
         {
-            IEnumerable<TraversedTreeNodeInfo<int>> traversedNodes = Tree.TraverseDepthFirstPostOrder(_rootForTraverseDepthFirstPostOrder);
+            IEnumerable<TraversedTreeNodeInfo<int>> traversedNodes = Tree<int>.TraverseDepthFirstPostOrder(_rootForTraverseDepthFirstPostOrder);
 
             const int expectedNodesCount = 13;
             Assert.AreEqual(expectedNodesCount, traversedNodes.Count());
@@ -123,7 +123,7 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees
         [Test]
         public void TestTraverseBreadthFirstPreOrder()
         {
-            IEnumerable<TraversedTreeNodeInfo<int>> traversedNodes = Tree.TraverseBredthFirstPreOrder(_rootForTraverseBredthFirstPreOrder);
+            IEnumerable<TraversedTreeNodeInfo<int>> traversedNodes = Tree<int>.TraverseBredthFirstPreOrder(_rootForTraverseBredthFirstPreOrder);
 
             const int expectedNodesCount = 13;
             Assert.AreEqual(expectedNodesCount, traversedNodes.Count());
@@ -148,7 +148,7 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees
         [Test]
         public void TestFold()
         {
-            int result = Tree.Fold<int, int>(_rootForTraverseDepthFirstPostOrder, (ni, c) => ni.Node.Value + c.Sum(i => i));
+            int result = Tree<int>.Fold<int>(_rootForTraverseDepthFirstPostOrder, (ni, c) => ni.Node.Value + c.Sum(i => i));
             Assert.AreEqual(78, result);
         }
 
@@ -179,10 +179,10 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees
                         new TreeNode<int>(15, 
                             new TreeNode<int>(16)))));
 
-            IEnumerable<TraversedTreeNodeInfo<int>> traversedNodes = Tree.TraverseDepthFirstPreOrder(root);
+            IEnumerable<TraversedTreeNodeInfo<int>> traversedNodes = Tree<int>.TraverseDepthFirstPreOrder(root);
             
             int[] expectedHeights = new [] {5, 3, 1, 2, 1, 1, 2, 1, 1, 1, 4, 1, 1, 3, 1, 2, 1};
-            int[] heights = traversedNodes.Select(ni => Tree.GetNodeHeight(ni.Node)).ToArray();
+            int[] heights = traversedNodes.Select(ni => Tree<int>.GetNodeHeight(ni.Node)).ToArray();
             Assert.AreEqual(expectedHeights, heights);
         }
     }

@@ -51,7 +51,7 @@ namespace Formulas.Testing
         {
             _xVariable.Value = xVariableValue;
             _yVariable.Value = yVariableValue;
-            double result = FormulaTree.Evaluate(_formulaRoot);
+            double result = new FormulaTree(_formulaRoot).Evaluate();
             Assert.AreEqual(expectedResult, result);
         }
     }

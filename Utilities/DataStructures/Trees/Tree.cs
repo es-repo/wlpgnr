@@ -4,9 +4,59 @@ using System.Linq;
 
 namespace WallpaperGenerator.Utilities.DataStructures.Trees
 {    
-    public class Tree
-    {        
-        public static IEnumerable<TraversedTreeNodeInfo<T>> TraverseDepthFirstPreOrder<T>(TreeNode<T> root)
+    public class Tree<T>
+    {   
+        #region Fields
+
+        private TraversedTreeNodeInfo<T>[] _traversedDepthFirstPreOrder;
+        private TraversedTreeNodeInfo<T>[] _traversedDepthFirstPostOrder;
+        private TraversedTreeNodeInfo<T>[] _traversedBredthFirstPreOrder;
+        
+        #endregion
+
+        #region Properties
+
+        public TreeNode<T> Root { get; private set; }
+
+        public TraversedTreeNodeInfo<T>[] TraversedDepthFirstPreOrder
+        {
+            get
+            {
+                return _traversedDepthFirstPreOrder ?? 
+                    (_traversedDepthFirstPreOrder = TraverseDepthFirstPreOrder(Root).ToArray());
+            }
+        }
+
+        public TraversedTreeNodeInfo<T>[] TraversedDepthFirstPostOrder
+        {
+            get
+            {
+                return _traversedDepthFirstPostOrder ??
+                    (_traversedDepthFirstPostOrder = TraverseDepthFirstPostOrder(Root).ToArray());
+            }
+        }
+
+        public TraversedTreeNodeInfo<T>[] TraversedBredthFirstPreOrder
+        {
+            get
+            {
+                return _traversedBredthFirstPreOrder ??
+                    (_traversedBredthFirstPreOrder = TraverseBredthFirstPreOrder(Root).ToArray());
+            }
+        }
+
+        #endregion
+
+        #region Constructors
+
+        public Tree(TreeNode<T> root)
+        {
+            Root = root;
+        }
+
+        #endregion
+
+        public static IEnumerable<TraversedTreeNodeInfo<T>> TraverseDepthFirstPreOrder(TreeNode<T> root)
         {
             TraversedTreeNodeInfo<T> rootNodeInfo = new TraversedTreeNodeInfo<T>(root, null, 0, 0);
             Stack<TraversedTreeNodeInfo<T>> stack = new Stack<TraversedTreeNodeInfo<T>>(new[] { rootNodeInfo });
@@ -25,23 +75,23 @@ namespace WallpaperGenerator.Utilities.DataStructures.Trees
             }
         }
 
-        class VisitableTraversedTreeNodeInfo<T>
+        class VisitableTraversedTreeNodeInfo
         {
             public bool IsVisited { get; set; }
             public TraversedTreeNodeInfo<T> NodeInfo { get; set; }
         }
 
-        public static IEnumerable<TraversedTreeNodeInfo<T>> TraverseDepthFirstPostOrder<T>(TreeNode<T> root)
+        public static IEnumerable<TraversedTreeNodeInfo<T>> TraverseDepthFirstPostOrder(TreeNode<T> root)
         {
             TraversedTreeNodeInfo<T> rootNodeInfo = new TraversedTreeNodeInfo<T>(root, null, 0, 0);
-            Stack<VisitableTraversedTreeNodeInfo<T>> stack = new Stack<VisitableTraversedTreeNodeInfo<T>>(new[]
+            Stack<VisitableTraversedTreeNodeInfo> stack = new Stack<VisitableTraversedTreeNodeInfo>(new[]
                 {
-                    new VisitableTraversedTreeNodeInfo<T> { NodeInfo = rootNodeInfo }
+                    new VisitableTraversedTreeNodeInfo { NodeInfo = rootNodeInfo }
                 });
 
             while (stack.Any())
             {
-                VisitableTraversedTreeNodeInfo<T> vni = stack.Peek();
+                VisitableTraversedTreeNodeInfo vni = stack.Peek();
                 if (vni.IsVisited)
                 {
                     stack.Pop();
@@ -54,14 +104,14 @@ namespace WallpaperGenerator.Utilities.DataStructures.Trees
                     foreach (TreeNode<T> n in vni.NodeInfo.Node.Children.Reverse())
                     {
                         TraversedTreeNodeInfo<T> childNodeInfo = new TraversedTreeNodeInfo<T>(n, vni.NodeInfo.Node, indexAmongSiblings, vni.NodeInfo.Depth + 1);
-                        stack.Push(new VisitableTraversedTreeNodeInfo<T> { NodeInfo = childNodeInfo });
+                        stack.Push(new VisitableTraversedTreeNodeInfo { NodeInfo = childNodeInfo });
                         indexAmongSiblings--;
                     }
                 }
             }
         }
 
-        public static IEnumerable<TraversedTreeNodeInfo<T>> TraverseBredthFirstPreOrder<T>(TreeNode<T> root)
+        public static IEnumerable<TraversedTreeNodeInfo<T>> TraverseBredthFirstPreOrder(TreeNode<T> root)
         {
             TraversedTreeNodeInfo<T> rootNodeInfo = new TraversedTreeNodeInfo<T>(root, null, 0, 0);
             Queue<TraversedTreeNodeInfo<T>> queue = new Queue<TraversedTreeNodeInfo<T>>(new[] { rootNodeInfo });
@@ -80,16 +130,26 @@ namespace WallpaperGenerator.Utilities.DataStructures.Trees
             }
         }
 
-        public static int GetNodeHeight<T>(TreeNode<T> node)
+        public static int GetNodeHeight(TreeNode<T> node)
         {
             return TraverseDepthFirstPreOrder(node).Max(ni => ni.Depth + 1);
         }
 
-        public static R Fold<T, R>(TreeNode<T> node, Func<TraversedTreeNodeInfo<T>, R[], R> func)
+        public R Fold<R>(Func<TraversedTreeNodeInfo<T>, R[], R> func)
+        {
+            return FoldCore(TraversedDepthFirstPostOrder, func);
+        }
+
+        public static R Fold<R>(TreeNode<T> node, Func<TraversedTreeNodeInfo<T>, R[], R> func)
+        {
+            IEnumerable<TraversedTreeNodeInfo<T>> traversedDepthFirstPostOrderNodes = TraverseDepthFirstPostOrder(node);
+            return FoldCore(traversedDepthFirstPostOrderNodes, func);
+        }
+
+        private static R FoldCore<R>(IEnumerable<TraversedTreeNodeInfo<T>> traversedDepthFirstPostOrder, Func<TraversedTreeNodeInfo<T>, R[], R> func)
         {
             Stack<R> foldedChildrenQueue = new Stack<R>();
-            IEnumerable<TraversedTreeNodeInfo<T>> traversedDepthFirstPostOrderNodes = TraverseDepthFirstPostOrder(node);
-            foreach (TraversedTreeNodeInfo<T> nodeInfo in traversedDepthFirstPostOrderNodes)
+            foreach (TraversedTreeNodeInfo<T> nodeInfo in traversedDepthFirstPostOrder)
             {
                 int childrenCount = nodeInfo.Node.Children.Count;
                 R[] foldedChildren = new R[childrenCount];

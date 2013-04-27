@@ -21,7 +21,7 @@ namespace Formulas.Testing
             FormulaTreeNode formulaTree = FormulaTreeGenerator.CreateRandomFormulaTree(variablesCount, constantsCount, unaryOperatorsCountForFormulaDiluting,
                 OperatorsLibrary.All);
 
-            IEnumerable<FormulaTreeNode> traversedNodes = Tree.TraverseBredthFirstPreOrder(formulaTree).Select(ni => (FormulaTreeNode)ni.Node);
+            IEnumerable<FormulaTreeNode> traversedNodes = Tree<Operator>.TraverseBredthFirstPreOrder(formulaTree).Select(ni => (FormulaTreeNode)ni.Node);
             IEnumerable<Variable> variables = traversedNodes.Where(n => n.Operator is Variable).Select(n => (Variable) n.Operator);
             IEnumerable<Constant> constants = traversedNodes.Where(n => n.Operator is Constant).Select(n => (Constant)n.Operator);
             IEnumerable<Operator> unaryOperatorNodes = traversedNodes.Where(n => n.Operator.Arity == 1).Select(n => n.Operator);
@@ -51,8 +51,8 @@ namespace Formulas.Testing
                     SelectMany(_ => _);
             
             FormulaTreeNode formulaTree = FormulaTreeGenerator.CreateFormulaTree(zeroArityOperators, nonZeroArityOperators.Randomize(random));
-            
-            IEnumerable<TraversedTreeNodeInfo<Operator>> traversedNodes = Tree.TraverseBredthFirstPreOrder(formulaTree);
+
+            IEnumerable<TraversedTreeNodeInfo<Operator>> traversedNodes = Tree<Operator>.TraverseBredthFirstPreOrder(formulaTree);
             for (int a = 0; a < 4; a++)
             {
                 IEnumerable<FormulaTreeNode> nArityNodes = traversedNodes.Select(ni => (FormulaTreeNode)ni.Node).Where(n => n.Operator.Arity == a);

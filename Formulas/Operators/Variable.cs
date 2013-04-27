@@ -20,7 +20,7 @@ namespace WallpaperGenerator.Formulas.Operators
         protected override double EvaluateCore(params double[] operands)
         {
             if (Value == null)
-                    throw new InvalidOperationException("Variable doesn't have assigned value.");
+                throw new InvalidOperationException("Variable doesn't have assigned value.");
             
             return Value.Value;
         }

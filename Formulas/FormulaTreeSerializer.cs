@@ -20,7 +20,7 @@ namespace WallpaperGenerator.Formulas
         public static string Serialize(FormulaTreeNode node, FormulaTreeSerializationOptions serializationOptions)
         {
             StringBuilder sb = new StringBuilder();
-            IEnumerable<TraversedTreeNodeInfo<Operator>> nodes = Tree.TraverseDepthFirstPreOrder(node);
+            IEnumerable<TraversedTreeNodeInfo<Operator>> nodes = Tree<Operator>.TraverseDepthFirstPreOrder(node);
             int depth = 0;
             bool withIndent = serializationOptions.WithIndentation;
             foreach (TraversedTreeNodeInfo<Operator> ni in nodes)

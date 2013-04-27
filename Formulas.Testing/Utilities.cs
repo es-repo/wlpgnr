@@ -12,8 +12,8 @@ namespace Formulas.Testing
             if (rootA == null && rootB == null)
                 return true;
 
-            IEnumerable<TraversedTreeNodeInfo<Operator>> traversedNodesA = Tree.TraverseBredthFirstPreOrder(rootA);
-            IEnumerable<TraversedTreeNodeInfo<Operator>> traversedNodesB = Tree.TraverseBredthFirstPreOrder(rootB);
+            IEnumerable<TraversedTreeNodeInfo<Operator>> traversedNodesA = Tree<Operator>.TraverseBredthFirstPreOrder(rootA);
+            IEnumerable<TraversedTreeNodeInfo<Operator>> traversedNodesB = Tree<Operator>.TraverseBredthFirstPreOrder(rootB);
             IEnumerator<TraversedTreeNodeInfo<Operator>> nodesInfoBEnumerator = traversedNodesB.GetEnumerator();
             foreach (var nodeInfoA in traversedNodesA)
             {
