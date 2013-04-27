@@ -39,6 +39,11 @@ namespace WallpaperGenerator.Formulas
             return a * b;
         }
 
+        public static double Div(double a, double b)
+        {
+            return a / b;
+        }
+
         public static double DivRem(double a, double b)
         {
             return a % b;
@@ -47,6 +52,11 @@ namespace WallpaperGenerator.Formulas
         public static double Pow(double a, double b)
         {
             return Math.Pow(a, b);
+        }
+
+        public static double Log(double a, double b)
+        {
+            return Math.Log(a, b);
         }
 
         #endregion
