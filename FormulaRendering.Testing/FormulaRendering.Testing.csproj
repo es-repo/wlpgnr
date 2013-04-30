@@ -5,13 +5,15 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{4F885129-96E0-40E0-86A4-D7928FE0E5BA}</ProjectGuid>
+    <ProjectGuid>{0AF9C28E-CEF2-4C86-8CFD-0E509B339B3B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WallpaperGenerator.Formulas.Testing</RootNamespace>
-    <AssemblyName>Formulas.Testing</AssemblyName>
+    <RootNamespace>WallpaperGenerator.FormulaRendering.Testing</RootNamespace>
+    <AssemblyName>FormulaRendering.Testing</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <StartupObject>
+    </StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,7 +23,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -54,26 +55,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FormulaTreeGeneratorTests.cs" />
-    <Compile Include="FormulaTreeSerializerTests.cs" />
-    <Compile Include="FormulaTreeTests.cs" />
-    <Compile Include="MathLibraryTests.cs" />
-    <Compile Include="Operators\ConstantTests.cs" />
-    <Compile Include="Operators\OperatorTests.cs" />
-    <Compile Include="Operators\VariableTests.cs" />
-    <Compile Include="Parsing\FormulaTreeParserTests.cs" />
-    <Compile Include="Parsing\FormulaTreeTokenizerTests.cs" />
+    <Compile Include="MathUtilitiesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Formulas\Formulas.csproj">
-      <Project>{190058E2-F017-4D78-B076-CB6AC313246D}</Project>
-      <Name>Formulas</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Utilities\Utilities.csproj">
-      <Project>{7D4A8B31-9E0B-4C8A-914B-E469D622F21C}</Project>
-      <Name>Utilities</Name>
+    <ProjectReference Include="..\FormulaRendering\FormulaRendering.csproj">
+      <Project>{C4DD7AAC-ACFB-45CA-B1B3-7BEF7714DEB0}</Project>
+      <Name>FormulaRendering</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

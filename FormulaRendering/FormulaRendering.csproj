@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FormulaRender.cs" />
+    <Compile Include="MathUtilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RenderedFormulaImage.cs" />
     <Compile Include="Rgb.cs" />
