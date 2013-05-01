@@ -35,7 +35,7 @@ namespace WallpaperGenerator.FormulaRendering.Testing
         [Row(new double[] { 1 }, 0)]
         [Row(new double[] { 1, 2, 3, 4, 5, 6 }, 1.870828693386971)]
         [Row(new double[] { -1, 0, 1 }, 1)]
-        [Row(new[] { 1, 2, 4, 5, 6 }, 2.073644135332772)]
+        [Row(new double[] { 1, 2, 4, 5, 6 }, 2.073644135332772)]
         public void TestStandardDeviation(double[] values, double expectedStandardDeviation)
         {
             double standardDeviation = MathUtilities.StandardDeviation(values);
@@ -47,7 +47,6 @@ namespace WallpaperGenerator.FormulaRendering.Testing
         [Row(new double[] { 1 }, 0)]
         [Row(new double[] { 1, 2, 3, 4, 5, 6 }, 1.870828693386971 * 3)]
         [Row(new double[] { -1, 0, 1 }, 3)]
-        [Row(new[] { 1, 2, double.NaN, 4, 5, 6 }, 2.073644135332772 * 3)]
         public void TestThreeSigmas(double[] values, double expectedThreeSigmas)
         {
             double threeSigmas = MathUtilities.ThreeSigmas(values);
@@ -59,6 +58,7 @@ namespace WallpaperGenerator.FormulaRendering.Testing
         [Row(0, 0, 1, 1, 2, 1)]
         [Row(-10, -11, -10, 0, 1, 1)]
         [Row(3, 0, 10, 0, 100, 30)]
+        [Row(double.NaN, 0, 10, 0, 100, 0)]
         [Row(-24, -30, -10, 400, 500, 430)]
         public void TestMap(double value, double rangeStart, double rangeEnd, double mappedRangeStart, double mappedRangeEnd, double expectedMappedValue)
         {

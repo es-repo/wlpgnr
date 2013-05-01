@@ -52,7 +52,7 @@ namespace WallpaperGenerator.Formulas.Parsing
             return currentNode;
         }
 
-        private static FormulaTreeNode CreateNode(string token, IList<Operator> availableVariables)
+        private static FormulaTreeNode CreateNode(string token, IEnumerable<Operator> availableVariables)
         {
             Operator op = OperatorFromString(token, availableVariables);
             return new FormulaTreeNode(op);

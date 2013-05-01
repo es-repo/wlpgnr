@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Linq;  
+using System.Linq;
 using MbUnit.Framework;
-using WallpaperGenerator.Formulas;
 using WallpaperGenerator.Formulas.Operators;
 
-namespace Formulas.Testing
+namespace WallpaperGenerator.Formulas.Testing
 {
     [TestFixture]
     public class FormulaTreeTests

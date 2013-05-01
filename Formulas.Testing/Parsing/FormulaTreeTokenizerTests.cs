@@ -4,7 +4,7 @@ using MbUnit.Framework;
 using WallpaperGenerator.Formulas.Parsing;
 using System.Collections.Generic;
 
-namespace Formulas.Testing.Parsing
+namespace WallpaperGenerator.Formulas.Testing.Parsing
 {
     [TestFixture]
     public class FormulaTreeTokenizerTests

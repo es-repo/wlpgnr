@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using MbUnit.Framework;
-using WallpaperGenerator.Formulas;
 using WallpaperGenerator.Formulas.Operators;
 using WallpaperGenerator.Utilities;
 using WallpaperGenerator.Utilities.DataStructures.Trees;
 
-namespace Formulas.Testing
+namespace WallpaperGenerator.Formulas.Testing
 {
     [TestFixture]
     public class FormulaTreeGeneratorTests
@@ -84,7 +83,7 @@ namespace Formulas.Testing
                             new FormulaTreeNode(new Variable("x3")),
                             new FormulaTreeNode(new Variable("x4")))));
             
-            Assert.IsTrue(Utilities.AreFormulaTreesEqual(formulaTreeExpected, formulaTree));
+            Assert.IsTrue(global::WallpaperGenerator.Formulas.Testing.Utilities.AreFormulaTreesEqual(formulaTreeExpected, formulaTree));
         }
 
         [RowTest]

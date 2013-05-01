@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using WallpaperGenerator.Formulas;
 using WallpaperGenerator.Formulas.Operators;
 using WallpaperGenerator.Utilities.DataStructures.Trees;
 
-namespace Formulas.Testing
+namespace WallpaperGenerator.Formulas.Testing
 {
     public class Utilities
     {

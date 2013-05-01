@@ -37,7 +37,9 @@ namespace WallpaperGenerator.FormulaRendering
         }
 
         public static double Map(double value, double rangeStart, double rangeEnd, double mappedRangeStart, double mappedRangeEnd)
-        {            
+        {
+            if (double.IsNaN(value))
+                value = rangeStart;
             if (value < rangeStart)
                 value = rangeStart;
             if (value > rangeEnd)

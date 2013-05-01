@@ -1,9 +1,8 @@
 ﻿using System;
 using MbUnit.Framework;
-using WallpaperGenerator.Formulas;
 using WallpaperGenerator.Formulas.Operators.Arithmetic;
 
-namespace Formulas.Testing.Operators
+namespace WallpaperGenerator.Formulas.Testing.Operators
 {
     [TestFixture]
     public class OperatorTests

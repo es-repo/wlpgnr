@@ -1,12 +1,11 @@
-﻿using System.Linq;  
+﻿using System.Linq;
 using System.Collections.Generic;
 using MbUnit.Framework;
-using WallpaperGenerator.Formulas;
 using WallpaperGenerator.Formulas.Operators;
 using WallpaperGenerator.Formulas.Parsing;
 using WallpaperGenerator.Utilities.DataStructures.Trees;
 
-namespace Formulas.Testing.Parsing
+namespace WallpaperGenerator.Formulas.Testing.Parsing
 {
     [TestFixture]
     public class FormulaTreeParserTests
@@ -63,7 +62,7 @@ Sum(
         private static void TestParse(string value, FormulaTreeNode expectedRoot)
         {
             FormulaTreeNode root = FormulaTreeParser.Parse(value);
-            Assert.IsTrue(Utilities.AreFormulaTreesEqual(root, expectedRoot));
+            Assert.IsTrue(global::WallpaperGenerator.Formulas.Testing.Utilities.AreFormulaTreesEqual(root, expectedRoot));
         }
     }
 }

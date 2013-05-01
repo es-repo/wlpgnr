@@ -1,9 +1,8 @@
 ﻿using MbUnit.Framework;
-using WallpaperGenerator.Formulas;
 using WallpaperGenerator.Formulas.Operators;
 using WallpaperGenerator.Utilities.DataStructures.Trees;
 
-namespace Formulas.Testing
+namespace WallpaperGenerator.Formulas.Testing
 {
     [TestFixture]
     public class FormulaTreeSerializerTests

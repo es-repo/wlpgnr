@@ -1,7 +1,6 @@
 ﻿using MbUnit.Framework;
-using WallpaperGenerator.Formulas;
 
-namespace Formulas.Testing
+namespace WallpaperGenerator.Formulas.Testing
 {
     [TestFixture]
     public class MathLibraryTests
