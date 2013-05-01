@@ -47,10 +47,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Operators\Arithmetic\Abs.cs" />
+    <Compile Include="Operators\Arithmetic\Pow1_3.cs" />
+    <Compile Include="Operators\Arithmetic\Pow1_2.cs" />
+    <Compile Include="Operators\Arithmetic\Pow3.cs" />
+    <Compile Include="Operators\Arithmetic\Pow2.cs" />
+    <Compile Include="Operators\Arithmetic\LogE.cs" />
+    <Compile Include="Operators\Arithmetic\Log2.cs" />
     <Compile Include="Operators\Arithmetic\Log.cs" />
     <Compile Include="Operators\Arithmetic\Div.cs" />
     <Compile Include="Operators\Arithmetic\DivRem.cs" />
     <Compile Include="Operators\Arithmetic\Pow.cs" />
+    <Compile Include="Operators\Arithmetic\Sub.cs" />
     <Compile Include="Operators\Conditional.cs" />
     <Compile Include="FormulaTreeSerializer.cs" />
     <Compile Include="MathLibrary.cs" />
@@ -65,6 +72,10 @@
     <Compile Include="Operators\OperatorsLibrary.cs" />
     <Compile Include="Operators\Arithmetic\Sum.cs" />
     <Compile Include="Operators\TernaryOperator.cs" />
+    <Compile Include="Operators\Trigonometric\Cosh.cs" />
+    <Compile Include="Operators\Trigonometric\Sinh.cs" />
+    <Compile Include="Operators\Trigonometric\Tanh.cs" />
+    <Compile Include="Operators\Trigonometric\Tan.cs" />
     <Compile Include="Operators\Trigonometric\Cos.cs" />
     <Compile Include="Operators\Trigonometric\Sin.cs" />
     <Compile Include="Operators\UnaryOperator.cs" />

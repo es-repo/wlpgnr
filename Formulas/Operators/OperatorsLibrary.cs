@@ -29,6 +29,7 @@ namespace WallpaperGenerator.Formulas.Operators
                 yield return C2;
                 yield return C3;
                 yield return C5;
+                yield return C7;
                 yield return Pi;
                 yield return E;
             }
@@ -87,14 +88,26 @@ namespace WallpaperGenerator.Formulas.Operators
         #region Extra Arithmetic Operators
 
         public static readonly Operator Pow = new Pow();
+        public static readonly Operator Pow2 = new Pow2();
+        public static readonly Operator Pow3 = new Pow3();
+        public static readonly Operator Pow1_2 = new Pow1_2();
+        public static readonly Operator Pow1_3 = new Pow1_3();
         public static readonly Operator Log = new Log();
+        public static readonly Operator Log2 = new Log2();
+        public static readonly Operator LogE = new LogE();
 
         public static IEnumerable<Operator> ArithmeticExtra
         {
             get
             {
                 yield return Pow;
+                yield return Pow2;
+                yield return Pow3;
+                yield return Pow1_2;
+                yield return Pow1_3;
                 yield return Log;
+                yield return Log2;
+                yield return LogE;
             }
         }
 
@@ -116,6 +129,7 @@ namespace WallpaperGenerator.Formulas.Operators
 
         public static readonly Operator Sin = new Sin();
         public static readonly Operator Cos = new Cos();
+        public static readonly Operator Tan = new Tan();
         
         public static IEnumerable<Operator> TrigonometricBase
         {
@@ -123,6 +137,7 @@ namespace WallpaperGenerator.Formulas.Operators
             {
                 yield return Sin;
                 yield return Cos;
+                yield return Tan;
             }
         }
 
@@ -130,11 +145,17 @@ namespace WallpaperGenerator.Formulas.Operators
 
         #region Extra Trigonometric Operators
 
+        public static readonly Operator Sinh = new Sinh();
+        public static readonly Operator Cosh = new Cosh();
+        public static readonly Operator Tanh = new Tanh();
+
         public static IEnumerable<Operator> TrigonometricExtra
         {
             get
             {
-                return Enumerable.Empty<Operator>();
+                yield return Sinh;
+                yield return Cosh;
+                yield return Tanh;
             }
         }
 

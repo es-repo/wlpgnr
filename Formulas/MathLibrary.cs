@@ -34,6 +34,11 @@ namespace WallpaperGenerator.Formulas
             return a + b;
         }
 
+        public static double Sub(double a, double b)
+        {
+            return a - b;
+        }
+
         public static double Mul(double a, double b)
         {
             return a * b;
@@ -71,6 +76,26 @@ namespace WallpaperGenerator.Formulas
         public static double Cos(double a)
         {
             return Math.Cos(a);
+        }
+
+        public static double Tan(double a)
+        {
+            return Math.Tan(a);
+        }
+
+        public static double Sinh(double a)
+        {
+            return Math.Sinh(a);
+        }
+
+        public static double Cosh(double a)
+        {
+            return Math.Cosh(a);
+        }
+
+        public static double Tanh(double a)
+        {
+            return Math.Tanh(a);
         }
 
         #endregion
