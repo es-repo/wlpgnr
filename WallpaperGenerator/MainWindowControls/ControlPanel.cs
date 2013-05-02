@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using WallpaperGenerator.Formulas.Operators;
 using WallpaperGenerator.MainWindowControls.ControlPanelControls;
 
@@ -14,6 +16,14 @@ namespace WallpaperGenerator.MainWindowControls
         public Button GenerateFormulaButton { get; private set; }
 
         public Button RenderFormulaButton { get; private set; }
+
+        public Slider DimensionsCountSlider { get; private set; }
+
+        public Slider VariablesCountSlider { get; private set; }
+
+        public Slider ConstantsCountSlider { get; private set; }
+
+        public Slider UnaryOperatorsCountSlider { get; private set; }
 
         public IEnumerable<OperatorCheckBox> OperatorCheckBoxes { get; private set; }
     
@@ -34,6 +44,14 @@ namespace WallpaperGenerator.MainWindowControls
             Children.Add(GenerateFormulaButton);
             Children.Add(RenderFormulaButton);
 
+            DimensionsCountSlider = CreateSliderControlsBlock(1, 2, 2, "Dimensions");
+            
+            VariablesCountSlider = CreateSliderControlsBlock(1, 10, 4, "Variables");
+            
+            ConstantsCountSlider = CreateSliderControlsBlock(0, 10, 4, "Constants");
+            
+            UnaryOperatorsCountSlider = CreateSliderControlsBlock(0, 10, 4, "Unary Operators");
+            
             IEnumerable<KeyValuePair<string, IEnumerable<OperatorCheckBox>>> operatorCheckBoxesByCategories = CreateOperatorCheckBoxesByCategories().ToArray();
             foreach (KeyValuePair<string, IEnumerable<OperatorCheckBox>> entry in operatorCheckBoxesByCategories)
             {
@@ -77,6 +95,42 @@ namespace WallpaperGenerator.MainWindowControls
             };
             
             return button;
+        }
+
+        private Slider CreateSliderControlsBlock(int minimumValue, int maximumValue, int defaultValue, string label)
+        {
+            TextBlock labelTextBlock = new TextBlock 
+            { 
+                Text = label, 
+                FontWeight = FontWeight.FromOpenTypeWeight(999),
+                Margin = new Thickness { Right = 10 }               
+            };
+            TextBlock valueTextBlock = new TextBlock();
+            Slider slider = CreatSlider(minimumValue, maximumValue, defaultValue, valueTextBlock);
+            StackPanel stackPanel = new StackPanel {Orientation = Orientation.Horizontal};
+            stackPanel.Children.Add(labelTextBlock);
+            stackPanel.Children.Add(valueTextBlock); 
+            Children.Add(stackPanel);
+            Children.Add(slider);
+            return slider;
+        }
+        
+        private static Slider CreatSlider(int minimumValue, int maximumValue, int defaultValue, TextBlock sliderValueLabel)
+        {
+            Slider slider = new Slider
+            {
+                Minimum = minimumValue,
+                Maximum = maximumValue,
+                Value = defaultValue,
+                TickPlacement = TickPlacement.BottomRight,
+                IsSnapToTickEnabled = true,
+                //Margin = new Thickness { Top = 10 }
+            };
+
+            sliderValueLabel.Text = slider.Value.ToString(CultureInfo.InvariantCulture);
+            slider.ValueChanged += (s, a) => sliderValueLabel.Text = slider.Value.ToString(CultureInfo.InvariantCulture);
+
+            return slider;
         }
 
         private static IEnumerable<KeyValuePair<string, IEnumerable<OperatorCheckBox>>> CreateOperatorCheckBoxesByCategories()
