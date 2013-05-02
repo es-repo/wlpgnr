@@ -13,18 +13,22 @@ namespace WallpaperGenerator.Formulas.Testing
     public class FormulaTreeGeneratorTests
     {
         [RowTest]
-        [Row(0, 0, 0, ExpectedException=typeof(ArgumentException))]
-        [Row(4, 3, 2)]
-        public void TestCreateRandomFormulaTree(int variablesCount, int constantsCount, int unaryOperatorsCountForFormulaDiluting)
+        [Row(0, 0, 0, 0, ExpectedException=typeof(ArgumentException))]
+        [Row(4, 4, 3, 2)]
+        [Row(5, 4, 3, 2, ExpectedException = typeof(ArgumentException))]
+        [Row(3, 5, 3, 2)]
+        [Row(3, 9, 3, 2)]
+        public void TestCreateRandomFormulaTree(int dimensionsCount, int variablesCount, int constantsCount, int unaryOperatorsCountForFormulaDiluting)
         {
-            FormulaTreeNode formulaTree = FormulaTreeGenerator.CreateRandomFormulaTree(variablesCount, constantsCount, unaryOperatorsCountForFormulaDiluting,
-                OperatorsLibrary.All);
+            FormulaTreeNode formulaTree = FormulaTreeGenerator.CreateRandomFormulaTree(dimensionsCount, variablesCount, constantsCount, 
+                unaryOperatorsCountForFormulaDiluting, OperatorsLibrary.All);
 
             IEnumerable<FormulaTreeNode> traversedNodes = Tree<Operator>.TraverseBredthFirstPreOrder(formulaTree).Select(ni => (FormulaTreeNode)ni.Node);
             IEnumerable<Variable> variables = traversedNodes.Where(n => n.Operator is Variable).Select(n => (Variable) n.Operator);
             IEnumerable<Constant> constants = traversedNodes.Where(n => n.Operator is Constant).Select(n => (Constant)n.Operator);
             IEnumerable<Operator> unaryOperatorNodes = traversedNodes.Where(n => n.Operator.Arity == 1).Select(n => n.Operator);
 
+            Assert.AreEqual(dimensionsCount, variables.Select(v => v.Name).Distinct().Count());
             Assert.AreEqual(variablesCount, variables.Count());
             Assert.AreEqual(constantsCount, constants.Count());
             Assert.AreEqual(unaryOperatorsCountForFormulaDiluting, unaryOperatorNodes.Count());

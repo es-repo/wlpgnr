@@ -66,6 +66,7 @@ namespace WallpaperGenerator.Formulas.Operators
         public static readonly Operator Minus = new Minus();
         public static readonly Operator Abs = new Abs();
         public static readonly Operator Sum = new Sum();
+        public static readonly Operator Sub = new Sub();
         public static readonly Operator Mul = new Mul();
         public static readonly Operator Div = new Div();
         public static readonly Operator DivRem = new DivRem();
@@ -77,6 +78,7 @@ namespace WallpaperGenerator.Formulas.Operators
                 yield return Minus;
                 yield return Abs;
                 yield return Sum;
+                yield return Sub;
                 yield return Mul;
                 yield return Div;
                 yield return DivRem;

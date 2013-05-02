@@ -10,11 +10,14 @@ namespace WallpaperGenerator.Formulas
 {
     public class FormulaTreeGenerator
     {
-        public static FormulaTreeNode CreateRandomFormulaTree(int variablesCount, int constantsCount, int unaryOperatorsCountForFormulaDiluting,
-            IEnumerable<Operator> operatorsLibrary)
+        public static FormulaTreeNode CreateRandomFormulaTree(int dimensionsCount, int variablesCount, int constantsCount, 
+            int unaryOperatorsCountForFormulaDiluting, IEnumerable<Operator> operatorsLibrary)
         {
-            if (variablesCount < 0)
-                throw new ArgumentException("Variables count can't be less then 0.");
+            if (dimensionsCount < 0)
+                throw new ArgumentException("Dimensions count can't be less then 0.");
+
+            if (variablesCount < dimensionsCount)
+                throw new ArgumentException("Variables count can't be less then dimensions count.");
 
             if (constantsCount < 0)
                 throw new ArgumentException("Constants count can't be less then 0.");
@@ -22,8 +25,8 @@ namespace WallpaperGenerator.Formulas
             if (unaryOperatorsCountForFormulaDiluting < 0)
                 throw new ArgumentException("Unary operators count can't be less then 0.");
 
-            if (variablesCount + constantsCount == 0)
-                throw new ArgumentException("Sum of variables count and constants count can't be zero.");
+            if (variablesCount + constantsCount < 0)
+                throw new ArgumentException("Sum of variables count and constants count can't be less then zero.");
 
             if (!operatorsLibrary.Any())
                 throw new ArgumentException("Operators library can't be empty.");
@@ -37,11 +40,11 @@ namespace WallpaperGenerator.Formulas
             if (constantsCount > 0 && !operatorsLibrary.Any(op => op is Constant))
                 throw new ArgumentException("Constants library can't be empty if constants count is more then 0.");
 
-            return CreateRandomFormulaTreeCore(variablesCount, constantsCount, unaryOperatorsCountForFormulaDiluting, operatorsLibrary);
+            return CreateRandomFormulaTreeCore(dimensionsCount, variablesCount, constantsCount, unaryOperatorsCountForFormulaDiluting, operatorsLibrary);
         }
 
-        private static FormulaTreeNode CreateRandomFormulaTreeCore(int variablesCount, int constantsCount, int unaryOperatorsCountForFormulaDiluting,
-            IEnumerable<Operator> operatorsLibrary)
+        private static FormulaTreeNode CreateRandomFormulaTreeCore(int dimensionsCount, int variablesCount, int constantsCount, 
+            int unaryOperatorsCountForFormulaDiluting, IEnumerable<Operator> operatorsLibrary)
         {                        
             int zeroOperatorsCount = variablesCount + constantsCount;
             int availableBinaryOperatorsCount = operatorsLibrary.Count(op => op.Arity == 2);
@@ -54,8 +57,11 @@ namespace WallpaperGenerator.Formulas
                 unaryOperatorsCountForFormulaDiluting, ternaryVsBinaryOperatorOccurenceProbability).ToArray();
             IEnumerable<Operator> nonZeroArityOperators = operatorsAritySequence.Select(a => operatorsLibrary.Where(op => op.Arity == a).TakeRandom(random));
 
-            IEnumerable<string> variableNames = EnumerableExtensions.Repeat(i => "x" + i.ToString(CultureInfo.InvariantCulture), variablesCount);
-            IEnumerable<Operator> variables = variableNames.Select(n => new Variable(n)).Cast<Operator>();
+            IEnumerable<string> variableNames = EnumerableExtensions.Repeat(i => "x" + i.ToString(CultureInfo.InvariantCulture), dimensionsCount);
+            IEnumerable<Operator> availableVariables = variableNames.Select(n => new Variable(n)).Cast<Operator>();
+            IEnumerable<Operator> variablesPart = EnumerableExtensions.Repeat(i => availableVariables.TakeRandom(random), variablesCount - dimensionsCount);
+            IEnumerable<Operator> variables = availableVariables.Concat(variablesPart);
+
             IEnumerable<Operator> constants = EnumerableExtensions.Repeat(i => operatorsLibrary.Where(op => op is Constant).TakeRandom(random), constantsCount);
             IEnumerable<Operator> zeroArityOperators = variables.Concat(constants).Randomize(random);
 
