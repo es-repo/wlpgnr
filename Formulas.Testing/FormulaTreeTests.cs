@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using MbUnit.Framework;
 using WallpaperGenerator.Formulas.Operators;
 
@@ -41,12 +40,9 @@ namespace WallpaperGenerator.Formulas.Testing
         }
         
         [RowTest]
-        [Row(null, null, 0, ExpectedException = typeof(InvalidOperationException))]
-        [Row(5.0, null, 0, ExpectedException = typeof(InvalidOperationException))]
-        [Row(null, 3.0, 0, ExpectedException = typeof(InvalidOperationException))]
         [Row(5.0, 3.0, 24)]
         [Row(0.0, 0.0, 0.0)]
-        public void TestEvaluation(double? xVariableValue, double? yVariableValue, double expectedResult)
+        public void TestEvaluation(double xVariableValue, double yVariableValue, double expectedResult)
         {
             _xVariable.Value = xVariableValue;
             _yVariable.Value = yVariableValue;

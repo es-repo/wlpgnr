@@ -11,8 +11,7 @@ namespace WallpaperGenerator.Formulas.Testing.Operators
         [Row(0.0, 0.0)]
         [Row(2.0, 2.0)]
         [Row(-2.0, -2.0)]
-        [Row(null, 0, ExpectedException = typeof(InvalidOperationException))]
-        public void TestVariable(double? a, double expected)
+        public void TestVariable(double a, double expected)
         {
             Operator constant = new Variable("x") { Value = a };
             double result = constant.Evaluate();

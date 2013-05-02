@@ -29,7 +29,7 @@ namespace WallpaperGenerator
             {
                 IEnumerable<OperatorCheckBox> checkedOperatorCheckBoxes = _mainWindow.ControlPanel.OperatorCheckBoxes.Where(cb => cb.IsChecked == true);
                 IEnumerable<Operator> operators = checkedOperatorCheckBoxes.Select(cb => cb.Operator);
-                FormulaTreeNode formulaTree = FormulaTreeGenerator.CreateRandomFormulaTree(2, 5, 3, 3, operators);
+                FormulaTreeNode formulaTree = FormulaTreeGenerator.CreateRandomFormulaTree(2, 8, 8, 3, operators);
                 string formula = FormulaTreeSerializer.Serialize(formulaTree, new FormulaTreeSerializationOptions { WithIndentation = true });
                 _mainWindow.FormulaTexBox.Text = formula;
             };

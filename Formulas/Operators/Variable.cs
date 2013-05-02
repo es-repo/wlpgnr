@@ -8,7 +8,7 @@ namespace WallpaperGenerator.Formulas.Operators
         private const string VariableNamePattern = "^[a-zA-Z_]+[a-zA-Z_0-9]*$";
         private static readonly Regex _variableNamePatternRegex = new Regex(VariableNamePattern, RegexOptions.Compiled);
 
-        public double? Value { get; set; }
+        public double Value { get; set; }
         
         public Variable(string name)
             : base (name)
@@ -19,10 +19,7 @@ namespace WallpaperGenerator.Formulas.Operators
 
         protected override double EvaluateCore(params double[] operands)
         {
-            if (Value == null)
-                throw new InvalidOperationException("Variable doesn't have assigned value.");
-            
-            return Value.Value;
+            return Value;
         }
 
         private static bool IsNameValid(string value)
