@@ -23,7 +23,8 @@ namespace WallpaperGenerator.FormulaRendering
                 for (int y = 0; y < width; y++)
                 {
                     formulaTree.Variables[0].Value = x;
-                    formulaTree.Variables[1].Value = y;
+                    if (formulaTree.Variables.Length > 1)
+                        formulaTree.Variables[1].Value = y;
                     int index = y * width + x;
                     field[index] = formulaTree.Evaluate();
                 }
