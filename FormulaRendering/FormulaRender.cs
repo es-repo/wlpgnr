@@ -8,7 +8,7 @@ namespace WallpaperGenerator.FormulaRendering
     {
         public static RenderedFormulaImage Render(FormulaTreeNode formulaTreeRoot, int width, int height)
         {
-            IEnumerable<double> formulaEvaluatedField = GetFormulaEvaluatedField(formulaTreeRoot, width, height);
+            double[] formulaEvaluatedField = GetFormulaEvaluatedField(formulaTreeRoot, width, height).ToArray();
             IEnumerable<Rgb> data = MapToRgb(formulaEvaluatedField);
             return new RenderedFormulaImage(data.ToArray(), width, height);
         }
@@ -16,24 +16,17 @@ namespace WallpaperGenerator.FormulaRendering
         private static IEnumerable<double> GetFormulaEvaluatedField(FormulaTreeNode formulaTreeRoot, int width, int height)
         {
             FormulaTree formulaTree = new FormulaTree(formulaTreeRoot);
-            double[] field = new double[width * height];
-            
-            for (int x = 0; x < height; x++)
-            {
-                for (int y = 0; y < width; y++)
-                {
-                    formulaTree.Variables[0].Value = x;
-                    if (formulaTree.Variables.Length > 1)
-                        formulaTree.Variables[1].Value = y;
-                    int index = y * width + x;
-                    field[index] = formulaTree.Evaluate();
-                }
-            }
-            return field;
+            return formulaTree.EvaluateRanges(new Range(0, width), new Range(0, height));
         }
         
         private static IEnumerable<Rgb> MapToRgb(IEnumerable<double> values)
         {
+            //FormulaTreeNode redChannelDilutingFormula = FormulaTreeGenerator.CreateRandomFormulaTree(1, 3, 3, 0, OperatorsLibrary.All);
+            //FormulaTreeNode greenChannelDilutingFormula = FormulaTreeGenerator.CreateRandomFormulaTree(1, 3, 3, 0, OperatorsLibrary.All);
+            //FormulaTreeNode blueChannelDilutingFormula = FormulaTreeGenerator.CreateRandomFormulaTree(1, 3, 3, 0, OperatorsLibrary.All); 
+            
+            //IEnumerable<double> redChannelValues = 
+
             IEnumerable<double> significantValues = GetSignificantValues(values);
 
             double mathExpectation = MathUtilities.MathExpectation(significantValues);
@@ -53,6 +46,7 @@ namespace WallpaperGenerator.FormulaRendering
             }
 
             IEnumerable<byte> colors = values.Select(v => (byte)MathUtilities.Map(v, rangeStart, rangeEnd, 0, 255));
+            //return colors.Select(c => new Rgb((byte)(3*c*c + c), (byte)(0.5*c*c), c));
             return colors.Select(c => new Rgb(c, c, c));
         }
 

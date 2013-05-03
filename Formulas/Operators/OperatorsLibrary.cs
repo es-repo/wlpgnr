@@ -132,6 +132,7 @@ namespace WallpaperGenerator.Formulas.Operators
         public static readonly Operator Sin = new Sin();
         public static readonly Operator Cos = new Cos();
         public static readonly Operator Tan = new Tan();
+        public static readonly Operator Atan = new Atan();
         
         public static IEnumerable<Operator> TrigonometricBase
         {
@@ -140,6 +141,7 @@ namespace WallpaperGenerator.Formulas.Operators
                 yield return Sin;
                 yield return Cos;
                 yield return Tan;
+                yield return Atan;
             }
         }
 

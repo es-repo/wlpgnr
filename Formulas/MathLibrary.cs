@@ -83,6 +83,11 @@ namespace WallpaperGenerator.Formulas
             return Math.Tan(a);
         }
 
+        public static double Atan(double a)
+        {
+            return Math.Atan(a);
+        }
+
         public static double Sinh(double a)
         {
             return Math.Sinh(a);
