@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using WallpaperGenerator.Formulas.Operators.Arithmetic;
+using WallpaperGenerator.Formulas.Operators.Bitwise;
+using WallpaperGenerator.Formulas.Operators.Conditionals;
 using WallpaperGenerator.Formulas.Operators.Trigonometric;
 
 namespace WallpaperGenerator.Formulas.Operators
@@ -70,6 +72,7 @@ namespace WallpaperGenerator.Formulas.Operators
         public static readonly Operator Mul = new Mul();
         public static readonly Operator Div = new Div();
         public static readonly Operator DivRem = new DivRem();
+        public static readonly Operator Round = new Round();
 
         public static IEnumerable<Operator> ArithmeticBase
         {
@@ -82,6 +85,7 @@ namespace WallpaperGenerator.Formulas.Operators
                 yield return Mul;
                 yield return Div;
                 yield return DivRem;
+                yield return Round;
             }
         }
 
@@ -130,7 +134,9 @@ namespace WallpaperGenerator.Formulas.Operators
         #region Base Trigonometric Operators
 
         public static readonly Operator Sin = new Sin();
+        public static readonly Operator Sec = new Sec();
         public static readonly Operator Cos = new Cos();
+        public static readonly Operator Csc = new Csc();
         public static readonly Operator Tan = new Tan();
         public static readonly Operator Atan = new Atan();
         
@@ -139,7 +145,9 @@ namespace WallpaperGenerator.Formulas.Operators
             get
             {
                 yield return Sin;
+                //yield return Sec;
                 yield return Cos;
+                //yield return Csc;
                 yield return Tan;
                 yield return Atan;
             }
@@ -176,15 +184,35 @@ namespace WallpaperGenerator.Formulas.Operators
 
         #endregion
 
+        #region Bitwise Operators
+
+        public static readonly Operator And = new And();
+        public static readonly Operator Or = new Or();
+        public static readonly Operator Xor = new Xor();
+
+        public static IEnumerable<Operator> Bitwise
+        {
+            get
+            {
+                yield return And;
+                yield return Or;
+                yield return Xor;
+            }
+        }
+
+        #endregion
+
         #region Conditional Operators
 
         public static readonly Operator Conditional = new Conditional();
+        public static readonly Operator Max = new Max();
 
         public static IEnumerable<Operator> Conditionals
         {
             get
             {
                 yield return Conditional;
+                yield return Max;
             }
         }
 
@@ -208,6 +236,7 @@ namespace WallpaperGenerator.Formulas.Operators
                 yield return new KeyValuePair<string, IEnumerable<Operator>>("ArithmeticExtra", ArithmeticExtra);
                 yield return new KeyValuePair<string, IEnumerable<Operator>>("TrigonometricBase", TrigonometricBase);
                 yield return new KeyValuePair<string, IEnumerable<Operator>>("TrigonometricExtra", TrigonometricExtra);
+                yield return new KeyValuePair<string, IEnumerable<Operator>>("Bitwise", Bitwise);
                 yield return new KeyValuePair<string, IEnumerable<Operator>>("Conditionals", Conditionals);
             }
         }

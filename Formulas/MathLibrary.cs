@@ -66,6 +66,11 @@ namespace WallpaperGenerator.Formulas
             return Math.Log(Math.Abs(a), b);
         }
 
+        public static double Round(double a)
+        {
+            return Math.Round(a);
+        }
+
         #endregion
 
         #region Trigonometric functions
@@ -75,9 +80,19 @@ namespace WallpaperGenerator.Formulas
             return Math.Sin(a);
         }
 
+        public static double Sec(double a)
+        {
+            return 1 / Math.Cos(a);
+        }
+
         public static double Cos(double a)
         {
             return Math.Cos(a);
+        }
+
+        public static double Csc(double a)
+        {
+            return 1/ Math.Sin(a);
         }
 
         public static double Tan(double a)
@@ -103,6 +118,34 @@ namespace WallpaperGenerator.Formulas
         public static double Tanh(double a)
         {
             return Math.Tanh(a);
+        }
+
+        #endregion
+
+        #region Bitwise
+
+        public static double And(double a, double b)
+        {
+            return (long)a & (long)b;
+        }
+
+        public static double Or(double a, double b)
+        {
+            return (long)a | (long)b;
+        }
+
+        public static double Xor(double a, double b)
+        {
+            return (long)a ^ (long)b;
+        }
+
+        #endregion
+
+        #region Conditionals
+
+        public static double Max(double a, double b)
+        {
+            return Math.Max(a, b);
         }
 
         #endregion

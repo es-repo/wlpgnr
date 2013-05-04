@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Operators\Arithmetic\Abs.cs" />
+    <Compile Include="Operators\Arithmetic\Round.cs" />
     <Compile Include="Operators\Arithmetic\Pow1_3.cs" />
     <Compile Include="Operators\Arithmetic\Pow1_2.cs" />
     <Compile Include="Operators\Arithmetic\Pow3.cs" />
@@ -58,9 +59,13 @@
     <Compile Include="Operators\Arithmetic\DivRem.cs" />
     <Compile Include="Operators\Arithmetic\Pow.cs" />
     <Compile Include="Operators\Arithmetic\Sub.cs" />
-    <Compile Include="Operators\Conditional.cs" />
+    <Compile Include="Operators\Bitwise\Or.cs" />
+    <Compile Include="Operators\Bitwise\And.cs" />
+    <Compile Include="Operators\Bitwise\Xor.cs" />
+    <Compile Include="Operators\Conditionals\Conditional.cs" />
     <Compile Include="FormulaTreeSerializer.cs" />
     <Compile Include="MathLibrary.cs" />
+    <Compile Include="Operators\Conditionals\Max.cs" />
     <Compile Include="Operators\Constant.cs" />
     <Compile Include="FormulaTreeNode.cs" />
     <Compile Include="FormulaTree.cs" />
@@ -73,6 +78,8 @@
     <Compile Include="Operators\Arithmetic\Sum.cs" />
     <Compile Include="Operators\TernaryOperator.cs" />
     <Compile Include="Operators\Trigonometric\Atan.cs" />
+    <Compile Include="Operators\Trigonometric\Csc.cs" />
+    <Compile Include="Operators\Trigonometric\Sec.cs" />
     <Compile Include="Operators\Trigonometric\Cosh.cs" />
     <Compile Include="Operators\Trigonometric\Sinh.cs" />
     <Compile Include="Operators\Trigonometric\Tanh.cs" />

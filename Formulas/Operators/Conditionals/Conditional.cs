@@ -1,4 +1,4 @@
-﻿namespace WallpaperGenerator.Formulas.Operators
+﻿namespace WallpaperGenerator.Formulas.Operators.Conditionals
 {
     public class Conditional : TernaryOperator
     {
