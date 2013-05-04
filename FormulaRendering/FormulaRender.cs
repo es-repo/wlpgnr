@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;  
 using WallpaperGenerator.Formulas;
-using WallpaperGenerator.Formulas.Operators;
 
 namespace WallpaperGenerator.FormulaRendering
 {
@@ -21,17 +20,16 @@ namespace WallpaperGenerator.FormulaRendering
             return formulaTree.EvaluateRanges(new Range(0, width), new Range(0, height));
         }
         
-        private static IEnumerable<Rgb> MapToRgb(IEnumerable<double> values)
+        private static IEnumerable<Rgb> MapToRgb(double[] values)
         {
+            Func<double, double> redChannelTransformingFunction = CreateChannelTransformingFunction();
+            IEnumerable<byte> redChannel = MapToColorChannel(values, redChannelTransformingFunction);
 
-            FormulaTreeNode redChannelDilutingFormulaTreeRoot = CreateChannelDilutingFormulaTreeRoot();
-            IEnumerable<byte> redChannel = MapToColorChannel(values, redChannelDilutingFormulaTreeRoot);
+            Func<double, double> greenChannelTransformingFunction = CreateChannelTransformingFunction();
+            IEnumerable<byte> greenChannel = MapToColorChannel(values, greenChannelTransformingFunction);
 
-            FormulaTreeNode greenChannelDilutingFormulaTreeRoot = CreateChannelDilutingFormulaTreeRoot();
-            IEnumerable<byte> greenChannel = MapToColorChannel(values, greenChannelDilutingFormulaTreeRoot);
-
-            FormulaTreeNode blueChannelDilutingFormulaTreeRoot = CreateChannelDilutingFormulaTreeRoot();
-            IEnumerable<byte> blueChannel = MapToColorChannel(values, blueChannelDilutingFormulaTreeRoot);
+            Func<double, double> blueChannelTransformingunction = CreateChannelTransformingFunction();
+            IEnumerable<byte> blueChannel = MapToColorChannel(values, blueChannelTransformingunction);
 
             IEnumerator<byte> greenChannelEnumerator = greenChannel.GetEnumerator();
             IEnumerator<byte> blueChannelEnumerator = blueChannel.GetEnumerator();
@@ -47,29 +45,25 @@ namespace WallpaperGenerator.FormulaRendering
             }
         }
 
-        private static FormulaTreeNode CreateChannelDilutingFormulaTreeRoot()
+        private static Func<double, double> CreateChannelTransformingFunction()
         {
-            //IEnumerable<Operator> operatorsForChannelDilutingFormula = new[]
-            //    {
-            //        OperatorsLibrary.Sum, 
-            //        OperatorsLibrary.Sub,
-            //        OperatorsLibrary.Mul
-            //    };
-            //operatorsForChannelDilutingFormula = operatorsForChannelDilutingFormula.Concat(OperatorsLibrary.Constants);
-            //return FormulaTreeGenerator.CreateRandomFormulaTree(1, 3, 3, 0, operatorsForChannelDilutingFormula);
-
             Random random = new Random();
-            double a = random.NextDouble();
-            double b = random.NextDouble();
-            double c = random.NextDouble();
-            return FormulaTreeSerializer.Deserialize(string.Format("sum(sum(mul(mul(x x) {0}) mul(x {1})) {2})", a, b, c));
+
+            int aSign = random.Next(2) == 0 ? -1 : 1;
+            int bSign = random.Next(2) == 0 ? -1 : 1;
+            int cSign = random.Next(2) == 0 ? -1 : 1;
+            
+            double a = random.NextDouble()*aSign;
+            double b = random.NextDouble()*bSign;
+            double c = random.NextDouble()*cSign;
+            
+            return v => v*v*a + v*b + c;
         }
 
-        private static IEnumerable<byte> MapToColorChannel(IEnumerable<double> values, FormulaTreeNode channelDilutingFormulaTreeRoot)
+        private static IEnumerable<byte> MapToColorChannel(IEnumerable<double> values, Func<double, double> channelTransformingFunction)
         {
-            FormulaTree channelDilutingFormulaTree = new FormulaTree(channelDilutingFormulaTreeRoot);
-            IEnumerable<double> channelValues = channelDilutingFormulaTree.EvaluateSeries(values);
-
+            double[] channelValues = TransformChannelValues(values, channelTransformingFunction).ToArray();
+            
             IEnumerable<double> significantValues = GetSignificantValues(channelValues);
 
             double mathExpectation = MathUtilities.MathExpectation(significantValues);
@@ -89,6 +83,11 @@ namespace WallpaperGenerator.FormulaRendering
             }
 
             return channelValues.Select(v => (byte)MathUtilities.Map(v, rangeStart, rangeEnd, 0, 255));
+        }
+
+        private static IEnumerable<double> TransformChannelValues(IEnumerable<double> values, Func<double, double> channelTransformingFunction)
+        {
+            return values.Select(channelTransformingFunction);
         }
 
         private static IEnumerable<double> GetSignificantValues(IEnumerable<double> values)
