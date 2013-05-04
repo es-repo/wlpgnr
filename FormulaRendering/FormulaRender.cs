@@ -7,6 +7,8 @@ namespace WallpaperGenerator.FormulaRendering
 {
     public static class FormulaRender
     {
+        private static readonly Random _random = new Random();
+
         public static RenderedFormulaImage Render(FormulaTreeNode formulaTreeRoot, int width, int height)
         {
             double[] formulaEvaluatedField = GetFormulaEvaluatedField(formulaTreeRoot, width, height).ToArray();
@@ -47,15 +49,13 @@ namespace WallpaperGenerator.FormulaRendering
 
         private static Func<double, double> CreateChannelTransformingFunction()
         {
-            Random random = new Random();
+            int aSign = _random.Next(-2, 2);
+            int bSign = _random.Next(-2, 2);
+            int cSign = _random.Next(-2, 2);
 
-            int aSign = random.Next(-2, 2);
-            int bSign = random.Next(-2, 2);
-            int cSign = random.Next(-2, 2);
-            
-            double a = random.NextDouble()*aSign;
-            double b = random.NextDouble()*bSign;
-            double c = random.NextDouble()*cSign;
+            double a = _random.NextDouble() * aSign;
+            double b = _random.NextDouble() * bSign;
+            double c = _random.NextDouble() * cSign;
             
             return v => v*v*v*a + v*v*b + v*c;
         }
