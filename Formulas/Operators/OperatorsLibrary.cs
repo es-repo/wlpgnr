@@ -102,12 +102,12 @@ namespace WallpaperGenerator.Formulas.Operators
         {
             get
             {
-                yield return Pow;
+                //yield return Pow;
                 yield return Pow2;
                 yield return Pow3;
                 yield return Pow1_2;
                 yield return Pow1_3;
-                yield return Log;
+                //yield return Log;
                 yield return Log2;
                 yield return LogE;
             }
@@ -157,9 +157,10 @@ namespace WallpaperGenerator.Formulas.Operators
         {
             get
             {
-                yield return Sinh;
-                yield return Cosh;
-                yield return Tanh;
+                //yield return Sinh;
+                //yield return Cosh;
+                //yield return Tanh;
+                return Enumerable.Empty<Operator>();
             }
         }
 

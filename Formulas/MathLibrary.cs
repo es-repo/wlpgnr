@@ -56,12 +56,14 @@ namespace WallpaperGenerator.Formulas
 
         public static double Pow(double a, double b)
         {
+            if (b == 0.5)
+                a = Math.Abs(a);
             return Math.Pow(a, b);
         }
 
         public static double Log(double a, double b)
         {
-            return Math.Log(a, b);
+            return Math.Log(Math.Abs(a), b);
         }
 
         #endregion
