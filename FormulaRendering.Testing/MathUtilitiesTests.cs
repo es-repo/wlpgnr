@@ -58,7 +58,7 @@ namespace WallpaperGenerator.FormulaRendering.Testing
         [Row(0, 0, 1, 1, 2, 1)]
         [Row(-10, -11, -10, 0, 1, 1)]
         [Row(3, 0, 10, 0, 100, 30)]
-        [Row(double.NaN, 0, 10, 0, 100, 0)]
+        [Row(double.NaN, 0, 10, 0, 100, 50)]
         [Row(-24, -30, -10, 400, 500, 430)]
         public void TestMap(double value, double rangeStart, double rangeEnd, double mappedRangeStart, double mappedRangeEnd, double expectedMappedValue)
         {

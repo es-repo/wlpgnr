@@ -49,15 +49,15 @@ namespace WallpaperGenerator.FormulaRendering
         {
             Random random = new Random();
 
-            int aSign = random.Next(2) == 0 ? -1 : 1;
-            int bSign = random.Next(2) == 0 ? -1 : 1;
-            int cSign = random.Next(2) == 0 ? -1 : 1;
+            int aSign = random.Next(-2, 2);
+            int bSign = random.Next(-2, 2);
+            int cSign = random.Next(-2, 2);
             
             double a = random.NextDouble()*aSign;
             double b = random.NextDouble()*bSign;
             double c = random.NextDouble()*cSign;
             
-            return v => v*v*a + v*b + c;
+            return v => v*v*v*a + v*v*b + v*c;
         }
 
         private static IEnumerable<byte> MapToColorChannel(IEnumerable<double> values, Func<double, double> channelTransformingFunction)
