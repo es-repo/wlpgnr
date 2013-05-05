@@ -62,7 +62,7 @@
     <Compile Include="Operators\Bitwise\Or.cs" />
     <Compile Include="Operators\Bitwise\And.cs" />
     <Compile Include="Operators\Bitwise\Xor.cs" />
-    <Compile Include="Operators\Conditionals\Conditional.cs" />
+    <Compile Include="Operators\Conditionals\IfG0.cs" />
     <Compile Include="FormulaTreeSerializer.cs" />
     <Compile Include="MathLibrary.cs" />
     <Compile Include="Operators\Conditionals\Max.cs" />

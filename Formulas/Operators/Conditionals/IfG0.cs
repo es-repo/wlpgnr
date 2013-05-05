@@ -1,10 +1,10 @@
 ﻿namespace WallpaperGenerator.Formulas.Operators.Conditionals
 {
-    public class Conditional : TernaryOperator
+    public class IfG0 : TernaryOperator
     {
         protected override double EvaluateCore(params double[] operands)
         {
-            return operands[0].Equals(0) ? operands[2] : operands[1];
+            return operands[0] > 0 ? operands[2] : operands[1];
         }
     }
 }

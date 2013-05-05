@@ -78,7 +78,7 @@ namespace WallpaperGenerator.Formulas.Operators
         {
             get
             {
-                yield return Minus;
+                //yield return Minus;
                 yield return Abs;
                 yield return Sum;
                 yield return Sub;
@@ -148,7 +148,7 @@ namespace WallpaperGenerator.Formulas.Operators
                 //yield return Sec;
                 yield return Cos;
                 //yield return Csc;
-                yield return Tan;
+                //yield return Tan;
                 yield return Atan;
             }
         }
@@ -189,7 +189,7 @@ namespace WallpaperGenerator.Formulas.Operators
         public static readonly Operator And = new And();
         public static readonly Operator Or = new Or();
         public static readonly Operator Xor = new Xor();
-
+        
         public static IEnumerable<Operator> Bitwise
         {
             get
@@ -204,7 +204,7 @@ namespace WallpaperGenerator.Formulas.Operators
 
         #region Conditional Operators
 
-        public static readonly Operator Conditional = new Conditional();
+        public static readonly Operator Conditional = new IfG0();
         public static readonly Operator Max = new Max();
 
         public static IEnumerable<Operator> Conditionals
