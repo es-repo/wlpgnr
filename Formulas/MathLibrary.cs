@@ -6,14 +6,22 @@ namespace WallpaperGenerator.Formulas
     {
         #region Constants
 
+        public static readonly double C1_3 = 1.0/3.0;
         public static readonly double C05 = 0.5;
         public static readonly double C1 = 1;
         public static readonly double C2 = 2;
         public static readonly double C3 = 3;
         public static readonly double C5 = 5;
         public static readonly double C7 = 7;
+        public static readonly double C11 = 11;
         public static readonly double PI = Math.PI;
         public static readonly double E = Math.E;
+        public static readonly double Sqrt2 = Math.Sqrt(2);
+        public static readonly double Sqrt3 = Math.Sqrt(3);
+        public static readonly double AperysC = 1.202056903159594;
+        public static readonly double GoldenRatio = 1.61803398874;
+        public static readonly double EulerMascheroniC = 0.57721;
+        public static readonly double KhinchinsC = 2.6854520010;
 
         #endregion
 

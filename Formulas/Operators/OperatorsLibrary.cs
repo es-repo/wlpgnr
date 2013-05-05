@@ -11,59 +11,49 @@ namespace WallpaperGenerator.Formulas.Operators
     {
         #region Constants
 
-        #region Base Constants
-
-        public static readonly Operator C05 = new Constant(MathLibrary.C05);
+        public static readonly Operator C1_3 = new Constant(MathLibrary.C1_3, "1_3");
+        public static readonly Operator C05 = new Constant(MathLibrary.C05, "1_2");
         public static readonly Operator C1 = new Constant(MathLibrary.C1);
         public static readonly Operator C2 = new Constant(MathLibrary.C2);
         public static readonly Operator C3 = new Constant(MathLibrary.C3);
         public static readonly Operator C5 = new Constant(MathLibrary.C5);
         public static readonly Operator C7 = new Constant(MathLibrary.C7);
+        public static readonly Operator C11 = new Constant(MathLibrary.C11);
         public static readonly Operator Pi = new Constant(MathLibrary.PI, "Pi");
-        public static readonly Operator E = new Constant(MathLibrary.E, "e");
+        public static readonly Operator E = new Constant(MathLibrary.E, "E");
+        public static readonly Operator Sqrt2 = new Constant(MathLibrary.Sqrt2, "Sqrt2");
+        public static readonly Operator Sqrt3 = new Constant(MathLibrary.Sqrt3, "Sqrt3");
+        public static readonly Operator AperysC = new Constant(MathLibrary.AperysC, "Zita");
+        public static readonly Operator GoldenRatio = new Constant(MathLibrary.GoldenRatio, "Fi");
+        public static readonly Operator EulerMascheroniC = new Constant(MathLibrary.EulerMascheroniC, "Gamma");
+        public static readonly Operator KhinchinsC = new Constant(MathLibrary.KhinchinsC, "K");
 
-        public static IEnumerable<Operator> ConstantsBase
+        public static IEnumerable<Operator> Constants
         {
             get
             {
+                yield return C1_3;
                 yield return C05;
                 yield return C1;
                 yield return C2;
                 yield return C3;
                 yield return C5;
                 yield return C7;
+                yield return C11;
                 yield return Pi;
                 yield return E;
-            }
-        }
-
-        #endregion
-
-        #region Extra Constants
-
-        public static IEnumerable<Operator> ConstantsExtra
-        {
-            get
-            {
-                return Enumerable.Empty<Operator>();
-            }
-        }
-
-        #endregion
-
-        public static IEnumerable<Operator> Constants
-        {
-            get
-            {
-                return ConstantsBase.Concat(ConstantsExtra);
+                yield return Sqrt2;
+                yield return Sqrt3;
+                yield return AperysC;
+                yield return GoldenRatio;
+                yield return EulerMascheroniC;
+                yield return KhinchinsC;
             }
         }
 
         #endregion
         
         #region Arithmetic Operators
-
-        #region Base Arithmetic Operators
 
         public static readonly Operator Minus = new Minus();
         public static readonly Operator Abs = new Abs();
@@ -73,8 +63,16 @@ namespace WallpaperGenerator.Formulas.Operators
         public static readonly Operator Div = new Div();
         public static readonly Operator DivRem = new DivRem();
         public static readonly Operator Round = new Round();
+        public static readonly Operator Pow = new Pow();
+        public static readonly Operator Pow2 = new Pow2();
+        public static readonly Operator Pow3 = new Pow3();
+        public static readonly Operator Pow1_2 = new Pow1_2();
+        public static readonly Operator Pow1_3 = new Pow1_3();
+        public static readonly Operator Log = new Log();
+        public static readonly Operator Log2 = new Log2();
+        public static readonly Operator LogE = new LogE();
 
-        public static IEnumerable<Operator> ArithmeticBase
+        public static IEnumerable<Operator> Arithmetic
         {
             get
             {
@@ -86,26 +84,6 @@ namespace WallpaperGenerator.Formulas.Operators
                 yield return Div;
                 yield return DivRem;
                 yield return Round;
-            }
-        }
-
-        #endregion
-
-        #region Extra Arithmetic Operators
-
-        public static readonly Operator Pow = new Pow();
-        public static readonly Operator Pow2 = new Pow2();
-        public static readonly Operator Pow3 = new Pow3();
-        public static readonly Operator Pow1_2 = new Pow1_2();
-        public static readonly Operator Pow1_3 = new Pow1_3();
-        public static readonly Operator Log = new Log();
-        public static readonly Operator Log2 = new Log2();
-        public static readonly Operator LogE = new LogE();
-
-        public static IEnumerable<Operator> ArithmeticExtra
-        {
-            get
-            {
                 //yield return Pow;
                 yield return Pow2;
                 yield return Pow3;
@@ -119,28 +97,19 @@ namespace WallpaperGenerator.Formulas.Operators
 
         #endregion
 
-        public static IEnumerable<Operator> Arithmetic
-        {
-            get
-            {
-                return ArithmeticBase.Concat(ArithmeticExtra);
-            }
-        }
-
-        #endregion
-
         #region Trigonometric Operators
-
-        #region Base Trigonometric Operators
-
+        
         public static readonly Operator Sin = new Sin();
         public static readonly Operator Sec = new Sec();
         public static readonly Operator Cos = new Cos();
         public static readonly Operator Csc = new Csc();
         public static readonly Operator Tan = new Tan();
         public static readonly Operator Atan = new Atan();
+        public static readonly Operator Sinh = new Sinh();
+        public static readonly Operator Cosh = new Cosh();
+        public static readonly Operator Tanh = new Tanh();
         
-        public static IEnumerable<Operator> TrigonometricBase
+        public static IEnumerable<Operator> Trigonometric
         {
             get
             {
@@ -150,35 +119,9 @@ namespace WallpaperGenerator.Formulas.Operators
                 //yield return Csc;
                 //yield return Tan;
                 yield return Atan;
-            }
-        }
-
-        #endregion
-
-        #region Extra Trigonometric Operators
-
-        public static readonly Operator Sinh = new Sinh();
-        public static readonly Operator Cosh = new Cosh();
-        public static readonly Operator Tanh = new Tanh();
-
-        public static IEnumerable<Operator> TrigonometricExtra
-        {
-            get
-            {
                 //yield return Sinh;
                 //yield return Cosh;
                 //yield return Tanh;
-                return Enumerable.Empty<Operator>();
-            }
-        }
-
-        #endregion
-
-        public static IEnumerable<Operator> Trigonometric
-        {
-            get
-            {
-                return TrigonometricBase.Concat(TrigonometricExtra);
             }
         }
 
@@ -230,12 +173,9 @@ namespace WallpaperGenerator.Formulas.Operators
         {
             get
             {
-                yield return new KeyValuePair<string, IEnumerable<Operator>>("ConstantsBase", ConstantsBase);
-                yield return new KeyValuePair<string, IEnumerable<Operator>>("ConstantsExtra", ConstantsExtra);
-                yield return new KeyValuePair<string, IEnumerable<Operator>>("ArithmeticBase", ArithmeticBase);
-                yield return new KeyValuePair<string, IEnumerable<Operator>>("ArithmeticExtra", ArithmeticExtra);
-                yield return new KeyValuePair<string, IEnumerable<Operator>>("TrigonometricBase", TrigonometricBase);
-                yield return new KeyValuePair<string, IEnumerable<Operator>>("TrigonometricExtra", TrigonometricExtra);
+                yield return new KeyValuePair<string, IEnumerable<Operator>>("Constants", Constants);
+                yield return new KeyValuePair<string, IEnumerable<Operator>>("Arithmetic", Arithmetic);
+                yield return new KeyValuePair<string, IEnumerable<Operator>>("Trigonometric", Trigonometric);
                 yield return new KeyValuePair<string, IEnumerable<Operator>>("Bitwise", Bitwise);
                 yield return new KeyValuePair<string, IEnumerable<Operator>>("Conditionals", Conditionals);
             }
