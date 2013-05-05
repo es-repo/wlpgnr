@@ -67,14 +67,14 @@ namespace WallpaperGenerator.FormulaRendering
             IEnumerable<double> significantValues = GetSignificantValues(channelValues);
 
             double mathExpectation = MathUtilities.MathExpectation(significantValues);
-            double threeSigmas = MathUtilities.ThreeSigmas(significantValues);
-            if (double.IsNegativeInfinity(threeSigmas))
-                threeSigmas = double.MinValue;
-            if (double.IsPositiveInfinity(threeSigmas))
-                threeSigmas = double.MaxValue;
+            double standardDeviation = MathUtilities.StandardDeviation(significantValues);
+            if (double.IsNegativeInfinity(standardDeviation))
+                standardDeviation = double.MinValue;
+            if (double.IsPositiveInfinity(standardDeviation))
+                standardDeviation = double.MaxValue;
 
-            double rangeStart = mathExpectation - threeSigmas;
-            double rangeEnd = mathExpectation + threeSigmas;
+            double rangeStart = mathExpectation - standardDeviation;
+            double rangeEnd = mathExpectation + standardDeviation;
             if (rangeStart > rangeEnd)
             {
                 double tmp = rangeStart;

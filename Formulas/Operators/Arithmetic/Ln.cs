@@ -2,7 +2,7 @@
 
 namespace WallpaperGenerator.Formulas.Operators.Arithmetic
 {
-    public class LogE : UnaryOperator
+    public class Ln : UnaryOperator
     {
         protected override double EvaluateCore(params double[] operands)
         {

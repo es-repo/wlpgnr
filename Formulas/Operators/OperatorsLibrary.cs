@@ -70,7 +70,7 @@ namespace WallpaperGenerator.Formulas.Operators
         public static readonly Operator Pow1_3 = new Pow1_3();
         public static readonly Operator Log = new Log();
         public static readonly Operator Log2 = new Log2();
-        public static readonly Operator LogE = new LogE();
+        public static readonly Operator LogE = new Ln();
 
         public static IEnumerable<Operator> Arithmetic
         {
@@ -84,13 +84,13 @@ namespace WallpaperGenerator.Formulas.Operators
                 yield return Div;
                 yield return DivRem;
                 yield return Round;
-                //yield return Pow;
+                yield return Pow;
                 yield return Pow2;
                 yield return Pow3;
                 yield return Pow1_2;
                 yield return Pow1_3;
                 //yield return Log;
-                yield return Log2;
+                //yield return Log2;
                 yield return LogE;
             }
         }

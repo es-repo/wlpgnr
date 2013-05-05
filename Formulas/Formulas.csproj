@@ -52,7 +52,7 @@
     <Compile Include="Operators\Arithmetic\Pow1_2.cs" />
     <Compile Include="Operators\Arithmetic\Pow3.cs" />
     <Compile Include="Operators\Arithmetic\Pow2.cs" />
-    <Compile Include="Operators\Arithmetic\LogE.cs" />
+    <Compile Include="Operators\Arithmetic\Ln.cs" />
     <Compile Include="Operators\Arithmetic\Log2.cs" />
     <Compile Include="Operators\Arithmetic\Log.cs" />
     <Compile Include="Operators\Arithmetic\Div.cs" />
