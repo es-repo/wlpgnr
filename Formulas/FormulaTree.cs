@@ -51,7 +51,7 @@ namespace WallpaperGenerator.Formulas
 
         public IEnumerable<double> EvaluateRanges(params Range[] variableValueRanges)
         {
-            IEnumerable<double>[] series = variableValueRanges.Select(r => Enumerable.Range(r.Start, r.Count).Select(v => (double) v)).ToArray();
+            IEnumerable<double>[] series = variableValueRanges.Select(r => r.Values).ToArray();
             return EvaluateSeries(series);
         }
 

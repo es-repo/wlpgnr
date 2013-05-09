@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
@@ -44,11 +45,13 @@ namespace WallpaperGenerator.MainWindowControls
             Children.Add(GenerateFormulaButton);
             Children.Add(RenderFormulaButton);
 
-            DimensionsCountSlider = CreateSliderControlsBlock(1, 2, 2, "Dimensions");
+            DimensionsCountSlider = CreateSliderControlsBlock(1, 10, 4, "Dimensions");
+            DimensionsCountSlider.ValueChanged += (s, a) =>
+                VariablesCountSlider.Value = Math.Max(VariablesCountSlider.Value, DimensionsCountSlider.Value);
             
-            VariablesCountSlider = CreateSliderControlsBlock(1, 10, 4, "Variables");
+            VariablesCountSlider = CreateSliderControlsBlock(1, 20, 4, "Variables");
             
-            ConstantsCountSlider = CreateSliderControlsBlock(0, 10, 4, "Constants");
+            ConstantsCountSlider = CreateSliderControlsBlock(0, 20, 4, "Constants");
             
             UnaryOperatorsCountSlider = CreateSliderControlsBlock(0, 10, 4, "Unary Operators");
             
@@ -123,8 +126,7 @@ namespace WallpaperGenerator.MainWindowControls
                 Maximum = maximumValue,
                 Value = defaultValue,
                 TickPlacement = TickPlacement.BottomRight,
-                IsSnapToTickEnabled = true,
-                //Margin = new Thickness { Top = 10 }
+                IsSnapToTickEnabled = true
             };
 
             sliderValueLabel.Text = slider.Value.ToString(CultureInfo.InvariantCulture);

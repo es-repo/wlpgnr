@@ -11,15 +11,19 @@ namespace WallpaperGenerator.FormulaRendering
 
         public static RenderedFormulaImage Render(FormulaTreeNode formulaTreeRoot, int width, int height)
         {
-            double[] formulaEvaluatedField = GetFormulaEvaluatedField(formulaTreeRoot, width, height).ToArray();
-            IEnumerable<Rgb> data = MapToRgb(formulaEvaluatedField);
-            return new RenderedFormulaImage(data.ToArray(), width, height);
+            int valuesCount = width * height;
+            double[] formulaEvaluatedValues = GetFormulaEvaluatedValues(formulaTreeRoot, valuesCount).ToArray();
+            IEnumerable<Rgb> data = MapToRgb(formulaEvaluatedValues);
+            return new RenderedFormulaImage(data.Take(valuesCount).ToArray(), width, height);
         }
 
-        private static IEnumerable<double> GetFormulaEvaluatedField(FormulaTreeNode formulaTreeRoot, int width, int height)
+        private static IEnumerable<double> GetFormulaEvaluatedValues(FormulaTreeNode formulaTreeRoot, int valuesCount)
         {
             FormulaTree formulaTree = new FormulaTree(formulaTreeRoot);
-            return formulaTree.EvaluateRanges(new Range(0, width), new Range(0, height));
+            int dimensions = formulaTree.Variables.Length;
+            int countPerDimension = (int)Math.Ceiling(Math.Pow(valuesCount, 1.0/dimensions));
+            Range[] variableValuesRanges = Enumerable.Repeat(1, dimensions).Select(i => new Range(0, 0.1, countPerDimension)).ToArray();
+            return formulaTree.EvaluateRanges(variableValuesRanges);
         }
         
         private static IEnumerable<Rgb> MapToRgb(double[] values)
@@ -67,7 +71,7 @@ namespace WallpaperGenerator.FormulaRendering
             IEnumerable<double> significantValues = GetSignificantValues(channelValues);
 
             double mathExpectation = MathUtilities.MathExpectation(significantValues);
-            double standardDeviation = MathUtilities.StandardDeviation(significantValues);
+            double standardDeviation = MathUtilities.StandardDeviation(significantValues) * 2;
             if (double.IsNegativeInfinity(standardDeviation))
                 standardDeviation = double.MinValue;
             if (double.IsPositiveInfinity(standardDeviation))
