@@ -10,9 +10,9 @@ namespace WallpaperGenerator.Formulas.Testing
         [Test]
         public void TestSerialize()
         {
-            TestSerialize(new FormulaTreeNode(OperatorsLibrary.C05), "(0.5)",
+            TestSerialize(new FormulaTreeNode(OperatorsLibrary.C05), "(1_2)",
 @"(
-0.5)");
+1_2)");
 
             TestSerialize(new FormulaTreeNode(new Variable("x")), "(x)",
 @"(
@@ -53,7 +53,7 @@ Sum(
                          new TreeNode<Operator>(OperatorsLibrary.Minus,
                             new TreeNode<Operator>(OperatorsLibrary.Minus,
                                 new TreeNode<Operator>(OperatorsLibrary.C7))))),
-                "(Sum(Minus(Mul(3 Minus(Minus(Minus(0.5))))) Minus(Minus(Minus(7)))))",
+                "(Sum(Minus(Mul(3 Minus(Minus(Minus(1_2))))) Minus(Minus(Minus(7)))))",
 @"(
 Sum(
 	Minus(
@@ -62,7 +62,7 @@ Sum(
 			Minus(
 				Minus(
 					Minus(
-						0.5)))))
+						1_2)))))
 	Minus(
 		Minus(
 			Minus(

@@ -62,7 +62,7 @@ namespace WallpaperGenerator.Utilities.Testing
             bool eqaulWithInaccuracy = !expectedSecondProbability.Equals(0) && !expectedSecondProbability.Equals(1);
             if (eqaulWithInaccuracy)
             {
-                const double inaccuracy = 0.1;
+                const double inaccuracy = 0.15;
                 Assert.Between(secondProbability, expectedSecondProbability - inaccuracy, expectedSecondProbability + inaccuracy);
                 Assert.Between(thirdProbability, expectedThirdProbability - inaccuracy, expectedThirdProbability + inaccuracy);
             }

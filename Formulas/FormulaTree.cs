@@ -55,6 +55,50 @@ namespace WallpaperGenerator.Formulas
             return EvaluateSeries(series);
         }
 
+        public IEnumerable<double> EvaluateRangesIn2DProjection(params Range[] variableValueRanges)
+        {
+            IEnumerable<double>[] series = variableValueRanges.Select(r => r.Values).ToArray();
+            return EvaluateSeriesIn2DProjection(series);
+        }
+
+        public IEnumerable<double> EvaluateSeriesIn2DProjection(params IEnumerable<double>[] variableValues)
+        {
+            IEnumerator<double>[] xVariableValuesEnumerators = variableValues.Where((vv, i) => i % 2 == 0).Select(vv => vv.GetEnumerator()).ToArray();
+            while (xVariableValuesEnumerators[0].MoveNext())
+            {
+                for (int i = 0; i < xVariableValuesEnumerators.Length; i++)
+                {
+                    if (i != 0)
+                    {
+                        xVariableValuesEnumerators[i].MoveNext();
+                    }
+                    Variables[i * 2].Value = xVariableValuesEnumerators[i].Current;
+                }
+
+                if (variableValues.Length > 1)
+                {
+                    IEnumerator<double>[] yVariableValuesEnumerators = variableValues.Where((vv, i) => i % 2 == 1).Select(vv => vv.GetEnumerator()).ToArray();
+                    while (yVariableValuesEnumerators[0].MoveNext())
+                    {
+                        for (int i = 0; i < yVariableValuesEnumerators.Length; i++)
+                        {
+                            if (i != 0)
+                            {
+                                yVariableValuesEnumerators[i].MoveNext();
+                            }
+                            Variables[i * 2 + 1].Value = yVariableValuesEnumerators[i].Current;
+                        }
+
+                        yield return Evaluate();
+                    }
+                }
+                else
+                {
+                    yield return Evaluate();
+                }
+            }
+        } 
+
         public IEnumerable<double> EvaluateSeries(params IEnumerable<double>[] variableValues)
         {
             return EvaluateSeriesCore(variableValues, 0);

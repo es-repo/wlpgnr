@@ -89,7 +89,7 @@ namespace WallpaperGenerator.Formulas.Operators
                 yield return Pow3;
                 yield return Pow1_2;
                 yield return Pow1_3;
-                //yield return Log;
+                yield return Log;
                 //yield return Log2;
                 yield return LogE;
             }
@@ -114,14 +114,14 @@ namespace WallpaperGenerator.Formulas.Operators
             get
             {
                 yield return Sin;
-                //yield return Sec;
-                yield return Cos;
+                yield return Sec;
+                //yield return Cos;
                 //yield return Csc;
                 //yield return Tan;
                 yield return Atan;
-                //yield return Sinh;
+                yield return Sinh;
                 //yield return Cosh;
-                //yield return Tanh;
+                yield return Tanh;
             }
         }
 

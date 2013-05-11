@@ -11,19 +11,23 @@ namespace WallpaperGenerator.FormulaRendering
 
         public static RenderedFormulaImage Render(FormulaTreeNode formulaTreeRoot, int width, int height)
         {
-            int valuesCount = width * height;
-            double[] formulaEvaluatedValues = GetFormulaEvaluatedValues(formulaTreeRoot, valuesCount).ToArray();
+            double[] formulaEvaluatedValues = GetFormulaEvaluatedValues(formulaTreeRoot, width, height).ToArray();
             IEnumerable<Rgb> data = MapToRgb(formulaEvaluatedValues);
-            return new RenderedFormulaImage(data.Take(valuesCount).ToArray(), width, height);
+            return new RenderedFormulaImage(data.ToArray(), width, height);
         }
 
-        private static IEnumerable<double> GetFormulaEvaluatedValues(FormulaTreeNode formulaTreeRoot, int valuesCount)
+        private static IEnumerable<double> GetFormulaEvaluatedValues(FormulaTreeNode formulaTreeRoot, int width, int height)
         {
             FormulaTree formulaTree = new FormulaTree(formulaTreeRoot);
+            
             int dimensions = formulaTree.Variables.Length;
-            int countPerDimension = (int)Math.Ceiling(Math.Pow(valuesCount, 1.0/dimensions));
-            Range[] variableValuesRanges = Enumerable.Repeat(1, dimensions).Select(i => new Range(0, 0.1, countPerDimension)).ToArray();
-            return formulaTree.EvaluateRanges(variableValuesRanges);
+            IEnumerable<Range> variableValuesRanges = Enumerable.Repeat(1, dimensions).
+                Select(i => new Range(
+                    _random.NextDouble()*_random.Next(0, 10),
+                    0.0000001 + _random.NextDouble() / 10, 
+                    i%2 == 0 ? width : height));
+
+            return formulaTree.EvaluateRangesIn2DProjection(variableValuesRanges.ToArray());
         }
         
         private static IEnumerable<Rgb> MapToRgb(double[] values)
