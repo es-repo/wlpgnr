@@ -22,10 +22,10 @@ namespace WallpaperGenerator.Formulas.Testing
             _formulaRoot =
                 new FormulaTreeNode(OperatorsLibrary.Sum,
                     new FormulaTreeNode(OperatorsLibrary.Mul,
-                        new FormulaTreeNode(OperatorsLibrary.C2),
+                        new FormulaTreeNode(new Constant(2)),
                         new FormulaTreeNode(_xVariable)),
                     new FormulaTreeNode(OperatorsLibrary.Mul,
-                        new FormulaTreeNode(OperatorsLibrary.C7),
+                        new FormulaTreeNode(new Constant(7)),
                         new FormulaTreeNode(OperatorsLibrary.Sum,
                             new FormulaTreeNode(OperatorsLibrary.Minus,
                                 new FormulaTreeNode(_yVariable)),

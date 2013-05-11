@@ -10,9 +10,9 @@ namespace WallpaperGenerator.Formulas.Testing
         [Test]
         public void TestSerialize()
         {
-            TestSerialize(new FormulaTreeNode(OperatorsLibrary.C05), "(1_2)",
+            TestSerialize(new FormulaTreeNode(new Constant(0.5)), "(0.5)",
 @"(
-1_2)");
+0.5)");
 
             TestSerialize(new FormulaTreeNode(new Variable("x")), "(x)",
 @"(
@@ -20,7 +20,7 @@ x)");
 
             TestSerialize(
                 new FormulaTreeNode(OperatorsLibrary.Sum,
-                    new TreeNode<Operator>(OperatorsLibrary.C2),
+                    new TreeNode<Operator>(new Constant(2)),
                     new FormulaTreeNode(new Variable("y"))), "(Sum(2 y))", 
 @"(
 Sum(
@@ -29,7 +29,7 @@ Sum(
 
             TestSerialize(
                 new FormulaTreeNode(OperatorsLibrary.Sum,
-                    new TreeNode<Operator>(OperatorsLibrary.C2),
+                    new TreeNode<Operator>(new Constant(2)),
                     new TreeNode<Operator>(OperatorsLibrary.Mul,
                         new FormulaTreeNode(new Variable("y")),
                         new FormulaTreeNode(new Variable("z")))), "(Sum(2 Mul(y z)))", 
@@ -44,16 +44,16 @@ Sum(
                 new FormulaTreeNode(OperatorsLibrary.Sum,
                     new TreeNode<Operator>(OperatorsLibrary.Minus,
                         new TreeNode<Operator>(OperatorsLibrary.Mul,
-                            new TreeNode<Operator>(OperatorsLibrary.C3),
+                            new TreeNode<Operator>(new Constant(3)),
                             new TreeNode<Operator>(OperatorsLibrary.Minus,
                                 new TreeNode<Operator>(OperatorsLibrary.Minus,
                                     new TreeNode<Operator>(OperatorsLibrary.Minus,
-                                        new TreeNode<Operator>(OperatorsLibrary.C05)))))),
+                                        new TreeNode<Operator>(new Constant(0.5))))))),
                     new TreeNode<Operator>(OperatorsLibrary.Minus,
                          new TreeNode<Operator>(OperatorsLibrary.Minus,
                             new TreeNode<Operator>(OperatorsLibrary.Minus,
-                                new TreeNode<Operator>(OperatorsLibrary.C7))))),
-                "(Sum(Minus(Mul(3 Minus(Minus(Minus(1_2))))) Minus(Minus(Minus(7)))))",
+                                new TreeNode<Operator>(new Constant(7)))))),
+                "(Sum(Minus(Mul(3 Minus(Minus(Minus(0.5))))) Minus(Minus(Minus(7)))))",
 @"(
 Sum(
 	Minus(
@@ -62,7 +62,7 @@ Sum(
 			Minus(
 				Minus(
 					Minus(
-						1_2)))))
+						0.5)))))
 	Minus(
 		Minus(
 			Minus(
@@ -71,14 +71,14 @@ Sum(
             TestSerialize(// 2*x + 7*(-y + 5)            
                 new FormulaTreeNode(OperatorsLibrary.Sum,
                     new FormulaTreeNode(OperatorsLibrary.Mul,
-                        new FormulaTreeNode(OperatorsLibrary.C2),
+                        new FormulaTreeNode(new Constant(2)),
                         new FormulaTreeNode(new Variable("x"))),
                     new FormulaTreeNode(OperatorsLibrary.Mul,
-                        new FormulaTreeNode(OperatorsLibrary.C7),
+                        new FormulaTreeNode(new Constant(7)),
                         new FormulaTreeNode(OperatorsLibrary.Sum,
                             new FormulaTreeNode(OperatorsLibrary.Minus,
                                 new FormulaTreeNode(new Variable("y"))),
-                            new FormulaTreeNode(OperatorsLibrary.C5)))), "(Sum(Mul(2 x) Mul(7 Sum(Minus(y) 5))))",
+                            new FormulaTreeNode(new Constant(5))))), "(Sum(Mul(2 x) Mul(7 Sum(Minus(y) 5))))",
 @"(
 Sum(
 	Mul(

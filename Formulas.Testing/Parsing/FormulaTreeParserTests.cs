@@ -15,7 +15,7 @@ namespace WallpaperGenerator.Formulas.Testing.Parsing
         {
             TestParse("()", null);
 
-            TestParse("(2)", new FormulaTreeNode(OperatorsLibrary.C2));
+            TestParse("(2)", new FormulaTreeNode(new Constant(2)));
 
             TestParse("(x)", new FormulaTreeNode(new Variable("x")));
             
@@ -39,14 +39,14 @@ Sum(
 			5))))",
                 new FormulaTreeNode(OperatorsLibrary.Sum,
                     new FormulaTreeNode(OperatorsLibrary.Mul,
-                        new FormulaTreeNode(OperatorsLibrary.C2),
+                        new FormulaTreeNode(new Constant(2)),
                         new FormulaTreeNode(new Variable("x"))),
                     new FormulaTreeNode(OperatorsLibrary.Mul,
-                        new FormulaTreeNode(OperatorsLibrary.C7),
+                        new FormulaTreeNode(new Constant(7)),
                         new FormulaTreeNode(OperatorsLibrary.Sum,
                             new FormulaTreeNode(OperatorsLibrary.Minus,
                                 new FormulaTreeNode(new Variable("y"))),
-                            new FormulaTreeNode(OperatorsLibrary.C5)))));
+                            new FormulaTreeNode(new Constant(5))))));
         }
 
         [Test]

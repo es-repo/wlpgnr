@@ -9,49 +9,49 @@ namespace WallpaperGenerator.Formulas.Operators
 {
     public static class OperatorsLibrary
     {
-        #region Constants
+        //#region Constants
 
-        public static readonly Operator C1_3 = new Constant(MathLibrary.C1_3, "1_3");
-        public static readonly Operator C05 = new Constant(MathLibrary.C05, "1_2");
-        public static readonly Operator C1 = new Constant(MathLibrary.C1);
-        public static readonly Operator C2 = new Constant(MathLibrary.C2);
-        public static readonly Operator C3 = new Constant(MathLibrary.C3);
-        public static readonly Operator C5 = new Constant(MathLibrary.C5);
-        public static readonly Operator C7 = new Constant(MathLibrary.C7);
-        public static readonly Operator C11 = new Constant(MathLibrary.C11);
-        public static readonly Operator Pi = new Constant(MathLibrary.PI, "Pi");
-        public static readonly Operator E = new Constant(MathLibrary.E, "E");
-        public static readonly Operator Sqrt2 = new Constant(MathLibrary.Sqrt2, "Sqrt2");
-        public static readonly Operator Sqrt3 = new Constant(MathLibrary.Sqrt3, "Sqrt3");
-        public static readonly Operator AperysC = new Constant(MathLibrary.AperysC, "Zita");
-        public static readonly Operator GoldenRatio = new Constant(MathLibrary.GoldenRatio, "Fi");
-        public static readonly Operator EulerMascheroniC = new Constant(MathLibrary.EulerMascheroniC, "Gamma");
-        public static readonly Operator KhinchinsC = new Constant(MathLibrary.KhinchinsC, "K");
+        //public static readonly Operator C1_3 = new Constant(MathLibrary.C1_3, "1_3");
+        //public static readonly Operator C05 = new Constant(MathLibrary.C05, "1_2");
+        //public static readonly Operator C1 = new Constant(MathLibrary.C1);
+        //public static readonly Operator C2 = new Constant(MathLibrary.C2);
+        //public static readonly Operator C3 = new Constant(MathLibrary.C3);
+        //public static readonly Operator C5 = new Constant(MathLibrary.C5);
+        //public static readonly Operator C7 = new Constant(MathLibrary.C7);
+        //public static readonly Operator C11 = new Constant(MathLibrary.C11);
+        //public static readonly Operator Pi = new Constant(MathLibrary.PI, "Pi");
+        //public static readonly Operator E = new Constant(MathLibrary.E, "E");
+        //public static readonly Operator Sqrt2 = new Constant(MathLibrary.Sqrt2, "Sqrt2");
+        //public static readonly Operator Sqrt3 = new Constant(MathLibrary.Sqrt3, "Sqrt3");
+        //public static readonly Operator AperysC = new Constant(MathLibrary.AperysC, "Zita");
+        //public static readonly Operator GoldenRatio = new Constant(MathLibrary.GoldenRatio, "Fi");
+        //public static readonly Operator EulerMascheroniC = new Constant(MathLibrary.EulerMascheroniC, "Gamma");
+        //public static readonly Operator KhinchinsC = new Constant(MathLibrary.KhinchinsC, "K");
 
-        public static IEnumerable<Operator> Constants
-        {
-            get
-            {
-                yield return C1_3;
-                yield return C05;
-                yield return C1;
-                yield return C2;
-                yield return C3;
-                yield return C5;
-                yield return C7;
-                yield return C11;
-                yield return Pi;
-                yield return E;
-                yield return Sqrt2;
-                yield return Sqrt3;
-                yield return AperysC;
-                yield return GoldenRatio;
-                yield return EulerMascheroniC;
-                yield return KhinchinsC;
-            }
-        }
+        //public static IEnumerable<Operator> Constants
+        //{
+        //    get
+        //    {
+        //        yield return C1_3;
+        //        yield return C05;
+        //        yield return C1;
+        //        yield return C2;
+        //        yield return C3;
+        //        yield return C5;
+        //        yield return C7;
+        //        yield return C11;
+        //        yield return Pi;
+        //        yield return E;
+        //        yield return Sqrt2;
+        //        yield return Sqrt3;
+        //        yield return AperysC;
+        //        yield return GoldenRatio;
+        //        yield return EulerMascheroniC;
+        //        yield return KhinchinsC;
+        //    }
+        //}
 
-        #endregion
+        //#endregion
         
         #region Arithmetic Operators
 
@@ -173,10 +173,10 @@ namespace WallpaperGenerator.Formulas.Operators
         {
             get
             {
-                yield return new KeyValuePair<string, IEnumerable<Operator>>("Constants", Constants);
+                //yield return new KeyValuePair<string, IEnumerable<Operator>>("Constants", Constants);
                 yield return new KeyValuePair<string, IEnumerable<Operator>>("Arithmetic", Arithmetic);
                 yield return new KeyValuePair<string, IEnumerable<Operator>>("Trigonometric", Trigonometric);
-                yield return new KeyValuePair<string, IEnumerable<Operator>>("Bitwise", Bitwise);
+                //yield return new KeyValuePair<string, IEnumerable<Operator>>("Bitwise", Bitwise);
                 yield return new KeyValuePair<string, IEnumerable<Operator>>("Conditionals", Conditionals);
             }
         }

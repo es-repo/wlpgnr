@@ -39,9 +39,6 @@ namespace WallpaperGenerator.Formulas
             if (unaryOperatorsCountForFormulaDiluting > 0 && operatorsLibrary.All(op => op.Arity != 1))
                 throw new ArgumentException("If unary operators count for formula diluting is more then 0 then operators library should contina unary operators");
 
-            if (constantsCount > 0 && !operatorsLibrary.Any(op => op is Constant))
-                throw new ArgumentException("Constants library can't be empty if constants count is more then 0.");
-
             return CreateRandomFormulaTreeCore(dimensionsCount, variablesCount, constantsCount, unaryOperatorsCountForFormulaDiluting, operatorsLibrary);
         }
 
@@ -63,7 +60,7 @@ namespace WallpaperGenerator.Formulas
             IEnumerable<Operator> variablesPart = EnumerableExtensions.Repeat(i => availableVariables.TakeRandom(_random), variablesCount - dimensionsCount);
             IEnumerable<Operator> variables = availableVariables.Concat(variablesPart);
 
-            IEnumerable<Operator> constants = EnumerableExtensions.Repeat(i => operatorsLibrary.Where(op => op is Constant).TakeRandom(_random), constantsCount);
+            IEnumerable<Operator> constants = EnumerableExtensions.Repeat(i => (Operator)(new Constant(_random.Next(1, 20))), constantsCount);
             IEnumerable<Operator> zeroArityOperators = variables.Concat(constants).Randomize(_random);
 
             return CreateFormulaTree(zeroArityOperators, nonZeroArityOperators);
