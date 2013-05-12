@@ -12,6 +12,8 @@ namespace WallpaperGenerator.Formulas.Testing
     [TestFixture]
     public class FormulaTreeGeneratorTests
     {
+        private readonly Random _random = new Random();
+
         [RowTest]
         [Row(0, 0, 0, 0, ExpectedException=typeof(ArgumentException))]
         [Row(4, 4, 3, 2)]
@@ -20,7 +22,7 @@ namespace WallpaperGenerator.Formulas.Testing
         [Row(3, 9, 3, 2)]
         public void TestCreateRandomFormulaTree(int dimensionsCount, int variablesCount, int constantsCount, int unaryOperatorsCountForFormulaDiluting)
         {
-            FormulaTreeNode formulaTree = FormulaTreeGenerator.CreateRandomFormulaTree(dimensionsCount, variablesCount, constantsCount, 
+            FormulaTreeNode formulaTree = FormulaTreeGenerator.CreateRandomFormulaTree(_random, dimensionsCount, variablesCount, constantsCount, 
                 unaryOperatorsCountForFormulaDiluting, OperatorsLibrary.All);
 
             IEnumerable<FormulaTreeNode> traversedNodes = Tree<Operator>.TraverseBredthFirstPreOrder(formulaTree).Select(ni => (FormulaTreeNode)ni.Node);

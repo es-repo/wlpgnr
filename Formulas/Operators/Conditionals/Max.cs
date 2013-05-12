@@ -1,4 +1,4 @@
-﻿namespace WallpaperGenerator.Formulas.Operators.Arithmetic
+﻿namespace WallpaperGenerator.Formulas.Operators.Conditionals
 {
     public class Max : BinaryOperator
     {

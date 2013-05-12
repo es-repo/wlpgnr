@@ -7,39 +7,19 @@ namespace WallpaperGenerator.FormulaRendering
 {
     public static class FormulaRender
     {
-        private static readonly Random _random = new Random();
-
-        public static RenderedFormulaImage Render(FormulaTreeNode formulaTreeRoot, int width, int height)
+        public static RenderedFormulaImage Render(FormulaTree formulaTree, Range[] variableValuesRanges, ColorTransformation colorTransformation, 
+            double colorDispersionCoefficient, int width, int height)
         {
-            double[] formulaEvaluatedValues = GetFormulaEvaluatedValues(formulaTreeRoot, width, height).ToArray();
-            IEnumerable<Rgb> data = MapToRgb(formulaEvaluatedValues);
+            double[] formulaEvaluatedValues = formulaTree.EvaluateRangesIn2DProjection(variableValuesRanges).ToArray();
+            IEnumerable<Rgb> data = MapToRgb(formulaEvaluatedValues, colorTransformation, colorDispersionCoefficient);
             return new RenderedFormulaImage(data.ToArray(), width, height);
         }
 
-        private static IEnumerable<double> GetFormulaEvaluatedValues(FormulaTreeNode formulaTreeRoot, int width, int height)
+        private static IEnumerable<Rgb> MapToRgb(double[] values, ColorTransformation colorTransformation, double colorDispersionCoefficient)
         {
-            FormulaTree formulaTree = new FormulaTree(formulaTreeRoot);
-            
-            int dimensions = formulaTree.Variables.Length;
-            IEnumerable<Range> variableValuesRanges = Enumerable.Repeat(1, dimensions).
-                Select(i => new Range(
-                    _random.NextDouble()*_random.Next(0, 10),
-                    0.0000001 + _random.NextDouble() / 10, 
-                    i%2 == 0 ? width : height));
-
-            return formulaTree.EvaluateRangesIn2DProjection(variableValuesRanges.ToArray());
-        }
-        
-        private static IEnumerable<Rgb> MapToRgb(double[] values)
-        {
-            Func<double, double> redChannelTransformingFunction = CreateChannelTransformingFunction();
-            IEnumerable<byte> redChannel = MapToColorChannel(values, redChannelTransformingFunction);
-
-            Func<double, double> greenChannelTransformingFunction = CreateChannelTransformingFunction();
-            IEnumerable<byte> greenChannel = MapToColorChannel(values, greenChannelTransformingFunction);
-
-            Func<double, double> blueChannelTransformingunction = CreateChannelTransformingFunction();
-            IEnumerable<byte> blueChannel = MapToColorChannel(values, blueChannelTransformingunction);
+            IEnumerable<byte> redChannel = MapToColorChannel(values, colorTransformation.TransformRedChannel, colorDispersionCoefficient);
+            IEnumerable<byte> greenChannel = MapToColorChannel(values, colorTransformation.TransformGreenChannel, colorDispersionCoefficient);
+            IEnumerable<byte> blueChannel = MapToColorChannel(values, colorTransformation.TransformBlueChannel, colorDispersionCoefficient);
 
             IEnumerator<byte> greenChannelEnumerator = greenChannel.GetEnumerator();
             IEnumerator<byte> blueChannelEnumerator = blueChannel.GetEnumerator();
@@ -55,34 +35,23 @@ namespace WallpaperGenerator.FormulaRendering
             }
         }
 
-        private static Func<double, double> CreateChannelTransformingFunction()
-        {
-            int aSign = _random.Next(-2, 2);
-            int bSign = _random.Next(-2, 2);
-            int cSign = _random.Next(-2, 2);
-
-            double a = _random.NextDouble() * aSign;
-            double b = _random.NextDouble() * bSign;
-            double c = _random.NextDouble() * cSign;
-            
-            return v => v*v*v*a + v*v*b + v*c;
-        }
-
-        private static IEnumerable<byte> MapToColorChannel(IEnumerable<double> values, Func<double, double> channelTransformingFunction)
+        private static IEnumerable<byte> MapToColorChannel(IEnumerable<double> values, Func<double, double> channelTransformingFunction, 
+            double colorDispersionCoefficient)
         {
             double[] channelValues = TransformChannelValues(values, channelTransformingFunction).ToArray();
             
             IEnumerable<double> significantValues = GetSignificantValues(channelValues);
 
             double mathExpectation = MathUtilities.MathExpectation(significantValues);
-            double standardDeviation = MathUtilities.StandardDeviation(significantValues) * 2;
-            if (double.IsNegativeInfinity(standardDeviation))
-                standardDeviation = double.MinValue;
-            if (double.IsPositiveInfinity(standardDeviation))
-                standardDeviation = double.MaxValue;
+            double standardDeviation = MathUtilities.StandardDeviation(significantValues);
+            double limit = standardDeviation * (1 + 2 * colorDispersionCoefficient);
+            if (double.IsNegativeInfinity(limit))
+                limit = double.MinValue;
+            if (double.IsPositiveInfinity(limit))
+                limit = double.MaxValue;
 
-            double rangeStart = mathExpectation - standardDeviation;
-            double rangeEnd = mathExpectation + standardDeviation;
+            double rangeStart = mathExpectation - limit;
+            double rangeEnd = mathExpectation + limit;
             if (rangeStart > rangeEnd)
             {
                 double tmp = rangeStart;

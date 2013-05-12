@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ColorTransformation.cs" />
     <Compile Include="FormulaRender.cs" />
     <Compile Include="MathUtilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
