@@ -48,8 +48,8 @@
   <ItemGroup>
     <Compile Include="Operators\Arithmetic\Abs.cs" />
     <Compile Include="Operators\Arithmetic\Round.cs" />
-    <Compile Include="Operators\Arithmetic\Pow1_3.cs" />
-    <Compile Include="Operators\Arithmetic\Pow1_2.cs" />
+    <Compile Include="Operators\Arithmetic\Cbrt.cs" />
+    <Compile Include="Operators\Arithmetic\Sqrt.cs" />
     <Compile Include="Operators\Arithmetic\Pow3.cs" />
     <Compile Include="Operators\Arithmetic\Pow2.cs" />
     <Compile Include="Operators\Arithmetic\Ln.cs" />

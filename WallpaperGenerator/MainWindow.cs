@@ -69,7 +69,8 @@ namespace WallpaperGenerator
             {
                 AcceptsReturn = true,
                 Height = 300,
-                Width = 800
+                Width = 800,
+                TextWrapping = TextWrapping.Wrap,
             };
 
             formulaPanel.Children.Add(FormulaTexBox);

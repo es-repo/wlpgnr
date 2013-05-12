@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace WallpaperGenerator.Formulas
+﻿namespace WallpaperGenerator.Formulas
 {
     public abstract class Operator
     {
@@ -20,10 +18,7 @@ namespace WallpaperGenerator.Formulas
         }
 
         public double Evaluate(params double[] operands)
-        {
-            if (operands.Length != Arity)
-                throw new ArgumentException();
-
+        {            
             return EvaluateCore(operands);
         }
 

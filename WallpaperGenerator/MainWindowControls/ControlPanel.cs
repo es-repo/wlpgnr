@@ -49,11 +49,11 @@ namespace WallpaperGenerator.MainWindowControls
             DimensionsCountSlider.ValueChanged += (s, a) =>
                 VariablesCountSlider.Value = Math.Max(VariablesCountSlider.Value, DimensionsCountSlider.Value);
             
-            VariablesCountSlider = CreateSliderControlsBlock(1, 20, 4, "Variables");
+            VariablesCountSlider = CreateSliderControlsBlock(1, 50, 4, "Variables");
             
             ConstantsCountSlider = CreateSliderControlsBlock(0, 20, 4, "Constants");
             
-            UnaryOperatorsCountSlider = CreateSliderControlsBlock(0, 10, 4, "Unary Operators");
+            UnaryOperatorsCountSlider = CreateSliderControlsBlock(0, 100, 4, "Unary Operators");
             
             IEnumerable<KeyValuePair<string, IEnumerable<OperatorCheckBox>>> operatorCheckBoxesByCategories = CreateOperatorCheckBoxesByCategories().ToArray();
             foreach (KeyValuePair<string, IEnumerable<OperatorCheckBox>> entry in operatorCheckBoxesByCategories)

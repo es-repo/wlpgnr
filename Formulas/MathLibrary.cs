@@ -64,7 +64,7 @@ namespace WallpaperGenerator.Formulas
 
         public static double Pow(double a, double b)
         {
-            if ((1/ b % 2).Equals(0))
+            if (b < 1)
                 a = Math.Abs(a);
             return Math.Pow(a, b);
         }

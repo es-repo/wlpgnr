@@ -66,11 +66,11 @@ namespace WallpaperGenerator.Formulas.Operators
         public static readonly Operator Pow = new Pow();
         public static readonly Operator Pow2 = new Pow2();
         public static readonly Operator Pow3 = new Pow3();
-        public static readonly Operator Pow1_2 = new Pow1_2();
-        public static readonly Operator Pow1_3 = new Pow1_3();
+        public static readonly Operator Sqrt = new Sqrt();
+        public static readonly Operator Cbrt = new Cbrt();
         public static readonly Operator Log = new Log();
         public static readonly Operator Log2 = new Log2();
-        public static readonly Operator LogE = new Ln();
+        public static readonly Operator Ln = new Ln();
 
         public static IEnumerable<Operator> Arithmetic
         {
@@ -85,13 +85,13 @@ namespace WallpaperGenerator.Formulas.Operators
                 yield return DivRem;
                 yield return Round;
                 yield return Pow;
-                yield return Pow2;
-                yield return Pow3;
-                yield return Pow1_2;
-                yield return Pow1_3;
-                yield return Log;
+                //yield return Pow2;
+                //yield return Pow3;
+                yield return Sqrt;
+                yield return Cbrt;
+                //yield return Log;
                 //yield return Log2;
-                yield return LogE;
+                yield return Ln;
             }
         }
 
@@ -114,12 +114,12 @@ namespace WallpaperGenerator.Formulas.Operators
             get
             {
                 yield return Sin;
-                yield return Sec;
+                //yield return Sec;
                 //yield return Cos;
                 //yield return Csc;
                 //yield return Tan;
                 yield return Atan;
-                yield return Sinh;
+                //yield return Sinh;
                 //yield return Cosh;
                 yield return Tanh;
             }
