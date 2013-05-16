@@ -86,13 +86,13 @@ namespace WallpaperGenerator
             GetRandomPolinomCoefficients(_random, out ga, out gb, out gc);
             double greenChannelDispersionCoefficient = _random.NextDouble();
             ColorChannelTransformation greenChannelTransofrmation =
-                ColorChannelTransformation.CreatePolynomialChannelTransformingFunction(ra, rb, rc, greenChannelDispersionCoefficient);
+                ColorChannelTransformation.CreatePolynomialChannelTransformingFunction(ga, gb, gc, greenChannelDispersionCoefficient);
 
             double ba, bb, bc;
             GetRandomPolinomCoefficients(_random, out ba, out bb, out bc);
             double blueChannelDispersionCoefficient = _random.NextDouble();
             ColorChannelTransformation blueChannelTransofrmation =
-                ColorChannelTransformation.CreatePolynomialChannelTransformingFunction(ra, rb, rc, blueChannelDispersionCoefficient);
+                ColorChannelTransformation.CreatePolynomialChannelTransformingFunction(ba, bb, bc, blueChannelDispersionCoefficient);
 
             return new ColorTransformation(redChannelTransofrmation, greenChannelTransofrmation, blueChannelTransofrmation);
         }
