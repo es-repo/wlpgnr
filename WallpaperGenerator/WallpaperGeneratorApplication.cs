@@ -54,9 +54,8 @@ namespace WallpaperGenerator
                     FormulaTree formulaTree = new FormulaTree(formulaTreeRoot);
                     ColorTransformation colorTransformation = GetColorTransformation();
                     Range[] variableValuesRanges = GetRandomVariableValuesRanges(formulaTree, _wallpaperImage.WidthInPixels, _wallpaperImage.HeightInPixels).ToArray();
-                    const double colorDispersionCoefficient = 0.5;
                     RenderedFormulaImage renderedFormulaImage = FormulaRender.Render(formulaTree, variableValuesRanges, colorTransformation,
-                        colorDispersionCoefficient, _wallpaperImage.WidthInPixels, _wallpaperImage.HeightInPixels);
+                        _wallpaperImage.WidthInPixels, _wallpaperImage.HeightInPixels);
                     _wallpaperImage.Update(renderedFormulaImage);
                     _mainWindow.WallpaperImage.Source = _wallpaperImage.Source;
 
@@ -79,14 +78,23 @@ namespace WallpaperGenerator
         {
             double ra, rb, rc;
             GetRandomPolinomCoefficients(_random, out ra, out rb, out rc);
+            double redChannelDispersionCoefficient = _random.NextDouble();
+            ColorChannelTransformation redChannelTransofrmation =
+                ColorChannelTransformation.CreatePolynomialChannelTransformingFunction(ra, rb, rc, redChannelDispersionCoefficient);
 
             double ga, gb, gc;
             GetRandomPolinomCoefficients(_random, out ga, out gb, out gc);
+            double greenChannelDispersionCoefficient = _random.NextDouble();
+            ColorChannelTransformation greenChannelTransofrmation =
+                ColorChannelTransformation.CreatePolynomialChannelTransformingFunction(ra, rb, rc, greenChannelDispersionCoefficient);
 
             double ba, bb, bc;
             GetRandomPolinomCoefficients(_random, out ba, out bb, out bc);
+            double blueChannelDispersionCoefficient = _random.NextDouble();
+            ColorChannelTransformation blueChannelTransofrmation =
+                ColorChannelTransformation.CreatePolynomialChannelTransformingFunction(ra, rb, rc, blueChannelDispersionCoefficient);
 
-            return ColorTransformation.CreatePolynomialColorTransformation(ra, rb, rc, ga, gb, gc, ba, bb, bc);
+            return new ColorTransformation(redChannelTransofrmation, greenChannelTransofrmation, blueChannelTransofrmation);
         }
 
         private static void GetRandomPolinomCoefficients(Random random, out double a, out double b, out double c)
