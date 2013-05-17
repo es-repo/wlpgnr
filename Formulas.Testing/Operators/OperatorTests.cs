@@ -1,5 +1,4 @@
-﻿using System;
-using MbUnit.Framework;
+﻿using MbUnit.Framework;
 using WallpaperGenerator.Formulas.Operators.Arithmetic;
 
 namespace WallpaperGenerator.Formulas.Testing.Operators
@@ -9,8 +8,6 @@ namespace WallpaperGenerator.Formulas.Testing.Operators
     {
         [RowTest]
         [Row(new double[] {1, 2}, 3)]
-        [Row(new double[] { 1 }, 0, ExpectedException = typeof(ArgumentException))]
-        [Row(new double[] { 1, 2, 3 }, 0, ExpectedException = typeof(ArgumentException))]
         public void TestBinaryOperator(double[] operands, double expectedResult)
         {
             Operator sum = new Sum();

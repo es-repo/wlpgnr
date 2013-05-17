@@ -20,6 +20,16 @@ namespace WallpaperGenerator
         
         #endregion
 
+        #region Properties
+
+        public FormulaRenderingArguments FormulaRenderingArguments 
+        {
+            get { return FormulaRenderingArguments.FromString(_mainWindow.FormulaTexBox.Text); }
+        }
+
+        #endregion
+
+
         #region Constructors
 
         public WallpaperGeneratorApplication()
@@ -28,18 +38,11 @@ namespace WallpaperGenerator
             _mainWindow = new MainWindow { WindowState = WindowState.Maximized };
 
             _mainWindow.ControlPanel.GenerateFormulaButton.Click += (s, a) =>
-            {                
-                int dimensionsCount = (int) _mainWindow.ControlPanel.DimensionsCountSlider.Value;
-                int variablesCount = (int)_mainWindow.ControlPanel.VariablesCountSlider.Value;
-                int constantsCount = (int)_mainWindow.ControlPanel.ConstantsCountSlider.Value;
-                int unaryOperatorsCount = (int)_mainWindow.ControlPanel.UnaryOperatorsCountSlider.Value;
-                IEnumerable<OperatorCheckBox> checkedOperatorCheckBoxes = _mainWindow.ControlPanel.OperatorCheckBoxes.Where(cb => cb.IsChecked == true);
-                IEnumerable<Operator> operators = checkedOperatorCheckBoxes.Select(cb => cb.Operator);
-
-                FormulaTreeNode formulaTree = FormulaTreeGenerator.CreateRandomFormulaTree(_random,
-                    dimensionsCount, variablesCount, constantsCount, unaryOperatorsCount, operators);
-                string formula = FormulaTreeSerializer.Serialize(formulaTree, new FormulaTreeSerializationOptions { WithIndentation = true });
-                _mainWindow.FormulaTexBox.Text = formula;
+            {
+                ColorTransformation colorTransformation = ColorTransformation.CreateRandomPolynomialColorTransformation(_random);
+                FormulaTreeNode formulaTreeRoot = CreateRandomFormulaTreeRoot();
+                FormulaRenderingArguments formulaRenderingArguments = new FormulaRenderingArguments(formulaTreeRoot, colorTransformation);
+                _mainWindow.FormulaTexBox.Text = formulaRenderingArguments.ToString();
             };
 
             _mainWindow.ControlPanel.RenderFormulaButton.Click += (s, a) =>
@@ -49,13 +52,14 @@ namespace WallpaperGenerator
                     Stopwatch stopwatch = new Stopwatch();
                     stopwatch.Start();  
 
-                    string formula = _mainWindow.FormulaTexBox.Text;
-                    FormulaTreeNode formulaTreeRoot = FormulaTreeSerializer.Deserialize(formula);
-                    FormulaTree formulaTree = new FormulaTree(formulaTreeRoot);
-                    ColorTransformation colorTransformation = GetColorTransformation();
-                    Range[] variableValuesRanges = GetRandomVariableValuesRanges(formulaTree, _wallpaperImage.WidthInPixels, _wallpaperImage.HeightInPixels).ToArray();
-                    RenderedFormulaImage renderedFormulaImage = FormulaRender.Render(formulaTree, variableValuesRanges, colorTransformation,
+                    Range[] variableValuesRanges = CreateRandomVariableValuesRanges(FormulaRenderingArguments.FormulaTree, _wallpaperImage.WidthInPixels, _wallpaperImage.HeightInPixels).ToArray();
+                    
+                    RenderedFormulaImage renderedFormulaImage = FormulaRender.Render(
+                        FormulaRenderingArguments.FormulaTree,
+                        variableValuesRanges,
+                        FormulaRenderingArguments.ColorTransformation, 
                         _wallpaperImage.WidthInPixels, _wallpaperImage.HeightInPixels);
+
                     _wallpaperImage.Update(renderedFormulaImage);
                     _mainWindow.WallpaperImage.Source = _wallpaperImage.Source;
 
@@ -74,46 +78,26 @@ namespace WallpaperGenerator
             _mainWindow.Show();
         }
 
-        private ColorTransformation GetColorTransformation()
+        private FormulaTreeNode CreateRandomFormulaTreeRoot()
         {
-            double ra, rb, rc;
-            GetRandomPolinomCoefficients(_random, out ra, out rb, out rc);
-            double redChannelDispersionCoefficient = _random.NextDouble();
-            ColorChannelTransformation redChannelTransofrmation =
-                ColorChannelTransformation.CreatePolynomialChannelTransformingFunction(ra, rb, rc, redChannelDispersionCoefficient);
+            int dimensionsCount = (int)_mainWindow.ControlPanel.DimensionsCountSlider.Value;
+            int variablesCount = (int)_mainWindow.ControlPanel.VariablesCountSlider.Value;
+            int constantsCount = (int)_mainWindow.ControlPanel.ConstantsCountSlider.Value;
+            int unaryOperatorsCount = (int)_mainWindow.ControlPanel.UnaryOperatorsCountSlider.Value;
+            IEnumerable<OperatorCheckBox> checkedOperatorCheckBoxes = _mainWindow.ControlPanel.OperatorCheckBoxes.Where(cb => cb.IsChecked == true);
+            IEnumerable<Operator> operators = checkedOperatorCheckBoxes.Select(cb => cb.Operator);
 
-            double ga, gb, gc;
-            GetRandomPolinomCoefficients(_random, out ga, out gb, out gc);
-            double greenChannelDispersionCoefficient = _random.NextDouble();
-            ColorChannelTransformation greenChannelTransofrmation =
-                ColorChannelTransformation.CreatePolynomialChannelTransformingFunction(ga, gb, gc, greenChannelDispersionCoefficient);
-
-            double ba, bb, bc;
-            GetRandomPolinomCoefficients(_random, out ba, out bb, out bc);
-            double blueChannelDispersionCoefficient = _random.NextDouble();
-            ColorChannelTransformation blueChannelTransofrmation =
-                ColorChannelTransformation.CreatePolynomialChannelTransformingFunction(ba, bb, bc, blueChannelDispersionCoefficient);
-
-            return new ColorTransformation(redChannelTransofrmation, greenChannelTransofrmation, blueChannelTransofrmation);
+            return FormulaTreeGenerator.CreateRandomFormulaTree(_random, dimensionsCount, variablesCount, constantsCount, unaryOperatorsCount, operators);
         }
 
-        private static void GetRandomPolinomCoefficients(Random random, out double a, out double b, out double c)
-        {
-            const int minValue = -10;
-            const int maxValue = 10;
-            a = random.Next(minValue, maxValue);
-            b = random.Next(minValue, maxValue);
-            c = random.Next(minValue, maxValue);
-        }
-
-        private IEnumerable<Range> GetRandomVariableValuesRanges(FormulaTree formulaTree, int xRangeCount, int yRangeCount)
+        private IEnumerable<Range> CreateRandomVariableValuesRanges(FormulaTree formulaTree, int xRangeCount, int yRangeCount)
         {
             int dimensions = formulaTree.Variables.Length;
             return Enumerable.Repeat(1, dimensions).
-                Select(i => GetRandomVariableValuesRange(_random, i%2 == 0 ? xRangeCount : yRangeCount));
+                Select(i => CreateRandomVariableValuesRange(_random, i%2 == 0 ? xRangeCount : yRangeCount));
         }
 
-        private static Range GetRandomVariableValuesRange(Random random, int rangeCount)
+        private static Range CreateRandomVariableValuesRange(Random random, int rangeCount)
         {
             return new Range(random.NextDouble()*random.Next(0, 10), 0.0000001 + random.NextDouble()/10, rangeCount);
         }

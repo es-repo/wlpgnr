@@ -75,6 +75,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormulaRenderingArguments.cs" />
     <Compile Include="MainWindow.cs" />
     <Compile Include="MainWindowControls\ControlPanel.cs" />
     <Compile Include="MainWindowControls\ControlPanelControls\OperatorCheckBox.cs" />
