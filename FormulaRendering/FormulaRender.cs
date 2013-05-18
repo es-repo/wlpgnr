@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;  
 using WallpaperGenerator.Formulas;
 
@@ -10,9 +11,42 @@ namespace WallpaperGenerator.FormulaRendering
         public static RenderedFormulaImage Render(FormulaTree formulaTree, Range[] variableValuesRanges, ColorTransformation colorTransformation, 
             int width, int height)
         {
+            Stopwatch evaluationStopwatch = new Stopwatch();
+            evaluationStopwatch.Start();  
             double[] formulaEvaluatedValues = formulaTree.EvaluateRangesIn2DProjection(variableValuesRanges).ToArray();
-            IEnumerable<Rgb> data = MapToRgb(formulaEvaluatedValues, colorTransformation);
-            return new RenderedFormulaImage(data.ToArray(), width, height);
+            evaluationStopwatch.Stop();
+
+            //double r;
+            //double x = 1;
+            //double y = 2;
+            //double z = 3;
+            //double w = 4;
+            //double x1 = -1;
+            //double y1 = -2;
+            //double z1 = -3;
+            //double w1 = -4;
+            //Stopwatch stopwatch2 = new Stopwatch();
+            //stopwatch2.Start(); 
+            //for(int i = 0; i < variableValuesRanges[0].Count; i++)
+            //    for (int j = 0; j < variableValuesRanges[1].Count; j++)
+            //    {
+            //        r = Math.Sqrt(Math.Sin(x) * Math.Sin(y) + Math.Sin(z) * Math.Sin(w) * (Math.Sin(x1) * Math.Sin(y1) + Math.Sin(z1) * Math.Sin(w1)));
+            //        x += 0.1;
+            //        y += 0.1;
+            //        z += 0.1;
+            //        w += 0.1;
+            //        x1 += 0.3;
+            //        y1 += 0.3;
+            //        z1 += 0.3;
+            //        w1 += 0.3;
+            //    }
+            //stopwatch2.Stop();
+
+            Stopwatch mapToRgbStopwatch = new Stopwatch();
+            mapToRgbStopwatch.Start();  
+            Rgb[] data = MapToRgb(formulaEvaluatedValues, colorTransformation).ToArray();
+            mapToRgbStopwatch.Stop();
+            return new RenderedFormulaImage(data, width, height);
         }
 
         private static IEnumerable<Rgb> MapToRgb(double[] values, ColorTransformation colorTransformation)

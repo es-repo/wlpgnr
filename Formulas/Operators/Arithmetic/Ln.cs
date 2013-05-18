@@ -6,7 +6,7 @@ namespace WallpaperGenerator.Formulas.Operators.Arithmetic
     {
         protected override double EvaluateCore(params double[] operands)
         {
-            return MathLibrary.Log(operands[0], Math.E);
+            return Math.Log(operands[0], Math.E);
         }
     }
 }

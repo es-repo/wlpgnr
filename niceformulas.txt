@@ -1,0 +1,1 @@
+sqrt(mul(sum(mul(sin(x) sin(y)) mul(sin(z) sin(w))) sum(mul(sin(x1) sin(y1)) mul(sin(z1) sin(w1)))))

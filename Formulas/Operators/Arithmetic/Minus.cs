@@ -4,7 +4,7 @@
     {
         protected override double EvaluateCore(params double[] operands)
         {
-            return MathLibrary.Minus(operands[0]);
+            return -operands[0];
         }
     }
 }

@@ -1,10 +1,12 @@
-﻿namespace WallpaperGenerator.Formulas.Operators.Arithmetic
+﻿using System;
+
+namespace WallpaperGenerator.Formulas.Operators.Arithmetic
 {
     public class Round : UnaryOperator
     {
         protected override double EvaluateCore(params double[] operands)
         {
-            return MathLibrary.Round(operands[0]);
+            return Math.Round(operands[0]);
         }
     }
 }

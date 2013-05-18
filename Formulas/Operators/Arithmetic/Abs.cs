@@ -1,10 +1,12 @@
-﻿namespace WallpaperGenerator.Formulas.Operators.Arithmetic
+﻿using System;
+
+namespace WallpaperGenerator.Formulas.Operators.Arithmetic
 {
     public class Abs : UnaryOperator 
     {
         protected override double EvaluateCore(params double[] operands)
         {
-            return MathLibrary.Abs(operands[0]) ;
+            return Math.Abs(operands[0]);
         }
     }
 }
