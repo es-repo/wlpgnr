@@ -17,7 +17,7 @@ namespace WallpaperGenerator.Formulas.Operators
                 throw new ArgumentException("Variable name is invalid.");
         }
 
-        protected override double EvaluateCore(params double[] operands)
+        public override double Evaluate(double op1, double op2, double op3, double op4)
         {
             return Value;
         }

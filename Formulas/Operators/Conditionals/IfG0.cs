@@ -2,9 +2,9 @@
 {
     public class IfG0 : TernaryOperator
     {
-        protected override double EvaluateCore(params double[] operands)
+        public override double Evaluate(double op1, double op2, double op3, double op4)
         {
-            return operands[0] > 0 ? operands[2] : operands[1];
+            return op1 > 0 ? op3 : op2;
         }
     }
 }

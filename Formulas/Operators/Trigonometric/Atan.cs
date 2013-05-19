@@ -4,9 +4,9 @@ namespace WallpaperGenerator.Formulas.Operators.Trigonometric
 {
     public class Atan : UnaryOperator
     {
-        protected override double EvaluateCore(params double[] operands)
+        public override double Evaluate(double op1, double op2, double op3, double op4)
         {
-            return Math.Atan(operands[0]);
+            return Math.Atan(op1);
         }
     }
 }

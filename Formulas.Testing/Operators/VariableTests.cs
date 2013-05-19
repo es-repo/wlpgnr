@@ -14,7 +14,7 @@ namespace WallpaperGenerator.Formulas.Testing.Operators
         public void TestVariable(double a, double expected)
         {
             Operator constant = new Variable("x") { Value = a };
-            double result = constant.Evaluate();
+            double result = constant.Evaluate(0, 0, 0, 0);
             Assert.AreEqual(expected, result);
         }
 

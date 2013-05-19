@@ -6,9 +6,9 @@ namespace WallpaperGenerator.Formulas.Operators.Arithmetic
     {
         private const double c1_3 = 1.0/3.0;
 
-        protected override double EvaluateCore(params double[] operands)
+        public override double Evaluate(double op1, double op2, double op3, double op4)
         {
-            return Math.Pow(Math.Abs(operands[0]), c1_3);
+            return Math.Pow(Math.Abs(op1), c1_3);
         }
     }
 }

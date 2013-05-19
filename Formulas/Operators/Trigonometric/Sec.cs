@@ -2,9 +2,9 @@
 {
     public class Sec : UnaryOperator
     {
-        protected override double EvaluateCore(params double[] operands)
+        public override double Evaluate(double op1, double op2, double op3, double op4)
         {
-            return MathLibrary.Sec(operands[0]);
+            return MathLibrary.Sec(op1);
         }
     }
 }

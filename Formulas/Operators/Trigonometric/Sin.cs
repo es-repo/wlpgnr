@@ -4,9 +4,9 @@ namespace WallpaperGenerator.Formulas.Operators.Trigonometric
 {
     public class Sin : UnaryOperator
     {
-        protected override double EvaluateCore(params double[] operands)
+        public override double Evaluate(double op1, double op2, double op3, double op4)
         {
-            return Math.Sin(operands[0]);
+            return Math.Sin(op1);
         }
     }
 }

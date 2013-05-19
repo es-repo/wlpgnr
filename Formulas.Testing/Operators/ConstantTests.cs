@@ -13,7 +13,7 @@ namespace WallpaperGenerator.Formulas.Testing.Operators
         public void TestConstant(double a, double expected)
         {
             Operator constant = new Constant(a);
-            double result = constant.Evaluate();
+            double result = constant.Evaluate(0, 0, 0, 0);
             Assert.AreEqual(expected, result);
         }
     }

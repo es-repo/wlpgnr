@@ -4,9 +4,9 @@ namespace WallpaperGenerator.Formulas.Operators.Arithmetic
 {
     public class Abs : UnaryOperator 
     {
-        protected override double EvaluateCore(params double[] operands)
+        public override double Evaluate(double op1, double op2, double op3, double op4)
         {
-            return Math.Abs(operands[0]);
+            return Math.Abs(op1);
         }
     }
 }

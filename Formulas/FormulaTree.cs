@@ -137,27 +137,22 @@ namespace WallpaperGenerator.Formulas
                     {                        
                         if (operands.Length == 0)
                         {
-                            return ni.Node.Value.Evaluate();
+                            return ni.Node.Value.Evaluate(0, 0, 0, 0);
                         }
                         if (operands.Length == 1)
                         {
-                            return ni.Node.Value.Evaluate(operands[0]());
+                            return ni.Node.Value.Evaluate(operands[0](), 0, 0, 0);
                         }
                         if (operands.Length == 2)
                         {
-                            return ni.Node.Value.Evaluate(operands[0](), operands[1]());
+                            return ni.Node.Value.Evaluate(operands[0](), operands[1](), 0, 0);
                         }
                         if (operands.Length == 3)
                         {
-                            return ni.Node.Value.Evaluate(operands[0](), operands[1](), operands[2]());
+                            return ni.Node.Value.Evaluate(operands[0](), operands[1](), operands[2](), 0);
                         }
-
-                        double[] evaluatedOperands = new double[operands.Length];
-                        for (int i = 0; i < operands.Length; i++)
-                        {
-                            evaluatedOperands[i] = operands[i]();
-                        }
-                        return ni.Node.Value.Evaluate(evaluatedOperands);
+                        
+                        return ni.Node.Value.Evaluate(operands[0](), operands[1](), operands[2](), operands[3]());
                     });
         }
 

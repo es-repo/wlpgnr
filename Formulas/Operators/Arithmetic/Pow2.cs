@@ -2,9 +2,9 @@
 {
     public class Pow3 : UnaryOperator
     {
-        protected override double EvaluateCore(params double[] operands)
+        public override double Evaluate(double op1, double op2, double op3, double op4)
         {
-            return operands[0] * operands[0] * operands[0];
+            return op1 * op1 * op1;
         }
     }
 }

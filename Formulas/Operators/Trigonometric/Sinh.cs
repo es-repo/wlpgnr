@@ -2,9 +2,9 @@
 {
     public class Sinh : UnaryOperator
     {
-        protected override double EvaluateCore(params double[] operands)
+        public override double Evaluate(double op1, double op2, double op3, double op4)
         {
-            return MathLibrary.Sinh(operands[0]);
+            return MathLibrary.Sinh(op1);
         }
     }
 }

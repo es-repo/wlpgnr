@@ -4,9 +4,9 @@ namespace WallpaperGenerator.Formulas.Operators.Arithmetic
 {
     public class Log2 : UnaryOperator
     {
-        protected override double EvaluateCore(params double[] operands)
+        public override double Evaluate(double op1, double op2, double op3, double op4)
         {
-            return Math.Log(operands[0], 2);
+            return Math.Log(op1, 2);
         }
     }
 }

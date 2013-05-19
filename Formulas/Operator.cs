@@ -17,11 +17,6 @@
             Name = name ?? GetType().Name;
         }
 
-        public double Evaluate(params double[] operands)
-        {            
-            return EvaluateCore(operands);
-        }
-
-        protected abstract double EvaluateCore(params double[] operands);
+        public abstract double Evaluate(double op1, double op2, double op3, double op4);
     }
 }
