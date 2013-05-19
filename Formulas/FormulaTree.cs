@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using WallpaperGenerator.Formulas.Operators;
 using WallpaperGenerator.Utilities.DataStructures.Trees;
@@ -9,7 +10,7 @@ namespace WallpaperGenerator.Formulas
     {
         #region Fields
 
-        private Variable[] _variables;
+        private readonly Func<double> _compiledFormula;
 
         #endregion
 
@@ -20,13 +21,7 @@ namespace WallpaperGenerator.Formulas
             get { return (FormulaTreeNode) Root; }
         }
 
-        public Variable[] Variables
-        {
-            get
-            {
-                return _variables ?? (_variables = SelectVariables(FormulaRoot).ToArray());  
-            }
-        }
+        public Variable[] Variables { get; private set; }
 
         #endregion
 
@@ -35,6 +30,8 @@ namespace WallpaperGenerator.Formulas
         public FormulaTree(FormulaTreeNode root)
             : base(root)
         {
+            Variables = SelectVariables(FormulaRoot).ToArray();
+            _compiledFormula = CompileFormula();
         }
 
         #endregion
@@ -63,33 +60,32 @@ namespace WallpaperGenerator.Formulas
 
         public IEnumerable<double> EvaluateSeriesIn2DProjection(params IEnumerable<double>[] variableValues)
         {
-            IEnumerator<double>[] xVariableValuesEnumerators = variableValues.Where((vv, i) => i % 2 == 0).Select(vv => vv.GetEnumerator()).ToArray();
-            while (xVariableValuesEnumerators[0].MoveNext())
+            IEnumerator<double>[] variableValuesEnumerators = variableValues.Select(vv => vv.GetEnumerator()).ToArray();
+            while (variableValuesEnumerators[0].MoveNext())
             {
-                for (int i = 0; i < xVariableValuesEnumerators.Length; i++)
+                Variables[0].Value = variableValuesEnumerators[0].Current;
+                for (int x = 2; x < variableValuesEnumerators.Length; x+=2)
                 {
-                    if (i != 0)
-                    {
-                        xVariableValuesEnumerators[i].MoveNext();
-                    }
-                    Variables[i * 2].Value = xVariableValuesEnumerators[i].Current;
+                    variableValuesEnumerators[x].MoveNext();
+                    Variables[x].Value = variableValuesEnumerators[x].Current;
                 }
 
                 if (variableValues.Length > 1)
                 {
-                    IEnumerator<double>[] yVariableValuesEnumerators = variableValues.Where((vv, i) => i % 2 == 1).Select(vv => vv.GetEnumerator()).ToArray();
-                    while (yVariableValuesEnumerators[0].MoveNext())
+                    while (variableValuesEnumerators[1].MoveNext())
                     {
-                        for (int i = 0; i < yVariableValuesEnumerators.Length; i++)
+                        Variables[1].Value = variableValuesEnumerators[1].Current;
+                        for (int y = 3; y < variableValuesEnumerators.Length; y += 2)
                         {
-                            if (i != 0)
-                            {
-                                yVariableValuesEnumerators[i].MoveNext();
-                            }
-                            Variables[i * 2 + 1].Value = yVariableValuesEnumerators[i].Current;
+                            variableValuesEnumerators[y].MoveNext();
+                            Variables[y].Value = variableValuesEnumerators[y].Current;
                         }
 
                         yield return Evaluate();
+                    }
+                    for (int y = 1; y < variableValuesEnumerators.Length; y += 2)
+                    {
+                        variableValuesEnumerators[y] = variableValues[y].GetEnumerator();
                     }
                 }
                 else
@@ -124,23 +120,45 @@ namespace WallpaperGenerator.Formulas
             }
         }
 
-        public double Evaluate(params double[] variableValues)
+        public double Evaluate()
         {
-            for (int i = 0; i < variableValues.Length; i++)
-            {
-                if (i < Variables.Length)
-                {
-                    Variables[i].Value = variableValues[i];
-                }
-                else 
-                    break;
-            }
-            return EvaluateCore();
+            return _compiledFormula();
         }
 
-        private double EvaluateCore()
-        {
-            return Fold((TraversedTreeNodeInfo<Operator> ni, double[] c) => ni.Node.Value.Evaluate(c));
+        //public double Evaluate()
+        //{
+        //    return Fold((TraversedTreeNodeInfo<Operator> ni, double[] c) => ni.Node.Value.Evaluate(c));
+        //}
+        
+        public Func<double> CompileFormula()
+        {           
+            return Fold((TraversedTreeNodeInfo<Operator> ni, Func<double>[] operands)
+                => () =>
+                    {                        
+                        if (operands.Length == 0)
+                        {
+                            return ni.Node.Value.Evaluate();
+                        }
+                        if (operands.Length == 1)
+                        {
+                            return ni.Node.Value.Evaluate(operands[0]());
+                        }
+                        if (operands.Length == 2)
+                        {
+                            return ni.Node.Value.Evaluate(operands[0](), operands[1]());
+                        }
+                        if (operands.Length == 3)
+                        {
+                            return ni.Node.Value.Evaluate(operands[0](), operands[1](), operands[2]());
+                        }
+
+                        double[] evaluatedOperands = new double[operands.Length];
+                        for (int i = 0; i < operands.Length; i++)
+                        {
+                            evaluatedOperands[i] = operands[i]();
+                        }
+                        return ni.Node.Value.Evaluate(evaluatedOperands);
+                    });
         }
 
         #endregion

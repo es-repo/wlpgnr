@@ -45,7 +45,10 @@ namespace WallpaperGenerator.Formulas.Testing
         [Row(0.0, 0.0, 0.0)]
         public void TestEvaluate(double xVariableValue, double yVariableValue, double expectedResult)
         {
-            double result = new FormulaTree(_formulaRoot).Evaluate(xVariableValue, yVariableValue, 0);
+            FormulaTree formulaTree = new FormulaTree(_formulaRoot);
+            formulaTree.Variables[0].Value = xVariableValue;
+            formulaTree.Variables[1].Value = yVariableValue;
+            double result = new FormulaTree(_formulaRoot).Evaluate();
             Assert.AreEqual(expectedResult, result);
         }
 

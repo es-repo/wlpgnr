@@ -1,1 +1,11 @@
 sqrt(mul(sum(mul(sin(x) sin(y)) mul(sin(z) sin(w))) sum(mul(sin(x1) sin(y1)) mul(sin(z1) sin(w1)))))
+ln(mul(sum(mul(sin(x) sin(y)) mul(sin(z) sin(w))) sum(mul(sin(x1) sin(y1)) mul(sin(z1) sin(w1)))))
+ln(mul(max(mul(sin(x) sin(y)) mul(sin(z) sin(w))) max(mul(sin(x1) sin(y1)) mul(sin(z1) sin(w1)))))
+atan(mul(max(mul(sin(x) sin(y)) mul(sin(z) sin(w))) max(mul(sin(x1) sin(y1)) mul(sin(z1) sin(w1)))))
+
+(sum(sqrt(mul(sum( sin(x)  sin(y)) sum( sin(w)  sin(z)))) sqrt(mul(sum( sin(x1)  sin(y1)) sum( sin(w1)  sin(z1))))))
+ln(sum(sqrt(mul(sum( sin(x)  sin(y)) sum( sin(w)  sin(z)))) sqrt(mul(sum( sin(x1)  sin(y1)) sum( sin(w1)  sin(z1))))))
+atan(sum(sqrt(mul(sum( sin(x)  sin(y)) sum( sin(w)  sin(z)))) sqrt(mul(sum( sin(x1)  sin(y1)) sum( sin(w1)  sin(z1))))))
+tanh(sum(sqrt(mul(sum( sin(x)  sin(y)) sum( sin(w)  sin(z)))) sqrt(mul(sum( sin(x1)  sin(y1)) sum( sin(w1)  sin(z1))))))
+tanh(max(sqrt(mul(sum( sin(x)  sin(y)) sum( sin(w)  sin(z)))) sqrt(mul(sum( sin(x1)  sin(y1)) sum( sin(w1)  sin(z1))))))
+
