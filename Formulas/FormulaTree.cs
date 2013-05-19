@@ -158,31 +158,31 @@ namespace WallpaperGenerator.Formulas
         //{
         //    return Fold((TraversedTreeNodeInfo<Operator> ni, double[] c) => ni.Node.Value.Evaluate(c));
         //}
-        
+
         public Func<double> CompileFormula()
-        {           
-            return Fold((TraversedTreeNodeInfo<Operator> ni, Func<double>[] operands)
-                => () =>
-                    {                        
-                        if (operands.Length == 0)
-                        {
-                            return ni.Node.Value.Evaluate(0, 0, 0, 0);
-                        }
-                        if (operands.Length == 1)
-                        {
-                            return ni.Node.Value.Evaluate(operands[0](), 0, 0, 0);
-                        }
-                        if (operands.Length == 2)
-                        {
-                            return ni.Node.Value.Evaluate(operands[0](), operands[1](), 0, 0);
-                        }
-                        if (operands.Length == 3)
-                        {
-                            return ni.Node.Value.Evaluate(operands[0](), operands[1](), operands[2](), 0);
-                        }
-                        
-                        return ni.Node.Value.Evaluate(operands[0](), operands[1](), operands[2](), operands[3]());
-                    });
+        {
+            return Fold(
+                (TraversedTreeNodeInfo<Operator> ni, Func<double>[] operands) => 
+                { 
+                    Operator op = ni.Node.Value;
+                    switch (op.Arity)
+                    {
+                        case 0:
+                            return () => op.Evaluate(0, 0, 0, 0);
+
+                        case 1:
+                            return () => op.Evaluate(operands[0](), 0, 0, 0);
+
+                        case 2:
+                            return () => op.Evaluate(operands[0](), operands[1](), 0, 0);
+
+                        case 3:
+                            return () => op.Evaluate(operands[0](), operands[1](), operands[2](), 0);
+
+                        default:
+                            return () => op.Evaluate(operands[0](), operands[1](), operands[2](), operands[3]());
+                    }
+                });
         }
 
         #endregion

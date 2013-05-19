@@ -26,11 +26,11 @@ namespace WallpaperGenerator.FormulaRendering
             //double z1 = -3;
             //double w1 = -4;
             //Stopwatch stopwatch2 = new Stopwatch();
-            //stopwatch2.Start(); 
-            //for(int i = 0; i < variableValuesRanges[0].Count; i++)
+            //stopwatch2.Start();
+            //for (int i = 0; i < variableValuesRanges[0].Count; i++)
             //    for (int j = 0; j < variableValuesRanges[1].Count; j++)
             //    {
-            //        r = Math.Sqrt(Math.Sin(x) * Math.Sin(y) + Math.Sin(z) * Math.Sin(w) * (Math.Sin(x1) * Math.Sin(y1) + Math.Sin(z1) * Math.Sin(w1)));
+            //        r = Math.Sqrt((Math.Sin(x) * Math.Sin(y) + Math.Sin(z) * Math.Sin(w)) * (Math.Sin(x1) * Math.Sin(y1) + Math.Sin(z1) * Math.Sin(w1)));
             //        x += 0.1;
             //        y += 0.1;
             //        z += 0.1;
