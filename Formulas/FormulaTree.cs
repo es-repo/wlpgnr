@@ -52,10 +52,39 @@ namespace WallpaperGenerator.Formulas
             return EvaluateSeries(series);
         }
 
-        public IEnumerable<double> EvaluateRangesIn2DProjection(params Range[] variableValueRanges)
+        public double[] EvaluateRangesIn2DProjection(params Range[] variableValueRanges)
         {
-            IEnumerable<double>[] series = variableValueRanges.Select(r => r.Values).ToArray();
-            return EvaluateSeriesIn2DProjection(series);
+            double[] results = new double[variableValueRanges[0].Count*variableValueRanges[1].Count];
+            for (int i = 0; i < variableValueRanges.Length; i += 2)
+            {
+                Variables[i].Value = variableValueRanges[i].Start - variableValueRanges[i].Step;
+            }
+
+            int r = 0;
+            for (int x = 0; x < variableValueRanges[0].Count; x++)
+            {
+                for (int i = 0; i < variableValueRanges.Length; i += 2)
+                {
+                    Variables[i].Value += variableValueRanges[i].Step;
+                }
+                
+                for (int i = 1; i < variableValueRanges.Length; i += 2)
+                {
+                    Variables[i].Value = variableValueRanges[i].Start - variableValueRanges[i].Step;
+                }
+
+                for (int y = 0; y < variableValueRanges[1].Count; y++)
+                {
+                    for (int i = 1; i < variableValueRanges.Length; i += 2)
+                    {
+                        Variables[i].Value += variableValueRanges[i].Step;
+                    }
+
+                    results[r++] = Evaluate();
+                }
+            }
+
+            return results; 
         }
 
         public IEnumerable<double> EvaluateSeriesIn2DProjection(params IEnumerable<double>[] variableValues)

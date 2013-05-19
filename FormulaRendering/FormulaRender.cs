@@ -12,8 +12,8 @@ namespace WallpaperGenerator.FormulaRendering
             int width, int height)
         {
             Stopwatch evaluationStopwatch = new Stopwatch();
-            evaluationStopwatch.Start();  
-            double[] formulaEvaluatedValues = formulaTree.EvaluateRangesIn2DProjection(variableValuesRanges).ToArray();
+            evaluationStopwatch.Start();
+            double[] formulaEvaluatedValues = formulaTree.EvaluateRangesIn2DProjection(variableValuesRanges);
             evaluationStopwatch.Stop();
 
             //double r;
