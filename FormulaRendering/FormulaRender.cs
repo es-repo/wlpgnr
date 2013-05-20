@@ -44,36 +44,30 @@ namespace WallpaperGenerator.FormulaRendering
 
             Stopwatch mapToRgbStopwatch = new Stopwatch();
             mapToRgbStopwatch.Start();  
-            Rgb[] data = MapToRgb(formulaEvaluatedValues, colorTransformation).ToArray();
+            Rgb[] data = MapToRgb(formulaEvaluatedValues, colorTransformation);
             mapToRgbStopwatch.Stop();
             return new RenderedFormulaImage(data, width, height);
         }
 
-        private static IEnumerable<Rgb> MapToRgb(double[] values, ColorTransformation colorTransformation)
+        private static Rgb[] MapToRgb(double[] values, ColorTransformation colorTransformation)
         {
-            IEnumerable<byte> redChannel = MapToColorChannel(values, colorTransformation.RedChannelTransformation);
-            IEnumerable<byte> greenChannel = MapToColorChannel(values, colorTransformation.GreenChannelTransformation);
-            IEnumerable<byte> blueChannel = MapToColorChannel(values, colorTransformation.BlueChannelTransformation);
+            byte[] redChannel = MapToColorChannel(values, colorTransformation.RedChannelTransformation);
+            byte[] greenChannel = MapToColorChannel(values, colorTransformation.GreenChannelTransformation);
+            byte[] blueChannel = MapToColorChannel(values, colorTransformation.BlueChannelTransformation);
 
-            IEnumerator<byte> greenChannelEnumerator = greenChannel.GetEnumerator();
-            IEnumerator<byte> blueChannelEnumerator = blueChannel.GetEnumerator();
-            foreach (byte r in redChannel)
+            Rgb[] colors = new Rgb[redChannel.Length];
+            for (int i = 0; i < redChannel.Length; i++)
             {
-                greenChannelEnumerator.MoveNext();
-                byte g = greenChannelEnumerator.Current;
-
-                blueChannelEnumerator.MoveNext();
-                byte b = blueChannelEnumerator.Current;
-
-                yield return new Rgb(r, g, b);
+                colors[i] = new Rgb(redChannel[i], greenChannel[i], blueChannel[i]);
             }
+            return colors;
         }
 
-        private static IEnumerable<byte> MapToColorChannel(IEnumerable<double> values, ColorChannelTransformation colorChannelTransformation)
+        private static byte[] MapToColorChannel(double[] values, ColorChannelTransformation colorChannelTransformation)
         {
-            double[] channelValues = TransformChannelValues(values, colorChannelTransformation.TransformationFunction).ToArray();
+            double[] channelValues = TransformChannelValues(values, colorChannelTransformation.TransformationFunction);
             
-            IEnumerable<double> significantValues = GetSignificantValues(channelValues);
+            double[] significantValues = GetSignificantValues(channelValues);
 
             double mathExpectation = MathUtilities.MathExpectation(significantValues);
             double standardDeviation = MathUtilities.StandardDeviation(significantValues);
@@ -92,20 +86,31 @@ namespace WallpaperGenerator.FormulaRendering
                 rangeEnd = tmp;
             }
 
-            return channelValues.Select(v => (byte)MathUtilities.Map(v, rangeStart, rangeEnd, 0, 255));
+            byte[] bytes = new byte[channelValues.Length];
+            for (int i = 0; i < channelValues.Length; i++)
+            {
+                bytes[i] = (byte) MathUtilities.Map(channelValues[i], rangeStart, rangeEnd, 0, 255);
+            }
+
+            return bytes;
         }
 
-        private static IEnumerable<double> TransformChannelValues(IEnumerable<double> values, Func<double, double> channelTransformingFunction)
+        private static double[] TransformChannelValues(double[] values, Func<double, double> channelTransformingFunction)
         {
-            return values.Select(channelTransformingFunction);
+            double[] transformedValues = new double[values.Length];
+            for (int i = 0; i < values.Length; i++)
+            {
+                transformedValues[i] = channelTransformingFunction(values[i]);
+            }
+            return transformedValues;
         }
 
-        private static IEnumerable<double> GetSignificantValues(IEnumerable<double> values)
+        private static double[] GetSignificantValues(IEnumerable<double> values)
         {
             const double factor = 1e175;
             const double lowBound = double.MinValue * factor;
             const double highBound = double.MaxValue / factor;
-            return values.Where(v => !double.IsNaN(v) && (v > lowBound) && (v < highBound));
+            return values.Where(v => !double.IsNaN(v) && (v > lowBound) && (v < highBound)).ToArray();
         }
     }
 }

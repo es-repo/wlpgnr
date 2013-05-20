@@ -1,36 +1,41 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace WallpaperGenerator.FormulaRendering
 {
     public static class MathUtilities
     {
-        public static double MathExpectation(IEnumerable<double> values)
+        public static double MathExpectation(double[] values)
         {
-            int count = values.Count();
-            return values.Sum(v => v / count);
+            double sum = 0;
+            for (int i = 0; i < values.Length; i++)
+                sum += values[i];
+
+            return sum/values.Length;
         }
 
-        public static double Variance(IEnumerable<double> values)
+        public static double Variance(double[] values)
         {
-            int count = values.Count();
-            if (count == 1)
+            if (values.Length == 1)
                 return 0;
 
-            double sum = values.Sum();
-            double sumOfSquares = values.Sum(v => v * v);
-            
-            return (sumOfSquares - sum*sum/count)/(count - 1);
+            double sum = 0;
+            for (int i = 0; i < values.Length; i++)
+                sum += values[i];
+
+            double sumOfSquares = 0;
+            for (int i = 0; i < values.Length; i++)
+                sumOfSquares += values[i] * values[i];
+
+            return (sumOfSquares - sum * sum / values.Length) / (values.Length - 1);
         }
 
-        public static double StandardDeviation(IEnumerable<double> values)
+        public static double StandardDeviation(double[] values)
         {
             double varianse = Variance(values);
             return Math.Sqrt(varianse);
         }
 
-        public static double ThreeSigmas(IEnumerable<double> values)
+        public static double ThreeSigmas(double[] values)
         {
             double standartDeviation = StandardDeviation(values);
             return 3*standartDeviation;

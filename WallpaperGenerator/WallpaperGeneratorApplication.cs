@@ -34,7 +34,7 @@ namespace WallpaperGenerator
 
         public WallpaperGeneratorApplication()
         {
-            _wallpaperImage = new WallpaperImage(700, 700);
+            _wallpaperImage = new WallpaperImage(1440, 1440);
             _mainWindow = new MainWindow { WindowState = WindowState.Maximized };
 
             _mainWindow.ControlPanel.GenerateFormulaButton.Click += (s, a) =>
