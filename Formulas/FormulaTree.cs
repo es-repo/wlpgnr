@@ -166,21 +166,30 @@ namespace WallpaperGenerator.Formulas
             return Fold(
                 (TraversedTreeNodeInfo<Operator> ni, Func<double>[] operands) =>
                 {
+                    Operator op = ni.Node.Value;
+                    
                     Func<double> op0 = operands.Length > 0 ? operands[0] : null;
                     Func<double> op1 = operands.Length > 1 ? operands[1] : null;
                     Func<double> op2 = operands.Length > 2 ? operands[2] : null;
-                    Func<double> op3 = operands.Length > 3 ? operands[3] : null; 
-                    Operator op = ni.Node.Value;
-                    
+                    Func<double> op3 = operands.Length > 3 ? operands[3] : null;
+
                     if (op is Variable)
                     {
-                        Variable v = (Variable) op;
+                        Variable v = (Variable)op;
                         return () => v.Value;
                     }
                     if (op is Constant)
                     {
                         Constant c = (Constant)op;
                         return () => c.Value;
+                    }
+                    if (op is Abs)
+                    {
+                        return () =>
+                        {
+                            double v = op0();
+                            return v > 0 ? v : -v;
+                        };
                     }
                     if (op is Sin)
                     {
@@ -196,7 +205,11 @@ namespace WallpaperGenerator.Formulas
                     }
                     if (op is Sqrt)
                     {
-                        return () => Math.Sqrt(Math.Abs(op0()));
+                        return () =>
+                        {
+                            double v = op0();
+                            return Math.Sqrt(v > 0 ? v : -v);
+                        };
                     }
                     if (op is Ln)
                     {
@@ -217,6 +230,14 @@ namespace WallpaperGenerator.Formulas
                     if (op is Div)
                     {
                         return () => op0() / op1();
+                    }
+                    if (op is DivRem)
+                    {
+                        return () => op0() % op1();
+                    }
+                    if (op is Pow)
+                    {
+                        return () => Math.Pow(op0(), op1());
                     }
 
                     switch (op.Arity)

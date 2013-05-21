@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;  
 using WallpaperGenerator.Formulas;
 
 namespace WallpaperGenerator.FormulaRendering
