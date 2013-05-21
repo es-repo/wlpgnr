@@ -67,15 +67,18 @@ namespace WallpaperGenerator.FormulaRendering
         {
             double[] channelValues = TransformChannelValues(values, colorChannelTransformation.TransformationFunction);
             
-            double[] significantValues = GetSignificantValues(channelValues);
+            const double factor = 1e175;
+            const double lowBound = double.MinValue * factor;
+            const double highBound = double.MaxValue / factor;
+            LimitValue(channelValues, lowBound, highBound);
 
-            double mathExpectation = MathUtilities.MathExpectation(significantValues);
-            double standardDeviation = MathUtilities.StandardDeviation(significantValues);
+            double mathExpectation = MathUtilities.MathExpectation(channelValues);
+            double standardDeviation = MathUtilities.StandardDeviation(channelValues);
             double limit = standardDeviation * (1 + 2 * colorChannelTransformation.DispersionCoefficient);
             if (double.IsNegativeInfinity(limit))
-                limit = double.MinValue;
+                limit = lowBound;
             if (double.IsPositiveInfinity(limit))
-                limit = double.MaxValue;
+                limit = highBound;
 
             double rangeStart = mathExpectation - limit;
             double rangeEnd = mathExpectation + limit;
@@ -85,11 +88,18 @@ namespace WallpaperGenerator.FormulaRendering
                 rangeStart = rangeEnd;
                 rangeEnd = tmp;
             }
+            double range = rangeEnd - rangeStart;
+            double scale = 255/range;
 
             byte[] bytes = new byte[channelValues.Length];
             for (int i = 0; i < channelValues.Length; i++)
             {
-                bytes[i] = (byte) MathUtilities.Map(channelValues[i], rangeStart, rangeEnd, 0, 255);
+                if (channelValues[i] < rangeStart)
+                    channelValues[i] = rangeStart;
+                else if (channelValues[i] > rangeEnd)
+                    channelValues[i] = rangeEnd;
+
+                bytes[i] = (byte)((channelValues[i] - rangeStart) * scale);
             }
 
             return bytes;
@@ -105,12 +115,21 @@ namespace WallpaperGenerator.FormulaRendering
             return transformedValues;
         }
 
-        private static double[] GetSignificantValues(IEnumerable<double> values)
+        private static void LimitValue(double[] values, double lowBound, double highBound)
         {
-            const double factor = 1e175;
-            const double lowBound = double.MinValue * factor;
-            const double highBound = double.MaxValue / factor;
-            return values.Where(v => !double.IsNaN(v) && (v > lowBound) && (v < highBound)).ToArray();
+            for (int i = 0; i < values.Length; i++)
+            {
+                if (values[i] > lowBound && values[i] < highBound)
+                    continue;   
+
+                values[i] = values[i] < lowBound
+                    ? lowBound
+                    : values[i] > highBound
+                        ? highBound
+                        : double.IsNaN(values[i])
+                            ? 0
+                            : values[i];
+            }
         }
     }
 }

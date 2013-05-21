@@ -34,26 +34,15 @@ namespace WallpaperGenerator.FormulaRendering
             double varianse = Variance(values);
             return Math.Sqrt(varianse);
         }
-
-        public static double ThreeSigmas(double[] values)
+        
+        public static double Map(double value, double rangeStart, double rangeEnd, double range,
+            double mappedRangeStart, double mappedRangeEnd, double mappedRange, double scale)
         {
-            double standartDeviation = StandardDeviation(values);
-            return 3*standartDeviation;
-        }
-
-        public static double Map(double value, double rangeStart, double rangeEnd, double mappedRangeStart, double mappedRangeEnd)
-        {
-            if (double.IsNaN(value))
-                return (mappedRangeEnd - mappedRangeStart) / 2;
-
             if (value < rangeStart)
                 value = rangeStart;
-            if (value > rangeEnd)
+            else if (value > rangeEnd)
                 value = rangeEnd;
 
-            double range = rangeEnd - rangeStart;
-            double mappedRange = mappedRangeEnd - mappedRangeStart;
-            double scale = mappedRange / range;
             return (value - rangeStart) * scale + mappedRangeStart;
         }
     }

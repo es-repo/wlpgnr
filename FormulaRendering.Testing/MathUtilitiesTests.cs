@@ -43,26 +43,19 @@ namespace WallpaperGenerator.FormulaRendering.Testing
         }
 
         [RowTest]
-        [Row(new double[] { }, double.NaN)]
-        [Row(new double[] { 1 }, 0)]
-        [Row(new double[] { 1, 2, 3, 4, 5, 6 }, 1.870828693386971 * 3)]
-        [Row(new double[] { -1, 0, 1 }, 3)]
-        public void TestThreeSigmas(double[] values, double expectedThreeSigmas)
-        {
-            double threeSigmas = MathUtilities.ThreeSigmas(values);
-            Assert.AreEqual(expectedThreeSigmas, threeSigmas);
-        }
-
-        [RowTest]
         [Row(0, 0, 1, 0, 1, 0)]
         [Row(0, 0, 1, 1, 2, 1)]
         [Row(-10, -11, -10, 0, 1, 1)]
         [Row(3, 0, 10, 0, 100, 30)]
-        [Row(double.NaN, 0, 10, 0, 100, 50)]
+        //[Row(double.NaN, 0, 10, 0, 100, 50)]
         [Row(-24, -30, -10, 400, 500, 430)]
         public void TestMap(double value, double rangeStart, double rangeEnd, double mappedRangeStart, double mappedRangeEnd, double expectedMappedValue)
         {
-            double mappedValue = MathUtilities.Map(value, rangeStart, rangeEnd, mappedRangeStart, mappedRangeEnd);
+            double range = rangeEnd - rangeStart;
+            double mappedRange = mappedRangeEnd - mappedRangeStart;
+            double scale = mappedRange/range; 
+            double mappedValue = MathUtilities.Map(value, rangeStart, rangeEnd, range,
+                mappedRangeStart, mappedRangeEnd, mappedRange, scale);
             Assert.AreEqual(expectedMappedValue, mappedValue);
         }
     }
