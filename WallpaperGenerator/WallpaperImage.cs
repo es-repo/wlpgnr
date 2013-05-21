@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;  
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using WallpaperGenerator.FormulaRendering;
@@ -50,8 +48,15 @@ namespace WallpaperGenerator
 
         public void Update(RenderedFormulaImage renderedFormulaImage)
         {
-            IEnumerable<byte> colors = renderedFormulaImage.Data.Select(rgb => new byte[] {rgb.B, rgb.G, rgb.R, 255}).SelectMany(b => b); 
-           _bitmap.WritePixels(_rect, colors.ToArray(), _stride, 0);
+            byte[] colors = new byte[renderedFormulaImage.RedChannel.Length*4];
+            for (int i = 0, j = 0; i < renderedFormulaImage.RedChannel.Length; i++, j+=4)
+            {
+                colors[j] = renderedFormulaImage.BlueChannel[i];
+                colors[j+1] = renderedFormulaImage.GreenChannel[i];
+                colors[j + 2] = renderedFormulaImage.RedChannel[i];
+                colors[j+3] = 255;
+            }
+           _bitmap.WritePixels(_rect, colors, _stride, 0);
         }
 
         #endregion

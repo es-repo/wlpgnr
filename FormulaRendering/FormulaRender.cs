@@ -41,25 +41,26 @@ namespace WallpaperGenerator.FormulaRendering
             //stopwatch2.Stop();
 
             Stopwatch mapToRgbStopwatch = new Stopwatch();
-            mapToRgbStopwatch.Start();  
-            Rgb[] data = MapToRgb(formulaEvaluatedValues, colorTransformation);
+            mapToRgbStopwatch.Start();
+            byte[] redChannel = MapToColorChannel(formulaEvaluatedValues, colorTransformation.RedChannelTransformation);
+            byte[] greenChannel = MapToColorChannel(formulaEvaluatedValues, colorTransformation.GreenChannelTransformation);
+            byte[] blueChannel = MapToColorChannel(formulaEvaluatedValues, colorTransformation.BlueChannelTransformation);
+
+            //Rgb[] data = MapToRgb(formulaEvaluatedValues, colorTransformation);
             mapToRgbStopwatch.Stop();
-            return new RenderedFormulaImage(data, width, height);
+            return new RenderedFormulaImage(redChannel, greenChannel, blueChannel, width, height);
         }
 
-        private static Rgb[] MapToRgb(double[] values, ColorTransformation colorTransformation)
-        {
-            byte[] redChannel = MapToColorChannel(values, colorTransformation.RedChannelTransformation);
-            byte[] greenChannel = MapToColorChannel(values, colorTransformation.GreenChannelTransformation);
-            byte[] blueChannel = MapToColorChannel(values, colorTransformation.BlueChannelTransformation);
-
-            Rgb[] colors = new Rgb[redChannel.Length];
-            for (int i = 0; i < redChannel.Length; i++)
-            {
-                colors[i] = new Rgb(redChannel[i], greenChannel[i], blueChannel[i]);
-            }
-            return colors;
-        }
+        //private static Rgb[] MapToRgb(double[] values, ColorTransformation colorTransformation)
+        //{
+            
+        //    Rgb[] colors = new Rgb[redChannel.Length];
+        //    for (int i = 0; i < redChannel.Length; i++)
+        //    {
+        //        colors[i] = new Rgb(redChannel[i], greenChannel[i], blueChannel[i]);
+        //    }
+        //    return colors;
+        //}
 
         private static byte[] MapToColorChannel(double[] values, ColorChannelTransformation colorChannelTransformation)
         {

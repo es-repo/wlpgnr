@@ -172,7 +172,7 @@ namespace WallpaperGenerator.Formulas
                     Func<double> op1 = operands.Length > 1 ? operands[1] : null;
                     Func<double> op2 = operands.Length > 2 ? operands[2] : null;
                     Func<double> op3 = operands.Length > 3 ? operands[3] : null;
-
+                    // ReSharper disable PossibleNullReferenceException
                     if (op is Variable)
                     {
                         Variable v = (Variable)op;
@@ -257,6 +257,7 @@ namespace WallpaperGenerator.Formulas
                         default:
                             return () => op.Evaluate(op0(), op1(), op2(), op3());
                     }
+                    // ReSharper restore PossibleNullReferenceException
                 });
         }
 

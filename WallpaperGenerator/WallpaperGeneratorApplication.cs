@@ -22,7 +22,7 @@ namespace WallpaperGenerator
 
         #region Properties
 
-        public FormulaRenderingArguments FormulaRenderingArguments 
+        public FormulaRenderingArguments FormulaRenderingArguments
         {
             get { return FormulaRenderingArguments.FromString(_mainWindow.FormulaTexBox.Text); }
         }
@@ -34,7 +34,7 @@ namespace WallpaperGenerator
 
         public WallpaperGeneratorApplication()
         {
-            _wallpaperImage = new WallpaperImage(1440, 1440);
+            _wallpaperImage = new WallpaperImage(700, 700);
             _mainWindow = new MainWindow { WindowState = WindowState.Maximized };
 
             _mainWindow.ControlPanel.GenerateFormulaButton.Click += (s, a) =>
@@ -49,23 +49,24 @@ namespace WallpaperGenerator
                 {
                     _mainWindow.Cursor = Cursors.Wait;
 
+                    FormulaRenderingArguments formulaRenderingArguments = FormulaRenderingArguments;
+                    Range[] variableValuesRanges = CreateRandomVariableValuesRanges(formulaRenderingArguments.FormulaTree, _wallpaperImage.WidthInPixels, _wallpaperImage.HeightInPixels).ToArray();
+                    
                     Stopwatch stopwatch = new Stopwatch();
                     stopwatch.Start();  
 
-                    Range[] variableValuesRanges = CreateRandomVariableValuesRanges(FormulaRenderingArguments.FormulaTree, _wallpaperImage.WidthInPixels, _wallpaperImage.HeightInPixels).ToArray();
-                    
                     RenderedFormulaImage renderedFormulaImage = FormulaRender.Render(
-                        FormulaRenderingArguments.FormulaTree,
+                        formulaRenderingArguments.FormulaTree,
                         variableValuesRanges,
-                        FormulaRenderingArguments.ColorTransformation, 
+                        formulaRenderingArguments.ColorTransformation, 
                         _wallpaperImage.WidthInPixels, _wallpaperImage.HeightInPixels);
 
                     _wallpaperImage.Update(renderedFormulaImage);
                     _mainWindow.WallpaperImage.Source = _wallpaperImage.Source;
 
                     stopwatch.Stop();
-                    _mainWindow.StatusPanel.RenderedTime = stopwatch.Elapsed; 
 
+                    _mainWindow.StatusPanel.RenderedTime = stopwatch.Elapsed; 
                     _mainWindow.Cursor = Cursors.Arrow;
             };
         }
