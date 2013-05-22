@@ -4,9 +4,24 @@ namespace WallpaperGenerator.Formulas.Operators.Arithmetic
 {
     public class Sqrt : UnaryOperator
     {
-        public override double Evaluate(double op1, double op2, double op3, double op4)
+        public override Func<double> Evaluate(params Func<double>[] operands)
         {
-            return Math.Sqrt(Math.Abs(op1));
+            Func<double> op0 = operands[0];
+            return () =>
+            {
+                double v = op0();
+                return Math.Sqrt(v > 0 ? v : -v);
+            };
+        }
+
+        public override Func<double> Evaluate(params ZeroArityOperator[] operands)
+        {
+            ZeroArityOperator op0 = operands[0];
+            return () =>
+            {
+                double v = op0.Value;
+                return Math.Sqrt(v > 0 ? v : -v);
+            };
         }
     }
 }

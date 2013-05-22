@@ -1,10 +1,23 @@
-﻿namespace WallpaperGenerator.Formulas.Operators.Conditionals
+﻿using System;
+
+namespace WallpaperGenerator.Formulas.Operators.Conditionals
 {
     public class IfG0 : TernaryOperator
     {
-        public override double Evaluate(double op1, double op2, double op3, double op4)
+        public override Func<double> Evaluate(params Func<double>[] operands)
         {
-            return op1 > 0 ? op3 : op2;
+            Func<double> op0 = operands[0];
+            Func<double> op1 = operands[1];
+            Func<double> op2 = operands[2];
+            return () => op0() > 0 ? op2() : op1();
+        }
+
+        public override Func<double> Evaluate(params ZeroArityOperator[] operands)
+        {
+            ZeroArityOperator op0 = operands[0];
+            ZeroArityOperator op1 = operands[1];
+            ZeroArityOperator op2 = operands[2];
+            return () => op0.Value > 0 ? op2.Value : op1.Value;
         }
     }
 }

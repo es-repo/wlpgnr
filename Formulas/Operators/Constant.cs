@@ -1,11 +1,10 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 
 namespace WallpaperGenerator.Formulas.Operators
 {
     public sealed class Constant : ZeroArityOperator
     {
-        public double Value { get; private set; }
-
         public Constant(double value)
             : this(value, value.ToString(CultureInfo. InvariantCulture)) 
         {
@@ -17,9 +16,14 @@ namespace WallpaperGenerator.Formulas.Operators
             Value = value;
         }
 
-        public override double Evaluate(double op1, double op2, double op3, double op4)
+        public override Func<double> Evaluate(params ZeroArityOperator[] operands)
         {
-            return Value;
+            throw new InvalidOperationException();
+        }
+
+        public override Func<double> Evaluate(params Func<double>[] operands)
+        {
+            return () => Value;
         }
     }
 }

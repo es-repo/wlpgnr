@@ -14,7 +14,6 @@ namespace WallpaperGenerator.FormulaRendering
             double[] formulaEvaluatedValues = formulaTree.EvaluateRangesIn2DProjection(variableValuesRanges);
             evaluationStopwatch.Stop();
 
-            //double r;
             //double x = 1;
             //double y = 2;
             //double z = 3;
@@ -25,19 +24,19 @@ namespace WallpaperGenerator.FormulaRendering
             //double w1 = -4;
             //Stopwatch stopwatch2 = new Stopwatch();
             //stopwatch2.Start();
-            //for (int i = 0; i < variableValuesRanges[0].Count; i++)
-            //    for (int j = 0; j < variableValuesRanges[1].Count; j++)
-            //    {
-            //        r = Math.Sqrt((Math.Sin(x) * Math.Sin(y) + Math.Sin(z) * Math.Sin(w)) * (Math.Sin(x1) * Math.Sin(y1) + Math.Sin(z1) * Math.Sin(w1)));
-            //        x += 0.1;
-            //        y += 0.1;
-            //        z += 0.1;
-            //        w += 0.1;
-            //        x1 += 0.3;
-            //        y1 += 0.3;
-            //        z1 += 0.3;
-            //        w1 += 0.3;
-            //    }
+            //double[] arr = new double[variableValuesRanges[0].Count*variableValuesRanges[1].Count];
+            //for (int i = 0; i < arr.Length; i++)
+            //{
+            //    arr[i] = Math.Sqrt((Math.Sin(x) * Math.Sin(y) + Math.Sin(z) * Math.Sin(w)) * (Math.Sin(x1) * Math.Sin(y1) + Math.Sin(z1) * Math.Sin(w1)));
+            //    x += 0.1;
+            //    y += 0.1;
+            //    z += 0.1;
+            //    w += 0.1;
+            //    x1 += 0.3;
+            //    y1 += 0.3;
+            //    z1 += 0.3;
+            //    w1 += 0.3;
+            //}
             //stopwatch2.Stop();
 
             Stopwatch mapToRgbStopwatch = new Stopwatch();
@@ -46,21 +45,9 @@ namespace WallpaperGenerator.FormulaRendering
             byte[] greenChannel = MapToColorChannel(formulaEvaluatedValues, colorTransformation.GreenChannelTransformation);
             byte[] blueChannel = MapToColorChannel(formulaEvaluatedValues, colorTransformation.BlueChannelTransformation);
 
-            //Rgb[] data = MapToRgb(formulaEvaluatedValues, colorTransformation);
             mapToRgbStopwatch.Stop();
             return new RenderedFormulaImage(redChannel, greenChannel, blueChannel, width, height);
         }
-
-        //private static Rgb[] MapToRgb(double[] values, ColorTransformation colorTransformation)
-        //{
-            
-        //    Rgb[] colors = new Rgb[redChannel.Length];
-        //    for (int i = 0; i < redChannel.Length; i++)
-        //    {
-        //        colors[i] = new Rgb(redChannel[i], greenChannel[i], blueChannel[i]);
-        //    }
-        //    return colors;
-        //}
 
         private static byte[] MapToColorChannel(double[] values, ColorChannelTransformation colorChannelTransformation)
         {

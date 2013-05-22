@@ -13,8 +13,8 @@ namespace WallpaperGenerator.Formulas.Testing.Operators
         [Row(-2.0, -2.0)]
         public void TestVariable(double a, double expected)
         {
-            Operator constant = new Variable("x") { Value = a };
-            double result = constant.Evaluate(0, 0, 0, 0);
+            Variable variable = new Variable("x") { Value = a };
+            double result = variable.Value;
             Assert.AreEqual(expected, result);
         }
 

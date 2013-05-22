@@ -4,9 +4,16 @@ namespace WallpaperGenerator.Formulas.Operators.Trigonometric
 {
     public class Tanh : UnaryOperator
     {
-        public override double Evaluate(double op1, double op2, double op3, double op4)
+        public override Func<double> Evaluate(params Func<double>[] operands)
         {
-            return Math.Tanh(op1);
+            Func<double> op0 = operands[0];
+            return () => Math.Tanh(op0());
+        }
+
+        public override Func<double> Evaluate(params ZeroArityOperator[] operands)
+        {
+            ZeroArityOperator op0 = operands[0];
+            return () => Math.Tanh(op0.Value);
         }
     }
 }

@@ -4,9 +4,16 @@ namespace WallpaperGenerator.Formulas.Operators.Arithmetic
 {
     public class Ln : UnaryOperator
     {
-        public override double Evaluate(double op1, double op2, double op3, double op4)
+        public override Func<double> Evaluate(params Func<double>[] operands)
         {
-            return Math.Log(op1, Math.E);
+            Func<double> op0 = operands[0];
+            return () => Math.Log(op0(), Math.E);
+        }
+
+        public override Func<double> Evaluate(params ZeroArityOperator[] operands)
+        {
+            ZeroArityOperator op0 = operands[0];
+            return () => Math.Log(op0.Value, Math.E);
         }
     }
 }

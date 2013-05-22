@@ -22,9 +22,9 @@ namespace WallpaperGenerator
 
         #region Properties
 
-        public FormulaRenderingArguments FormulaRenderingArguments
+        public FormulaRenderingArguments GetFormulaRenderingArguments()
         {
-            get { return FormulaRenderingArguments.FromString(_mainWindow.FormulaTexBox.Text); }
+            return FormulaRenderingArguments.FromString(_mainWindow.FormulaTexBox.Text);
         }
 
         #endregion
@@ -49,7 +49,7 @@ namespace WallpaperGenerator
                 {
                     _mainWindow.Cursor = Cursors.Wait;
 
-                    FormulaRenderingArguments formulaRenderingArguments = FormulaRenderingArguments;
+                    FormulaRenderingArguments formulaRenderingArguments = GetFormulaRenderingArguments();
                     Range[] variableValuesRanges = CreateRandomVariableValuesRanges(formulaRenderingArguments.FormulaTree, _wallpaperImage.WidthInPixels, _wallpaperImage.HeightInPixels).ToArray();
                     
                     Stopwatch stopwatch = new Stopwatch();

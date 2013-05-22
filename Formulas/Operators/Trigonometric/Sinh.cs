@@ -1,10 +1,19 @@
-﻿namespace WallpaperGenerator.Formulas.Operators.Trigonometric
+﻿using System;
+
+namespace WallpaperGenerator.Formulas.Operators.Trigonometric
 {
     public class Sinh : UnaryOperator
     {
-        public override double Evaluate(double op1, double op2, double op3, double op4)
+        public override Func<double> Evaluate(params Func<double>[] operands)
         {
-            return MathLibrary.Sinh(op1);
+            Func<double> op0 = operands[0];
+            return () => Math.Sinh(op0());
+        }
+
+        public override Func<double> Evaluate(params ZeroArityOperator[] operands)
+        {
+            ZeroArityOperator op0 = operands[0];
+            return () => Math.Sinh(op0.Value);
         }
     }
 }

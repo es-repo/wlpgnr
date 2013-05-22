@@ -11,7 +11,7 @@ namespace WallpaperGenerator.Formulas.Testing.Operators
         public void TestBinaryOperator(double[] operands, double expectedResult)
         {
             Operator sum = new Sum();
-            double result = sum.Evaluate(operands[0], operands[1], 0, 0);
+            double result = sum.Evaluate(() => operands[0], () => operands[1])();
             Assert.AreEqual(expectedResult, result);
         }
     }

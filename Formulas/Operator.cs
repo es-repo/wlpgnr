@@ -1,4 +1,7 @@
-﻿namespace WallpaperGenerator.Formulas
+﻿using System;
+using WallpaperGenerator.Formulas.Operators;
+
+namespace WallpaperGenerator.Formulas
 {
     public abstract class Operator
     {
@@ -17,6 +20,8 @@
             Name = name ?? GetType().Name;
         }
 
-        public abstract double Evaluate(double op1, double op2, double op3, double op4);
+        public abstract Func<double> Evaluate(params ZeroArityOperator[] operands);
+
+        public abstract Func<double> Evaluate(params Func<double>[] operands);
     }
 }

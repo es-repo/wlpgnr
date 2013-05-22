@@ -12,6 +12,7 @@
     <AssemblyName>Formulas</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkSubset>Client</TargetFrameworkSubset>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -47,21 +48,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Operators\Arithmetic\Abs.cs" />
-    <Compile Include="Operators\Arithmetic\Round.cs" />
     <Compile Include="Operators\Arithmetic\Cbrt.cs" />
+    <Compile Include="Operators\Arithmetic\Minus.cs" />
     <Compile Include="Operators\Arithmetic\Sqrt.cs" />
-    <Compile Include="Operators\Arithmetic\Pow3.cs" />
-    <Compile Include="Operators\Arithmetic\Pow2.cs" />
     <Compile Include="Operators\Arithmetic\Ln.cs" />
-    <Compile Include="Operators\Arithmetic\Log2.cs" />
     <Compile Include="Operators\Arithmetic\Log.cs" />
     <Compile Include="Operators\Arithmetic\Div.cs" />
     <Compile Include="Operators\Arithmetic\DivRem.cs" />
     <Compile Include="Operators\Arithmetic\Pow.cs" />
     <Compile Include="Operators\Arithmetic\Sub.cs" />
-    <Compile Include="Operators\Bitwise\Or.cs" />
-    <Compile Include="Operators\Bitwise\And.cs" />
-    <Compile Include="Operators\Bitwise\Xor.cs" />
     <Compile Include="Operators\Conditionals\IfG0.cs" />
     <Compile Include="FormulaTreeSerializer.cs" />
     <Compile Include="MathLibrary.cs" />
@@ -72,14 +67,11 @@
     <Compile Include="FormulaTreeGenerator.cs" />
     <Compile Include="Operator.cs" />
     <Compile Include="Operators\BinaryOperator.cs" />
-    <Compile Include="Operators\Arithmetic\Minus.cs" />
     <Compile Include="Operators\Arithmetic\Mul.cs" />
     <Compile Include="Operators\OperatorsLibrary.cs" />
     <Compile Include="Operators\Arithmetic\Sum.cs" />
     <Compile Include="Operators\TernaryOperator.cs" />
     <Compile Include="Operators\Trigonometric\Atan.cs" />
-    <Compile Include="Operators\Trigonometric\Csc.cs" />
-    <Compile Include="Operators\Trigonometric\Sec.cs" />
     <Compile Include="Operators\Trigonometric\Cosh.cs" />
     <Compile Include="Operators\Trigonometric\Sinh.cs" />
     <Compile Include="Operators\Trigonometric\Tanh.cs" />

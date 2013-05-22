@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using WallpaperGenerator.Formulas.Operators.Arithmetic;
-using WallpaperGenerator.Formulas.Operators.Bitwise;
 using WallpaperGenerator.Formulas.Operators.Conditionals;
 using WallpaperGenerator.Formulas.Operators.Trigonometric;
 
@@ -62,35 +61,26 @@ namespace WallpaperGenerator.Formulas.Operators
         public static readonly Operator Mul = new Mul();
         public static readonly Operator Div = new Div();
         public static readonly Operator DivRem = new DivRem();
-        public static readonly Operator Round = new Round();
         public static readonly Operator Pow = new Pow();
-        public static readonly Operator Pow2 = new Pow2();
-        public static readonly Operator Pow3 = new Pow3();
         public static readonly Operator Sqrt = new Sqrt();
         public static readonly Operator Cbrt = new Cbrt();
         public static readonly Operator Log = new Log();
-        public static readonly Operator Log2 = new Log2();
         public static readonly Operator Ln = new Ln();
 
         public static IEnumerable<Operator> Arithmetic
         {
             get
             {
-                //yield return Minus;
                 yield return Abs;
                 yield return Sum;
                 yield return Sub;
                 yield return Mul;
                 yield return Div;
                 yield return DivRem;
-                yield return Round;
                 yield return Pow;
-                //yield return Pow2;
-                //yield return Pow3;
                 yield return Sqrt;
                 yield return Cbrt;
-                //yield return Log;
-                //yield return Log2;
+                yield return Log;
                 yield return Ln;
             }
         }
@@ -100,9 +90,7 @@ namespace WallpaperGenerator.Formulas.Operators
         #region Trigonometric Operators
         
         public static readonly Operator Sin = new Sin();
-        public static readonly Operator Sec = new Sec();
         public static readonly Operator Cos = new Cos();
-        public static readonly Operator Csc = new Csc();
         public static readonly Operator Tan = new Tan();
         public static readonly Operator Atan = new Atan();
         public static readonly Operator Sinh = new Sinh();
@@ -114,32 +102,12 @@ namespace WallpaperGenerator.Formulas.Operators
             get
             {
                 yield return Sin;
-                //yield return Sec;
                 //yield return Cos;
-                //yield return Csc;
-                //yield return Tan;
+                yield return Tan;
                 yield return Atan;
-                //yield return Sinh;
+                yield return Sinh;
                 //yield return Cosh;
                 yield return Tanh;
-            }
-        }
-
-        #endregion
-
-        #region Bitwise Operators
-
-        public static readonly Operator And = new And();
-        public static readonly Operator Or = new Or();
-        public static readonly Operator Xor = new Xor();
-        
-        public static IEnumerable<Operator> Bitwise
-        {
-            get
-            {
-                yield return And;
-                yield return Or;
-                yield return Xor;
             }
         }
 
@@ -173,10 +141,8 @@ namespace WallpaperGenerator.Formulas.Operators
         {
             get
             {
-                //yield return new KeyValuePair<string, IEnumerable<Operator>>("Constants", Constants);
                 yield return new KeyValuePair<string, IEnumerable<Operator>>("Arithmetic", Arithmetic);
                 yield return new KeyValuePair<string, IEnumerable<Operator>>("Trigonometric", Trigonometric);
-                //yield return new KeyValuePair<string, IEnumerable<Operator>>("Bitwise", Bitwise);
                 yield return new KeyValuePair<string, IEnumerable<Operator>>("Conditionals", Conditionals);
             }
         }
