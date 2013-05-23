@@ -45,15 +45,15 @@ namespace WallpaperGenerator.MainWindowControls
             Children.Add(GenerateFormulaButton);
             Children.Add(RenderFormulaButton);
 
-            DimensionsCountSlider = CreateSliderControlsBlock(1, 10, 4, "Dimensions");
+            DimensionsCountSlider = CreateSliderControlsBlock(1, 100, 8, "Dimensions");
             DimensionsCountSlider.ValueChanged += (s, a) =>
                 VariablesCountSlider.Value = Math.Max(VariablesCountSlider.Value, DimensionsCountSlider.Value);
             
-            VariablesCountSlider = CreateSliderControlsBlock(1, 50, 4, "Variables");
+            VariablesCountSlider = CreateSliderControlsBlock(1, 500, 20, "Variables");
             
-            ConstantsCountSlider = CreateSliderControlsBlock(0, 20, 4, "Constants");
+            ConstantsCountSlider = CreateSliderControlsBlock(0, 200, 4, "Constants");
             
-            UnaryOperatorsCountSlider = CreateSliderControlsBlock(0, 100, 4, "Unary Operators");
+            UnaryOperatorsCountSlider = CreateSliderControlsBlock(0, 1000, 40, "Unary Operators");
             
             IEnumerable<KeyValuePair<string, IEnumerable<OperatorCheckBox>>> operatorCheckBoxesByCategories = CreateOperatorCheckBoxesByCategories().ToArray();
             foreach (KeyValuePair<string, IEnumerable<OperatorCheckBox>> entry in operatorCheckBoxesByCategories)
