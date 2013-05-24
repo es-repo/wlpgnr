@@ -8,9 +8,7 @@ namespace WallpaperGenerator.Formulas
         
         public static double Pow(double a, double b)
         {
-            if (b < 1)
-                a = Math.Abs(a);
-            return Math.Pow(a, b);
+            return Math.Pow(b >= 1 ? a : a >= 0 ? a : -a, b);
         }
 
         #endregion

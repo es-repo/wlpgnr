@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using WallpaperGenerator.Formulas;
 
 namespace WallpaperGenerator.FormulaRendering
@@ -52,7 +54,9 @@ namespace WallpaperGenerator.FormulaRendering
         private static byte[] MapToColorChannel(double[] values, ColorChannelTransformation colorChannelTransformation)
         {
             double[] channelValues = TransformChannelValues(values, colorChannelTransformation.TransformationFunction);
-            
+
+            //double[] significantValues = GetSignificantValues(channelValues);
+
             const double factor = 1e175;
             const double lowBound = double.MinValue * factor;
             const double highBound = double.MaxValue / factor;
@@ -117,5 +121,13 @@ namespace WallpaperGenerator.FormulaRendering
                             : values[i];
             }
         }
+
+        //private static double[] GetSignificantValues(IEnumerable<double> values)
+        //{
+        //    const double factor = 1e175;
+        //    const double lowBound = double.MinValue * factor;
+        //    const double highBound = double.MaxValue / factor;
+        //    return values.Where(v => !double.IsNaN(v) && (v > lowBound) && (v < highBound)).ToArray();
+        //}
     }
 }
