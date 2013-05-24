@@ -49,35 +49,37 @@ namespace WallpaperGenerator
 
             _mainWindow.ControlPanel.GenerateFormulaButton.Click += (s, a) =>
             {
-                ColorTransformation colorTransformation = ColorTransformation.CreateRandomPolynomialColorTransformation(_random);
                 FormulaTreeNode formulaTreeRoot = CreateRandomFormulaTreeRoot();
-                FormulaRenderingArguments formulaRenderingArguments = new FormulaRenderingArguments(formulaTreeRoot, colorTransformation);
+                FormulaTree formulaTree = new FormulaTree(formulaTreeRoot);
+                IEnumerable<Range> variableRanges = CreateRandomVariableValuesRanges(_random, formulaTree, ImageWidth, ImageHeight);
+                ColorTransformation colorTransformation = ColorTransformation.CreateRandomPolynomialColorTransformation(_random);
+                FormulaRenderingArguments formulaRenderingArguments = new FormulaRenderingArguments(formulaTree, variableRanges, colorTransformation);
+
                 _mainWindow.FormulaTexBox.Text = formulaRenderingArguments.ToString();
             };
 
             _mainWindow.ControlPanel.RenderFormulaButton.Click += (s, a) =>
-                {
-                    _mainWindow.Cursor = Cursors.Wait;
+            {
+                _mainWindow.Cursor = Cursors.Wait;
 
-                    FormulaRenderingArguments formulaRenderingArguments = GetFormulaRenderingArguments();
-                    Range[] variableValuesRanges = CreateRandomVariableValuesRanges(formulaRenderingArguments.FormulaTree, _wallpaperImage.WidthInPixels, _wallpaperImage.HeightInPixels).ToArray();
-                    
-                    Stopwatch stopwatch = new Stopwatch();
-                    stopwatch.Start();  
+                FormulaRenderingArguments formulaRenderingArguments = GetFormulaRenderingArguments();
+                
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();  
 
-                    RenderedFormulaImage renderedFormulaImage = FormulaRender.Render(
-                        formulaRenderingArguments.FormulaTree,
-                        variableValuesRanges,
-                        formulaRenderingArguments.ColorTransformation, 
-                        _wallpaperImage.WidthInPixels, _wallpaperImage.HeightInPixels);
+                RenderedFormulaImage renderedFormulaImage = FormulaRender.Render(
+                    formulaRenderingArguments.FormulaTree,
+                    formulaRenderingArguments.VariableRanges,
+                    formulaRenderingArguments.ColorTransformation, 
+                    _wallpaperImage.WidthInPixels, _wallpaperImage.HeightInPixels);
 
-                    _wallpaperImage.Update(renderedFormulaImage);
-                    _mainWindow.WallpaperImage.Source = _wallpaperImage.Source;
+                _wallpaperImage.Update(renderedFormulaImage);
+                _mainWindow.WallpaperImage.Source = _wallpaperImage.Source;
 
-                    stopwatch.Stop();
+                stopwatch.Stop();
 
-                    _mainWindow.StatusPanel.RenderedTime = stopwatch.Elapsed; 
-                    _mainWindow.Cursor = Cursors.Arrow;
+                _mainWindow.StatusPanel.RenderedTime = stopwatch.Elapsed; 
+                _mainWindow.Cursor = Cursors.Arrow;
             };
         }
 
@@ -101,17 +103,17 @@ namespace WallpaperGenerator
             return FormulaTreeGenerator.CreateRandomFormulaTree(_random, dimensionsCount, variablesCount, constantsCount, unaryOperatorsCount, operators);
         }
 
-        private IEnumerable<Range> CreateRandomVariableValuesRanges(FormulaTree formulaTree, int xRangeCount, int yRangeCount)
+        private static IEnumerable<Range> CreateRandomVariableValuesRanges(Random random, FormulaTree formulaTree, int xRangeCount, int yRangeCount)
         {
             int dimensions = formulaTree.Variables.Length;
             return Enumerable.Repeat(1, dimensions).
-                Select(i => CreateRandomVariableValuesRange(_random, i%2 == 0 ? xRangeCount : yRangeCount));
+                Select(i => CreateRandomVariableValuesRange(random, i % 2 == 0 ? xRangeCount : yRangeCount));
         }
 
         private static Range CreateRandomVariableValuesRange(Random random, int rangeCount)
         {
-            double start = random.NextDouble() * random.Next(LowRangeBound, HighRangeBound);
-            double end = random.NextDouble() * random.Next(LowRangeBound, HighRangeBound);
+            double start = Math.Round(random.NextDouble() * random.Next(LowRangeBound, HighRangeBound), 2);
+            double end = Math.Round(random.NextDouble() * random.Next(LowRangeBound, HighRangeBound), 2);
             if (start > end)
             {
                 double t = start;

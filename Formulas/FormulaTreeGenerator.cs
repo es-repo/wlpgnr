@@ -54,7 +54,7 @@ namespace WallpaperGenerator.Formulas
             IEnumerable<Operator> nonZeroArityOperators = operatorsAritySequence.Select(a => operatorsLibrary.Where(op => op.Arity == a).TakeRandom(random));
 
             IEnumerable<string> variableNames = EnumerableExtensions.Repeat(i => "x" + i.ToString(CultureInfo.InvariantCulture), dimensionsCount);
-            IEnumerable<Operator> availableVariables = variableNames.Select(n => new Variable(n)).Cast<Operator>();
+            IEnumerable<Operator> availableVariables = variableNames.Select(n => new Variable(n)).Cast<Operator>().ToArray();
             IEnumerable<Operator> variablesPart = EnumerableExtensions.Repeat(i => availableVariables.TakeRandom(random), variablesCount - dimensionsCount);
             IEnumerable<Operator> variables = availableVariables.Concat(variablesPart);
 
