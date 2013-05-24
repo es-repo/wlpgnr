@@ -34,14 +34,12 @@ namespace WallpaperGenerator.FormulaRendering
             return new ColorChannelTransformation(a, b, c, dispersionCoefficient);
         }
 
-        public static ColorChannelTransformation CreateRandomPolinomialChannelTransformation(Random random)
+        public static ColorChannelTransformation CreateRandomPolinomialChannelTransformation(Random random, int coefficientLowBound, int coefficientHighBound)
         {
-            const int minValue = -5;
-            const int maxValue = 5;
-            double a = random.Next(minValue, maxValue);
-            double b = random.Next(minValue, maxValue);
-            double c = random.Next(minValue, maxValue);
-            double dispersionCoefficient = random.NextDouble();
+            double a = Math.Round(random.NextDouble() * random.Next(coefficientLowBound, coefficientHighBound), 2);
+            double b = Math.Round(random.NextDouble() * random.Next(coefficientLowBound, coefficientHighBound), 2);
+            double c = Math.Round(random.NextDouble() * random.Next(coefficientLowBound, coefficientHighBound), 2);
+            double dispersionCoefficient = Math.Round(random.NextDouble(), 2);
             return new ColorChannelTransformation(a, b, c, dispersionCoefficient);
         }
 

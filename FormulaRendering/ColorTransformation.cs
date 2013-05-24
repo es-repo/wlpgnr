@@ -41,11 +41,11 @@ namespace WallpaperGenerator.FormulaRendering
             return new ColorTransformation(redChannelTransformation, greenChannelTransformation, blueChannelTransformation);
         }
 
-        public static ColorTransformation CreateRandomPolynomialColorTransformation(Random random)
+        public static ColorTransformation CreateRandomPolynomialColorTransformation(Random random, int coefficientLowBound, int coefficientHighBound)
         {
-            ColorChannelTransformation redChannelTransofrmation = ColorChannelTransformation.CreateRandomPolinomialChannelTransformation(random);
-            ColorChannelTransformation greenChannelTransofrmation = ColorChannelTransformation.CreateRandomPolinomialChannelTransformation(random);
-            ColorChannelTransformation blueChannelTransofrmation = ColorChannelTransformation.CreateRandomPolinomialChannelTransformation(random);
+            ColorChannelTransformation redChannelTransofrmation = ColorChannelTransformation.CreateRandomPolinomialChannelTransformation(random, coefficientLowBound, coefficientHighBound);
+            ColorChannelTransformation greenChannelTransofrmation = ColorChannelTransformation.CreateRandomPolinomialChannelTransformation(random, coefficientLowBound, coefficientHighBound);
+            ColorChannelTransformation blueChannelTransofrmation = ColorChannelTransformation.CreateRandomPolinomialChannelTransformation(random, coefficientLowBound, coefficientHighBound);
             return new ColorTransformation(redChannelTransofrmation, greenChannelTransofrmation, blueChannelTransofrmation);
         }
     }

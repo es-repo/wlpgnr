@@ -14,8 +14,10 @@ namespace WallpaperGenerator
     {
         #region Constants
 
-        private const int LowRangeBound = -50;
-        private const int HighRangeBound = 50;
+        private const int RangeLowBound = -50;
+        private const int RangeHighBound = 50;
+        private const int PolinomialChannelTransformationCoefficientLowBound = -50;
+        private const int PolinomialChannelTransformationCoefficientHighBound = 50;
 
         private const int ImageWidth = 700;
         private const int ImageHeight = 700;
@@ -51,8 +53,10 @@ namespace WallpaperGenerator
             {
                 FormulaTreeNode formulaTreeRoot = CreateRandomFormulaTreeRoot();
                 FormulaTree formulaTree = new FormulaTree(formulaTreeRoot);
-                IEnumerable<Range> variableRanges = CreateRandomVariableValuesRanges(_random, formulaTree, ImageWidth, ImageHeight);
-                ColorTransformation colorTransformation = ColorTransformation.CreateRandomPolynomialColorTransformation(_random);
+                IEnumerable<Range> variableRanges = CreateRandomVariableValuesRanges(_random, formulaTree,
+                    ImageWidth, ImageHeight, RangeLowBound, RangeHighBound);
+                ColorTransformation colorTransformation = ColorTransformation.CreateRandomPolynomialColorTransformation(_random,
+                    PolinomialChannelTransformationCoefficientLowBound, PolinomialChannelTransformationCoefficientHighBound);
                 FormulaRenderingArguments formulaRenderingArguments = new FormulaRenderingArguments(formulaTree, variableRanges, colorTransformation);
 
                 _mainWindow.FormulaTexBox.Text = formulaRenderingArguments.ToString();
@@ -103,17 +107,18 @@ namespace WallpaperGenerator
             return FormulaTreeGenerator.CreateRandomFormulaTree(_random, dimensionsCount, variablesCount, constantsCount, unaryOperatorsCount, operators);
         }
 
-        private static IEnumerable<Range> CreateRandomVariableValuesRanges(Random random, FormulaTree formulaTree, int xRangeCount, int yRangeCount)
+        private static IEnumerable<Range> CreateRandomVariableValuesRanges(Random random, FormulaTree formulaTree, 
+            int xRangeCount, int yRangeCount, int rangeLowBound, int rangeHighBound)
         {
             int dimensions = formulaTree.Variables.Length;
             return Enumerable.Repeat(1, dimensions).
-                Select(i => CreateRandomVariableValuesRange(random, i % 2 == 0 ? xRangeCount : yRangeCount));
+                Select(i => CreateRandomVariableValuesRange(random, i % 2 == 0 ? xRangeCount : yRangeCount, rangeLowBound, rangeHighBound));
         }
 
-        private static Range CreateRandomVariableValuesRange(Random random, int rangeCount)
+        private static Range CreateRandomVariableValuesRange(Random random, int rangeCount, int rangeLowBound, int rangeHighBound)
         {
-            double start = Math.Round(random.NextDouble() * random.Next(LowRangeBound, HighRangeBound), 2);
-            double end = Math.Round(random.NextDouble() * random.Next(LowRangeBound, HighRangeBound), 2);
+            double start = Math.Round(random.NextDouble() * random.Next(rangeLowBound, rangeHighBound), 2);
+            double end = Math.Round(random.NextDouble() * random.Next(rangeLowBound, rangeHighBound), 2);
             if (start > end)
             {
                 double t = start;
