@@ -14,6 +14,11 @@ namespace WallpaperGenerator.FormulaRendering
 
         public double DispersionCoefficient { get; set; }
 
+        public bool IsZero
+        {
+            get { return _polinomCoefficcientA.Equals(0) && _polinomCoefficcientB.Equals(0) && _polinomCoefficcientC.Equals(0); }
+        }
+
         public ColorChannelTransformation(Func<double, double> transformationFunction, double dispersionCoefficient)
         {
             TransformationFunction = transformationFunction;
@@ -34,8 +39,13 @@ namespace WallpaperGenerator.FormulaRendering
             return new ColorChannelTransformation(a, b, c, dispersionCoefficient);
         }
 
-        public static ColorChannelTransformation CreateRandomPolinomialChannelTransformation(Random random, int coefficientLowBound, int coefficientHighBound)
+        public static ColorChannelTransformation CreateRandomPolinomialChannelTransformation(Random random, 
+            int coefficientLowBound, int coefficientHighBound, double zeroChannelProbabilty)
         {
+            double zeroChannel = random.NextDouble();
+            if (zeroChannel < zeroChannelProbabilty)
+                return new ColorChannelTransformation(0, 0, 0, 0);
+
             double a = Math.Round(random.NextDouble() * random.Next(coefficientLowBound, coefficientHighBound), 2);
             double b = Math.Round(random.NextDouble() * random.Next(coefficientLowBound, coefficientHighBound), 2);
             double c = Math.Round(random.NextDouble() * random.Next(coefficientLowBound, coefficientHighBound), 2);

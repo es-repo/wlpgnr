@@ -16,8 +16,9 @@ namespace WallpaperGenerator
 
         private const int RangeLowBound = -50;
         private const int RangeHighBound = 50;
-        private const int PolinomialChannelTransformationCoefficientLowBound = -50;
-        private const int PolinomialChannelTransformationCoefficientHighBound = 50;
+        private const int ColorChannelPolinomialTransformationCoefficientLowBound = -50;
+        private const int ColorChannelPolinomialTransformationCoefficientHighBound = 50;
+        private const double ColorChannelZeroProbabilty = 0.2;
 
         private const int ImageWidth = 700;
         private const int ImageHeight = 700;
@@ -56,7 +57,8 @@ namespace WallpaperGenerator
                 IEnumerable<Range> variableRanges = CreateRandomVariableValuesRanges(_random, formulaTree,
                     ImageWidth, ImageHeight, RangeLowBound, RangeHighBound);
                 ColorTransformation colorTransformation = ColorTransformation.CreateRandomPolynomialColorTransformation(_random,
-                    PolinomialChannelTransformationCoefficientLowBound, PolinomialChannelTransformationCoefficientHighBound);
+                    ColorChannelPolinomialTransformationCoefficientLowBound, ColorChannelPolinomialTransformationCoefficientHighBound,
+                    ColorChannelZeroProbabilty);
                 FormulaRenderingArguments formulaRenderingArguments = new FormulaRenderingArguments(formulaTree, variableRanges, colorTransformation);
 
                 _mainWindow.FormulaTexBox.Text = formulaRenderingArguments.ToString();

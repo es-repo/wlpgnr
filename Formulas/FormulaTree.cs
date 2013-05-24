@@ -55,7 +55,7 @@ namespace WallpaperGenerator.Formulas
         public double[] EvaluateRangesIn2DProjection(params Range[] variableValueRanges)
         {
             double[] results = new double[variableValueRanges[0].Count*variableValueRanges[1].Count];
-            for (int i = 0; i < variableValueRanges.Length; i += 2)
+            for (int i = 0; i < Variables.Length; i += 2)
             {
                 Variables[i].Value = variableValueRanges[i].Start - variableValueRanges[i].Step;
             }
@@ -63,19 +63,19 @@ namespace WallpaperGenerator.Formulas
             int r = 0;
             for (int x = 0; x < variableValueRanges[0].Count; x++)
             {
-                for (int i = 0; i < variableValueRanges.Length; i += 2)
+                for (int i = 0; i < Variables.Length; i += 2)
                 {
                     Variables[i].Value += variableValueRanges[i].Step;
                 }
-                
-                for (int i = 1; i < variableValueRanges.Length; i += 2)
+
+                for (int i = 1; i < Variables.Length; i += 2)
                 {
                     Variables[i].Value = variableValueRanges[i].Start - variableValueRanges[i].Step;
                 }
 
                 for (int y = 0; y < variableValueRanges[1].Count; y++)
                 {
-                    for (int i = 1; i < variableValueRanges.Length; i += 2)
+                    for (int i = 1; i < Variables.Length; i += 2)
                     {
                         Variables[i].Value += variableValueRanges[i].Step;
                     }

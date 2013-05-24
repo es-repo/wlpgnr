@@ -41,11 +41,16 @@ namespace WallpaperGenerator.FormulaRendering
             return new ColorTransformation(redChannelTransformation, greenChannelTransformation, blueChannelTransformation);
         }
 
-        public static ColorTransformation CreateRandomPolynomialColorTransformation(Random random, int coefficientLowBound, int coefficientHighBound)
+        public static ColorTransformation CreateRandomPolynomialColorTransformation(Random random, int coefficientLowBound, int coefficientHighBound, double zeroChannelProbabilty)
         {
-            ColorChannelTransformation redChannelTransofrmation = ColorChannelTransformation.CreateRandomPolinomialChannelTransformation(random, coefficientLowBound, coefficientHighBound);
-            ColorChannelTransformation greenChannelTransofrmation = ColorChannelTransformation.CreateRandomPolinomialChannelTransformation(random, coefficientLowBound, coefficientHighBound);
-            ColorChannelTransformation blueChannelTransofrmation = ColorChannelTransformation.CreateRandomPolinomialChannelTransformation(random, coefficientLowBound, coefficientHighBound);
+            ColorChannelTransformation redChannelTransofrmation = ColorChannelTransformation.CreateRandomPolinomialChannelTransformation(random, coefficientLowBound, coefficientHighBound, zeroChannelProbabilty);
+            ColorChannelTransformation greenChannelTransofrmation = ColorChannelTransformation.CreateRandomPolinomialChannelTransformation(random, coefficientLowBound, coefficientHighBound, zeroChannelProbabilty);
+            if (redChannelTransofrmation.IsZero && greenChannelTransofrmation.IsZero)
+            {
+                zeroChannelProbabilty = 0;
+            }
+            
+            ColorChannelTransformation blueChannelTransofrmation = ColorChannelTransformation.CreateRandomPolinomialChannelTransformation(random, coefficientLowBound, coefficientHighBound, zeroChannelProbabilty);
             return new ColorTransformation(redChannelTransofrmation, greenChannelTransofrmation, blueChannelTransofrmation);
         }
     }
