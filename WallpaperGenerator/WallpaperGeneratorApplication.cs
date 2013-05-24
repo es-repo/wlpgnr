@@ -12,6 +12,16 @@ namespace WallpaperGenerator
 {
     public class WallpaperGeneratorApplication : Application
     {
+        #region Constants
+
+        private const int LowRangeBound = -50;
+        private const int HighRangeBound = 50;
+
+        private const int ImageWidth = 700;
+        private const int ImageHeight = 700;
+
+        #endregion
+
         #region Fields
 
         private readonly Random _random = new Random();
@@ -34,7 +44,7 @@ namespace WallpaperGenerator
 
         public WallpaperGeneratorApplication()
         {
-            _wallpaperImage = new WallpaperImage(700, 700);
+            _wallpaperImage = new WallpaperImage(ImageWidth, ImageHeight);
             _mainWindow = new MainWindow { WindowState = WindowState.Maximized };
 
             _mainWindow.ControlPanel.GenerateFormulaButton.Click += (s, a) =>
@@ -100,7 +110,16 @@ namespace WallpaperGenerator
 
         private static Range CreateRandomVariableValuesRange(Random random, int rangeCount)
         {
-            return new Range(random.NextDouble()*random.Next(0, 10), 0.0000001 + random.NextDouble()/10, rangeCount);
+            double start = random.NextDouble() * random.Next(LowRangeBound, HighRangeBound);
+            double end = random.NextDouble() * random.Next(LowRangeBound, HighRangeBound);
+            if (start > end)
+            {
+                double t = start;
+                start = end;
+                end = t;
+            }
+            double step = (end - start)/rangeCount;
+            return new Range(start, step, rangeCount);
         }
     }
 }
