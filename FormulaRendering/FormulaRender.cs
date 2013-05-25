@@ -8,8 +8,7 @@ namespace WallpaperGenerator.FormulaRendering
 {
     public static class FormulaRender
     {
-        public static RenderedFormulaImage Render(FormulaTree formulaTree, VariableValuesRangesFor2DProjection variableValuesRanges, ColorTransformation colorTransformation, 
-            int width, int height)
+        public static RenderedFormulaImage Render(FormulaTree formulaTree, VariableValuesRangesFor2DProjection variableValuesRanges, ColorTransformation colorTransformation)
         {
             Stopwatch evaluationStopwatch = new Stopwatch();
             evaluationStopwatch.Start();
@@ -48,7 +47,7 @@ namespace WallpaperGenerator.FormulaRendering
             byte[] blueChannel = MapToColorChannel(formulaEvaluatedValues, colorTransformation.BlueChannelTransformation);
 
             mapToRgbStopwatch.Stop();
-            return new RenderedFormulaImage(redChannel, greenChannel, blueChannel, width, height);
+            return new RenderedFormulaImage(redChannel, greenChannel, blueChannel, variableValuesRanges.XCount, variableValuesRanges.YCount);
         }
 
         private static byte[] MapToColorChannel(double[] values, ColorChannelTransformation colorChannelTransformation)

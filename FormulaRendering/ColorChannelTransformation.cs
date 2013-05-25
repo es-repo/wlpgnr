@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
-using System.Globalization;  
+using System.Globalization;
+using WallpaperGenerator.Utilities;
 
 namespace WallpaperGenerator.FormulaRendering
 {
@@ -45,6 +46,8 @@ namespace WallpaperGenerator.FormulaRendering
             double zeroChannel = random.NextDouble();
             if (zeroChannel < zeroChannelProbabilty)
                 return new ColorChannelTransformation(0, 0, 0, 0);
+
+            random.RandomlyShrinkBounds(ref coefficientLowBound, ref coefficientHighBound);
 
             double a = Math.Round(random.NextDouble() * random.Next(coefficientLowBound, coefficientHighBound), 2);
             double b = Math.Round(random.NextDouble() * random.Next(coefficientLowBound, coefficientHighBound), 2);

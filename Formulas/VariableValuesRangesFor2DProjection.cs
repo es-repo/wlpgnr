@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using WallpaperGenerator.Utilities;
 
 namespace WallpaperGenerator.Formulas
 {
@@ -39,6 +40,7 @@ namespace WallpaperGenerator.Formulas
         public static VariableValuesRangesFor2DProjection CreateRandom(Random random, int variableCount,
             int xRangeCount, int yRangeCount, int rangeLowBound, int rangeHighBound)
         {
+            random.RandomlyShrinkBounds(ref rangeLowBound, ref rangeHighBound);
             IEnumerable<Range> ranges = Enumerable.Repeat(1, variableCount).
                 Select(i => Range.CreateRanom(random, i % 2 == 0 ? xRangeCount : yRangeCount, rangeLowBound, rangeHighBound));
             return new VariableValuesRangesFor2DProjection(xRangeCount, yRangeCount, ranges);

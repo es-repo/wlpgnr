@@ -20,5 +20,25 @@ namespace WallpaperGenerator.Utilities
                     ? third
                     : first;                    
         }
+
+        public static void RandomlyShrinkBounds(this Random random, ref int lowBound, ref int highBound)
+        {
+            double boundShrinkCoeficient = random.NextDouble();
+            int newLowBound = (int)(lowBound * boundShrinkCoeficient);
+            int newHighBound = (int)(highBound * boundShrinkCoeficient);
+            if (newLowBound > newHighBound)
+            {
+                int t = newLowBound;
+                newLowBound = newHighBound;
+                newHighBound = t;
+            }
+            else if (newLowBound == newHighBound)
+            {
+                return;
+            }
+
+            lowBound = newLowBound;
+            highBound = newHighBound;
+        }
     }
 }

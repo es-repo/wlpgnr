@@ -125,8 +125,7 @@ namespace WallpaperGenerator
             RenderedFormulaImage renderedFormulaImage = FormulaRender.Render(
                 formulaRenderingArguments.FormulaTree,
                 formulaRenderingArguments.VariableValuesRanges,
-                formulaRenderingArguments.ColorTransformation,
-                _wallpaperImage.WidthInPixels, _wallpaperImage.HeightInPixels);
+                formulaRenderingArguments.ColorTransformation);
 
             _wallpaperImage.Update(renderedFormulaImage);
             _mainWindow.WallpaperImage.Source = _wallpaperImage.Source;
