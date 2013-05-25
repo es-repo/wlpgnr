@@ -8,7 +8,7 @@ namespace WallpaperGenerator.FormulaRendering
 {
     public static class FormulaRender
     {
-        public static RenderedFormulaImage Render(FormulaTree formulaTree, Range[] variableValuesRanges, ColorTransformation colorTransformation, 
+        public static RenderedFormulaImage Render(FormulaTree formulaTree, VariableValuesRangesFor2DProjection variableValuesRanges, ColorTransformation colorTransformation, 
             int width, int height)
         {
             Stopwatch evaluationStopwatch = new Stopwatch();

@@ -106,17 +106,20 @@ namespace WallpaperGenerator.Formulas.Testing
         {
             FormulaTreeNode formulaTreeRoot = FormulaTreeSerializer.Deserialize(formula);
             FormulaTree formulaTree = new FormulaTree(formulaTreeRoot);
-            List<Range> variablesValueRanges = new List<Range>();
+            List<Range> ranges = new List<Range>();
             if (!rangeXStart.Equals(-1))
-                variablesValueRanges.Add(new Range(rangeXStart, rangeXCount));
+                ranges.Add(new Range(rangeXStart, rangeXCount));
 
             if (!rangeYStart.Equals(-1))
-                variablesValueRanges.Add(new Range(rangeYStart, rangeYCount));
+                ranges.Add(new Range(rangeYStart, rangeYCount));
 
             if (!rangeZStart.Equals(-1))
-                variablesValueRanges.Add(new Range(rangeZStart, rangeZCount));
+                ranges.Add(new Range(rangeZStart, rangeZCount));
 
-            double[] results = formulaTree.EvaluateRangesIn2DProjection(variablesValueRanges.ToArray()).ToArray();
+            VariableValuesRangesFor2DProjection variablesValueRanges = 
+                new VariableValuesRangesFor2DProjection(rangeXCount, rangeYCount, ranges);
+
+            double[] results = formulaTree.EvaluateRangesIn2DProjection(variablesValueRanges).ToArray();
             CollectionAssert.AreElementsEqual(expectedResults, results);
         }
     }

@@ -54,12 +54,13 @@ namespace WallpaperGenerator
             {
                 FormulaTreeNode formulaTreeRoot = CreateRandomFormulaTreeRoot();
                 FormulaTree formulaTree = new FormulaTree(formulaTreeRoot);
-                IEnumerable<Range> variableRanges = CreateRandomVariableValuesRanges(_random, formulaTree,
-                    ImageWidth, ImageHeight, RangeLowBound, RangeHighBound);
+                VariableValuesRangesFor2DProjection variableValuesRanges = 
+                    VariableValuesRangesFor2DProjection.CreateRandom(_random, formulaTree.Variables.Length, 
+                        ImageWidth, ImageHeight, RangeLowBound, RangeHighBound);
                 ColorTransformation colorTransformation = ColorTransformation.CreateRandomPolynomialColorTransformation(_random,
                     ColorChannelPolinomialTransformationCoefficientLowBound, ColorChannelPolinomialTransformationCoefficientHighBound,
                     ColorChannelZeroProbabilty);
-                FormulaRenderingArguments formulaRenderingArguments = new FormulaRenderingArguments(formulaTree, variableRanges, colorTransformation);
+                FormulaRenderingArguments formulaRenderingArguments = new FormulaRenderingArguments(formulaTree, variableValuesRanges, colorTransformation);
 
                 _mainWindow.FormulaTexBox.Text = formulaRenderingArguments.ToString();
             };
@@ -75,7 +76,7 @@ namespace WallpaperGenerator
 
                 RenderedFormulaImage renderedFormulaImage = FormulaRender.Render(
                     formulaRenderingArguments.FormulaTree,
-                    formulaRenderingArguments.VariableRanges,
+                    formulaRenderingArguments.VariableValuesRanges,
                     formulaRenderingArguments.ColorTransformation, 
                     _wallpaperImage.WidthInPixels, _wallpaperImage.HeightInPixels);
 
@@ -107,28 +108,6 @@ namespace WallpaperGenerator
             IEnumerable<Operator> operators = checkedOperatorCheckBoxes.Select(cb => cb.Operator);
 
             return FormulaTreeGenerator.CreateRandomFormulaTree(_random, dimensionsCount, variablesCount, constantsCount, unaryOperatorsCount, operators);
-        }
-
-        private static IEnumerable<Range> CreateRandomVariableValuesRanges(Random random, FormulaTree formulaTree, 
-            int xRangeCount, int yRangeCount, int rangeLowBound, int rangeHighBound)
-        {
-            int dimensions = formulaTree.Variables.Length;
-            return Enumerable.Repeat(1, dimensions).
-                Select(i => CreateRandomVariableValuesRange(random, i % 2 == 0 ? xRangeCount : yRangeCount, rangeLowBound, rangeHighBound));
-        }
-
-        private static Range CreateRandomVariableValuesRange(Random random, int rangeCount, int rangeLowBound, int rangeHighBound)
-        {
-            double start = Math.Round(random.NextDouble() * random.Next(rangeLowBound, rangeHighBound), 2);
-            double end = Math.Round(random.NextDouble() * random.Next(rangeLowBound, rangeHighBound), 2);
-            if (start > end)
-            {
-                double t = start;
-                start = end;
-                end = t;
-            }
-            double step = (end - start)/rangeCount;
-            return new Range(start, step, rangeCount);
         }
     }
 }

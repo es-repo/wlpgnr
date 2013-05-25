@@ -52,32 +52,33 @@ namespace WallpaperGenerator.Formulas
             return EvaluateSeries(series);
         }
 
-        public double[] EvaluateRangesIn2DProjection(params Range[] variableValueRanges)
+        public double[] EvaluateRangesIn2DProjection(VariableValuesRangesFor2DProjection variableValuesRanges)
         {
-            double[] results = new double[variableValueRanges[0].Count*variableValueRanges[1].Count];
+            double[] results = new double[variableValuesRanges.XCount * variableValuesRanges.YCount];
+            Range[] ranges = variableValuesRanges.Ranges; 
             for (int i = 0; i < Variables.Length; i += 2)
             {
-                Variables[i].Value = variableValueRanges[i].Start - variableValueRanges[i].Step;
+                Variables[i].Value = ranges[i].Start - ranges[i].Step;
             }
 
             int r = 0;
-            for (int x = 0; x < variableValueRanges[0].Count; x++)
+            for (int x = 0; x < variableValuesRanges.XCount; x++)
             {
                 for (int i = 0; i < Variables.Length; i += 2)
                 {
-                    Variables[i].Value += variableValueRanges[i].Step;
+                    Variables[i].Value += ranges[i].Step;
                 }
 
                 for (int i = 1; i < Variables.Length; i += 2)
                 {
-                    Variables[i].Value = variableValueRanges[i].Start - variableValueRanges[i].Step;
+                    Variables[i].Value = ranges[i].Start - ranges[i].Step;
                 }
 
-                for (int y = 0; y < variableValueRanges[1].Count; y++)
+                for (int y = 0; y < variableValuesRanges.YCount; y++)
                 {
                     for (int i = 1; i < Variables.Length; i += 2)
                     {
-                        Variables[i].Value += variableValueRanges[i].Step;
+                        Variables[i].Value += ranges[i].Step;
                     }
 
                     results[r++] = Evaluate();
