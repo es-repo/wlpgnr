@@ -16,6 +16,10 @@ namespace WallpaperGenerator.MainWindowControls
 
         public Button GenerateFormulaButton { get; private set; }
 
+        public Button ChangeColorButton { get; private set; }
+
+        public Button ChangeRangesButton { get; private set; }
+
         public Button RenderFormulaButton { get; private set; }
 
         public Slider DimensionsCountSlider { get; private set; }
@@ -39,10 +43,15 @@ namespace WallpaperGenerator.MainWindowControls
             Width = 200;
 
             GenerateFormulaButton = CreateGenerateFormulaButton();
+            Children.Add(GenerateFormulaButton);
+            
+            ChangeRangesButton = CreateChangeRangesButton();
+            Children.Add(ChangeRangesButton);
+
+            ChangeColorButton = CreateChangeColorButton();
+            Children.Add(ChangeColorButton);
 
             RenderFormulaButton = CreateRenderFormulaButton();
-
-            Children.Add(GenerateFormulaButton);
             Children.Add(RenderFormulaButton);
 
             DimensionsCountSlider = CreateSliderControlsBlock(1, 100, 8, "Dimensions");
@@ -83,6 +92,28 @@ namespace WallpaperGenerator.MainWindowControls
             Button button = new Button
             {
                 Content = "Generate",
+                Margin = new Thickness { Top = 10 },
+            };
+
+            return button;
+        }
+
+        private Button CreateChangeColorButton()
+        {
+            Button button = new Button
+            {
+                Content = "Change Colors",
+                Margin = new Thickness { Top = 10 },
+            };
+
+            return button;
+        }
+
+        private Button CreateChangeRangesButton()
+        {
+            Button button = new Button
+            {
+                Content = "Change Ranges",
                 Margin = new Thickness { Top = 10 },
             };
 

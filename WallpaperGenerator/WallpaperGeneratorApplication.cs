@@ -35,7 +35,7 @@ namespace WallpaperGenerator
 
         #region Properties
 
-        public FormulaRenderingArguments GetFormulaRenderingArguments()
+        public FormulaRenderingArguments GetCurrentFormulaRenderingArguments()
         {
             return FormulaRenderingArguments.FromString(_mainWindow.FormulaTexBox.Text);
         }
@@ -54,40 +54,41 @@ namespace WallpaperGenerator
             {
                 FormulaTreeNode formulaTreeRoot = CreateRandomFormulaTreeRoot();
                 FormulaTree formulaTree = new FormulaTree(formulaTreeRoot);
-                VariableValuesRangesFor2DProjection variableValuesRanges = 
-                    VariableValuesRangesFor2DProjection.CreateRandom(_random, formulaTree.Variables.Length, 
-                        ImageWidth, ImageHeight, RangeLowBound, RangeHighBound);
-                ColorTransformation colorTransformation = ColorTransformation.CreateRandomPolynomialColorTransformation(_random,
-                    ColorChannelPolinomialTransformationCoefficientLowBound, ColorChannelPolinomialTransformationCoefficientHighBound,
-                    ColorChannelZeroProbabilty);
+                VariableValuesRangesFor2DProjection variableValuesRanges = CreateRandomVariableValuesRangesFor2DProjection(formulaTree.Variables.Length);
+                ColorTransformation colorTransformation = CreateRandomColorTransformation();
                 FormulaRenderingArguments formulaRenderingArguments = new FormulaRenderingArguments(formulaTree, variableValuesRanges, colorTransformation);
 
                 _mainWindow.FormulaTexBox.Text = formulaRenderingArguments.ToString();
             };
 
-            _mainWindow.ControlPanel.RenderFormulaButton.Click += (s, a) =>
+            _mainWindow.ControlPanel.ChangeRangesButton.Click += (s, a) =>
             {
-                _mainWindow.Cursor = Cursors.Wait;
+                FormulaRenderingArguments currentFormulaRenderingArguments = GetCurrentFormulaRenderingArguments();
+                VariableValuesRangesFor2DProjection variableValuesRanges = 
+                    CreateRandomVariableValuesRangesFor2DProjection(currentFormulaRenderingArguments.FormulaTree.Variables.Length);
+                FormulaRenderingArguments formulaRenderingArguments = new FormulaRenderingArguments(
+                    currentFormulaRenderingArguments.FormulaTree,
+                    variableValuesRanges,
+                    currentFormulaRenderingArguments.ColorTransformation);
 
-                FormulaRenderingArguments formulaRenderingArguments = GetFormulaRenderingArguments();
-                
-                Stopwatch stopwatch = new Stopwatch();
-                stopwatch.Start();  
-
-                RenderedFormulaImage renderedFormulaImage = FormulaRender.Render(
-                    formulaRenderingArguments.FormulaTree,
-                    formulaRenderingArguments.VariableValuesRanges,
-                    formulaRenderingArguments.ColorTransformation, 
-                    _wallpaperImage.WidthInPixels, _wallpaperImage.HeightInPixels);
-
-                _wallpaperImage.Update(renderedFormulaImage);
-                _mainWindow.WallpaperImage.Source = _wallpaperImage.Source;
-
-                stopwatch.Stop();
-
-                _mainWindow.StatusPanel.RenderedTime = stopwatch.Elapsed; 
-                _mainWindow.Cursor = Cursors.Arrow;
+                _mainWindow.FormulaTexBox.Text = formulaRenderingArguments.ToString();
+                RenderFormula();
             };
+
+            _mainWindow.ControlPanel.ChangeColorButton.Click += (s, a) =>
+            {
+                FormulaRenderingArguments currentFormulaRenderingArguments = GetCurrentFormulaRenderingArguments(); 
+                ColorTransformation colorTransformation = CreateRandomColorTransformation();
+                FormulaRenderingArguments formulaRenderingArguments = new FormulaRenderingArguments(
+                    currentFormulaRenderingArguments.FormulaTree, 
+                    currentFormulaRenderingArguments.VariableValuesRanges, 
+                    colorTransformation);
+
+                _mainWindow.FormulaTexBox.Text = formulaRenderingArguments.ToString();
+                RenderFormula();
+            };
+            
+            _mainWindow.ControlPanel.RenderFormulaButton.Click += (s, a) => RenderFormula();
         }
 
         #endregion
@@ -108,6 +109,43 @@ namespace WallpaperGenerator
             IEnumerable<Operator> operators = checkedOperatorCheckBoxes.Select(cb => cb.Operator);
 
             return FormulaTreeGenerator.CreateRandomFormulaTree(_random, dimensionsCount, variablesCount, constantsCount, unaryOperatorsCount, operators);
+        }
+
+        private VariableValuesRangesFor2DProjection CreateRandomVariableValuesRangesFor2DProjection(int variablesCount)
+        {
+            return VariableValuesRangesFor2DProjection.CreateRandom(_random, variablesCount, 
+                ImageWidth, ImageHeight, RangeLowBound, RangeHighBound);
+        }
+
+        private ColorTransformation CreateRandomColorTransformation()
+        {
+            return ColorTransformation.CreateRandomPolynomialColorTransformation(_random,
+                    ColorChannelPolinomialTransformationCoefficientLowBound, ColorChannelPolinomialTransformationCoefficientHighBound,
+                    ColorChannelZeroProbabilty);
+        }
+
+        private void RenderFormula()
+        {
+            _mainWindow.Cursor = Cursors.Wait;
+
+            FormulaRenderingArguments formulaRenderingArguments = GetCurrentFormulaRenderingArguments();
+
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            RenderedFormulaImage renderedFormulaImage = FormulaRender.Render(
+                formulaRenderingArguments.FormulaTree,
+                formulaRenderingArguments.VariableValuesRanges,
+                formulaRenderingArguments.ColorTransformation,
+                _wallpaperImage.WidthInPixels, _wallpaperImage.HeightInPixels);
+
+            _wallpaperImage.Update(renderedFormulaImage);
+            _mainWindow.WallpaperImage.Source = _wallpaperImage.Source;
+
+            stopwatch.Stop();
+
+            _mainWindow.StatusPanel.RenderedTime = stopwatch.Elapsed;
+            _mainWindow.Cursor = Cursors.Arrow;
         }
     }
 }
