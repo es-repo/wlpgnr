@@ -11,20 +11,7 @@ using WallpaperGenerator.MainWindowControls.ControlPanelControls;
 namespace WallpaperGenerator
 {
     public class WallpaperGeneratorApplication : Application
-    {
-        #region Constants
-
-        private const int RangeLowBound = -50;
-        private const int RangeHighBound = 50;
-        private const int ColorChannelPolinomialTransformationCoefficientLowBound = -50;
-        private const int ColorChannelPolinomialTransformationCoefficientHighBound = 50;
-        private const double ColorChannelZeroProbabilty = 0.2;
-
-        private const int ImageWidth = 700;
-        private const int ImageHeight = 700;
-
-        #endregion
-
+    {        
         #region Fields
 
         private readonly Random _random = new Random();
@@ -47,7 +34,7 @@ namespace WallpaperGenerator
 
         public WallpaperGeneratorApplication()
         {
-            _wallpaperImage = new WallpaperImage(ImageWidth, ImageHeight);
+            _wallpaperImage = new WallpaperImage(Configuration.ImageWidth, Configuration.ImageHeight);
             _mainWindow = new MainWindow { WindowState = WindowState.Maximized };
 
             _mainWindow.ControlPanel.GenerateFormulaButton.Click += (s, a) =>
@@ -113,15 +100,17 @@ namespace WallpaperGenerator
 
         private VariableValuesRangesFor2DProjection CreateRandomVariableValuesRangesFor2DProjection(int variablesCount)
         {
-            return VariableValuesRangesFor2DProjection.CreateRandom(_random, variablesCount, 
-                ImageWidth, ImageHeight, RangeLowBound, RangeHighBound);
+            return VariableValuesRangesFor2DProjection.CreateRandom(_random, variablesCount,
+                Configuration.ImageWidth, Configuration.ImageHeight,
+                Configuration.RangeLowBound, Configuration.RangeHighBound);
         }
 
         private ColorTransformation CreateRandomColorTransformation()
         {
             return ColorTransformation.CreateRandomPolynomialColorTransformation(_random,
-                    ColorChannelPolinomialTransformationCoefficientLowBound, ColorChannelPolinomialTransformationCoefficientHighBound,
-                    ColorChannelZeroProbabilty);
+                Configuration.ColorChannelPolinomialTransformationCoefficientLowBound,
+                Configuration.ColorChannelPolinomialTransformationCoefficientHighBound,
+                Configuration.ColorChannelZeroProbabilty);
         }
 
         private void RenderFormula()
