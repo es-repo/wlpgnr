@@ -6,17 +6,18 @@ namespace WallpaperGenerator.Formulas
     {
         private const double TwoPi = 2 * Math.PI;
 
+        private static double _precalculatedSinusesStep;
         private static double[] _precalculatedSinuses;
  
         public static void Init(int precalculatedSinusesCount)
         {
             _precalculatedSinuses = new double[precalculatedSinusesCount];
             double value = 0;
-            double step = TwoPi / precalculatedSinusesCount;
+            _precalculatedSinusesStep = TwoPi / precalculatedSinusesCount;
             for (int i = 0; i < precalculatedSinusesCount; i++)
             {
                 _precalculatedSinuses[i] = Math.Sin(value);
-                value += step;
+                value += _precalculatedSinusesStep;
             }
         }
 
@@ -39,7 +40,7 @@ namespace WallpaperGenerator.Formulas
                 while (value < 0)
                     value += TwoPi;
             }
-            int i = (int)((value / TwoPi) * _precalculatedSinuses.Length);
+            int i = (int)(value / _precalculatedSinusesStep);
             return _precalculatedSinuses[i];
         }
     }

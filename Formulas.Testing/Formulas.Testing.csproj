@@ -57,6 +57,7 @@
     <Compile Include="FormulaTreeGeneratorTests.cs" />
     <Compile Include="FormulaTreeSerializerTests.cs" />
     <Compile Include="FormulaTreeTests.cs" />
+    <Compile Include="MathLibraryTests.cs" />
     <Compile Include="Operators\ConstantTests.cs" />
     <Compile Include="Operators\OperatorTests.cs" />
     <Compile Include="Operators\VariableTests.cs" />
