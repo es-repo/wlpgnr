@@ -60,7 +60,7 @@ namespace WallpaperGenerator.Formulas.Operators
         public static readonly Operator Sub = new Sub();
         public static readonly Operator Mul = new Mul();
         public static readonly Operator Div = new Div();
-        public static readonly Operator DivRem = new DivRem();
+        public static readonly Operator DivRem = new Mod();
         public static readonly Operator Pow = new Pow();
         public static readonly Operator Sqrt = new Sqrt();
         public static readonly Operator Cbrt = new Cbrt();

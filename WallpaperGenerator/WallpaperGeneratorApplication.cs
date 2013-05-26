@@ -34,6 +34,8 @@ namespace WallpaperGenerator
 
         public WallpaperGeneratorApplication()
         {
+            MathLibrary.Init(Configuration.PrecalculatedSinusesCount);
+
             _wallpaperImage = new WallpaperImage(Configuration.ImageWidth, Configuration.ImageHeight);
             _mainWindow = new MainWindow { WindowState = WindowState.Maximized };
 

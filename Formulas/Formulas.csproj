@@ -54,7 +54,7 @@
     <Compile Include="Operators\Arithmetic\Ln.cs" />
     <Compile Include="Operators\Arithmetic\Log.cs" />
     <Compile Include="Operators\Arithmetic\Div.cs" />
-    <Compile Include="Operators\Arithmetic\DivRem.cs" />
+    <Compile Include="Operators\Arithmetic\Mod.cs" />
     <Compile Include="Operators\Arithmetic\Pow.cs" />
     <Compile Include="Operators\Arithmetic\Sub.cs" />
     <Compile Include="Operators\Conditionals\IfG0.cs" />

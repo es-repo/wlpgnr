@@ -42,7 +42,7 @@ namespace WallpaperGenerator.Formulas
         {
             random.RandomlyShrinkBounds(ref rangeLowBound, ref rangeHighBound);
             IEnumerable<Range> ranges = Enumerable.Repeat(1, variableCount).
-                Select(i => Range.CreateRanom(random, i % 2 == 0 ? xRangeCount : yRangeCount, rangeLowBound, rangeHighBound));
+                Select(i => Range.CreateRandom(random, i % 2 == 0 ? xRangeCount : yRangeCount, rangeLowBound, rangeHighBound));
             return new VariableValuesRangesFor2DProjection(xRangeCount, yRangeCount, ranges);
         }
     }

@@ -2,7 +2,7 @@
 
 namespace WallpaperGenerator.Formulas.Operators.Arithmetic
 {
-    public class DivRem : BinaryOperator
+    public class Mod : BinaryOperator
     {
         public override Func<double> Evaluate(params Func<double>[] operands)
         {

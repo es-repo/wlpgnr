@@ -10,7 +10,7 @@ namespace WallpaperGenerator.FormulaRendering
             for (int i = 0; i < values.Length; i++)
                 sum += values[i];
 
-            return sum/values.Length;
+            return sum / values.Length;
         }
 
         public static double Variance(double[] values)

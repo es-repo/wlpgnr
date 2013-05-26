@@ -52,6 +52,12 @@ namespace WallpaperGenerator.FormulaRendering
             double a = Math.Round(random.NextDouble() * random.Next(coefficientLowBound, coefficientHighBound), 2);
             double b = Math.Round(random.NextDouble() * random.Next(coefficientLowBound, coefficientHighBound), 2);
             double c = Math.Round(random.NextDouble() * random.Next(coefficientLowBound, coefficientHighBound), 2);
+
+            if (a.Equals(0) && b.Equals(0) && c.Equals(0))
+            {
+                a = b = c = (coefficientHighBound - coefficientLowBound)/2.0;
+            }
+
             double dispersionCoefficient = Math.Round(random.NextDouble(), 2);
             return new ColorChannelTransformation(a, b, c, dispersionCoefficient);
         }
