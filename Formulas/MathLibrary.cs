@@ -39,6 +39,8 @@ namespace WallpaperGenerator.Formulas
                 value = TwoPi + value;
             }
             int i = (int)(value / _precalculatedSinusesStep);
+            if (i == _precalculatedSinuses.Length)
+                i--; 
             return _precalculatedSinuses[i];
         }
     }
