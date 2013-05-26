@@ -30,15 +30,13 @@ namespace WallpaperGenerator.Formulas
 
         public static double FastSin(double value)
         {
-            if (value >= 0)
+            if (double.IsNaN(value))
+                return double.NaN; 
+
+            value = value % TwoPi; 
+            if (value < 0)
             {
-                while (value > TwoPi)
-                    value -= TwoPi;
-            }
-            else
-            {
-                while (value < 0)
-                    value += TwoPi;
+                value = TwoPi + value;
             }
             int i = (int)(value / _precalculatedSinusesStep);
             return _precalculatedSinuses[i];

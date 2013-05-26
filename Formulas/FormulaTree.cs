@@ -62,7 +62,7 @@ namespace WallpaperGenerator.Formulas
             }
 
             int r = 0;
-            for (int x = 0; x < variableValuesRanges.XCount; x++)
+            for (int y = 0; y < variableValuesRanges.YCount; y++)
             {
                 for (int i = 0; i < Variables.Length; i += 2)
                 {
@@ -74,7 +74,7 @@ namespace WallpaperGenerator.Formulas
                     Variables[i].Value = ranges[i].Start - ranges[i].Step;
                 }
 
-                for (int y = 0; y < variableValuesRanges.YCount; y++)
+                for (int x = 0; x < variableValuesRanges.XCount; x++)
                 {
                     for (int i = 1; i < Variables.Length; i += 2)
                     {

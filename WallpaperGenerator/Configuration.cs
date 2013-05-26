@@ -9,7 +9,7 @@
         public const double ColorChannelZeroProbabilty = 0.2;
         public const int PrecalculatedSinusesCount = 100000;
 
-        public const int ImageWidth = 1440;
-        public const int ImageHeight = 1440;
+        public const int DefaultImageWidth = 1440;
+        public const int DefaultImageHeight = 1440;
     }
 }

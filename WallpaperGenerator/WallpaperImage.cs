@@ -52,9 +52,9 @@ namespace WallpaperGenerator
             for (int i = 0, j = 0; i < renderedFormulaImage.RedChannel.Length; i++, j+=4)
             {
                 colors[j] = renderedFormulaImage.BlueChannel[i];
-                colors[j+1] = renderedFormulaImage.GreenChannel[i];
+                colors[j + 1] = renderedFormulaImage.GreenChannel[i];
                 colors[j + 2] = renderedFormulaImage.RedChannel[i];
-                colors[j+3] = 255;
+                colors[j + 3] = 255;
             }
            _bitmap.WritePixels(_rect, colors, _stride, 0);
         }
