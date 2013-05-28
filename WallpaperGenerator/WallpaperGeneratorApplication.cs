@@ -35,8 +35,6 @@ namespace WallpaperGenerator
 
         public WallpaperGeneratorApplication()
         {
-            MathLibrary.Init(Configuration.PrecalculatedSinusesCount);
-
             _mainWindow = new MainWindow { WindowState = WindowState.Maximized };
 
             _mainWindow.ControlPanel.GenerateFormulaButton.Click += (s, a) =>

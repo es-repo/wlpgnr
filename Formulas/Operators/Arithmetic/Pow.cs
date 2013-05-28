@@ -8,14 +8,22 @@ namespace WallpaperGenerator.Formulas.Operators.Arithmetic
         {
             Func<double> op0 = operands[0];
             Func<double> op1 = operands[1];
-            return () => MathLibrary.Pow(op0(), op1());
+            return () =>
+            {
+                double v = op0();
+                return Math.Pow(v >= 0 ? v : -v, op1());
+            };
         }
 
         public override Func<double> Evaluate(params ZeroArityOperator[] operands)
         {
             ZeroArityOperator op0 = operands[0];
             ZeroArityOperator op1 = operands[1];
-            return () => MathLibrary.Pow(op0.Value, op1.Value);
+            return () =>
+            {
+                double v = op0.Value;
+                return Math.Pow(v >= 0 ? v : -v, op1.Value);
+            };
         }
     }
 }
