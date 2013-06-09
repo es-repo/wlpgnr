@@ -23,5 +23,20 @@ namespace WallpaperGenerator.Formulas
         public abstract Func<double> Evaluate(params ZeroArityOperator[] operands);
 
         public abstract Func<double> Evaluate(params Func<double>[] operands);
+
+        //public override bool Equals(object obj)
+        //{
+        //    if (obj == null)
+        //    {
+        //        return false;
+        //    }
+
+        //    return obj.GetType() == GetType();
+        //}
+
+        //public override int GetHashCode()
+        //{
+        //    return GetType().GetHashCode();
+        //}
     }
 }

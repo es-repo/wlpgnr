@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormulaTreeGeneration\OperatorGuard.cs" />
     <Compile Include="Operators\Arithmetic\Abs.cs" />
     <Compile Include="Operators\Arithmetic\Cbrt.cs" />
     <Compile Include="Operators\Arithmetic\Minus.cs" />

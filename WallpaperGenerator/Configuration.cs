@@ -8,7 +8,7 @@
         public const int ColorChannelPolinomialTransformationCoefficientHighBound = 100;
         public const double ColorChannelZeroProbabilty = 0.2;
         
-        public const int DefaultImageWidth = 1440;
-        public const int DefaultImageHeight = 1440;
+        public const int DefaultImageWidth = 700;
+        public const int DefaultImageHeight = 700;
     }
 }
