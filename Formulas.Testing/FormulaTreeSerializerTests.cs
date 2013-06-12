@@ -1,6 +1,5 @@
 ﻿using MbUnit.Framework;
 using WallpaperGenerator.Formulas.Operators;
-using WallpaperGenerator.Utilities.DataStructures.Trees;
 
 namespace WallpaperGenerator.Formulas.Testing
 {
@@ -20,7 +19,7 @@ x)");
 
             TestSerialize(
                 new FormulaTreeNode(OperatorsLibrary.Sum,
-                    new TreeNode<Operator>(new Constant(2)),
+                    new FormulaTreeNode(new Constant(2)),
                     new FormulaTreeNode(new Variable("y"))), "(Sum(2 y))", 
 @"(
 Sum(
@@ -29,8 +28,8 @@ Sum(
 
             TestSerialize(
                 new FormulaTreeNode(OperatorsLibrary.Sum,
-                    new TreeNode<Operator>(new Constant(2)),
-                    new TreeNode<Operator>(OperatorsLibrary.Mul,
+                    new FormulaTreeNode(new Constant(2)),
+                    new FormulaTreeNode(OperatorsLibrary.Mul,
                         new FormulaTreeNode(new Variable("y")),
                         new FormulaTreeNode(new Variable("z")))), "(Sum(2 Mul(y z)))", 
 @"(
@@ -42,17 +41,17 @@ Sum(
 
             TestSerialize(
                 new FormulaTreeNode(OperatorsLibrary.Sum,
-                    new TreeNode<Operator>(OperatorsLibrary.Minus,
-                        new TreeNode<Operator>(OperatorsLibrary.Mul,
-                            new TreeNode<Operator>(new Constant(3)),
-                            new TreeNode<Operator>(OperatorsLibrary.Minus,
-                                new TreeNode<Operator>(OperatorsLibrary.Minus,
-                                    new TreeNode<Operator>(OperatorsLibrary.Minus,
-                                        new TreeNode<Operator>(new Constant(0.5))))))),
-                    new TreeNode<Operator>(OperatorsLibrary.Minus,
-                         new TreeNode<Operator>(OperatorsLibrary.Minus,
-                            new TreeNode<Operator>(OperatorsLibrary.Minus,
-                                new TreeNode<Operator>(new Constant(7)))))),
+                    new FormulaTreeNode(OperatorsLibrary.Minus,
+                        new FormulaTreeNode(OperatorsLibrary.Mul,
+                            new FormulaTreeNode(new Constant(3)),
+                            new FormulaTreeNode(OperatorsLibrary.Minus,
+                                new FormulaTreeNode(OperatorsLibrary.Minus,
+                                    new FormulaTreeNode(OperatorsLibrary.Minus,
+                                        new FormulaTreeNode(new Constant(0.5))))))),
+                    new FormulaTreeNode(OperatorsLibrary.Minus,
+                         new FormulaTreeNode(OperatorsLibrary.Minus,
+                            new FormulaTreeNode(OperatorsLibrary.Minus,
+                                new FormulaTreeNode(new Constant(7)))))),
                 "(Sum(Minus(Mul(3 Minus(Minus(Minus(0.5))))) Minus(Minus(Minus(7)))))",
 @"(
 Sum(

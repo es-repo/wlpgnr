@@ -4,9 +4,8 @@ using System.Linq;
 using WallpaperGenerator.Utilities;
 using System.Globalization;
 using WallpaperGenerator.Formulas.Operators;
-using WallpaperGenerator.Utilities.DataStructures.Trees;
 
-namespace WallpaperGenerator.Formulas
+namespace WallpaperGenerator.Formulas.FormulaTreeGeneration
 {
     public class FormulaTreeGenerator
     {
@@ -76,7 +75,7 @@ namespace WallpaperGenerator.Formulas
             Queue<FormulaTreeNode> nodes = new Queue<FormulaTreeNode>(zeroArityOperators.Select(op => new FormulaTreeNode(op)));
             foreach (Operator op in nonZeroArityOperators)
             {
-                FormulaTreeNode node = new FormulaTreeNode(op, nodes.Dequeue(op.Arity).Cast<TreeNode<Operator>>());
+                FormulaTreeNode node = FormulaTreeNodeFactory.Create(op, null, nodes.Dequeue(op.Arity));
                 nodes.Enqueue(node);
             }
 

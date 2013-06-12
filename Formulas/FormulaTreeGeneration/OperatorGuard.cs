@@ -1,93 +1,172 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using WallpaperGenerator.Formulas.Operators;
 
 namespace WallpaperGenerator.Formulas.FormulaTreeGeneration
 {
-    public class FormulaGuard
+    // public delegate FormulaTreeNodeWrapper = Func<FormulaTreeNode, FormulaTreeNode>;
+    //{
+    //    /*private readonly Func<FormulaTreeNode, FormulaTreeNode> _wrapper;
+
+    //    public FormulaTreeNode Wrap(FormulaTreeNode formulaTreeNode)
+    //    {
+    //        return _wrapper(formulaTreeNode);
+    //    }
+
+    //    public FormulaTreeNodeRootWrapper(Func<FormulaTreeNode, FormulaTreeNode> wrapper)
+    //    {
+    //        _wrapper = wrapper;
+    //    }
+
+    //    public FormulaTreeNodeRootWrapper(UnaryOperator guardingOperator)
+    //        : this(node => new FormulaTreeNode(guardingOperator, node)) 
+    //    {
+    //    }*/
+    //}
+
+
+    //public class FormulaTreeNodeChildrenWrapper
+    //{
+    //    private readonly IDictionary<int, Func<FormulaTreeNode, FormulaTreeNode>> _childrenIndexesAndWrappers;
+
+    //    public FormulaTreeNode Wrap(FormulaTreeNode formulaTreeNode)
+    //    {
+    //        return null;
+    //        ;_wrapper(formulaTreeNode);
+    //    }
+
+    //    public FormulaTreeNodeChildrenWrapper(IDictionary<int, Func<FormulaTreeNode, FormulaTreeNode>> childrenIndexesAndWrappers)
+    //    {
+    //        _childrenIndexesAndWrappers = childrenIndexesAndWrappers;
+    //    }
+
+    //    public FormulaTreeNodeChildrenWrapper(IDictionary<int, UnaryOperator> childrenIndexesAndguardingOperators)
+    //    {
+    //        _childrenIndexesAndWrappers = new Dictionary<int, Func<FormulaTreeNode, FormulaTreeNode>>();
+    //        foreach (int childIndex in childrenIndexesAndguardingOperators.Keys)
+    //        {
+    //            UnaryOperator guardingOperator = childrenIndexesAndguardingOperators[childIndex];
+    //            Func<FormulaTreeNode, FormulaTreeNode> wrapper = node => new FormulaTreeNode(guardingOperator, node);
+    //            _childrenIndexesAndWrappers.Add(childIndex, wrapper);
+    //        }
+    //    }
+    //}
+
+    public class FormulaTreeNodeWrapper
     {
-        private readonly Func<FormulaTreeNode, FormulaTreeNode> _overriding;
+        public Func<FormulaTreeNode, FormulaTreeNode> Wrap { get; private set; }
 
-        public FormulaTreeNode Override(FormulaTreeNode formulaTreeNode)
+        public FormulaTreeNodeWrapper(Func<FormulaTreeNode, FormulaTreeNode> wrap)
         {
-            return _overriding(formulaTreeNode);
+            Wrap = wrap;
         }
 
-        public FormulaGuard(Func<FormulaTreeNode, FormulaTreeNode> overriding)
-        {
-            _overriding = overriding;
-        }
-
-        public FormulaGuard(UnaryOperator guardingOperator)
-            : this(node => new FormulaTreeNode(guardingOperator, node)) 
+        public FormulaTreeNodeWrapper(UnaryOperator unaryOperator)
+            : this(node => new FormulaTreeNode(unaryOperator, node))
         {
         }
     }
-    
+
     public class OperatorGuard
     {
-        public Operator Operator { get; private set; }
+        public FormulaTreeNodeWrapper RootWrapper { get; private set; }
 
-        public FormulaGuard[] OperatorOverrides { get; private set; }
+        public IDictionary<int, FormulaTreeNodeWrapper> ChildrenWrappers { get; private set; }
 
-        public IDictionary<int, FormulaGuard[]> OperandOverrides { get; private set; }
-
-        public OperatorGuard(Operator op, IEnumerable<FormulaGuard> operatorOverrides, IDictionary<int, IEnumerable<FormulaGuard>> operandOverrides)
+        public OperatorGuard(FormulaTreeNodeWrapper rootWrapper)
+            : this (rootWrapper, null)
         {
-            Operator = op;
-            OperatorOverrides = operatorOverrides.ToArray();
-            OperandOverrides = new Dictionary<int, FormulaGuard[]>();
-            foreach (int operandIndex in operandOverrides.Keys)
-            {
-                OperandOverrides.Add(operandIndex, operandOverrides[operandIndex].ToArray());
-            }
+        }
+
+        public OperatorGuard(FormulaTreeNodeWrapper rootWrapper,
+                             IDictionary<int, FormulaTreeNodeWrapper> childrenWrappers)
+        {
+            RootWrapper = rootWrapper;
+            ChildrenWrappers = childrenWrappers;
         }
     }
 
-    public static class OperatorGuards
+    public class OperatorGuards
     {
-        private static readonly IDictionary<Operator, OperatorGuard> _operatorGuards;
+        public FormulaTreeNodeWrapper[] RootWrappers { get; private set; }
 
-        static OperatorGuards()
+        public IDictionary<int, FormulaTreeNodeWrapper[]> ChildrenWrappers { get; private set; }
+
+        public OperatorGuards(FormulaTreeNodeWrapper[] rootWrappers)
+            : this (rootWrappers, null)
         {
-            _operatorGuards = new Dictionary<Operator, OperatorGuard>
+        }
+
+        public OperatorGuards(FormulaTreeNodeWrapper[] rootWrappers,
+                              IDictionary<int, FormulaTreeNodeWrapper[]> childrenWrappers)
+        {
+            RootWrappers = rootWrappers;
+            ChildrenWrappers = childrenWrappers;
+        }
+    }
+
+    public class OperatorsAndGuards
+    {
+        private static readonly IDictionary<Operator, OperatorGuards> _operatorsAndGuards;
+
+        static OperatorsAndGuards()
+        {
+            _operatorsAndGuards = new Dictionary<Operator, OperatorGuards>
             {
-                { 
-                    OperatorsLibrary.Div, 
-                        new OperatorGuard(OperatorsLibrary.Div, 
-                            new []
-                                {
-                                    new FormulaGuard(OperatorsLibrary.Atan), 
-                                    new FormulaGuard(OperatorsLibrary.Tanh)
-                                }, null)
+                {
+                    OperatorsLibrary.Div,
+                    new OperatorGuards(
+                        new[]                                          
+                        {
+                            new FormulaTreeNodeWrapper(OperatorsLibrary.Atan),
+                            new FormulaTreeNodeWrapper(OperatorsLibrary.Tanh)
+                        })
                 },
 
-                { 
-                    OperatorsLibrary.Ln, 
-                        new OperatorGuard(OperatorsLibrary.Ln, 
-                            new []
-                                {
-                                    new FormulaGuard(OperatorsLibrary.Atan), 
-                                    new FormulaGuard(OperatorsLibrary.Tanh)
-                                }, null)
+                {
+                    OperatorsLibrary.Ln,
+                    new OperatorGuards(
+                        new[]
+                        {
+                            new FormulaTreeNodeWrapper(OperatorsLibrary.Atan),
+                            new FormulaTreeNodeWrapper(OperatorsLibrary.Tanh)
+                        })
                 },
 
-                { 
-                    OperatorsLibrary.Sinh, 
-                        new OperatorGuard(OperatorsLibrary.Sinh, 
-                            new []
+                {
+                    OperatorsLibrary.Pow,
+                    new OperatorGuards(null,
+                        new Dictionary<int, FormulaTreeNodeWrapper[]>
+                        {
+                            {
+                                1, 
+                                new[]
                                 {
-                                    new FormulaGuard(OperatorsLibrary.Atan), 
-                                    new FormulaGuard(OperatorsLibrary.Tanh)
-                                }, null)
+                                    new FormulaTreeNodeWrapper(OperatorsLibrary.Atan),
+                                    new FormulaTreeNodeWrapper(OperatorsLibrary.Tanh)
+                                }}
+                        })
+                },  
+
+                {
+                    OperatorsLibrary.Sinh,
+                    new OperatorGuards(new[]
+                                      {
+                                          new FormulaTreeNodeWrapper(OperatorsLibrary.Atan),
+                                          new FormulaTreeNodeWrapper(OperatorsLibrary.Tanh)
+                                      })
                 },
             };
         }
 
-        public static OperatorGuard Get(Operator op)
+        public static OperatorGuards Get(Operator op)
         {
-            return _operatorGuards[op];
+            return _operatorsAndGuards[op];
+        }
+
+        public static OperatorGuard GetRandomGuard(Operator op)
+        {
+            return null;
         }
     }
 }

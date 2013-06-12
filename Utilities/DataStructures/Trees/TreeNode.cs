@@ -34,11 +34,6 @@ namespace WallpaperGenerator.Utilities.DataStructures.Trees
         {            
         }
 
-        public TreeNode(T value)
-            : this(value, Enumerable.Empty<TreeNode<T>>())
-        {                
-        }
-
         public void AddChild(TreeNode<T> node)
         {
             _children.Add(node);

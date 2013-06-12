@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Input;
 using WallpaperGenerator.FormulaRendering;
 using WallpaperGenerator.Formulas;
+using WallpaperGenerator.Formulas.FormulaTreeGeneration;
 using WallpaperGenerator.MainWindowControls.ControlPanelControls;
 
 namespace WallpaperGenerator

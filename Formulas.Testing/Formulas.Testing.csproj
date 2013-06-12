@@ -54,7 +54,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FormulaTreeGeneratorTests.cs" />
+    <Compile Include="FormulaTreeGeneration\FormulaTreeGeneratorTests.cs" />
+    <Compile Include="FormulaTreeGeneration\FormulaTreeNodeFactoryTests.cs" />
     <Compile Include="FormulaTreeSerializerTests.cs" />
     <Compile Include="FormulaTreeTests.cs" />
     <Compile Include="Operators\ConstantTests.cs" />

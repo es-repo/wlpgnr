@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using MbUnit.Framework;
+using WallpaperGenerator.Formulas.FormulaTreeGeneration;
 using WallpaperGenerator.Formulas.Operators;
 using WallpaperGenerator.Utilities;
 using WallpaperGenerator.Utilities.DataStructures.Trees;
 
-namespace WallpaperGenerator.Formulas.Testing
+namespace WallpaperGenerator.Formulas.Testing.FormulaTreeGeneration
 {
     [TestFixture]
     public class FormulaTreeGeneratorTests
