@@ -1,29 +1,57 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace WallpaperGenerator.Formulas.FormulaTreeGeneration
 {
-    public static class FormulaTreeNodeFactory
+    public class FormulaTreeNodeFactory
     {
-        public static FormulaTreeNode Create(Operator op, OperatorGuard operatorGuard, IEnumerable<FormulaTreeNode> children)
+        private readonly Random _random;
+
+        private readonly IDictionary<Operator, OperatorGuards> _operatorsAndGuards;
+
+        public FormulaTreeNodeFactory(Random random)
+            : this(random, DefaultOperatorsAndGuards.Get())
+        {
+        }
+
+        public FormulaTreeNodeFactory(Random random, IDictionary<Operator, OperatorGuards> operatorsAndGuards)
+        {
+            _random = random;
+            _operatorsAndGuards = operatorsAndGuards;
+        }
+
+        public FormulaTreeNode Create(Operator op, IEnumerable<FormulaTreeNode> children)
+        {
+            return CreateInternal(op, children);
+        }
+
+        public FormulaTreeNode Create(Operator op, params FormulaTreeNode[] children)
+        {
+            return CreateInternal(op, children);
+        }
+        
+        public FormulaTreeNode Create(Operator op, OperatorGuard operatorGuard, IEnumerable<FormulaTreeNode> children)
         {
             return CreateInternal(op, operatorGuard, children);
         }
 
-        public static FormulaTreeNode Create(Operator op, OperatorGuard operatorGuard, params FormulaTreeNode[] children)
+        public FormulaTreeNode Create(Operator op, OperatorGuard operatorGuard, params FormulaTreeNode[] children)
         {
             return CreateInternal(op, operatorGuard, children);
         }
 
-        private static FormulaTreeNode CreateInternal(Operator op, IEnumerable<FormulaTreeNode> children)
+        private FormulaTreeNode CreateInternal(Operator op, IEnumerable<FormulaTreeNode> children)
         {
-            return new FormulaTreeNode(op, children);
+            OperatorGuards operatorGuards = _operatorsAndGuards != null && _operatorsAndGuards.ContainsKey(op) ? _operatorsAndGuards[op] : null;
+            OperatorGuard operatorGuard = operatorGuards != null ? operatorGuards.GetRandom(_random) : null;
+            return CreateInternal(op, operatorGuard, children);
         }
 
-        private static FormulaTreeNode CreateInternal(Operator op, OperatorGuard operatorGuard, IEnumerable<FormulaTreeNode> children)
+        private FormulaTreeNode CreateInternal(Operator op, OperatorGuard operatorGuard, IEnumerable<FormulaTreeNode> children)
         {
             if (operatorGuard == null)
             {
-                return CreateInternal(op, children);
+                return new FormulaTreeNode(op, children);
             }
             
             if (operatorGuard.ChildrenWrappers != null)
@@ -40,7 +68,7 @@ namespace WallpaperGenerator.Formulas.FormulaTreeGeneration
             return node;
         }
 
-        private static IEnumerable<FormulaTreeNode> WrapChildren(IEnumerable<FormulaTreeNode> children,
+        private IEnumerable<FormulaTreeNode> WrapChildren(IEnumerable<FormulaTreeNode> children,
             IDictionary<int, FormulaTreeNodeWrapper> childrenWrappers)
         {
             int i = 0;

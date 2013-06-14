@@ -17,6 +17,7 @@ namespace WallpaperGenerator
 
         private readonly Random _random = new Random();
         private readonly MainWindow _mainWindow;
+        private readonly FormulaTreeGenerator _formulaTreeGenerator;
         
         #endregion
 
@@ -31,11 +32,12 @@ namespace WallpaperGenerator
 
         #endregion
 
-
         #region Constructors
 
         public WallpaperGeneratorApplication()
         {
+            _formulaTreeGenerator = new FormulaTreeGenerator(_random);
+            
             _mainWindow = new MainWindow { WindowState = WindowState.Maximized };
 
             _mainWindow.ControlPanel.GenerateFormulaButton.Click += (s, a) =>
@@ -102,7 +104,7 @@ namespace WallpaperGenerator
             IEnumerable<OperatorCheckBox> checkedOperatorCheckBoxes = _mainWindow.ControlPanel.OperatorCheckBoxes.Where(cb => cb.IsChecked == true);
             IEnumerable<Operator> operators = checkedOperatorCheckBoxes.Select(cb => cb.Operator);
 
-            return FormulaTreeGenerator.CreateRandomFormulaTree(_random, dimensionsCount, variablesCount, constantsCount, unaryOperatorsCount, operators);
+            return _formulaTreeGenerator.CreateRandomFormulaTree(dimensionsCount, variablesCount, constantsCount, unaryOperatorsCount, operators);
         }
 
         private VariableValuesRangesFor2DProjection CreateRandomVariableValuesRangesFor2DProjection(int variablesCount, 

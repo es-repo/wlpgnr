@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MbUnit.Framework;
 using WallpaperGenerator.Formulas.FormulaTreeGeneration;
@@ -12,16 +13,18 @@ namespace WallpaperGenerator.Formulas.Testing.FormulaTreeGeneration
         [Test]
         public void TestCreate()
         {
+            FormulaTreeNodeFactory formulaTreeNodeFactory = new FormulaTreeNodeFactory(new Random(), null);
+            
             Variable variableX = new Variable("x");
-            FormulaTreeNode variableXNode = FormulaTreeNodeFactory.Create(variableX, null);
+            FormulaTreeNode variableXNode = formulaTreeNodeFactory.Create(variableX);
             Assert.AreEqual(variableX, variableXNode.Operator);
             Assert.AreEqual(0, variableXNode.Children.Count);
 
             Variable variableY = new Variable("y");
-            FormulaTreeNode variableYNode = FormulaTreeNodeFactory.Create(variableY, null);
+            FormulaTreeNode variableYNode = formulaTreeNodeFactory.Create(variableY);
 
             OperatorGuard sumRootGuard = new OperatorGuard(new FormulaTreeNodeWrapper(OperatorsLibrary.Atan));
-            FormulaTreeNode sumNodeWithRootGuard = FormulaTreeNodeFactory.Create(OperatorsLibrary.Sum, sumRootGuard, variableXNode, variableYNode);
+            FormulaTreeNode sumNodeWithRootGuard = formulaTreeNodeFactory.Create(OperatorsLibrary.Sum, sumRootGuard, variableXNode, variableYNode);
 
             Assert.AreEqual(sumNodeWithRootGuard.Operator, OperatorsLibrary.Atan);
             Assert.AreEqual(1, sumNodeWithRootGuard.Children.Count);
@@ -30,8 +33,8 @@ namespace WallpaperGenerator.Formulas.Testing.FormulaTreeGeneration
 
             OperatorGuard sumRootAndSecondChildGuard = new OperatorGuard(new FormulaTreeNodeWrapper(OperatorsLibrary.Atan), 
                 new Dictionary<int, FormulaTreeNodeWrapper>{  {1, new FormulaTreeNodeWrapper(OperatorsLibrary.Tanh) }});
-            FormulaTreeNode sumNodeWithRootAndSecondChildGuard = 
-                FormulaTreeNodeFactory.Create(OperatorsLibrary.Sum, sumRootAndSecondChildGuard, variableXNode, variableYNode);
+            FormulaTreeNode sumNodeWithRootAndSecondChildGuard =
+                formulaTreeNodeFactory.Create(OperatorsLibrary.Sum, sumRootAndSecondChildGuard, variableXNode, variableYNode);
 
             Assert.AreEqual(sumNodeWithRootAndSecondChildGuard.Operator, OperatorsLibrary.Atan);
             Assert.AreEqual(1, sumNodeWithRootAndSecondChildGuard.Children.Count);
@@ -41,6 +44,46 @@ namespace WallpaperGenerator.Formulas.Testing.FormulaTreeGeneration
             FormulaTreeNode sumSecondOperandGuarded = sumNodeWithRootAndSecondChildGuard.Operands.First().Operands.Skip(1).First();
             Assert.AreEqual(sumSecondOperandGuarded.Operator, OperatorsLibrary.Tanh);
             Assert.AreEqual(sumSecondOperandGuarded.Operands.First().Operator, variableY);
+        }
+
+        [Test]
+        public void TestCreateWithPredefinedGuards()
+        {
+            FormulaTreeNodeFactory formulaTreeNodeFactory = new FormulaTreeNodeFactory(new Random(), 
+                new Dictionary<Operator, OperatorGuards>
+                {
+                    {
+                        OperatorsLibrary.Sum,
+                        new OperatorGuards(
+                            new[] { new FormulaTreeNodeWrapper(OperatorsLibrary.Atan) },
+                            new Dictionary<int, FormulaTreeNodeWrapper[]>
+                            {
+                                {
+                                    1, 
+                                    new[] { new FormulaTreeNodeWrapper(OperatorsLibrary.Tanh) }
+                                }
+                            })
+                    }
+                 });
+
+            Variable variableX = new Variable("x");
+            FormulaTreeNode variableXNode = formulaTreeNodeFactory.Create(variableX);
+            Assert.AreEqual(variableX, variableXNode.Operator);
+            
+            Variable variableY = new Variable("y");
+            FormulaTreeNode variableYNode = formulaTreeNodeFactory.Create(variableY);
+
+            FormulaTreeNode guardedSumNode = formulaTreeNodeFactory.Create(OperatorsLibrary.Sum, variableXNode, variableYNode);
+            Assert.AreEqual(OperatorsLibrary.Atan, guardedSumNode.Operator);
+
+            FormulaTreeNode sumNode = guardedSumNode.Operands.First();
+            Assert.AreEqual(OperatorsLibrary.Sum, sumNode.Operator);
+
+            FormulaTreeNode guardedYVariableNode = sumNode.Operands.Skip(1).First();
+            Assert.AreEqual(OperatorsLibrary.Tanh, guardedYVariableNode.Operator);
+
+            FormulaTreeNode yVariableNode = guardedYVariableNode.Operands.First();
+            Assert.AreEqual(variableY, yVariableNode.Operator);
         }
     }
 }

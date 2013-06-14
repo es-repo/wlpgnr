@@ -53,7 +53,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataStructures\Trees\TreeNodeWrappingTests.cs" />
     <Compile Include="DataStructures\Trees\TreeTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomExtensionsTests.cs" />
