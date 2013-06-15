@@ -47,6 +47,24 @@ namespace WallpaperGenerator.Formulas.FormulaTreeGeneration
                 },  
 
                 {
+                    OperatorsLibrary.Mod,
+                    new OperatorGuards(null,
+                        new Dictionary<int, FormulaTreeNodeWrapper[]>
+                        {
+                            {
+                                1, 
+                                new[]
+                                {
+                                    new FormulaTreeNodeWrapper(
+                                        node => 
+                                            new FormulaTreeNode(OperatorsLibrary.Sum,
+                                                new FormulaTreeNode(OperatorsLibrary.Mul, node, node),
+                                                new FormulaTreeNode(new Constant(0.0001))))
+                                }}
+                        })
+                },  
+
+                {
                     OperatorsLibrary.Sinh,
                     new OperatorGuards(new[]
                                       {
@@ -54,6 +72,7 @@ namespace WallpaperGenerator.Formulas.FormulaTreeGeneration
                                           new FormulaTreeNodeWrapper(OperatorsLibrary.Tanh)
                                       })
                 },
+
             };
         }
 

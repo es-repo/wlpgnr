@@ -16,7 +16,7 @@ namespace WallpaperGenerator.Formulas.Operators
         public static readonly Sub Sub = new Sub();
         public static readonly Mul Mul = new Mul();
         public static readonly Div Div = new Div();
-        public static readonly Mod DivRem = new Mod();
+        public static readonly Mod Mod = new Mod();
         public static readonly Pow Pow = new Pow();
         public static readonly Sqrt Sqrt = new Sqrt();
         public static readonly Cbrt Cbrt = new Cbrt();
@@ -32,7 +32,7 @@ namespace WallpaperGenerator.Formulas.Operators
                 yield return Sub;
                 yield return Mul;
                 yield return Div;
-                yield return DivRem;
+                yield return Mod;
                 yield return Pow;
                 yield return Sqrt;
                 yield return Cbrt;
