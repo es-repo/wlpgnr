@@ -18,6 +18,8 @@ namespace WallpaperGenerator.Formulas.Operators
         public static readonly Div Div = new Div();
         public static readonly Mod Mod = new Mod();
         public static readonly Pow Pow = new Pow();
+        public static readonly Pow2 Pow2 = new Pow2();
+        public static readonly Pow3 Pow3= new Pow3();
         public static readonly Sqrt Sqrt = new Sqrt();
         public static readonly Cbrt Cbrt = new Cbrt();
         public static readonly Log Log = new Log();
@@ -34,6 +36,8 @@ namespace WallpaperGenerator.Formulas.Operators
                 yield return Div;
                 yield return Mod;
                 yield return Pow;
+                yield return Pow2;
+                yield return Pow3;
                 yield return Sqrt;
                 yield return Cbrt;
                 //yield return Log;
@@ -58,7 +62,7 @@ namespace WallpaperGenerator.Formulas.Operators
             get
             {
                 yield return Sin;
-                //yield return Cos;
+                yield return Cos;
                 //yield return Tan;
                 yield return Atan;
                 yield return Sinh;
@@ -69,16 +73,16 @@ namespace WallpaperGenerator.Formulas.Operators
 
         #endregion
 
-        #region Conditional Operators
+        #region IfG0 Operators
 
-        public static readonly IfG0 Conditional = new IfG0();
+        public static readonly IfG0 IfG0 = new IfG0();
         public static readonly Max Max = new Max();
 
         public static IEnumerable<Operator> Conditionals
         {
             get
             {
-                yield return Conditional;
+                //yield return IfG0;
                 yield return Max;
             }
         }

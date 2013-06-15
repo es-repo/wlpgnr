@@ -32,8 +32,29 @@ namespace WallpaperGenerator.Formulas.FormulaTreeGeneration
                 },
 
                 {
+                    OperatorsLibrary.Pow2,
+                    new OperatorGuards(
+                        new[]
+                        {
+                            new FormulaTreeNodeWrapper(OperatorsLibrary.Atan),
+                            new FormulaTreeNodeWrapper(OperatorsLibrary.Tanh)
+                        })
+                },
+
+                {
+                    OperatorsLibrary.Pow3,
+                    new OperatorGuards(
+                        new[]
+                        {
+                            new FormulaTreeNodeWrapper(OperatorsLibrary.Atan),
+                            new FormulaTreeNodeWrapper(OperatorsLibrary.Tanh)
+                        })
+                },
+
+                {
                     OperatorsLibrary.Pow,
-                    new OperatorGuards(null,
+                    new OperatorGuards(
+                        null,
                         new Dictionary<int, FormulaTreeNodeWrapper[]>
                         {
                             {

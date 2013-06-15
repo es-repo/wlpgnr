@@ -79,7 +79,7 @@ namespace WallpaperGenerator.Formulas.Testing.FormulaTreeGeneration
             IEnumerable<Operator> nonZeroArityOperators = new List<Operator>
                 {
                     OperatorsLibrary.Mul,
-                    OperatorsLibrary.Conditional,
+                    OperatorsLibrary.IfG0,
                     OperatorsLibrary.Sum,
                     OperatorsLibrary.Minus  
                 };
@@ -91,7 +91,7 @@ namespace WallpaperGenerator.Formulas.Testing.FormulaTreeGeneration
                         new FormulaTreeNode(OperatorsLibrary.Mul,
                             new FormulaTreeNode(new Variable("x0")),
                             new FormulaTreeNode(new Variable("x1"))),
-                        new FormulaTreeNode(OperatorsLibrary.Conditional,
+                        new FormulaTreeNode(OperatorsLibrary.IfG0,
                             new FormulaTreeNode(new Variable("x2")),
                             new FormulaTreeNode(new Variable("x3")),
                             new FormulaTreeNode(new Variable("x4")))));
