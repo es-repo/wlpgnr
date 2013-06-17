@@ -19,7 +19,7 @@ namespace WallpaperGenerator.FormulaRendering
 
         public override string ToString()
         {            
-            string formulaString = FormulaTreeSerializer.Serialize(FormulaTree.FormulaRoot);
+            string formulaString = FormulaTreeSerializer.Serialize(FormulaTree.FormulaRoot, new FormulaTreeSerializationOptions{WithIndentation = false } );
             string variableRangesString = VariableValuesRanges.ToString();
             string colorTransformationString = ColorTransformation.ToString();
             string[] lines = new[] { variableRangesString, colorTransformationString, formulaString };

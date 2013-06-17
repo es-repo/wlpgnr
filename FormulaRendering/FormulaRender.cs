@@ -55,7 +55,7 @@ namespace WallpaperGenerator.FormulaRendering
             const double factor = 1e175;
             const double lowBound = double.MinValue * factor;
             const double highBound = double.MaxValue / factor;
-            //LimitValue(channelValues, lowBound, highBound);
+            LimitValue(channelValues, lowBound, highBound);
 
             double mathExpectation = MathUtilities.MathExpectation(channelValues);
             double standardDeviation = MathUtilities.StandardDeviation(channelValues);
@@ -100,21 +100,21 @@ namespace WallpaperGenerator.FormulaRendering
             return transformedValues;
         }
 
-        //private static void LimitValue(double[] values, double lowBound, double highBound)
-        //{
-        //    for (int i = 0; i < values.Length; i++)
-        //    {
-        //        if (values[i] > lowBound && values[i] < highBound)
-        //            continue;   
+        private static void LimitValue(double[] values, double lowBound, double highBound)
+        {
+            for (int i = 0; i < values.Length; i++)
+            {
+                if (values[i] > lowBound && values[i] < highBound)
+                    continue;
 
-        //        values[i] = values[i] < lowBound
-        //            ? lowBound
-        //            : values[i] > highBound
-        //                ? highBound
-        //                : double.IsNaN(values[i])
-        //                    ? 0
-        //                    : values[i];
-        //    }
-        //}
+                values[i] = values[i] < lowBound
+                    ? lowBound
+                    : values[i] > highBound
+                        ? highBound
+                        : double.IsNaN(values[i])
+                            ? 0
+                            : values[i];
+            }
+        }
     }
 }

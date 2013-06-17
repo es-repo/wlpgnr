@@ -2,11 +2,11 @@
 {
     public class Configuration
     {
-        public const int RangeLowBound = -100;
-        public const int RangeHighBound = 100;
-        public const int ColorChannelPolinomialTransformationCoefficientLowBound = -100;
-        public const int ColorChannelPolinomialTransformationCoefficientHighBound = 100;
-        public const double ColorChannelZeroProbabilty = 0.2;
+        public const int RangeLowBound = -70;
+        public const int RangeHighBound = 70;
+        public const int ColorChannelPolinomialTransformationCoefficientLowBound = -50;
+        public const int ColorChannelPolinomialTransformationCoefficientHighBound = 50;
+        public const double ColorChannelZeroProbabilty = 0.1;
         
         public const int DefaultImageWidth = 700;
         public const int DefaultImageHeight = 700;
