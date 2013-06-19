@@ -48,10 +48,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FormulaTreeGeneration\DefaultOperatorsAndGuards.cs" />
+    <Compile Include="FormulaTreeGeneration\DefaultOperatorsAndOperandsConstantAcceptanceRules.cs" />
     <Compile Include="FormulaTreeGeneration\FormulaTreeNodeFactory.cs" />
     <Compile Include="FormulaTreeGeneration\FormulaTreeNodeWrapper.cs" />
+    <Compile Include="FormulaTreeGeneration\OperandsConstantAcceptanceRuleCheck.cs" />
+    <Compile Include="FormulaTreeGeneration\OperandsConstantAcceptanceRule.cs" />
     <Compile Include="FormulaTreeGeneration\OperatorGuard.cs" />
     <Compile Include="FormulaTreeGeneration\OperatorGuards.cs" />
+    <Compile Include="FormulaTreeGeneration\OperatorsAndOperandsConstantAcceptanceRules.cs" />
     <Compile Include="Operators\Arithmetic\Abs.cs" />
     <Compile Include="Operators\Arithmetic\Cbrt.cs" />
     <Compile Include="Operators\Arithmetic\Pow3.cs" />

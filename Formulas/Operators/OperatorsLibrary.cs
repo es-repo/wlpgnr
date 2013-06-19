@@ -82,7 +82,7 @@ namespace WallpaperGenerator.Formulas.Operators
         {
             get
             {
-                //yield return IfG0;
+                yield return IfG0;
                 yield return Max;
             }
         }

@@ -11,16 +11,19 @@ namespace WallpaperGenerator.Formulas.FormulaTreeGeneration
     {
         private readonly Random _random;
         private readonly FormulaTreeNodeFactory _formulaTreeNodeFactory;
+        private readonly OperatorsAndOperandsConstantAcceptanceRules _operatorsAndOperandsConstantAcceptanceRules;
 
         public FormulaTreeGenerator(Random random)
-            : this(random, new FormulaTreeNodeFactory(random))
+            : this(random, new FormulaTreeNodeFactory(random), new DefaultOperatorsAndOperandsConstantAcceptanceRules())
         {
         }
 
-        public FormulaTreeGenerator(Random random, FormulaTreeNodeFactory formulaTreeNodeFactory)
+        public FormulaTreeGenerator(Random random, FormulaTreeNodeFactory formulaTreeNodeFactory,
+            OperatorsAndOperandsConstantAcceptanceRules operatorsAndOperandsConstantAcceptanceRules)
         {
             _random = random;
             _formulaTreeNodeFactory = formulaTreeNodeFactory;
+            _operatorsAndOperandsConstantAcceptanceRules = operatorsAndOperandsConstantAcceptanceRules;
         }
 
         public FormulaTreeNode CreateRandomFormulaTree(int dimensionsCount, int variablesCount, int constantsCount, 
