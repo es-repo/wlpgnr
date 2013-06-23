@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WallpaperGenerator.FormulaRendering
+namespace WallpaperGenerator.Utilities
 {
     public static class MathUtilities
     {

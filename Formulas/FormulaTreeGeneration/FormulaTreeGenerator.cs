@@ -83,8 +83,9 @@ namespace WallpaperGenerator.Formulas.FormulaTreeGeneration
         public FormulaTreeNode CreateFormulaTree(IEnumerable<Operator> zeroArityOperators, IEnumerable<Operator> nonZeroArityOperators)
         {
             if (!zeroArityOperators.Any())
-                throw new ArgumentException("Zero-arity operators enumration can't be empty.");
+                throw new ArgumentException("Zero-arity operators enumeration can't be empty.");
             
+            // TODO: Count this for operators of any arity.
             if (nonZeroArityOperators.Count(op => op.Arity == 2)+ 
                 nonZeroArityOperators.Count(op => op.Arity == 3)*2 + 1 != zeroArityOperators.Count())
                 throw new ArgumentException("Number of zero and non-zero -arity operators is not balanced.");

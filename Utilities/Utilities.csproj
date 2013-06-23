@@ -46,10 +46,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataStructures\Collections\CircularEnumeration.cs" />
+    <Compile Include="DataStructures\Collections\CircularEnumerator.cs" />
     <Compile Include="DataStructures\Trees\TraversedTreeNodeInfo.cs" />
     <Compile Include="DataStructures\Trees\Tree.cs" />
     <Compile Include="DataStructures\Trees\TreeNode.cs" />
     <Compile Include="EnumerableExtensions.cs" />
+    <Compile Include="FormalGrammar\Grammar.cs" />
+    <Compile Include="MathUtilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueueExtensions.cs" />
     <Compile Include="RandomExtensions.cs" />

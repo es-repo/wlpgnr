@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using WallpaperGenerator.Formulas;
+using WallpaperGenerator.Utilities;
 
 namespace WallpaperGenerator.FormulaRendering
 {
