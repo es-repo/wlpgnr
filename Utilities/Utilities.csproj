@@ -52,7 +52,13 @@
     <Compile Include="DataStructures\Trees\Tree.cs" />
     <Compile Include="DataStructures\Trees\TreeNode.cs" />
     <Compile Include="EnumerableExtensions.cs" />
+    <Compile Include="FormalGrammar\CircularRuleSelector.cs" />
     <Compile Include="FormalGrammar\Grammar.cs" />
+    <Compile Include="FormalGrammar\Rule.cs" />
+    <Compile Include="FormalGrammar\RuleFactory.cs" />
+    <Compile Include="FormalGrammar\RuleSelector.cs" />
+    <Compile Include="FormalGrammar\SequenceGenerator.cs" />
+    <Compile Include="FormalGrammar\Symbol.cs" />
     <Compile Include="MathUtilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueueExtensions.cs" />

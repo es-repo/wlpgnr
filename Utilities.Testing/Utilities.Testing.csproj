@@ -55,7 +55,7 @@
   <ItemGroup>
     <Compile Include="DataStructures\Collections\CircularEnumerationTests.cs" />
     <Compile Include="DataStructures\Trees\TreeTests.cs" />
-    <Compile Include="FormalGrammar\SequenceGenerationTests.cs" />
+    <Compile Include="FormalGrammar\SequenceGeneratorTests.cs" />
     <Compile Include="MathUtilitiesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomExtensionsTests.cs" />

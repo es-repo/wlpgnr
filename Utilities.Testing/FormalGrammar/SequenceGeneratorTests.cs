@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using MbUnit.Framework;
 using WallpaperGenerator.Utilities.FormalGrammar;
 
 namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
 {
     [TestFixture]
-    public class SequenceGenerationTests
+    public class SequenceGeneratorTests
     {
-        [Test]
-        public void TestGenerate()
+        [RowTest]
+        [Row("A0", "x")]
+        [Row("A1", "sin atan sin sum x y")]
+        [Row("A2", "sum x y")]
+        [Row("Inf", "", ExpectedException = typeof(InvalidOperationException))]
+        public void TestGenerate(string startSymbol, string expectedSequence)
         {
             Symbol<string>[] symbols = new[]
                 {
@@ -46,19 +49,8 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
 
             SequenceGenerator<string> sequenceGenerator = new SequenceGenerator<string>(grammar, () => new CircularRuleSelector<string>(grammar), 100);
 
-            Assert.AreEqual("x", string.Join(" ", sequenceGenerator.Generate("A0").ToArray()));
-            Assert.AreEqual("x", string.Join(" ", sequenceGenerator.Generate("A0").ToArray()));
-            Assert.AreEqual("sin atan sin sum x y", string.Join(" ", sequenceGenerator.Generate("A1").ToArray()));
-            Assert.AreEqual("sum x y", string.Join(" ", sequenceGenerator.Generate("A2").ToArray()));
-
-            try
-            {
-                sequenceGenerator.Generate("Inf").ToArray();
-                Assert.Fail(string.Format("{0} exception is expected.", typeof(InvalidOperationException)));
-            }
-            catch (InvalidOperationException)
-            {
-            }
+            IEnumerable<string> sequence = sequenceGenerator.Generate(startSymbol);
+            Assert.AreEqual(expectedSequence, string.Join(" ", sequence.ToArray()));
         }
     }
 }
