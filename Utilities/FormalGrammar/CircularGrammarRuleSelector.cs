@@ -3,11 +3,11 @@ using WallpaperGenerator.Utilities.DataStructures.Collections;
 
 namespace WallpaperGenerator.Utilities.FormalGrammar
 {
-    public class CircularRuleSelector<T> : RuleSelector<T>
+    public class CircularGrammarRuleSelector<T> : GrammarRuleSelector<T>
     {
         private readonly Dictionary<Symbol<T>, CircularEnumeration<Rule<T>>> _symbolsAndRules;
 
-        public CircularRuleSelector(Grammar<T> grammar)
+        public CircularGrammarRuleSelector(Grammar<T> grammar)
             : base(grammar)
         {
             _symbolsAndRules = new Dictionary<Symbol<T>, CircularEnumeration<Rule<T>>>();

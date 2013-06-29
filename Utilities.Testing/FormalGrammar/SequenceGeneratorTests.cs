@@ -47,7 +47,7 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
 
             Grammar<string> grammar = new Grammar<string>(symbols, rules);
 
-            SequenceGenerator<string> sequenceGenerator = new SequenceGenerator<string>(grammar, () => new CircularRuleSelector<string>(grammar), 100);
+            SequenceGenerator<string> sequenceGenerator = new SequenceGenerator<string>(grammar, () => new CircularGrammarRuleSelector<string>(grammar), 100);
 
             IEnumerable<string> sequence = sequenceGenerator.Generate(startSymbol);
             Assert.AreEqual(expectedSequence, string.Join(" ", sequence.ToArray()));

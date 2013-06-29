@@ -7,10 +7,10 @@ namespace WallpaperGenerator.Utilities.FormalGrammar
     public class SequenceGenerator<T>
     {
         private readonly Grammar<T> _grammar;
-        private readonly Func<RuleSelector<T>> _createRuleSelector;
+        private readonly Func<GrammarRuleSelector<T>> _createRuleSelector;
         private readonly int _sequenceLengthLimit;
 
-        public SequenceGenerator(Grammar<T> grammar, Func<RuleSelector<T>> createRuleSelector, int sequenceLengthLimit)
+        public SequenceGenerator(Grammar<T> grammar, Func<GrammarRuleSelector<T>> createRuleSelector, int sequenceLengthLimit)
         {
             _grammar = grammar;
             _createRuleSelector = createRuleSelector;
@@ -24,7 +24,7 @@ namespace WallpaperGenerator.Utilities.FormalGrammar
 
         public IEnumerable<T> Generate(Symbol<T> startSymbol)
         {
-            RuleSelector<T> ruleSelector = _createRuleSelector();
+            GrammarRuleSelector<T> ruleSelector = _createRuleSelector();
 
             Stack<Symbol<T>> stack = new Stack<Symbol<T>>();
             stack.Push(startSymbol);

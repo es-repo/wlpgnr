@@ -1,22 +1,51 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace WallpaperGenerator.Utilities.FormalGrammar
 {        
     public class Rule<T>
     {
-        public Symbol<T> Left { get; private set; }
+        private readonly Func<IEnumerable<Symbol<T>>> _apply;
 
-        public Symbol<T>[] Right { get; private set; }
+        public string Name { get; private set; }
 
-        public Rule(Symbol<T> left, params Symbol<T>[] right)
+        public Symbol<T> From { get; private set; }
+
+        protected Rule(Symbol<T> from)
+            : this("", from, new Symbol<T>[] { })
         {
-            Left = left;
-            Right = right;
         }
 
-        public IEnumerable<Symbol<T>> Apply()
+        protected Rule(string name, Symbol<T> from)
+            : this(name, from, new Symbol<T>[]{})
         {
-            return Right;
+        }
+
+        public Rule(Symbol<T> from, Func<IEnumerable<Symbol<T>>> apply)
+            : this("", from, apply)
+        {
+        }
+
+        public Rule(string name, Symbol<T> from, Func<IEnumerable<Symbol<T>>> apply)
+        {
+            Name = name;
+            From = from;
+            _apply = apply;
+        }
+
+        public Rule(Symbol<T> from, IEnumerable<Symbol<T>> to)
+            : this("", from, to)
+        {
+        }
+
+        public Rule(string name, Symbol<T> from, IEnumerable<Symbol<T>> to)
+            : this(name, from, () => to)
+        {
+        }
+
+        public virtual IEnumerable<Symbol<T>> Apply()
+        {
+            return _apply();
         }
     }
 }

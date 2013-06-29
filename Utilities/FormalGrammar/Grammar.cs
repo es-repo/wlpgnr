@@ -22,7 +22,7 @@ namespace WallpaperGenerator.Utilities.FormalGrammar
 
         public IEnumerable<Rule<T>> GetRules(Symbol<T> symbol)
         {
-            return Rules.Where(r => r.Left.Name == symbol.Name);
+            return Rules.Where(r => r.From.Name == symbol.Name);
         }
     }
 }

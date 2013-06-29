@@ -1,14 +1,19 @@
-﻿namespace WallpaperGenerator.Utilities.FormalGrammar
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace WallpaperGenerator.Utilities.FormalGrammar
 {
     public abstract class RuleSelector<T>
     {
-        protected Grammar<T> Grammar { get; private set; }
+        protected IEnumerable<Rule<T>> _rules;
 
-        protected RuleSelector(Grammar<T> grammar)
+        protected RuleSelector(IEnumerable<Rule<T>> rules)
         {
-            Grammar = grammar;
+            _rules = rules;
         }
 
-        public abstract Rule<T> SelectRule(Symbol<T> symbol);
+        public abstract Rule<T> Select();
     }
 }

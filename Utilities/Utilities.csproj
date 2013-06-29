@@ -52,11 +52,15 @@
     <Compile Include="DataStructures\Trees\Tree.cs" />
     <Compile Include="DataStructures\Trees\TreeNode.cs" />
     <Compile Include="EnumerableExtensions.cs" />
-    <Compile Include="FormalGrammar\CircularRuleSelector.cs" />
+    <Compile Include="FormalGrammar\CircularGrammarRuleSelector.cs" />
+    <Compile Include="FormalGrammar\CompositeRule.cs" />
     <Compile Include="FormalGrammar\Grammar.cs" />
     <Compile Include="FormalGrammar\Rule.cs" />
     <Compile Include="FormalGrammar\RuleFactory.cs" />
+    <Compile Include="FormalGrammar\GrammarRuleSelector.cs" />
     <Compile Include="FormalGrammar\RuleSelector.cs" />
+    <Compile Include="FormalGrammar\RuleSelectors\CircularRuleSelector.cs" />
+    <Compile Include="FormalGrammar\RuleSelectors\RandomRuleSelector.cs" />
     <Compile Include="FormalGrammar\SequenceGenerator.cs" />
     <Compile Include="FormalGrammar\Symbol.cs" />
     <Compile Include="MathUtilities.cs" />
