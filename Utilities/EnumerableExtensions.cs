@@ -41,12 +41,15 @@ namespace WallpaperGenerator.Utilities
                 throw new ArgumentException("Count of elements isn't equal to count of probabilties.");
             }
 
-            if (!elementProbabilities.Sum(p => p).Equals(1))
+            double probabiltiesSum = elementProbabilities.Sum(p => p);
+            const double doubleError = 1E-9;
+            if (Math.Abs(probabiltiesSum - 1) > doubleError)
             {
                 throw new ArgumentException("Sum of probabilties isn't equal to 1.");
             }
 
-            IEnumerable<double> probabilisticRange = elementProbabilities.SelectWithFolding((p, c) => p + c, 0.0); 
+            double[] probabilisticRange = elementProbabilities.SelectWithFolding((p, c) => p + c, 0.0).ToArray();
+            probabilisticRange[probabilisticRange.Length - 1] = 1;
 
             double r = random.NextDouble();
             int i = 0;
