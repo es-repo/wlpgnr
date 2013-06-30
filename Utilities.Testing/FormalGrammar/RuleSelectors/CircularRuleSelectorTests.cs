@@ -14,7 +14,7 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar.RuleSelectors
                 {
                     new Rule<string>(new Symbol<string>("A"), new [] { new Symbol<string>("a" ) } ),
                     new Rule<string>(new Symbol<string>("B"), new [] { new Symbol<string>("b" ) } ),
-                    new Rule<string>(new Symbol<string>("C"), new [] { new Symbol<string>("c" ) } ),
+                    new Rule<string>(new Symbol<string>("C"), new [] { new Symbol<string>("c" ) } )
                 };
 
             CircularRuleSelector<string> ruleSelector = new CircularRuleSelector<string>(rules);

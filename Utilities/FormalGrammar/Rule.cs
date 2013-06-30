@@ -21,9 +21,19 @@ namespace WallpaperGenerator.Utilities.FormalGrammar
         {
         }
 
+        public Rule(Func<IEnumerable<Symbol<T>>> apply)
+            : this("", null, apply)
+        {
+        }
+
         public Rule(Symbol<T> from, Func<IEnumerable<Symbol<T>>> apply)
             : this("", from, apply)
         {
+        }
+
+        public Rule(string name, Func<IEnumerable<Symbol<T>>> apply)
+            : this(name, null, apply)
+        {            
         }
 
         public Rule(string name, Symbol<T> from, Func<IEnumerable<Symbol<T>>> apply)
@@ -33,8 +43,18 @@ namespace WallpaperGenerator.Utilities.FormalGrammar
             _apply = apply;
         }
 
+        public Rule(IEnumerable<Symbol<T>> to)
+            : this("", null, to)
+        {
+        }
+
         public Rule(Symbol<T> from, IEnumerable<Symbol<T>> to)
             : this("", from, to)
+        {
+        }
+
+        public Rule(string name, IEnumerable<Symbol<T>> to)
+            : this(name, null, to)
         {
         }
 

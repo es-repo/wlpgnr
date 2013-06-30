@@ -42,7 +42,7 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
                     ruleFactory.Create("A1", "sin", "A2"),
                     ruleFactory.Create("A1", "atan", "A2"),
                     ruleFactory.Create("A2", "sum", "A0", "A0"),
-                    ruleFactory.Create("Inf", "sum", "Inf"),
+                    ruleFactory.Create("Inf", "sum", "Inf")
                 };
 
             Grammar<string> grammar = new Grammar<string>(symbols, rules);
