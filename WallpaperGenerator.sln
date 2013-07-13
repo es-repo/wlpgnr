@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WallpaperGenerator", "WallpaperGenerator\WallpaperGenerator.csproj", "{CF380998-DBE7-410E-867D-DA09FD9E221F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Formulas", "Formulas\Formulas.csproj", "{190058E2-F017-4D78-B076-CB6AC313246D}"
