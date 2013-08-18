@@ -11,55 +11,25 @@ namespace WallpaperGenerator.Utilities.FormalGrammar
 
         public Symbol<T> From { get; private set; }
 
-        protected Rule(Symbol<T> from)
-            : this("", from, new Symbol<T>[] { })
+        protected Rule(Symbol<T> from, string name)
+            : this(from, new Symbol<T>[] { }, name)
         {
         }
 
-        protected Rule(string name, Symbol<T> from)
-            : this(name, from, new Symbol<T>[]{})
-        {
-        }
-
-        public Rule(Func<IEnumerable<Symbol<T>>> apply)
-            : this("", null, apply)
-        {
-        }
-
-        public Rule(Symbol<T> from, Func<IEnumerable<Symbol<T>>> apply)
-            : this("", from, apply)
-        {
-        }
-
-        public Rule(string name, Func<IEnumerable<Symbol<T>>> apply)
-            : this(name, null, apply)
-        {            
-        }
-
-        public Rule(string name, Symbol<T> from, Func<IEnumerable<Symbol<T>>> apply)
+        public Rule(Symbol<T> from, Func<IEnumerable<Symbol<T>>> apply, string name = "")
         {
             Name = name;
             From = from;
             _apply = apply;
         }
 
+        public Rule(Symbol<T> from, IEnumerable<Symbol<T>> to, string name = "")
+            : this(from, () => to, name)
+        {
+        }
+
         public Rule(IEnumerable<Symbol<T>> to)
-            : this("", null, to)
-        {
-        }
-
-        public Rule(Symbol<T> from, IEnumerable<Symbol<T>> to)
-            : this("", from, to)
-        {
-        }
-
-        public Rule(string name, IEnumerable<Symbol<T>> to)
-            : this(name, null, to)
-        {
-        }
-
-        public Rule(string name, Symbol<T> from, IEnumerable<Symbol<T>> to)
-            : this(name, from, () => to)
+            : this(null, to)
         {
         }
 

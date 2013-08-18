@@ -8,22 +8,12 @@ namespace WallpaperGenerator.Utilities.FormalGrammar
         private readonly RuleSelector<T> _ruleSelector;
 
         public CompositeRule(Func<IEnumerable<Rule<T>>, RuleSelector<T>> createRuleSelector, params Rule<T>[] rules)
-            : this("", null, createRuleSelector, rules)
+            : this(null, createRuleSelector, rules: rules)
         {
         }
 
-        public CompositeRule(Symbol<T> from, Func<IEnumerable<Rule<T>>, RuleSelector<T>> createRuleSelector, params Rule<T>[] rules)
-            : this("", from, createRuleSelector, rules)
-        {
-        }
-
-        public CompositeRule(string name, Func<IEnumerable<Rule<T>>, RuleSelector<T>> createRuleSelector, params Rule<T>[] rules)
-            : this(name, null, createRuleSelector, rules)
-        {            
-        }
-
-        public CompositeRule(string name, Symbol<T> from, Func<IEnumerable<Rule<T>>, RuleSelector<T>> createRuleSelector, params Rule<T>[] rules)
-            : base(name, from)
+        public CompositeRule(Symbol<T> from, Func<IEnumerable<Rule<T>>, RuleSelector<T>> createRuleSelector, string name = "", params Rule<T>[] rules)
+            : base(from, name)
         {
             _ruleSelector = createRuleSelector(rules);
         }
