@@ -44,13 +44,13 @@ namespace WallpaperGenerator.Formulas.Testing.FormulaTreeGeneration
         }
 
         [RowTest]
-        //[Row(0, new[] { 0, 0, 0 }, ExpectedException = typeof(ArgumentException))]
-        //[Row(1, new[] { 1, 1, 0 }, ExpectedException = typeof(ArgumentException))]
+        [Row(0, new[] { 0, 0, 0 }, ExpectedException = typeof(ArgumentException))]
+        [Row(1, new[] { 1, 1, 0 }, ExpectedException = typeof(ArgumentException))]
         [Row(3, new[] { 3, 3, 3 }, ExpectedException = typeof(ArgumentException))]
-        //[Row(1, new []{0, 0, 0})]
-        //[Row(2, new []{3, 1, 0 })]
-        //[Row(3, new []{ 3, 0, 1 })]
-        //[Row(9, new[] { 1, 6, 1 })]
+        [Row(1, new []{0, 0, 0})]
+        [Row(2, new[] { 3, 1, 0 })]
+        [Row(3, new[] { 3, 0, 1 })]
+        [Row(9, new[] { 1, 6, 1 })]
         public void TestCreateFormulaTree(int zeroArityOperatorsCount, int[] nonZeroOperatorsCounts)
         {
             Random random = new Random();
@@ -67,7 +67,8 @@ namespace WallpaperGenerator.Formulas.Testing.FormulaTreeGeneration
             IEnumerable<TraversedTreeNodeInfo<Operator>> traversedNodes = Tree<Operator>.TraverseBredthFirstPreOrder(formulaTree);
             for (int a = 0; a < 4; a++)
             {
-                IEnumerable<FormulaTreeNode> nArityNodes = traversedNodes.Select(ni => (FormulaTreeNode)ni.Node).Where(n => n.Operator.Arity == a);
+                int aa = a;
+                IEnumerable<FormulaTreeNode> nArityNodes = traversedNodes.Select(ni => (FormulaTreeNode)ni.Node).Where(n => n.Operator.Arity == aa);
                 Assert.IsTrue(nArityNodes.All(n => n.Children.Count == a));
             }
         }

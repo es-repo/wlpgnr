@@ -8,9 +8,8 @@ namespace WallpaperGenerator.Utilities.FormalGrammar
     {
         private readonly RuleSelector<T> _ruleSelector;
 
-        public OrRule(Symbol<T> from, Func<IEnumerable<Rule<T>>, RuleSelector<T>> createRuleSelector = null, 
-            string name = "", params Rule<T>[] rules)
-            : base(from, name, rules)
+        public OrRule(Symbol<T> from, Func<IEnumerable<Rule<T>>, RuleSelector<T>> createRuleSelector, params Rule<T>[] rules)
+            : base(from, rules)
         {
             if (createRuleSelector == null)
             {
@@ -22,12 +21,12 @@ namespace WallpaperGenerator.Utilities.FormalGrammar
 
 
         public OrRule(Func<IEnumerable<Rule<T>>, RuleSelector<T>> createRuleSelector, params Rule<T>[] rules)
-            : this(null, createRuleSelector, rules: rules)
+            : this(null, createRuleSelector, rules)
         {
         }
 
         public OrRule(params Rule<T>[] rules)
-            : this(null, rules)
+            : this(null, null, rules)
         {
         }
 

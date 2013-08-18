@@ -9,7 +9,7 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
     public class RuleTests
     {
         [Test]
-        public void ApplyTests()
+        public void TestApply()
         {
             Rule<string> rule = new Rule<string>(new Symbol<string>("A"),
                 new[] { new Symbol<string>("a", "a"), new Symbol<string>("b", "b"), new Symbol<string>("c", "c") });
@@ -21,7 +21,7 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
         }
 
         [Test]
-        public void ApplyWithSpecificFuncTests()
+        public void TestApplyWithSpecificFunc()
         {
             Rule<int> rule = new Rule<int>(new Symbol<int>("A"), 
                 () => Enumerable.Repeat(0, 5).Select((e, i) => (i * 2)).Select(v => new Symbol<int>("a", v)));
@@ -30,6 +30,37 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
             int[] sequence = to.Select(s => s.Value).ToArray();
             int[] expectedSequence = new [] {0, 2, 4, 6, 8};
             CollectionAssert.AreEqual(expectedSequence, sequence);
+        }
+
+        [Test]
+        public void TestCompositeRules()
+        {            
+            Symbol<string> a = new Symbol<string>("a", "a");
+            Symbol<string> b = new Symbol<string>("b", "b");
+            Symbol<string> c = new Symbol<string>("c", "c");
+            Symbol<string> d = new Symbol<string>("d", "d");
+            
+            // R -> (aa|bb)(cc|dd)
+            Rule<string> rule = 
+                Rule<string>.And(
+                    Rule<string>.Or(
+                        new Rule<string>(new[] { a, a }),
+                        new Rule<string>(new[] { b, b })),
+                    Rule<string>.Or(
+                        new Rule<string>(new[] { c, c }),
+                        new Rule<string>(new[] { d, d })));
+
+            Symbol<string>[][] expectedTos = new[]
+                {
+                    new[] {a, a, c, c},
+                    new[] {b, b, d, d}
+                };
+
+            foreach (Symbol<string>[] expectedTo in expectedTos)
+            {
+                IEnumerable<Symbol<string>> to = rule.Apply();
+                CollectionAssert.AreEqual(expectedTo, to.ToArray());
+            }
         }
     }
 }

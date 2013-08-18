@@ -5,13 +5,13 @@ namespace WallpaperGenerator.Utilities.FormalGrammar
 {
     public class AndRule<T> : CompositeRule<T>
     {
-        public AndRule(Symbol<T> from, string name = "", params Rule<T>[] rules)
-            : base(from, name, rules)
+        public AndRule(Symbol<T> from, params Rule<T>[] rules)
+            : base(from, rules)
         {
         }
 
         public AndRule(params Rule<T>[] rules)
-            : this(null, rules: rules)
+            : this(null, rules)
         {
         }
 

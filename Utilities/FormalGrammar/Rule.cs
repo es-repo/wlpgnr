@@ -7,24 +7,21 @@ namespace WallpaperGenerator.Utilities.FormalGrammar
     {
         private readonly Func<IEnumerable<Symbol<T>>> _apply;
 
-        public string Name { get; private set; }
-
         public Symbol<T> From { get; private set; }
 
-        protected Rule(Symbol<T> from, string name)
-            : this(from, new Symbol<T>[] { }, name)
+        public Rule(Symbol<T> from)
+            : this(from, new Symbol<T>[] { })
         {
         }
 
-        public Rule(Symbol<T> from, Func<IEnumerable<Symbol<T>>> apply, string name = "")
+        public Rule(Symbol<T> from, Func<IEnumerable<Symbol<T>>> apply)
         {
-            Name = name;
             From = from;
             _apply = apply;
         }
 
-        public Rule(Symbol<T> from, IEnumerable<Symbol<T>> to, string name = "")
-            : this(from, () => to, name)
+        public Rule(Symbol<T> from, IEnumerable<Symbol<T>> to)
+            : this(from, () => to)
         {
         }
 
@@ -36,6 +33,21 @@ namespace WallpaperGenerator.Utilities.FormalGrammar
         public virtual IEnumerable<Symbol<T>> Apply()
         {
             return _apply();
+        }
+
+        public static Rule<T> Or(Func<IEnumerable<Rule<T>>, RuleSelector<T>> createRuleSelector, params Rule<T>[] rules)
+        {
+            return new OrRule<T>(createRuleSelector, rules);
+        }
+
+        public static Rule<T> Or(params Rule<T>[] rules)
+        {
+            return new OrRule<T>(null, rules);
+        }
+
+        public static Rule<T> And(params Rule<T>[] rules)
+        {
+            return new AndRule<T>(rules);
         }
     }
 }
