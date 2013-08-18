@@ -7,7 +7,7 @@ using WallpaperGenerator.Utilities.FormalGrammar.RuleSelectors;
 namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
 {
     [TestFixture]
-    public class CompositeRuleTests
+    public class OrRuleTests
     {
         [Test]
         public void TestApply()
@@ -18,9 +18,9 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
             Symbol<string> d = new Symbol<string>("d", "d");
             
             // R -> (ab)|(cd)
-            CompositeRule<string> compositeRule = new CompositeRule<string>(rules => new CircularRuleSelector<string>(rules),
-                new Rule<string>( new[] { a, b }),
-                new Rule<string>( new[] { c, d }));
+            OrRule<string> rule = new OrRule<string>(rules => new CircularRuleSelector<string>(rules),
+                    new Rule<string>( new[] { a, b }),
+                    new Rule<string>( new[] { c, d }));
 
             Symbol<string>[][] expectedTos = new []
                 {
@@ -30,15 +30,9 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
 
             foreach (Symbol<string>[] expectedTo in expectedTos)
             {
-                IEnumerable<Symbol<string>> to = compositeRule.Apply();
+                IEnumerable<Symbol<string>> to = rule.Apply();
                 CollectionAssert.AreEqual(expectedTo, to.ToArray());
             }
-
-            // R -> (a|b)(c|d)
-
-            // R -> a*
-
-            // R -> (a|b)*
         }
     }
 }
