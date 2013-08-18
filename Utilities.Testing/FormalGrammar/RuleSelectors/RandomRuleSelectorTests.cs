@@ -23,10 +23,10 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar.RuleSelectors
                 };
 
             RandomRuleSelector<string> ruleSelector = new RandomRuleSelector<string>(random, rules, probabilities);
-            for (int i = 0; i < expectedIndexes.Length; i++)
+            foreach (int t in expectedIndexes)
             {
                 Rule<string> rule = ruleSelector.Select();
-                Assert.AreEqual(rules[expectedIndexes[i]], rule);
+                Assert.AreEqual(rules[t], rule);
             }
         }
     }

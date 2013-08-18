@@ -7,7 +7,7 @@ namespace WallpaperGenerator.Formulas
     public class FormulaTreeNode : TreeNode<Operator>
     {
         public FormulaTreeNode(Operator op, IEnumerable<FormulaTreeNode> children)
-            : base(op, children.Cast<TreeNode<Operator>>())
+            : base(op, children)
         {
         }
 

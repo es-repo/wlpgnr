@@ -33,7 +33,7 @@ namespace WallpaperGenerator.Formulas
             string[] rangeStrings = value.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
             int xCount = int.Parse(rangeStrings[0]);
             int yCount = int.Parse(rangeStrings[1]);
-            IEnumerable<Range> ranges = rangeStrings.Skip(2).Select(s => Range.FromString(s));
+            IEnumerable<Range> ranges = rangeStrings.Skip(2).Select(Range.FromString);
             return new VariableValuesRangesFor2DProjection(xCount, yCount, ranges);
         }
 

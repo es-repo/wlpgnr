@@ -56,7 +56,7 @@ namespace WallpaperGenerator.Formulas.Testing.FormulaTreeGeneration
             Random random = new Random();
 
             IEnumerable<Operator> zeroArityOperators = EnumerableExtensions.Repeat(
-                i => new Variable("x" + i.ToString(CultureInfo.InvariantCulture)), zeroArityOperatorsCount).Cast<Operator>();
+                i => new Variable("x" + i.ToString(CultureInfo.InvariantCulture)), zeroArityOperatorsCount);
 
             IEnumerable<Operator> nonZeroArityOperators = nonZeroOperatorsCounts.Select((i, a) =>
                 EnumerableExtensions.Repeat(_ => OperatorsLibrary.All.Where(op => op.Arity == a + 1).TakeRandom(random), nonZeroOperatorsCounts[a])).
@@ -96,7 +96,7 @@ namespace WallpaperGenerator.Formulas.Testing.FormulaTreeGeneration
                             new FormulaTreeNode(new Variable("x3")),
                             new FormulaTreeNode(new Variable("x4")))));
             
-            Assert.IsTrue(global::WallpaperGenerator.Formulas.Testing.Utilities.AreFormulaTreesEqual(formulaTreeExpected, formulaTree));
+            Assert.IsTrue(Utilities.AreFormulaTreesEqual(formulaTreeExpected, formulaTree));
         }
 
         [RowTest]

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace WallpaperGenerator.Utilities
 {
@@ -6,10 +7,7 @@ namespace WallpaperGenerator.Utilities
     {
         public static double MathExpectation(double[] values)
         {
-            double sum = 0;
-            for (int i = 0; i < values.Length; i++)
-                sum += values[i];
-
+            double sum = values.Sum();
             return sum / values.Length;
         }
 
@@ -18,13 +16,8 @@ namespace WallpaperGenerator.Utilities
             if (values.Length == 1)
                 return 0;
 
-            double sum = 0;
-            for (int i = 0; i < values.Length; i++)
-                sum += values[i];
-
-            double sumOfSquares = 0;
-            for (int i = 0; i < values.Length; i++)
-                sumOfSquares += values[i] * values[i];
+            double sum = values.Sum();
+            double sumOfSquares = values.Sum(t => t*t);
 
             return (sumOfSquares - sum * sum / values.Length) / (values.Length - 1);
         }

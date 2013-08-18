@@ -56,13 +56,13 @@ Sum(
             FormulaTreeNode formulaTreeRoot = FormulaTreeParser.Parse(formulaString);
             IEnumerable<TraversedTreeNodeInfo<Operator>> traversedTree = Tree<Operator>.TraverseDepthFirstPostOrder(formulaTreeRoot);
             Variable[] xVariables = traversedTree.Where(ni => ni.Node.Value is Variable).Select(ni => (Variable)ni.Node.Value).ToArray();
-            Assert.IsTrue(object.ReferenceEquals(xVariables[0], xVariables[1]));
+            Assert.IsTrue(ReferenceEquals(xVariables[0], xVariables[1]));
         }
 
         private static void TestParse(string value, FormulaTreeNode expectedRoot)
         {
             FormulaTreeNode root = FormulaTreeParser.Parse(value);
-            Assert.IsTrue(global::WallpaperGenerator.Formulas.Testing.Utilities.AreFormulaTreesEqual(root, expectedRoot));
+            Assert.IsTrue(Utilities.AreFormulaTreesEqual(root, expectedRoot));
         }
     }
 }

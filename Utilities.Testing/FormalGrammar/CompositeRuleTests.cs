@@ -17,21 +17,28 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
             Symbol<string> c = new Symbol<string>("c", "c");
             Symbol<string> d = new Symbol<string>("d", "d");
             
+            // R -> (ab)|(cd)
             CompositeRule<string> compositeRule = new CompositeRule<string>(rules => new CircularRuleSelector<string>(rules),
                 new Rule<string>( new[] { a, b }),
                 new Rule<string>( new[] { c, d }));
 
-            Symbol<string>[][] expectedTo = new []
+            Symbol<string>[][] expectedTos = new []
                 {
                     new[] {a, b},
                     new[] {c, d}
                 };
 
-            for (int i = 0; i < expectedTo.Length; i++)
+            foreach (Symbol<string>[] expectedTo in expectedTos)
             {
                 IEnumerable<Symbol<string>> to = compositeRule.Apply();
-                CollectionAssert.AreEqual(expectedTo[i], to.ToArray());
+                CollectionAssert.AreEqual(expectedTo, to.ToArray());
             }
+
+            // R -> (a|b)(c|d)
+
+            // R -> a*
+
+            // R -> (a|b)*
         }
     }
 }

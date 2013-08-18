@@ -40,7 +40,7 @@ namespace WallpaperGenerator.Formulas
 
         public static IEnumerable<Variable> SelectVariables(FormulaTreeNode node)
         {
-            return Tree<Operator>.TraverseBredthFirstPreOrder(node)
+            return TraverseBredthFirstPreOrder(node)
                        .Where(ni => ni.Node.Value is Variable)
                        .Select(ni => (Variable) ni.Node.Value)
                        .Distinct();
