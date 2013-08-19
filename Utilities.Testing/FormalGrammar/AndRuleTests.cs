@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using MbUnit.Framework;
+﻿using MbUnit.Framework;
 using WallpaperGenerator.Utilities.FormalGrammar;
 
 namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
@@ -16,26 +14,22 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
             Symbol<string> c = new Symbol<string>("c", "c");
             Symbol<string> d = new Symbol<string>("d", "d");
 
-            // R -> (a|b)(c|d)
-            AndRule<string> rule = new AndRule<string>(
-                new OrRule<string>(
-                    new Rule<string>(new[] { a }),
-                    new Rule<string>(new[] { b })),
-                new OrRule<string>(
-                    new Rule<string>(new[] { c }),
-                    new Rule<string>(new[] { d })));
+            RuleAssert.AssertGeneratedSequences(
 
-            Symbol<string>[][] expectedTos = new []
+                // R -> (a|b)(c|d)
+                new AndRule<string>(
+                    new OrRule<string>(
+                        new Rule<string>(new[] {a}),
+                        new Rule<string>(new[] {b})),
+                    new OrRule<string>(
+                        new Rule<string>(new[] {c}),
+                        new Rule<string>(new[] {d}))),
+
+                new[]
                 {
                     new[] {a, c},
                     new[] {b, d}
-                };
-
-            foreach (Symbol<string>[] expectedTo in expectedTos)
-            {
-                IEnumerable<Symbol<string>> to = rule.Apply();
-                CollectionAssert.AreEqual(expectedTo, to.ToArray());
-            }
+                });
         }
     }
 }

@@ -66,6 +66,7 @@
     <Compile Include="EnumerableExtensionsTests.cs" />
     <Compile Include="FormalGrammar\AndRuleTests.cs" />
     <Compile Include="FormalGrammar\OrRuleTests.cs" />
+    <Compile Include="FormalGrammar\RuleAssert.cs" />
     <Compile Include="FormalGrammar\RuleSelectors\CircularRuleSelectorTests.cs" />
     <Compile Include="FormalGrammar\RuleSelectors\RandomRuleSelectorTests.cs" />
     <Compile Include="FormalGrammar\RuleTests.cs" />

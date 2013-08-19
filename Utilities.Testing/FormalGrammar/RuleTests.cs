@@ -40,27 +40,22 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
             Symbol<string> c = new Symbol<string>("c", "c");
             Symbol<string> d = new Symbol<string>("d", "d");
             
-            // R -> (aa|bb)(cc|dd)
-            Rule<string> rule = 
+            RuleAssert.AssertGeneratedSequences(
+
+                // R -> (aa|bb)(cc|dd)
                 Rule<string>.And(
                     Rule<string>.Or(
                         new Rule<string>(new[] { a, a }),
                         new Rule<string>(new[] { b, b })),
                     Rule<string>.Or(
                         new Rule<string>(new[] { c, c }),
-                        new Rule<string>(new[] { d, d })));
+                        new Rule<string>(new[] { d, d }))),
 
-            Symbol<string>[][] expectedTos = new[]
-                {
-                    new[] {a, a, c, c},
-                    new[] {b, b, d, d}
-                };
-
-            foreach (Symbol<string>[] expectedTo in expectedTos)
-            {
-                IEnumerable<Symbol<string>> to = rule.Apply();
-                CollectionAssert.AreEqual(expectedTo, to.ToArray());
-            }
+                    new[]
+                    {
+                        new[] {a, a, c, c},
+                        new[] {b, b, d, d}
+                    });
         }
     }
 }

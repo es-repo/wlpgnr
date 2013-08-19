@@ -42,7 +42,17 @@ namespace WallpaperGenerator.Utilities.FormalGrammar
 
         public static Rule<T> Or(params Rule<T>[] rules)
         {
-            return new OrRule<T>(null, rules);
+            return new OrRule<T>(null, null, rules);
+        }
+
+        public static Rule<T> Or(Func<IEnumerable<Rule<T>>, RuleSelector<T>> createRuleSelector, params Symbol<T>[] to)
+        {
+            return new OrRule<T>(createRuleSelector, to);
+        }
+
+        public static Rule<T> Or(params Symbol<T>[] to)
+        {
+            return new OrRule<T>(null, null, to);
         }
 
         public static Rule<T> And(params Rule<T>[] rules)
