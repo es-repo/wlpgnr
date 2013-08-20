@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Linq;  
+using System.Linq;
 using System.Collections.Generic;
 using WallpaperGenerator.Utilities.FormalGrammar.RuleSelectors;
 
-namespace WallpaperGenerator.Utilities.FormalGrammar
+namespace WallpaperGenerator.Utilities.FormalGrammar.Rules
 {
     public class OrRule<T> : CompositeRule<T>
     {
@@ -36,7 +36,7 @@ namespace WallpaperGenerator.Utilities.FormalGrammar
         }
 
         public OrRule(Symbol<T> from, Func<IEnumerable<Rule<T>>, RuleSelector<T>> createRuleSelector, IEnumerable<Symbol<T>> to)
-            : this(from, createRuleSelector, to.Select(s => new Rule<T>(s)).ToArray())
+            : this(from, createRuleSelector, to.Select(s => new Rule<T>(new [] { s })).ToArray())
         {
         }
 

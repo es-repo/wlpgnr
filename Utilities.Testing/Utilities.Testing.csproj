@@ -64,8 +64,8 @@
     <Compile Include="DataStructures\Collections\CircularEnumerationTests.cs" />
     <Compile Include="DataStructures\Trees\TreeTests.cs" />
     <Compile Include="EnumerableExtensionsTests.cs" />
-    <Compile Include="FormalGrammar\AndRuleTests.cs" />
-    <Compile Include="FormalGrammar\OrRuleTests.cs" />
+    <Compile Include="FormalGrammar\Rules\AndRuleTests.cs" />
+    <Compile Include="FormalGrammar\Rules\OrRuleTests.cs" />
     <Compile Include="FormalGrammar\RuleAssert.cs" />
     <Compile Include="FormalGrammar\RuleSelectors\CircularRuleSelectorTests.cs" />
     <Compile Include="FormalGrammar\RuleSelectors\RandomRuleSelectorTests.cs" />

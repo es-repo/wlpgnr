@@ -2,6 +2,7 @@
 using System.Linq;
 using MbUnit.Framework;
 using WallpaperGenerator.Utilities.FormalGrammar;
+using WallpaperGenerator.Utilities.FormalGrammar.Rules;
 
 namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
 {
@@ -39,15 +40,15 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
             Symbol<string> b = new Symbol<string>("b", "b");
             Symbol<string> c = new Symbol<string>("c", "c");
             Symbol<string> d = new Symbol<string>("d", "d");
-            
+
             RuleAssert.AssertGeneratedSequences(
 
                 // R -> (aa|bb)(cc|dd)
-                Rule<string>.And(
-                    Rule<string>.Or(
+                new AndRule<string>(
+                    new OrRule<string>(
                         new Rule<string>(new[] { a, a }),
                         new Rule<string>(new[] { b, b })),
-                    Rule<string>.Or(
+                    new OrRule<string>(
                         new Rule<string>(new[] { c, c }),
                         new Rule<string>(new[] { d, d }))),
 

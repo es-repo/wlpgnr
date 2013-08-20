@@ -1,4 +1,4 @@
-﻿namespace WallpaperGenerator.Utilities.FormalGrammar
+﻿namespace WallpaperGenerator.Utilities.FormalGrammar.Rules
 {
     public abstract class CompositeRule<T> : Rule<T>
     {

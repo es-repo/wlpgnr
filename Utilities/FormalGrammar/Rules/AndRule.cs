@@ -1,7 +1,7 @@
-﻿using System.Linq;  
+﻿using System.Linq;
 using System.Collections.Generic;
 
-namespace WallpaperGenerator.Utilities.FormalGrammar
+namespace WallpaperGenerator.Utilities.FormalGrammar.Rules
 {
     public class AndRule<T> : CompositeRule<T>
     {

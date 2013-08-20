@@ -1,8 +1,9 @@
 ﻿using MbUnit.Framework;
 using WallpaperGenerator.Utilities.FormalGrammar;
 using WallpaperGenerator.Utilities.FormalGrammar.RuleSelectors;
+using WallpaperGenerator.Utilities.FormalGrammar.Rules;
 
-namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
+namespace WallpaperGenerator.Utilities.Testing.FormalGrammar.Rules
 {
     [TestFixture]
     public class OrRuleTests
