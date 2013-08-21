@@ -17,7 +17,7 @@ namespace WallpaperGenerator.Utilities.FormalGrammar
 
         public IEnumerable<T> Generate(string startSymbol)
         {
-            return Generate(_grammar.Symbols[startSymbol]);
+            return Generate( _grammar.Symbols[startSymbol]);
         }
 
         public IEnumerable<T> Generate(Symbol<T> startSymbol)

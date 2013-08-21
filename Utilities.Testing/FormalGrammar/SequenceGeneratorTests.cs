@@ -17,20 +17,20 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
         [Row("Inf", "", ExpectedException = typeof(InvalidOperationException))]
         public void TestGenerate(string startSymbol, string expectedSequence)
         {
-            IDictionary<string, Symbol<string>> symbols = new Dictionary<string, Symbol<string>>
+            SymbolsSet<string> symbols = new SymbolsSet<string>(new []
             {
-                { "sin", new Symbol<string>("sin", "sin") },
-                { "atan", new Symbol<string>("atan", "atan") },
-                { "sum", new Symbol<string>("sum", "sum") },
-                { "mul", new Symbol<string>("mul", "mul") },
-                { "x", new Symbol<string>("x", "x") },
-                { "y", new Symbol<string>("y", "y") },
-                { "3.14", new Symbol<string>("3.14", "3.14") },
-                { "A0", new Symbol<string>("A0") },
-                { "A1", new Symbol<string>("A1") },
-                { "A2", new Symbol<string>("A2") },
-                { "Inf", new Symbol<string>("Inf") }
-            };
+                new Symbol<string>("sin", "sin"),
+                new Symbol<string>("atan", "atan"),
+                new Symbol<string>("sum", "sum"),
+                new Symbol<string>("mul", "mul"),
+                new Symbol<string>("x", "x"),
+                new Symbol<string>("y", "y"),
+                new Symbol<string>("3.14", "3.14"),
+                new Symbol<string>("A0"),
+                new Symbol<string>("A1"),
+                new Symbol<string>("A2"),
+                new Symbol<string>("Inf")
+            });
 
             Rule<string>[] rules = new []
             {
@@ -63,12 +63,24 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
                     })
             };
 
-            Grammar<string> grammar = new Grammar<string>(symbols.Values, rules);
+            Grammar<string> grammar = new Grammar<string>(symbols, rules);
 
             SequenceGenerator<string> sequenceGenerator = new SequenceGenerator<string>(grammar, 100);
 
             IEnumerable<string> sequence = sequenceGenerator.Generate(startSymbol);
             Assert.AreEqual(expectedSequence, string.Join(" ", sequence.ToArray()));
+        }
+
+        [Test]
+        public void TestGenerateTree()
+        {
+            // Op0 -> v|c
+            // Op1 -> sin|tan
+            // Op2 -> +|-|*|/
+            // FOp0 -> Op0
+            // FOp1 -> Op1 FOp
+            // FOp2 -> Op2 FOp FOp
+            // FOp -> FOp0|FOp1|FOp2
         }
     }
 }

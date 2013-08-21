@@ -5,18 +5,13 @@ namespace WallpaperGenerator.Utilities.FormalGrammar
 {
     public class Grammar<T>
     {
-        public IDictionary<string, Symbol<T>> Symbols { get; private set; }
+        public SymbolsSet<T> Symbols { get; private set; }
 
         public Rule<T>[] Rules;
 
-        public Grammar(IEnumerable<Symbol<T>> symbols, Rule<T>[] rules)
+        public Grammar(SymbolsSet<T> symbols, Rule<T>[] rules)
         {
-            Symbols = new Dictionary<string, Symbol<T>>();
-            foreach (Symbol<T> symbol in symbols)
-            {
-                Symbols.Add(symbol.Name, symbol);
-            }
-
+            Symbols = symbols;
             Rules = rules;
         }
 
