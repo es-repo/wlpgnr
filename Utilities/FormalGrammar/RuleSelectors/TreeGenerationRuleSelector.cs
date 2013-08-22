@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,7 +7,8 @@ namespace WallpaperGenerator.Utilities.FormalGrammar.RuleSelectors
 {
     public class TreeGenerationRuleSelector<T> : RuleSelector<T>
     {
-        private readonly IDictionary<int, Rule<T>> _childNodesCountAndRules;
+        private readonly IDictionary<Rule<T>, int> _rulesAndChildNodesCount;
+        private readonly Rule<T> _leafProfudingRule; 
         private readonly RuleSelector<T> _nonLeafProducingRulesSelector;
 
         private readonly Stack<int> _childNodesCountToGenerate;
@@ -19,11 +21,11 @@ namespace WallpaperGenerator.Utilities.FormalGrammar.RuleSelectors
         {
             TreeDepth = treeDepth;
 
-            _childNodesCountAndRules = new Dictionary<int, Rule<T>>();
+            _rulesAndChildNodesCount = new Dictionary<Rule<T>, int>();
             int a = 0;
             foreach (Rule<T> rule in nodeProducingRules)
             {
-                _childNodesCountAndRules.Add(a, rule);
+                _rulesAndChildNodesCount.Add(rule, a);
                 a++;
             }
 
@@ -32,7 +34,8 @@ namespace WallpaperGenerator.Utilities.FormalGrammar.RuleSelectors
                 createNonLeafProducingRulesSelector = rs => new CircularRuleSelector<T>(rs);
             }
 
-            IEnumerable<Rule<T>> nonLeafProducingRules = _childNodesCountAndRules.Where(e => e.Key != 0).Select(e => e.Value);
+            _leafProfudingRule = _rulesAndChildNodesCount.First(e => e.Value == 0).Key; 
+            IEnumerable<Rule<T>> nonLeafProducingRules = _rulesAndChildNodesCount.Where(e => e.Value != 0).Select(e => e.Key);
             _nonLeafProducingRulesSelector = createNonLeafProducingRulesSelector(nonLeafProducingRules);
 
             _childNodesCountToGenerate = new Stack<int>();
@@ -43,10 +46,26 @@ namespace WallpaperGenerator.Utilities.FormalGrammar.RuleSelectors
             int currentTreeDepth = _childNodesCountToGenerate.Count;
             if (currentTreeDepth + 1 == TreeDepth)
             {
-                return _childNodesCountAndRules[0];
+                return _leafProfudingRule;
             }
-            
-            throw new NotImplementedException();
+
+            Rule<T> rule = currentTreeDepth + 1 == TreeDepth 
+                ? _leafProfudingRule
+                : _nonLeafProducingRulesSelector.Select();
+
+            if (_childNodesCountToGenerate.Count > 0)
+            {
+                int count = _childNodesCountToGenerate.Pop();
+                if (count > 1)
+                {
+                    _childNodesCountToGenerate.Push(count - 1);
+                }
+            }
+
+            int childNodesCount = _rulesAndChildNodesCount[rule];
+            _childNodesCountToGenerate.Push(childNodesCount);
+
+            return rule;
         }
     }
 }
