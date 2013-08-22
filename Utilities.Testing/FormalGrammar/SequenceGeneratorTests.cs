@@ -74,13 +74,13 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
         [Test]
         public void TestGenerateTree()
         {
-            // Op0 -> v|c
-            // Op1 -> sin|tan
-            // Op2 -> +|-|*|/
-            // FOp0 -> Op0
-            // FOp1 -> Op1 FOp
-            // FOp2 -> Op2 FOp FOp
-            // FOp -> FOp0|FOp1|FOp2
+            // Val0 -> 0
+            // Val1 -> 1
+            // Val2 -> 2
+            // Node0 -> Val0
+            // Node1 -> Val1 Node
+            // Node2 -> Val2 Node Node
+            // Node -> Node0|Node1|Node2
         }
     }
 }

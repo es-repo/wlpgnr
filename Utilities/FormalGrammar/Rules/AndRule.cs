@@ -15,9 +15,9 @@ namespace WallpaperGenerator.Utilities.FormalGrammar.Rules
         {
         }
 
-        public override IEnumerable<Symbol<T>> Apply()
+        public override IEnumerable<Symbol<T>> Produce()
         {
-            return Rules.SelectMany(r => r.Apply());
+            return Rules.SelectMany(r => r.Produce());
         }
     }
 }

@@ -5,7 +5,7 @@ namespace WallpaperGenerator.Utilities.FormalGrammar
 {        
     public class Rule<T>
     {
-        private readonly Func<IEnumerable<Symbol<T>>> _apply;
+        private readonly Func<IEnumerable<Symbol<T>>> _produceFunc;
 
         public Symbol<T> From { get; private set; }
 
@@ -14,10 +14,10 @@ namespace WallpaperGenerator.Utilities.FormalGrammar
         {
         }
 
-        public Rule(Symbol<T> from, Func<IEnumerable<Symbol<T>>> apply)
+        public Rule(Symbol<T> from, Func<IEnumerable<Symbol<T>>> produceFunc)
         {
             From = from;
-            _apply = apply;
+            _produceFunc = produceFunc;
         }
 
         public Rule(Symbol<T> from, IEnumerable<Symbol<T>> to)
@@ -30,9 +30,9 @@ namespace WallpaperGenerator.Utilities.FormalGrammar
         {
         }
 
-        public virtual IEnumerable<Symbol<T>> Apply()
+        public virtual IEnumerable<Symbol<T>> Produce()
         {
-            return _apply();
+            return _produceFunc();
         }
     }
 }

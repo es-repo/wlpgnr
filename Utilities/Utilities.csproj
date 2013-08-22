@@ -60,6 +60,7 @@
     <Compile Include="DataStructures\Trees\Tree.cs" />
     <Compile Include="DataStructures\Trees\TreeNode.cs" />
     <Compile Include="EnumerableExtensions.cs" />
+    <Compile Include="FormalGrammar\RuleSelectors\TreeGenerationRuleSelector.cs" />
     <Compile Include="FormalGrammar\Rules\AndRule.cs" />
     <Compile Include="FormalGrammar\Rules\CompositeRule.cs" />
     <Compile Include="FormalGrammar\Grammar.cs" />

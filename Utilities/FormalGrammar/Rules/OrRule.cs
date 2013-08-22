@@ -55,10 +55,10 @@ namespace WallpaperGenerator.Utilities.FormalGrammar.Rules
         {
         }
 
-        public override IEnumerable<Symbol<T>> Apply()
+        public override IEnumerable<Symbol<T>> Produce()
         {
             Rule<T> rule = _ruleSelector.Select();
-            return rule.Apply();
+            return rule.Produce();
         }
     }
 }
