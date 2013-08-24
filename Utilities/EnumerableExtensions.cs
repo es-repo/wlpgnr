@@ -12,6 +12,11 @@ namespace WallpaperGenerator.Utilities
                 yield return func(i);
         }
 
+        public static IEnumerable<T> Repeat<T>(Func<T> func, int count)
+        {
+            return Repeat(i => func(), count);
+        }
+
         public static IEnumerable<R> SelectWithFolding<T, R>(this IEnumerable<T> source, Func<R, T, R> func, R initValue)
         {
             R previousValue = initValue; 
@@ -38,7 +43,7 @@ namespace WallpaperGenerator.Utilities
         {
             if (source.Count() != elementProbabilities.Count())
             { 
-                throw new ArgumentException("Count of elements isn't equal to count of probabilties.");
+                throw new ArgumentException("Count of elements isn't equal with count of probabilties.");
             }
 
             double probabiltiesSum = elementProbabilities.Sum(p => p);

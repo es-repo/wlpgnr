@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using MbUnit.Framework;
 using WallpaperGenerator.Utilities.FormalGrammar;
 using WallpaperGenerator.Utilities.FormalGrammar.RuleSelectors;
+using WallpaperGenerator.Utilities.FormalGrammar.Rules;
 
 namespace WallpaperGenerator.Utilities.Testing.FormalGrammar.RuleSelectors
 {
@@ -9,13 +12,35 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar.RuleSelectors
     public class TreeGenerationRuleSelectorTests
     {        
         [RowTest]
-        [Row(null, new[] { 1, 2, 1, 0 })]
-        [Row(new[] { 0.2, 0.7, 0.1 }, new[] { 1, 1, 1, 0, 1, 1, 0, 2, 1, 1, 1, 2, 1, 0, 1, 1 })]
-        public void TestSelect(double[] probabilities, int[] expectedIndexes)
+        [Row(0, null, ExpectedException = typeof(ArgumentException))]
+        [Row(1, new[] { "Node0" })]
+        [Row(2, new[] { "Node1", "Node0" })]
+        [Row(3, new[] { "Node1", "Node2", "Node0", "Node0" })]
+        [Row(4, new[] { "Node1", "Node2", "Node1", "Node0", "Node2", "Node0", "Node0" })]
+        public void TestSelect(int treeDepth, string[] expectedProducedSymbols)
         {
-            // Node -> Node0|Node2
-            // Node0 -> 0
-            // Node2 -> 2
+            SymbolsSet<string> symbols = new SymbolsSet<string>(new[]
+            {
+                new Symbol<string>("Node0"),
+                new Symbol<string>("Node1"),
+                new Symbol<string>("Node2"),
+                new Symbol<string>("Node")
+            });
+            
+            // Node -> Node0|Node1|Node2
+            OrRule<string> nodeProducingRule = new OrRule<string>(symbols["Node"],
+                new[] {symbols["Node0"], symbols["Node1"], symbols["Node2"]});
+
+            TreeGenerationRuleSelector<string> ruleSelector = 
+                new TreeGenerationRuleSelector<string>(treeDepth, nodeProducingRule.Rules);
+
+            IEnumerable<Rule<string>> rules = 
+                EnumerableExtensions.Repeat(ruleSelector.Select, expectedProducedSymbols.Length);
+
+            IEnumerable<Rule<string>> expectedRules = 
+                expectedProducedSymbols.Select(s => nodeProducingRule.Rules.First(r => r.Produce().First()  == symbols[s]));
+
+            CollectionAssert.AreEqual(expectedRules.ToArray(), rules.ToArray());
         }
     }
 }
