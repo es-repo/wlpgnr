@@ -17,6 +17,7 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar.RuleSelectors
         [Row(2, new[] { "Node1", "Node0" })]
         [Row(3, new[] { "Node1", "Node2", "Node0", "Node0" })]
         [Row(4, new[] { "Node1", "Node2", "Node1", "Node0", "Node2", "Node0", "Node0" })]
+        [Row(5, new[] { "Node1", "Node2", "Node1", "Node2", "Node0", "Node0", "Node1" , "Node0" })]
         public void TestSelect(int treeDepth, string[] expectedProducedSymbols)
         {
             SymbolsSet<string> symbols = new SymbolsSet<string>(new[]

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MbUnit.Framework;
 using WallpaperGenerator.Utilities.FormalGrammar;
+using WallpaperGenerator.Utilities.FormalGrammar.RuleSelectors;
 using WallpaperGenerator.Utilities.FormalGrammar.Rules;
 
 namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
@@ -64,23 +65,61 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
             };
 
             Grammar<string> grammar = new Grammar<string>(symbols, rules);
-
             SequenceGenerator<string> sequenceGenerator = new SequenceGenerator<string>(grammar, 100);
 
             IEnumerable<string> sequence = sequenceGenerator.Generate(startSymbol);
             Assert.AreEqual(expectedSequence, string.Join(" ", sequence.ToArray()));
         }
 
-        [Test]
-        public void TestGenerateTree()
+        [RowTest]
+        [Row(4, "1 2 1 0 2 0 0")]
+        [Row(5, "1 2 1 2 0 0 1 0")]
+        public void TestGenerateTree(int treeDepth, string expectedSequenceString)
         {
-            // Val0 -> 0
-            // Val1 -> 1
-            // Val2 -> 2
-            // Node0 -> Val0
-            // Node1 -> Val1 Node
-            // Node2 -> Val2 Node Node
-            // Node -> Node0|Node1|Node2
+            SymbolsSet<string> symbols = new SymbolsSet<string>(new[]
+            {
+                new Symbol<string>("0", "0"),
+                new Symbol<string>("1", "1"),
+                new Symbol<string>("2", "2"),
+                new Symbol<string>("Val0"),
+                new Symbol<string>("Val1"),
+                new Symbol<string>("Val2"),
+                new Symbol<string>("Node0"),
+                new Symbol<string>("Node1"),
+                new Symbol<string>("Node2"),
+                new Symbol<string>("Node")
+            });
+            
+            Rule<string>[] rules = new[]
+            {
+                // Val0 -> 0
+                new Rule<string>(symbols["Val0"], new [] { symbols["0"] }),
+
+                // Val1 -> 1
+                new Rule<string>(symbols["Val1"], new [] { symbols["1"] }),
+
+                // Val2 -> 2
+                new Rule<string>(symbols["Val2"], new [] { symbols["2"] }),
+                   
+                // Node0 -> Val0
+                new Rule<string>(symbols["Node0"], new [] { symbols["Val0"] }),
+
+                // Node1 -> Val1 Node
+                new Rule<string>(symbols["Node1"], new [] { symbols["Val1"], symbols["Node"] }),
+
+                // Node2 -> Val2 Node Node
+                new Rule<string>(symbols["Node2"], new [] { symbols["Val2"], symbols["Node"], symbols["Node"] }),
+
+                // Node -> Node0|Node1|Node2
+                new OrRule<string>(symbols["Node"], rs => new TreeGenerationRuleSelector<string>(treeDepth, rs),
+                    new[] {symbols["Node0"], symbols["Node1"], symbols["Node2"]})
+            };
+
+            Grammar<string> grammar = new Grammar<string>(symbols, rules);
+            SequenceGenerator<string> sequenceGenerator = new SequenceGenerator<string>(grammar, 100);
+
+            IEnumerable<string> sequence = sequenceGenerator.Generate("Node");
+            Assert.AreEqual(expectedSequenceString, string.Join(" ", sequence.ToArray()));
         }
     }
 }
