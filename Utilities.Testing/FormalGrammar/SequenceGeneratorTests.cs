@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using MbUnit.Framework;
 using WallpaperGenerator.Utilities.FormalGrammar;
@@ -15,7 +14,7 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
         [Row("A0", "x")]
         [Row("A1", "sin atan sin sum x y")]
         [Row("A2", "sum x y")]
-        [Row("Inf", "", ExpectedException = typeof(InvalidOperationException))]
+        [Row("Inf", "sum sum sum sum sum sum sum sum sum sum")]
         public void TestGenerate(string startSymbol, string expectedSequence)
         {
             SymbolsSet<string> symbols = new SymbolsSet<string>(new []
@@ -65,9 +64,9 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
             };
 
             Grammar<string> grammar = new Grammar<string>(symbols, rules);
-            SequenceGenerator<string> sequenceGenerator = new SequenceGenerator<string>(grammar, 100);
+            SequenceGenerator<string> sequenceGenerator = new SequenceGenerator<string>(grammar, startSymbol);
 
-            IEnumerable<string> sequence = sequenceGenerator.Generate(startSymbol);
+            IEnumerable<string> sequence = sequenceGenerator.Take(10);
             Assert.AreEqual(expectedSequence, string.Join(" ", sequence.ToArray()));
         }
 
@@ -116,9 +115,9 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
             };
 
             Grammar<string> grammar = new Grammar<string>(symbols, rules);
-            SequenceGenerator<string> sequenceGenerator = new SequenceGenerator<string>(grammar, 100);
+            SequenceGenerator<string> sequenceGenerator = new SequenceGenerator<string>(grammar, "Node");
 
-            IEnumerable<string> sequence = sequenceGenerator.Generate("Node");
+            IEnumerable<string> sequence = sequenceGenerator.AsEnumerable();
             Assert.AreEqual(expectedSequenceString, string.Join(" ", sequence.ToArray()));
         }
     }

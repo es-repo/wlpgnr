@@ -6,7 +6,7 @@ namespace WallpaperGenerator.Formulas.Operators
     public class Variable : ZeroArityOperator
     {
         private const string VariableNamePattern = "^[a-zA-Z_]+[a-zA-Z_0-9]*$";
-        private static readonly Regex _variableNamePatternRegex = new Regex(VariableNamePattern, RegexOptions.Compiled);
+        private static readonly Regex VariableNamePatternRegex = new Regex(VariableNamePattern, RegexOptions.Compiled);
 
         public Variable(string name)
             : base (name)
@@ -27,7 +27,7 @@ namespace WallpaperGenerator.Formulas.Operators
 
         private static bool IsNameValid(string value)
         {
-            return value != null && _variableNamePatternRegex.IsMatch(value);
+            return value != null && VariableNamePatternRegex.IsMatch(value);
         }
     }
 }

@@ -5,11 +5,11 @@ namespace WallpaperGenerator.Formulas.FormulaTreeGeneration
 {
     public static class DefaultOperatorsAndGuards
     {
-        private static readonly Dictionary<Operator, OperatorGuards> _map;
+        private static readonly Dictionary<Operator, OperatorGuards> Map;
 
         static DefaultOperatorsAndGuards()
         {
-            _map = new Dictionary<Operator, OperatorGuards>
+            Map = new Dictionary<Operator, OperatorGuards>
             {
                 {
                     OperatorsLibrary.Div,
@@ -99,7 +99,7 @@ namespace WallpaperGenerator.Formulas.FormulaTreeGeneration
 
         public static IDictionary<Operator, OperatorGuards> Get()
         {
-            return _map;
+            return Map;
         }
     }
 }

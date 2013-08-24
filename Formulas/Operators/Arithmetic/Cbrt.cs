@@ -4,7 +4,7 @@ namespace WallpaperGenerator.Formulas.Operators.Arithmetic
 {
     public class Cbrt : UnaryOperator
     {
-        private const double c1_3 = 1.0/3.0;
+        private const double C1d3 = 1.0/3.0;
 
         public override Func<double> Evaluate(params Func<double>[] operands)
         {
@@ -12,7 +12,7 @@ namespace WallpaperGenerator.Formulas.Operators.Arithmetic
             return () =>
             {
                 double v = op0();
-                return Math.Pow(v > 0 ? v : -v, c1_3);
+                return Math.Pow(v > 0 ? v : -v, C1d3);
             };
         }
 
@@ -22,7 +22,7 @@ namespace WallpaperGenerator.Formulas.Operators.Arithmetic
             return () =>
             {
                 double v = op0.Value;
-                return Math.Pow(v > 0 ? v : -v, c1_3);
+                return Math.Pow(v > 0 ? v : -v, C1d3);
             };
         }
     }

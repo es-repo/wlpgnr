@@ -4,11 +4,11 @@ namespace WallpaperGenerator.Utilities.FormalGrammar
 {
     public abstract class RuleSelector<T>
     {
-        protected IEnumerable<Rule<T>> _rules;
+        protected IEnumerable<Rule<T>> Rules { get; private set; }
 
         protected RuleSelector(IEnumerable<Rule<T>> rules)
         {
-            _rules = rules;
+            Rules = rules;
         }
 
         public abstract Rule<T> Select();

@@ -23,8 +23,8 @@ namespace WallpaperGenerator.Utilities.FormalGrammar.RuleSelectors
         public override Rule<T> Select()
         {
             return _probabilities == null
-                       ? _rules.TakeRandom(_random)
-                       : _rules.TakeRandom(_random, _probabilities);
+                       ? Rules.TakeRandom(_random)
+                       : Rules.TakeRandom(_random, _probabilities);
         }
     }
 }

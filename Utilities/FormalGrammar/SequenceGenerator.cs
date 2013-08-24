@@ -1,48 +1,40 @@
-﻿using System;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace WallpaperGenerator.Utilities.FormalGrammar
 {
-    public class SequenceGenerator<T>
+    public class SequenceGenerator<T> : IEnumerable<T>
     {
-        private readonly Grammar<T> _grammar;
-        private readonly int _sequenceLengthLimit;
+        public Grammar<T> Grammar { get; private set; }
+        public Symbol<T> StartSymbol { get; private set; } 
 
-        public SequenceGenerator(Grammar<T> grammar, int sequenceLengthLimit)
+        public SequenceGenerator(Grammar<T> grammar, Symbol<T> startSymbol)
         {
-            _grammar = grammar;
-            _sequenceLengthLimit = sequenceLengthLimit;
+            Grammar = grammar;
+            StartSymbol = startSymbol;
         }
 
-        public IEnumerable<T> Generate(string startSymbol)
+        public SequenceGenerator(Grammar<T> grammar, string startSymbol)
+            : this(grammar, grammar.Symbols[startSymbol])
         {
-            return Generate( _grammar.Symbols[startSymbol]);
         }
 
-        public IEnumerable<T> Generate(Symbol<T> startSymbol)
+        public IEnumerator<T> GetEnumerator()
         {
             Stack<Symbol<T>> stack = new Stack<Symbol<T>>();
-            stack.Push(startSymbol);
+            stack.Push(StartSymbol);
 
-            int i = 0;
             while (stack.Count > 0)
             {
                 Symbol<T> currentSymbol = stack.Pop();
                 if (currentSymbol.IsTerminal)
                 {
-                    i++;
-                    if (i == _sequenceLengthLimit)
-                    {
-                        throw new InvalidOperationException("Genereated sequence length has exceeded its limit. There is probably the infinite sequence.");
-                    }
-
                     yield return currentSymbol.Value;
-
                 }
                 else
                 {
-                    Rule<T> rule = _grammar.GetRules(currentSymbol).First();
+                    Rule<T> rule = Grammar.GetRules(currentSymbol).First();
                     IEnumerable<Symbol<T>> ruleGeneratedSymbols = rule.Produce();
                     foreach (Symbol<T> symbol in ruleGeneratedSymbols.Reverse())
                     {
@@ -50,6 +42,11 @@ namespace WallpaperGenerator.Utilities.FormalGrammar
                     }
                 }
             }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }    
 }
