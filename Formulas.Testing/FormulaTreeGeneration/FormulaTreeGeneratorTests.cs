@@ -32,7 +32,7 @@ namespace WallpaperGenerator.Formulas.Testing.FormulaTreeGeneration
             FormulaTreeNode formulaTree = _formulaTreeGenerator.CreateRandomFormulaTree(dimensionsCount, variablesCount, constantsCount, 
                 unaryOperatorsCountForFormulaDiluting, OperatorsLibrary.All);
 
-            IEnumerable<FormulaTreeNode> traversedNodes = Tree<Operator>.TraverseBredthFirstPreOrder(formulaTree).Select(ni => (FormulaTreeNode)ni.Node);
+            IEnumerable<FormulaTreeNode> traversedNodes = Tree<Operator>.Traverse(formulaTree, TraversalOrder.BredthFirstPreOrder).Select(ni => (FormulaTreeNode)ni.Node);
             IEnumerable<Variable> variables = traversedNodes.Where(n => n.Operator is Variable).Select(n => (Variable) n.Operator);
             IEnumerable<Constant> constants = traversedNodes.Where(n => n.Operator is Constant).Select(n => (Constant)n.Operator);
             IEnumerable<Operator> unaryOperatorNodes = traversedNodes.Where(n => n.Operator.Arity == 1).Select(n => n.Operator);
@@ -64,7 +64,7 @@ namespace WallpaperGenerator.Formulas.Testing.FormulaTreeGeneration
 
             FormulaTreeNode formulaTree = _formulaTreeGenerator.CreateFormulaTree(zeroArityOperators, nonZeroArityOperators.Randomize(random));
 
-            IEnumerable<TraversedTreeNodeInfo<Operator>> traversedNodes = Tree<Operator>.TraverseBredthFirstPreOrder(formulaTree);
+            IEnumerable<TraversedTreeNodeInfo<Operator>> traversedNodes = Tree<Operator>.Traverse(formulaTree, TraversalOrder.BredthFirstPreOrder);
             for (int a = 0; a < 4; a++)
             {
                 int aa = a;

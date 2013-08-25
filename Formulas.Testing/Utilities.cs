@@ -11,8 +11,8 @@ namespace WallpaperGenerator.Formulas.Testing
             if (rootA == null && rootB == null)
                 return true;
 
-            IEnumerable<TraversedTreeNodeInfo<Operator>> traversedNodesA = Tree<Operator>.TraverseBredthFirstPreOrder(rootA);
-            IEnumerable<TraversedTreeNodeInfo<Operator>> traversedNodesB = Tree<Operator>.TraverseBredthFirstPreOrder(rootB);
+            IEnumerable<TraversedTreeNodeInfo<Operator>> traversedNodesA = Tree<Operator>.Traverse(rootA, TraversalOrder.BredthFirstPreOrder);
+            IEnumerable<TraversedTreeNodeInfo<Operator>> traversedNodesB = Tree<Operator>.Traverse(rootB, TraversalOrder.BredthFirstPreOrder);
             IEnumerator<TraversedTreeNodeInfo<Operator>> nodesInfoBEnumerator = traversedNodesB.GetEnumerator();
             foreach (var nodeInfoA in traversedNodesA)
             {
