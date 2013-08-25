@@ -184,28 +184,42 @@ namespace WallpaperGenerator.Utilities.DataStructures.Trees
 
         private static TreeNode<T> BuildFromTraversedDepthFirstPreOrder(IEnumerable<T> traversedTreeValues, Func<T, int> getChildrenCount)
         {
+            TreeNode<T> treeRoot = null;
+
             Stack<Tuple<TreeNode<T>, int>> stack = new Stack<Tuple<TreeNode<T>, int>>();
             foreach (T value in traversedTreeValues)
             {
+                TreeNode<T> parentNode = null;
                 if (stack.Count > 0)
                 {
                     Tuple<TreeNode<T>, int> parentNodeAndChildrenCount = stack.Pop();
+                    parentNode = parentNodeAndChildrenCount.Item1; 
                     int parentChildrenCount = parentNodeAndChildrenCount.Item2;
                     if (parentChildrenCount > 1)
                     {
-                        stack.Push(new Tuple<TreeNode<T>, int>(parentNodeAndChildrenCount.Item1, parentChildrenCount - 1));
+                        stack.Push(new Tuple<TreeNode<T>, int>(parentNode, parentChildrenCount - 1));
                     }
                 }
 
                 TreeNode<T> node = new TreeNode<T>(value);
-                int nodeChildrenCount = getChildrenCount(value); 
+                if (treeRoot == null)
+                {
+                    treeRoot = node;
+                }
+
+                if (parentNode != null)
+                {
+                    parentNode.AddChild(node);
+                }
+                
+                int nodeChildrenCount = getChildrenCount(value);
                 if (nodeChildrenCount > 0)
                 {
                     stack.Push(new Tuple<TreeNode<T>, int>(node, nodeChildrenCount));
                 }
             }
 
-            return stack.Any() ? stack.Pop().Item1 : null;
+            return treeRoot;
         }
 
         public static int GetNodeHeight(TreeNode<T> node)

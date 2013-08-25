@@ -145,13 +145,47 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees
             CollectionAssert.AreEqual(expectedDepthes, depthes);
         }
 
-        //[RowTest]
-        //'[]
-        //[Row("1 2 1 0 2 0 0")]
-        //public void TestBuild()
-        //{
-            
-        //}
+        [Test]
+        public void TestBuild()
+        {
+            TestBuild(new int[] { }, null);
+
+            TestBuild(new [] { 0 }, new TreeNode<int>(0));
+
+            TestBuild(new[] { 1, 0 }, 
+                new TreeNode<int>(1, 
+                    new TreeNode<int>(0)));
+
+            TestBuild(new[] { 2, 0, 0 },
+                new TreeNode<int>(2,
+                    new TreeNode<int>(0),
+                    new TreeNode<int>(0)));
+
+            TestBuild(new[] { 2, 2, 0, 0, 2, 0, 0 },
+                new TreeNode<int>(2,
+                    new TreeNode<int>(2, 
+                        new TreeNode<int>(0),
+                        new TreeNode<int>(0)),
+                    new TreeNode<int>(2, 
+                        new TreeNode<int>(0),
+                        new TreeNode<int>(0))));
+
+            TestBuild(new[] { 1, 2, 1, 2, 0, 0, 1, 0 },
+                new TreeNode<int>(1,
+                    new TreeNode<int>(2,
+                        new TreeNode<int>(1, 
+                            new TreeNode<int>(2,
+                                new TreeNode<int>(0),
+                                new TreeNode<int>(0))),
+                        new TreeNode<int>(1, 
+                            new TreeNode<int>(0)))));
+        }
+
+        private static void TestBuild(IEnumerable<int> values, TreeNode<int> expectedTreeRoot)
+        {
+            TreeNode<int> treeRoot = Tree<int>.Build(values, v => v);
+            Assert.IsTrue(Tree<int>.Equal(treeRoot, expectedTreeRoot));
+        }
 
         [Test]
         public void TestFold()
