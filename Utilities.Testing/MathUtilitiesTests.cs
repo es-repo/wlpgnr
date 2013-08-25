@@ -10,8 +10,6 @@ namespace WallpaperGenerator.Utilities.Testing
         [Row(new double[] { 1, 2, 3, 4, 5, 6 }, 3.5)]
         [Row(new double[] { -1, 0, 1 }, 0)]
         [Row(new double[] { 1, 2, 4, 5, 6 }, 3.6)]
-        //[Row(new[] { double.MaxValue, double.MaxValue }, double.MaxValue)]
-        //[Row(new[] { double.MaxValue, 0 }, double.MaxValue / 2)]
         public void TestMathExpectation(double[] values, double expectedMathExpectation)
         {
             double mathExpectation = MathUtilities.MathExpectation(values);
@@ -47,7 +45,6 @@ namespace WallpaperGenerator.Utilities.Testing
         [Row(0, 0, 1, 1, 2, 1)]
         [Row(-10, -11, -10, 0, 1, 1)]
         [Row(3, 0, 10, 0, 100, 30)]
-        //[Row(double.NaN, 0, 10, 0, 100, 50)]
         [Row(-24, -30, -10, 400, 500, 430)]
         public void TestMap(double value, double rangeStart, double rangeEnd, double mappedRangeStart, double mappedRangeEnd, double expectedMappedValue)
         {

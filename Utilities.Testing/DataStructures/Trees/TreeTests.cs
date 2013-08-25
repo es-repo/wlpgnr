@@ -145,6 +145,14 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees
             CollectionAssert.AreEqual(expectedDepthes, depthes);
         }
 
+        //[RowTest]
+        //'[]
+        //[Row("1 2 1 0 2 0 0")]
+        //public void TestBuild()
+        //{
+            
+        //}
+
         [Test]
         public void TestFold()
         {
