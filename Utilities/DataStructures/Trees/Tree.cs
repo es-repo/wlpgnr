@@ -242,5 +242,29 @@ namespace WallpaperGenerator.Utilities.DataStructures.Trees
 
             return foldedChildrenQueue.Pop();
         }
+
+        public static bool Equal(TreeNode<T> rootA, TreeNode<T> rootB, Func<T, T, bool> nodeValuesEqual)
+        {
+            if (rootA == null && rootB == null)
+                return true;
+
+            IEnumerable<TraversedTreeNodeInfo<T>> traversedNodesA = Traverse(rootA, TraversalOrder.BredthFirstPreOrder);
+            IEnumerable<TraversedTreeNodeInfo<T>> traversedNodesB = Traverse(rootB, TraversalOrder.BredthFirstPreOrder);
+            IEnumerator<TraversedTreeNodeInfo<T>> nodesInfoBEnumerator = traversedNodesB.GetEnumerator();
+            foreach (var nodeInfoA in traversedNodesA)
+            {
+                nodesInfoBEnumerator.MoveNext();
+                var nodeInfoB = nodesInfoBEnumerator.Current;
+                if (nodeInfoB == null || !nodeValuesEqual(nodeInfoA.Node.Value, nodeInfoA.Node.Value))
+                    return false;
+            }
+
+            return true;
+        }
+
+        public static bool Equal(TreeNode<T> rootA, TreeNode<T> rootB)
+        {
+            return Equal(rootA, rootB, (va, vb) => va.Equals(vb));
+        }
     }
 }

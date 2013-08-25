@@ -62,7 +62,7 @@ Sum(
         private static void TestParse(string value, FormulaTreeNode expectedRoot)
         {
             FormulaTreeNode root = FormulaTreeParser.Parse(value);
-            Assert.IsTrue(Utilities.AreFormulaTreesEqual(root, expectedRoot));
+            Assert.IsTrue(FormulaTree.Equal(root, expectedRoot));
         }
     }
 }

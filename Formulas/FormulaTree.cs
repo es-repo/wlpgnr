@@ -38,6 +38,21 @@ namespace WallpaperGenerator.Formulas
 
         #region  Methods
 
+        public static bool Equal(FormulaTreeNode rootA, FormulaTreeNode rootB)
+        {
+            return Equal(rootA, rootB, OperatorsEqual);
+        }
+
+        private static bool OperatorsEqual(Operator opA, Operator opB)
+        {
+            if (opA is Constant && opB is Constant)
+            {
+                return ((Constant)opA).Value.Equals(((Constant)opB).Value);
+            }
+
+            return opA.Name == opB.Name;
+        }
+
         public static IEnumerable<Variable> SelectVariables(FormulaTreeNode node)
         {
             return Traverse(node, TraversalOrder.BredthFirstPreOrder)

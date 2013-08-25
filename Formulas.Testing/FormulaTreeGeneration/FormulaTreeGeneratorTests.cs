@@ -96,8 +96,8 @@ namespace WallpaperGenerator.Formulas.Testing.FormulaTreeGeneration
                             new FormulaTreeNode(new Variable("x2")),
                             new FormulaTreeNode(new Variable("x3")),
                             new FormulaTreeNode(new Variable("x4")))));
-            
-            Assert.IsTrue(Utilities.AreFormulaTreesEqual(formulaTreeExpected, formulaTree));
+
+            Assert.IsTrue(FormulaTree.Equal(formulaTreeExpected, formulaTree));
         }
 
         [RowTest]
