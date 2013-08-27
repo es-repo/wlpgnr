@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using MbUnit.Framework;
 using WallpaperGenerator.Utilities.FormalGrammar;
 using WallpaperGenerator.Utilities.FormalGrammar.RuleSelectors;
@@ -11,7 +13,7 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar.RuleSelectors
         [RowTest]
         [Row(null, new[] { 1, 2, 1, 0 })]
         [Row(new[] { 0.2, 0.7, 0.1 }, new[] { 1, 1, 1, 0, 1, 1, 0, 2, 1, 1, 1, 2, 1, 0, 1, 1 })]
-        public void TestSelect(double[] probabilities, int[] expectedIndexes)
+        public void Test(double[] probabilities, int[] expectedIndexes)
         {
             Random random = new Random(7);
             
@@ -23,11 +25,9 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar.RuleSelectors
                 };
 
             RandomRuleSelector<string> ruleSelector = new RandomRuleSelector<string>(random, rules, probabilities);
-            foreach (int t in expectedIndexes)
-            {
-                Rule<string> rule = ruleSelector.Select();
-                Assert.AreEqual(rules[t], rule);
-            }
+            IEnumerable<Rule<string>> selectedRules = ruleSelector.Take(expectedIndexes.Length);
+            IEnumerable<Rule<string>> expectedRules = expectedIndexes.Select(i => rules[i]);
+            CollectionAssert.AreEqual(expectedRules.ToArray(), selectedRules.ToArray());
         }
     }
 }

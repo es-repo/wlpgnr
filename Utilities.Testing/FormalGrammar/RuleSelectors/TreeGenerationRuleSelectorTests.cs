@@ -18,7 +18,7 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar.RuleSelectors
         [Row(3, new[] { "Node1", "Node2", "Node0", "Node0" })]
         [Row(4, new[] { "Node1", "Node2", "Node1", "Node0", "Node2", "Node0", "Node0" })]
         [Row(5, new[] { "Node1", "Node2", "Node1", "Node2", "Node0", "Node0", "Node1" , "Node0" })]
-        public void TestSelect(int treeDepth, string[] expectedProducedSymbols)
+        public void Test(int treeDepth, string[] expectedProducedSymbols)
         {
             SymbolsSet<string> symbols = new SymbolsSet<string>(new[]
             {
@@ -35,8 +35,7 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar.RuleSelectors
             TreeGenerationRuleSelector<string> ruleSelector = 
                 new TreeGenerationRuleSelector<string>(treeDepth, nodeProducingRule.Rules);
 
-            IEnumerable<Rule<string>> rules = 
-                EnumerableExtensions.Repeat(ruleSelector.Select, expectedProducedSymbols.Length);
+            IEnumerable<Rule<string>> rules = ruleSelector.Take(expectedProducedSymbols.Length);
 
             IEnumerable<Rule<string>> expectedRules = 
                 expectedProducedSymbols.Select(s => nodeProducingRule.Rules.First(r => r.Produce().First()  == symbols[s]));

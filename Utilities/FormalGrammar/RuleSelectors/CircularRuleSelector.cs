@@ -12,10 +12,10 @@ namespace WallpaperGenerator.Utilities.FormalGrammar.RuleSelectors
         {
             _circularRules = new CircularEnumeration<Rule<T>>(rules);
         }
-
-        public override Rule<T> Select()
+        
+        public override Rule<T> Next()
         {
-            return _circularRules.Next;
+            return _circularRules.Next();
         }
     }
 }

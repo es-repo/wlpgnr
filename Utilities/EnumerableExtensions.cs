@@ -8,13 +8,35 @@ namespace WallpaperGenerator.Utilities
     {        
         public static IEnumerable<T> Repeat<T>(Func<int, T> func, int count)
         {
-            for (int i = 0; i < count; i++)
-                yield return func(i);
+            return Repeat(func, (int?)count);
+        }
+
+        public static IEnumerable<T> Repeat<T>(Func<int, T> func)
+        {
+            return Repeat(func, null);
         }
 
         public static IEnumerable<T> Repeat<T>(Func<T> func, int count)
         {
             return Repeat(i => func(), count);
+        }
+
+        public static IEnumerable<T> Repeat<T>(Func<T> func)
+        {
+            return Repeat(i => func());
+        }
+
+        private static IEnumerable<T> Repeat<T>(Func<int, T> func, int? count)
+        {
+            int i = 0;
+            while (true)
+            {
+                if (count != null && i >= count)
+                    break;
+                
+                yield return func(i);
+                i++;
+            }
         }
 
         public static IEnumerable<R> SelectWithFolding<T, R>(this IEnumerable<T> source, Func<R, T, R> func, R initValue)

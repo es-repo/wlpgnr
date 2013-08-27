@@ -8,7 +8,7 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar.RuleSelectors
     public class CircularRuleSelectorTests
     {
         [Test]
-        public void TestSelect()
+        public void Test()
         {
             Rule<string>[] rules = new []
                 {
@@ -18,10 +18,10 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar.RuleSelectors
                 };
 
             CircularRuleSelector<string> ruleSelector = new CircularRuleSelector<string>(rules);
-            Assert.AreEqual(rules[0], ruleSelector.Select());
-            Assert.AreEqual(rules[1], ruleSelector.Select());
-            Assert.AreEqual(rules[2], ruleSelector.Select());
-            Assert.AreEqual(rules[0], ruleSelector.Select());
+            Assert.AreEqual(rules[0], ruleSelector.Next());
+            Assert.AreEqual(rules[1], ruleSelector.Next());
+            Assert.AreEqual(rules[2], ruleSelector.Next());
+            Assert.AreEqual(rules[0], ruleSelector.Next());
         }
     }
 }

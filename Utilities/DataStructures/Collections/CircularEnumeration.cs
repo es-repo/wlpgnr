@@ -12,13 +12,10 @@ namespace WallpaperGenerator.Utilities.DataStructures.Collections
             _enumerator = new CircularEnumerator<T>(elements);
         }
 
-        public T Next
+        public T Next()
         {
-            get
-            {
-                _enumerator.MoveNext();
-                return _enumerator.Current;
-            }
+            _enumerator.MoveNext();
+            return _enumerator.Current;
         }
 
         #region IEnumerable<T> Members

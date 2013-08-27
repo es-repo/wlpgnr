@@ -45,7 +45,7 @@ namespace WallpaperGenerator.Utilities.FormalGrammar.RuleSelectors
             _childNodesCountToGenerate = new Stack<int>();
         }
 
-        public override Rule<T> Select()
+        public override Rule<T> Next()
         {
             if (_childNodesCountToGenerate.Count > 0)
             {
@@ -55,15 +55,15 @@ namespace WallpaperGenerator.Utilities.FormalGrammar.RuleSelectors
                     _childNodesCountToGenerate.Push(count - 1);
                 }
             }
-            
+
             int currentTreeDepth = _childNodesCountToGenerate.Count;
             bool isLeaf = currentTreeDepth + 1 == TreeDepth;
             if (isLeaf)
             {
                 return _leafProducingRule;
             }
-            
-            Rule<T> rule = _nonLeafProducingRulesSelector.Select();
+
+            Rule<T> rule = _nonLeafProducingRulesSelector.Next();
             int childNodesCount = _rulesAndChildNodesCount[rule];
             _childNodesCountToGenerate.Push(childNodesCount);
             return rule;

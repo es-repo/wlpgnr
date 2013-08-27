@@ -57,7 +57,7 @@ namespace WallpaperGenerator.Utilities.FormalGrammar.Rules
 
         public override IEnumerable<Symbol<T>> Produce()
         {
-            Rule<T> rule = _ruleSelector.Select();
+            Rule<T> rule = _ruleSelector.Next();
             return rule.Produce();
         }
     }

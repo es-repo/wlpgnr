@@ -20,11 +20,11 @@ namespace WallpaperGenerator.Utilities.FormalGrammar.RuleSelectors
             _probabilities = probabilities;
         }
 
-        public override Rule<T> Select()
+        public override Rule<T> Next()
         {
             return _probabilities == null
-                       ? Rules.TakeRandom(_random)
-                       : Rules.TakeRandom(_random, _probabilities);
+                    ? Rules.TakeRandom(_random)
+                    : Rules.TakeRandom(_random, _probabilities); 
         }
     }
 }
