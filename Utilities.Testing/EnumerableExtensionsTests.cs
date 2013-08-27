@@ -10,10 +10,10 @@ namespace WallpaperGenerator.Utilities.Testing
     {
         [RowTest]
         [Row(new int[]{}, new int[]{})]
-        [Row(new [] {1, 2, 3, 4}, new [] {1, 3, 6, 10 })]
+        [Row(new [] {1, 2, 3, 4}, new [] {3, 5, 8, 12 })]
         public void TestSelectWithFolding(int[] source, int[] expectedSequence)
         {
-            IEnumerable<int> foldedSequence = source.SelectWithFolding((p, c) => p + c, 0);
+            IEnumerable<int> foldedSequence = source.SelectWithFolding((p, c) => p + c, 2);
             CollectionAssert.AreEqual(expectedSequence, foldedSequence.ToArray());
         }
 

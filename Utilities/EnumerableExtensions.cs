@@ -39,6 +39,11 @@ namespace WallpaperGenerator.Utilities
             }
         }
 
+        public static IEnumerable<R> SelectWithFolding<T, R>(this IEnumerable<T> source, Func<R, T, R> func)
+        {
+            return SelectWithFolding(source, func, default(R));
+        }
+
         public static IEnumerable<R> SelectWithFolding<T, R>(this IEnumerable<T> source, Func<R, T, R> func, R initValue)
         {
             R previousValue = initValue; 
@@ -49,6 +54,7 @@ namespace WallpaperGenerator.Utilities
                 previousValue = value;
             }
         }
+
 
         public static IEnumerable<T> Randomize<T>(this IEnumerable<T> source, Random random)
         {
