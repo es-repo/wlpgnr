@@ -56,8 +56,10 @@
   <ItemGroup>
     <Compile Include="DataStructures\Collections\CircularEnumeration.cs" />
     <Compile Include="DataStructures\Collections\CircularEnumerator.cs" />
+    <Compile Include="DataStructures\Trees\TraversalOrder.cs" />
     <Compile Include="DataStructures\Trees\TraversedTreeNodeInfo.cs" />
     <Compile Include="DataStructures\Trees\Tree.cs" />
+    <Compile Include="DataStructures\Trees\TreeBuilder.cs" />
     <Compile Include="DataStructures\Trees\TreeNode.cs" />
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="FormalGrammar\RuleSelectors\TreeGenerationRuleSelector.cs" />

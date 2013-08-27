@@ -4,13 +4,6 @@ using System.Linq;
 
 namespace WallpaperGenerator.Utilities.DataStructures.Trees
 {    
-    public enum TraversalOrder
-    {
-        DepthFirstPreOrder,
-        DepthFirstPostOrder,
-        BredthFirstPreOrder
-    }
-
     public class Tree<T>
     {   
         #region Fields
@@ -166,60 +159,9 @@ namespace WallpaperGenerator.Utilities.DataStructures.Trees
 
         #endregion
 
-        public static TreeNode<T> Build(IEnumerable<T> traversedTreeValues, Func<T, int> getChildrenCount)
+        public static TreeNode<T> Build(IEnumerable<T> nodeValues, Func<T, int> getChildrenCount, TraversalOrder nodeValuesOrder = TraversalOrder.DepthFirstPreOrder)
         {
-            return Build(traversedTreeValues, getChildrenCount, TraversalOrder.DepthFirstPreOrder);
-        }
-
-        public static TreeNode<T> Build(IEnumerable<T> traversedTreeValues, Func<T, int> getChildrenCount, TraversalOrder order)
-        {
-            switch (order)
-            {
-                case TraversalOrder.DepthFirstPreOrder:
-                    return BuildFromTraversedDepthFirstPreOrder(traversedTreeValues, getChildrenCount);
-            }
-
-            throw new NotImplementedException();
-        }
-
-        private static TreeNode<T> BuildFromTraversedDepthFirstPreOrder(IEnumerable<T> traversedTreeValues, Func<T, int> getChildrenCount)
-        {
-            TreeNode<T> treeRoot = null;
-
-            Stack<Tuple<TreeNode<T>, int>> stack = new Stack<Tuple<TreeNode<T>, int>>();
-            foreach (T value in traversedTreeValues)
-            {
-                TreeNode<T> parentNode = null;
-                if (stack.Count > 0)
-                {
-                    Tuple<TreeNode<T>, int> parentNodeAndChildrenCount = stack.Pop();
-                    parentNode = parentNodeAndChildrenCount.Item1; 
-                    int parentChildrenCount = parentNodeAndChildrenCount.Item2;
-                    if (parentChildrenCount > 1)
-                    {
-                        stack.Push(new Tuple<TreeNode<T>, int>(parentNode, parentChildrenCount - 1));
-                    }
-                }
-
-                TreeNode<T> node = new TreeNode<T>(value);
-                if (treeRoot == null)
-                {
-                    treeRoot = node;
-                }
-
-                if (parentNode != null)
-                {
-                    parentNode.AddChild(node);
-                }
-                
-                int nodeChildrenCount = getChildrenCount(value);
-                if (nodeChildrenCount > 0)
-                {
-                    stack.Push(new Tuple<TreeNode<T>, int>(node, nodeChildrenCount));
-                }
-            }
-
-            return treeRoot;
+            return new TreeBuilder<T>(nodeValuesOrder).Append(nodeValues, getChildrenCount);
         }
 
         public static int GetNodeHeight(TreeNode<T> node)

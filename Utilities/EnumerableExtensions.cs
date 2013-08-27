@@ -6,27 +6,12 @@ namespace WallpaperGenerator.Utilities
 {
     public static class EnumerableExtensions
     {        
-        public static IEnumerable<T> Repeat<T>(Func<int, T> func, int count)
-        {
-            return Repeat(func, (int?)count);
-        }
-
-        public static IEnumerable<T> Repeat<T>(Func<int, T> func)
-        {
-            return Repeat(func, null);
-        }
-
-        public static IEnumerable<T> Repeat<T>(Func<T> func, int count)
+        public static IEnumerable<T> Repeat<T>(Func<T> func, int? count = null)
         {
             return Repeat(i => func(), count);
         }
 
-        public static IEnumerable<T> Repeat<T>(Func<T> func)
-        {
-            return Repeat(i => func());
-        }
-
-        private static IEnumerable<T> Repeat<T>(Func<int, T> func, int? count)
+        public static IEnumerable<T> Repeat<T>(Func<int, T> func, int? count = null)
         {
             int i = 0;
             while (true)
@@ -39,12 +24,7 @@ namespace WallpaperGenerator.Utilities
             }
         }
 
-        public static IEnumerable<R> SelectWithFolding<T, R>(this IEnumerable<T> source, Func<R, T, R> func)
-        {
-            return SelectWithFolding(source, func, default(R));
-        }
-
-        public static IEnumerable<R> SelectWithFolding<T, R>(this IEnumerable<T> source, Func<R, T, R> func, R initValue)
+        public static IEnumerable<R> SelectWithFolding<T, R>(this IEnumerable<T> source, Func<R, T, R> func, R initValue = default(R))
         {
             R previousValue = initValue; 
             foreach (T e in source)
@@ -54,7 +34,6 @@ namespace WallpaperGenerator.Utilities
                 previousValue = value;
             }
         }
-
 
         public static IEnumerable<T> Randomize<T>(this IEnumerable<T> source, Random random)
         {
