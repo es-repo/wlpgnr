@@ -6,7 +6,7 @@ namespace WallpaperGenerator.Utilities.DataStructures.Trees
     public class TreeBuilder<T>
     {
         private readonly Stack<Tuple<TreeNode<T>, int>> _stack;
-        private readonly Func<T, int, TraversedTreeNodeInfo<T>> _appendFunc;
+        private readonly Func<T, int, TreeNodeInfo<T>> _appendFunc;
 
         public TraversalOrder NodeValuesOrder { get; private set; }
 
@@ -36,12 +36,12 @@ namespace WallpaperGenerator.Utilities.DataStructures.Trees
             return Root;
         }
 
-        public TraversedTreeNodeInfo<T> Append(T nodeValue, int nodeChildrenCount)
+        public TreeNodeInfo<T> Append(T nodeValue, int nodeChildrenCount)
         {
             return _appendFunc(nodeValue, nodeChildrenCount);
         }
 
-        private TraversedTreeNodeInfo<T> AppendDepthFirstPreOrder(T nodeValue, int nodeChildrenCount)
+        private TreeNodeInfo<T> AppendDepthFirstPreOrder(T nodeValue, int nodeChildrenCount)
         {
             TreeNode<T> parentNode = null;
             if (_stack.Count > 0)
@@ -64,7 +64,7 @@ namespace WallpaperGenerator.Utilities.DataStructures.Trees
 
             int nodeIndexAmongSiblings = parentNode != null ? parentNode.Children.Count : 0;
             int nodeDepth = _stack.Count + 1;
-            TraversedTreeNodeInfo<T> nodeInfo = new TraversedTreeNodeInfo<T>(node, parentNode, nodeIndexAmongSiblings, nodeDepth);
+            TreeNodeInfo<T> nodeInfo = new TreeNodeInfo<T>(node, parentNode, nodeIndexAmongSiblings, nodeDepth);
 
             if (parentNode != null)
             {

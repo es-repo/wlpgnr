@@ -54,7 +54,7 @@ Sum(
         {
             const string formulaString = "Sum(x x)";
             FormulaTreeNode formulaTreeRoot = FormulaTreeParser.Parse(formulaString);
-            IEnumerable<TraversedTreeNodeInfo<Operator>> traversedTree = Tree<Operator>.Traverse(formulaTreeRoot, TraversalOrder.DepthFirstPostOrder);
+            IEnumerable<TreeNodeInfo<Operator>> traversedTree = Tree<Operator>.Traverse(formulaTreeRoot, TraversalOrder.DepthFirstPostOrder);
             Variable[] xVariables = traversedTree.Where(ni => ni.Node.Value is Variable).Select(ni => (Variable)ni.Node.Value).ToArray();
             Assert.IsTrue(ReferenceEquals(xVariables[0], xVariables[1]));
         }

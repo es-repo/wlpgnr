@@ -73,7 +73,7 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees
         [Test]
         public void TestTraverseDepthFirstPreOrder()
         {
-            IEnumerable<TraversedTreeNodeInfo<int>> traversedNodes = Tree<int>.Traverse(_rootForTraverseDepthFirstPreOrder, TraversalOrder.DepthFirstPreOrder);
+            IEnumerable<TreeNodeInfo<int>> traversedNodes = Tree<int>.Traverse(_rootForTraverseDepthFirstPreOrder, TraversalOrder.DepthFirstPreOrder);
             
             const int expectedNodesCount = 13;
             Assert.AreEqual(expectedNodesCount, traversedNodes.Count());
@@ -98,7 +98,7 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees
         [Test]
         public void TestTraverseDepthFirstPostOrder()
         {
-            IEnumerable<TraversedTreeNodeInfo<int>> traversedNodes = Tree<int>.Traverse(_rootForTraverseDepthFirstPostOrder, TraversalOrder.DepthFirstPostOrder);
+            IEnumerable<TreeNodeInfo<int>> traversedNodes = Tree<int>.Traverse(_rootForTraverseDepthFirstPostOrder, TraversalOrder.DepthFirstPostOrder);
 
             const int expectedNodesCount = 13;
             Assert.AreEqual(expectedNodesCount, traversedNodes.Count());
@@ -123,7 +123,7 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees
         [Test]
         public void TestTraverseBreadthFirstPreOrder()
         {
-            IEnumerable<TraversedTreeNodeInfo<int>> traversedNodes = Tree<int>.Traverse(_rootForTraverseBredthFirstPreOrder, TraversalOrder.BredthFirstPreOrder);
+            IEnumerable<TreeNodeInfo<int>> traversedNodes = Tree<int>.Traverse(_rootForTraverseBredthFirstPreOrder, TraversalOrder.BredthFirstPreOrder);
 
             const int expectedNodesCount = 13;
             Assert.AreEqual(expectedNodesCount, traversedNodes.Count());
@@ -221,7 +221,7 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees
                         new TreeNode<int>(15, 
                             new TreeNode<int>(16)))));
 
-            IEnumerable<TraversedTreeNodeInfo<int>> traversedNodes = Tree<int>.Traverse(root, TraversalOrder.DepthFirstPreOrder);
+            IEnumerable<TreeNodeInfo<int>> traversedNodes = Tree<int>.Traverse(root, TraversalOrder.DepthFirstPreOrder);
             
             int[] expectedHeights = new [] {5, 3, 1, 2, 1, 1, 2, 1, 1, 1, 4, 1, 1, 3, 1, 2, 1};
             int[] heights = traversedNodes.Select(ni => Tree<int>.GetNodeHeight(ni.Node)).ToArray();

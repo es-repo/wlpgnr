@@ -64,7 +64,7 @@ namespace WallpaperGenerator.Formulas.Testing.FormulaTreeGeneration
 
             FormulaTreeNode formulaTree = _formulaTreeGenerator.CreateFormulaTree(zeroArityOperators, nonZeroArityOperators.Randomize(random));
 
-            IEnumerable<TraversedTreeNodeInfo<Operator>> traversedNodes = Tree<Operator>.Traverse(formulaTree, TraversalOrder.BredthFirstPreOrder);
+            IEnumerable<TreeNodeInfo<Operator>> traversedNodes = Tree<Operator>.Traverse(formulaTree, TraversalOrder.BredthFirstPreOrder);
             for (int a = 0; a < 4; a++)
             {
                 int aa = a;

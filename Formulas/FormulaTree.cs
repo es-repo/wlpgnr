@@ -172,13 +172,13 @@ namespace WallpaperGenerator.Formulas
 
         //public double Evaluate()
         //{
-        //    return Fold((TraversedTreeNodeInfo<Operator> ni, double[] c) => ni.Node.Value.Evaluate(c));
+        //    return Fold((TreeNodeInfo<Operator> ni, double[] c) => ni.Node.Value.Evaluate(c));
         //}
 
         public Func<double> CompileFormula()
         {
             return Fold(
-                (TraversedTreeNodeInfo<Operator> ni, Func<double>[] operands) =>
+                (TreeNodeInfo<Operator> ni, Func<double>[] operands) =>
                     {
                         Operator op = ni.Node.Value;
                         return GetNodeHeight(ni.Node) == 2 
