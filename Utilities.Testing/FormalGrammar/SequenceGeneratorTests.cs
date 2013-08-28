@@ -72,7 +72,7 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
 
         [RowTest]
         [Row(4, "1 2 1 0 2 0 0")]
-        [Row(5, "1 2 1 2 0 0 1 0")]
+        [Row(5, "1 2 1 2 0 0 1 2 0 0")]
         public void TestGenerateTree(int treeDepth, string expectedSequenceString)
         {
             SymbolsSet<string> symbols = new SymbolsSet<string>(new[]
