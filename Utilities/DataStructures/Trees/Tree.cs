@@ -159,9 +159,9 @@ namespace WallpaperGenerator.Utilities.DataStructures.Trees
 
         #endregion
 
-        public static TreeNode<T> Build(IEnumerable<T> nodeValues, Func<T, int> getChildrenCount, TraversalOrder nodeValuesOrder = TraversalOrder.DepthFirstPreOrder)
+        public static TreeNode<T> Build(IEnumerable<T> nodeValues, Func<T, int> getNodeChildrenCount, TraversalOrder nodeValuesOrder = TraversalOrder.DepthFirstPreOrder)
         {
-            return new TreeBuilder<T>(nodeValuesOrder).Append(nodeValues, getChildrenCount);
+            return new TreeBuilder<T>(nodeValuesOrder).Append(nodeValues, getNodeChildrenCount);
         }
 
         public static int GetNodeHeight(TreeNode<T> node)

@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="DataStructures\Collections\CircularEnumerationTests.cs" />
     <Compile Include="DataStructures\Trees\TreeBuilderTests.cs" />
+    <Compile Include="DataStructures\Trees\TreeSerializerTests.cs" />
     <Compile Include="DataStructures\Trees\TreeTests.cs" />
     <Compile Include="EnumerableExtensionsTests.cs" />
     <Compile Include="FormalGrammar\RuleSelectors\TreeGenerationRuleSelectorTests.cs" />

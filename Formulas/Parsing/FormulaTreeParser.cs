@@ -58,6 +58,7 @@ namespace WallpaperGenerator.Formulas.Parsing
             return new FormulaTreeNode(op);
         }
 
+
         private static Operator OperatorFromString(string str, IEnumerable<Operator> availableVariables)
         {
             Operator knownOperator = GetKnownOperator(str);
