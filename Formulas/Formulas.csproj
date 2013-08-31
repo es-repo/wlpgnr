@@ -80,7 +80,6 @@
     <Compile Include="FormulaTreeSerializer.cs" />
     <Compile Include="Operators\Conditionals\Max.cs" />
     <Compile Include="Operators\Constant.cs" />
-    <Compile Include="FormulaTreeNode.cs" />
     <Compile Include="FormulaTree.cs" />
     <Compile Include="FormulaTreeGeneration\FormulaTreeGenerator.cs" />
     <Compile Include="Operator.cs" />

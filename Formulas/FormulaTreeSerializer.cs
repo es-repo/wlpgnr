@@ -1,49 +1,50 @@
-﻿using System.Collections.Generic;
-using System.Text;
-using WallpaperGenerator.Formulas.Parsing;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using WallpaperGenerator.Formulas.Operators;
 using WallpaperGenerator.Utilities.DataStructures.Trees;
 
 namespace WallpaperGenerator.Formulas
 {
-    public class FormulaTreeSerializationOptions
-    {
-        public bool WithIndentation { get; set; }
-    }
-
     public static class FormulaTreeSerializer
     {
-        public static string Serialize(FormulaTreeNode node)
+        public static string Serialize(FormulaTree formulaTree)
         {
-            return Serialize(node, new FormulaTreeSerializationOptions());
+            return TreeSerializer.Serialize(formulaTree.Root, op => op.Name);
         }
 
-        public static string Serialize(FormulaTreeNode node, FormulaTreeSerializationOptions serializationOptions)
+        public static FormulaTree Deserialize(string serialized)
         {
-            StringBuilder sb = new StringBuilder();
-            IEnumerable<TreeNodeInfo<Operator>> nodes = Tree<Operator>.Traverse(node, TraversalOrder.DepthFirstPreOrder);
-            int depth = 0;
-            bool withIndent = serializationOptions.WithIndentation;
-            foreach (TreeNodeInfo<Operator> ni in nodes)
+            List<Variable> availableVariables = new List<Variable>();
+            TreeNode<Operator> root = TreeSerializer.Deserialize(serialized, s => OperatorFromString(s, availableVariables), op => op.Arity);
+            return new FormulaTree(root);
+        }
+
+        private static Operator OperatorFromString(string str, ICollection<Variable> availableVariables)
+        {
+            Operator knownOperator = GetKnownOperator(str);
+            if (knownOperator != null)
+                return knownOperator;
+
+            double constant;
+            if (double.TryParse(str, NumberStyles.Number, CultureInfo.InvariantCulture, out constant))
             {
-                if (depth > ni.Depth)
-                {
-                    sb.Append(new string(')', depth - ni.Depth));
-                }
-                sb.Append(ni.IndexAmongSiblings == 0 ? "(" : withIndent ? "" : " ");
-                if (withIndent)
-                {
-                    sb.Append("\n" + new string('\t', ni.Depth));
-                }
-                sb.Append(ni.Node.Value.Name);
-                depth = ni.Depth;
+                return new Constant(constant);
             }
-            sb.Append(new string(')', depth + 1));
-            return sb.ToString();
+
+            Variable availableVariable = availableVariables.FirstOrDefault(op => op.Name == str);
+            if (availableVariable == null)
+            {
+                availableVariable = new Variable(str);
+                availableVariables.Add(availableVariable);
+            }
+            return availableVariable;
         }
 
-        public static FormulaTreeNode Deserialize(string value)
+        private static Operator GetKnownOperator(string str)
         {
-            return FormulaTreeParser.Parse(value);
+            return OperatorsLibrary.All.FirstOrDefault(op => op.Name.Equals(str, StringComparison.OrdinalIgnoreCase));
         }
     }
 }

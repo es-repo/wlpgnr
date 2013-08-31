@@ -16,21 +16,16 @@ namespace WallpaperGenerator.Formulas
 
         #region Properties
 
-        public FormulaTreeNode FormulaRoot
-        {
-            get { return (FormulaTreeNode) Root; }
-        }
-
         public Variable[] Variables { get; private set; }
 
         #endregion
 
         #region Constructors
 
-        public FormulaTree(FormulaTreeNode root)
+        public FormulaTree(TreeNode<Operator> root)
             : base(root)
         {
-            Variables = SelectVariables(FormulaRoot).ToArray();
+            Variables = SelectVariables(Root).ToArray();
             _compiledFormula = CompileFormula();
         }
 
@@ -38,9 +33,9 @@ namespace WallpaperGenerator.Formulas
 
         #region  Methods
 
-        public static bool Equal(FormulaTreeNode rootA, FormulaTreeNode rootB)
+        public static bool Equal(FormulaTree a, FormulaTree b)
         {
-            return Equal(rootA, rootB, OperatorsEqual);
+            return Equal(a.Root, b.Root, OperatorsEqual);
         }
 
         private static bool OperatorsEqual(Operator opA, Operator opB)
@@ -53,7 +48,7 @@ namespace WallpaperGenerator.Formulas
             return opA.Name == opB.Name;
         }
 
-        public static IEnumerable<Variable> SelectVariables(FormulaTreeNode node)
+        public static IEnumerable<Variable> SelectVariables(TreeNode<Operator> node)
         {
             return Traverse(node, TraversalOrder.BredthFirstPreOrder)
                        .Where(ni => ni.Node.Value is Variable)

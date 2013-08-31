@@ -125,6 +125,18 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees
                             new TreeNode<int>(2,
                                 new TreeNode<int>(0),
                                 new TreeNode<int>(0))))));
+
+            TestAppendSequence(new[] { 2, 2, 0, 0, 2, 0, 2, 1, 0, 0 },
+                new TreeNode<int>(2,
+                    new TreeNode<int>(2,
+                        new TreeNode<int>(0),
+                        new TreeNode<int>(0)),
+                    new TreeNode<int>(2,
+                        new TreeNode<int>(0),
+                        new TreeNode<int>(2,
+                            new TreeNode<int>(1,
+                                new TreeNode<int>(0)),
+                            new TreeNode<int>(0)))));
         }
 
         private static void TestAppendSequence(IEnumerable<int> nodeValues, TreeNode<int> expectedTreeRoot)

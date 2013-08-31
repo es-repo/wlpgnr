@@ -3,15 +3,16 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Globalization;
 using WallpaperGenerator.Formulas.Operators;
+using WallpaperGenerator.Utilities.DataStructures.Trees;
 
 namespace WallpaperGenerator.Formulas.Parsing
 {
     public static class FormulaTreeParser
     {
-        public static FormulaTreeNode Parse(string value)
+        public static TreeNode<Operator> Parse(string value)
         {
-            Stack<FormulaTreeNode> parentNodes = new Stack<FormulaTreeNode>();
-            FormulaTreeNode currentNode = null;
+            Stack<TreeNode<Operator>> parentNodes = new Stack<TreeNode<Operator>>();
+            TreeNode<Operator> currentNode = null;
             IEnumerable<FormulaTreeToken> tokens = FormulaTreeTokenizer.Tokenize(value);
             List<Operator> variables = new List<Operator>();
             foreach (FormulaTreeToken token in tokens)
@@ -32,12 +33,12 @@ namespace WallpaperGenerator.Formulas.Parsing
 
                     case FormulaTreeTokenType.Word:
                         currentNode = CreateNode(token.Value, variables);
-                        if (currentNode.Operator is Variable)
+                        if (currentNode.Value is Variable)
                         {
-                            variables.Add(currentNode.Operator);
+                            variables.Add(currentNode.Value);
                         }
 
-                        FormulaTreeNode parentNode = parentNodes.Count > 0 ? parentNodes.Peek() : null;  
+                        TreeNode<Operator> parentNode = parentNodes.Count > 0 ? parentNodes.Peek() : null;  
                         if (parentNode != null)
                         {
                             parentNode.AddChild(currentNode);    
@@ -52,10 +53,10 @@ namespace WallpaperGenerator.Formulas.Parsing
             return currentNode;
         }
 
-        private static FormulaTreeNode CreateNode(string token, IEnumerable<Operator> availableVariables)
+        private static TreeNode<Operator> CreateNode(string token, IEnumerable<Operator> availableVariables)
         {
             Operator op = OperatorFromString(token, availableVariables);
-            return new FormulaTreeNode(op);
+            return new TreeNode<Operator>(op);
         }
 
 

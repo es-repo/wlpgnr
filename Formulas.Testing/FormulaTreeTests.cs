@@ -2,13 +2,14 @@
 using System.Linq;
 using MbUnit.Framework;
 using WallpaperGenerator.Formulas.Operators;
+using WallpaperGenerator.Utilities.DataStructures.Trees;
 
 namespace WallpaperGenerator.Formulas.Testing
 {
     [TestFixture]
     public class FormulaTreeTests
     {
-        private FormulaTreeNode _formulaRoot;
+        private TreeNode<Operator> _formulaRoot;
         private Variable _xVariable;
         private Variable _yVariable;
 
@@ -20,16 +21,16 @@ namespace WallpaperGenerator.Formulas.Testing
 
             // 2*x + 7*(-y + x)
             _formulaRoot =
-                new FormulaTreeNode(OperatorsLibrary.Sum,
-                    new FormulaTreeNode(OperatorsLibrary.Mul,
-                        new FormulaTreeNode(new Constant(2)),
-                        new FormulaTreeNode(_xVariable)),
-                    new FormulaTreeNode(OperatorsLibrary.Mul,
-                        new FormulaTreeNode(new Constant(7)),
-                        new FormulaTreeNode(OperatorsLibrary.Sum,
-                            new FormulaTreeNode(OperatorsLibrary.Minus,
-                                new FormulaTreeNode(_yVariable)),
-                            new FormulaTreeNode(_xVariable))));
+                new TreeNode<Operator>(OperatorsLibrary.Sum,
+                    new TreeNode<Operator>(OperatorsLibrary.Mul,
+                        new TreeNode<Operator>(new Constant(2)),
+                        new TreeNode<Operator>(_xVariable)),
+                    new TreeNode<Operator>(OperatorsLibrary.Mul,
+                        new TreeNode<Operator>(new Constant(7)),
+                        new TreeNode<Operator>(OperatorsLibrary.Sum,
+                            new TreeNode<Operator>(OperatorsLibrary.Minus,
+                                new TreeNode<Operator>(_yVariable)),
+                            new TreeNode<Operator>(_xVariable))));
         }
         
         [Test]
@@ -77,13 +78,12 @@ namespace WallpaperGenerator.Formulas.Testing
         }
 
         [RowTest]
-        [Row("sum(x x)", new[] { 1.0, 2.0, 3.0 }, null, null, new[] { 2.0, 4.0, 6.0 })]
-        [Row("sum(x y)", new[] { 1.0, 2.0, 3.0 }, new[] { 1.0, 2.0, 3.0 }, null, new[] { 2.0, 3.0, 4.0, 3.0, 4.0, 5.0, 4.0, 5.0, 6.0 })]
-        [Row("sum(sum(x y) z))", new[] { 1.0, 2.0, 3.0 }, new[] { 1.0, 2.0, 3.0 }, new[] { -1.0, -2.0, -3.0 }, new[] { 1.0, 2.0, 3.0, 1.0, 2.0, 3.0, 1.0, 2.0, 3.0 })]
+        [Row("sum x x", new[] { 1.0, 2.0, 3.0 }, null, null, new[] { 2.0, 4.0, 6.0 })]
+        [Row("sum x y", new[] { 1.0, 2.0, 3.0 }, new[] { 1.0, 2.0, 3.0 }, null, new[] { 2.0, 3.0, 4.0, 3.0, 4.0, 5.0, 4.0, 5.0, 6.0 })]
+        [Row("sum sum x y z", new[] { 1.0, 2.0, 3.0 }, new[] { 1.0, 2.0, 3.0 }, new[] { -1.0, -2.0, -3.0 }, new[] { 1.0, 2.0, 3.0, 1.0, 2.0, 3.0, 1.0, 2.0, 3.0 })]
         public void TestEvaluateSeriesIn2DProjection(string formula, double[] xVariableValues, double[] yVariableValues, double[] zVariableValues, double[] expectedResults)
         {
-            FormulaTreeNode formulaTreeRoot = FormulaTreeSerializer.Deserialize(formula);
-            FormulaTree formulaTree = new FormulaTree(formulaTreeRoot);
+            FormulaTree formulaTree = FormulaTreeSerializer.Deserialize(formula);
             List<IEnumerable<double>> variablesValues = new List<IEnumerable<double>>();
             if (xVariableValues != null)
                 variablesValues.Add(xVariableValues);
@@ -99,13 +99,12 @@ namespace WallpaperGenerator.Formulas.Testing
         }
 
         [RowTest]
-        //[Row("sum(x x)", 1, 3, -1, -1, -1, -1, new[] { 2.0, 4.0, 6.0 })]
-        [Row("sum(x y)", 1, 3, 1, 3, -1, -1, new[] { 2.0, 3.0, 4.0, 3.0, 4.0, 5.0, 4.0, 5.0, 6.0 })]
-        [Row("sum(sum(x y) z))",  1, 3, 1, 3, -3, 3, new[] { -1.0, 0.0, 1.0, 1.0, 2.0, 3.0, 3.0, 4.0, 5.0 })]
+        //[Row("sum x x", 1, 3, -1, -1, -1, -1, new[] { 2.0, 4.0, 6.0 })]
+        [Row("sum x y", 1, 3, 1, 3, -1, -1, new[] { 2.0, 3.0, 4.0, 3.0, 4.0, 5.0, 4.0, 5.0, 6.0 })]
+        [Row("sum sum x y z",  1, 3, 1, 3, -3, 3, new[] { -1.0, 0.0, 1.0, 1.0, 2.0, 3.0, 3.0, 4.0, 5.0 })]
         public void TestEvaluateRangesIn2DProjection(string formula, double rangeXStart, int rangeXCount, double rangeYStart, int rangeYCount, double rangeZStart, int rangeZCount, double[] expectedResults)
         {
-            FormulaTreeNode formulaTreeRoot = FormulaTreeSerializer.Deserialize(formula);
-            FormulaTree formulaTree = new FormulaTree(formulaTreeRoot);
+            FormulaTree formulaTree = FormulaTreeSerializer.Deserialize(formula);
             List<Range> ranges = new List<Range>();
             if (!rangeXStart.Equals(-1))
                 ranges.Add(new Range(rangeXStart, rangeXCount));

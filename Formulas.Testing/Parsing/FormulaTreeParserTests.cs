@@ -15,15 +15,15 @@ namespace WallpaperGenerator.Formulas.Testing.Parsing
         {
             TestParse("()", null);
 
-            TestParse("(2)", new FormulaTreeNode(new Constant(2)));
+            TestParse("(2)", new TreeNode<Operator>(new Constant(2)));
 
-            TestParse("(x)", new FormulaTreeNode(new Variable("x")));
+            TestParse("(x)", new TreeNode<Operator>(new Variable("x")));
             
             TestParse("(Sum(x y)",
-                new FormulaTreeNode(
+                new TreeNode<Operator>(
                     OperatorsLibrary.Sum,
-                        new FormulaTreeNode(new Variable("x")),
-                        new FormulaTreeNode(new Variable("y"))));
+                        new TreeNode<Operator>(new Variable("x")),
+                        new TreeNode<Operator>(new Variable("y"))));
 
             TestParse(// 2*x + 7*(-y + 5)            
 @"(
@@ -37,31 +37,31 @@ Sum(
 			Minus(
 				y)
 			5))))",
-                new FormulaTreeNode(OperatorsLibrary.Sum,
-                    new FormulaTreeNode(OperatorsLibrary.Mul,
-                        new FormulaTreeNode(new Constant(2)),
-                        new FormulaTreeNode(new Variable("x"))),
-                    new FormulaTreeNode(OperatorsLibrary.Mul,
-                        new FormulaTreeNode(new Constant(7)),
-                        new FormulaTreeNode(OperatorsLibrary.Sum,
-                            new FormulaTreeNode(OperatorsLibrary.Minus,
-                                new FormulaTreeNode(new Variable("y"))),
-                            new FormulaTreeNode(new Constant(5))))));
+                new TreeNode<Operator>(OperatorsLibrary.Sum,
+                    new TreeNode<Operator>(OperatorsLibrary.Mul,
+                        new TreeNode<Operator>(new Constant(2)),
+                        new TreeNode<Operator>(new Variable("x"))),
+                    new TreeNode<Operator>(OperatorsLibrary.Mul,
+                        new TreeNode<Operator>(new Constant(7)),
+                        new TreeNode<Operator>(OperatorsLibrary.Sum,
+                            new TreeNode<Operator>(OperatorsLibrary.Minus,
+                                new TreeNode<Operator>(new Variable("y"))),
+                            new TreeNode<Operator>(new Constant(5))))));
         }
 
         [Test]
         public void TestParseWithSameVariableSeveralOccurences()
         {
             const string formulaString = "Sum(x x)";
-            FormulaTreeNode formulaTreeRoot = FormulaTreeParser.Parse(formulaString);
+            TreeNode<Operator> formulaTreeRoot = FormulaTreeParser.Parse(formulaString);
             IEnumerable<TreeNodeInfo<Operator>> traversedTree = Tree<Operator>.Traverse(formulaTreeRoot, TraversalOrder.DepthFirstPostOrder);
             Variable[] xVariables = traversedTree.Where(ni => ni.Node.Value is Variable).Select(ni => (Variable)ni.Node.Value).ToArray();
             Assert.IsTrue(ReferenceEquals(xVariables[0], xVariables[1]));
         }
 
-        private static void TestParse(string value, FormulaTreeNode expectedRoot)
+        private static void TestParse(string value, TreeNode<Operator> expectedRoot)
         {
-            FormulaTreeNode root = FormulaTreeParser.Parse(value);
+            TreeNode<Operator> root = FormulaTreeParser.Parse(value);
             Assert.IsTrue(FormulaTree.Equal(root, expectedRoot));
         }
     }

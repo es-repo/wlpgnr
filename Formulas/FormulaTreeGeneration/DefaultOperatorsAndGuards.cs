@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using WallpaperGenerator.Formulas.Operators;
+using WallpaperGenerator.Utilities.DataStructures.Trees;
 
 namespace WallpaperGenerator.Formulas.FormulaTreeGeneration
 {
@@ -78,9 +79,9 @@ namespace WallpaperGenerator.Formulas.FormulaTreeGeneration
                                 {
                                     new FormulaTreeNodeWrapper(
                                         node => 
-                                            new FormulaTreeNode(OperatorsLibrary.Sum,
-                                                new FormulaTreeNode(OperatorsLibrary.Mul, node, node),
-                                                new FormulaTreeNode(new Constant(0.0001))))
+                                            new TreeNode<Operator>(OperatorsLibrary.Sum,
+                                                new TreeNode<Operator>(OperatorsLibrary.Mul, node, node),
+                                                new TreeNode<Operator>(new Constant(0.0001))))
                                 }}
                         })
                 },  

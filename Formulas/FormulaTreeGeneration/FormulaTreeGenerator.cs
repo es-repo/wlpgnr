@@ -4,6 +4,7 @@ using System.Linq;
 using WallpaperGenerator.Utilities;
 using System.Globalization;
 using WallpaperGenerator.Formulas.Operators;
+using WallpaperGenerator.Utilities.DataStructures.Trees;
 
 namespace WallpaperGenerator.Formulas.FormulaTreeGeneration
 {
@@ -26,7 +27,7 @@ namespace WallpaperGenerator.Formulas.FormulaTreeGeneration
             _operatorsAndOperandsConstantAcceptanceRules = operatorsAndOperandsConstantAcceptanceRules;
         }
 
-        public FormulaTreeNode CreateRandomFormulaTree(int dimensionsCount, int variablesCount, int constantsCount, 
+        public TreeNode<Operator> CreateRandomFormulaTree(int dimensionsCount, int variablesCount, int constantsCount, 
             int unaryOperatorsCountForFormulaDiluting, IEnumerable<Operator> operatorsLibrary)
         {
             if (dimensionsCount < 0)
@@ -56,7 +57,7 @@ namespace WallpaperGenerator.Formulas.FormulaTreeGeneration
             return CreateRandomFormulaTreeCore(dimensionsCount, variablesCount, constantsCount, unaryOperatorsCountForFormulaDiluting, operatorsLibrary);
         }
 
-        private FormulaTreeNode CreateRandomFormulaTreeCore(int dimensionsCount, int variablesCount, int constantsCount, 
+        private TreeNode<Operator> CreateRandomFormulaTreeCore(int dimensionsCount, int variablesCount, int constantsCount, 
             int unaryOperatorsCountForFormulaDiluting, IEnumerable<Operator> operatorsLibrary)
         {                        
             int zeroOperatorsCount = variablesCount + constantsCount;
@@ -80,7 +81,7 @@ namespace WallpaperGenerator.Formulas.FormulaTreeGeneration
             return CreateFormulaTree(zeroArityOperators, nonZeroArityOperators);
         }
 
-        public FormulaTreeNode CreateFormulaTree(IEnumerable<Operator> zeroArityOperators, IEnumerable<Operator> nonZeroArityOperators)
+        public TreeNode<Operator> CreateFormulaTree(IEnumerable<Operator> zeroArityOperators, IEnumerable<Operator> nonZeroArityOperators)
         {
             if (!zeroArityOperators.Any())
                 throw new ArgumentException("Zero-arity operators enumeration can't be empty.");
@@ -90,10 +91,10 @@ namespace WallpaperGenerator.Formulas.FormulaTreeGeneration
                 nonZeroArityOperators.Count(op => op.Arity == 3)*2 + 1 != zeroArityOperators.Count())
                 throw new ArgumentException("Number of zero and non-zero -arity operators is not balanced.");
 
-            Queue<FormulaTreeNode> nodes = new Queue<FormulaTreeNode>(zeroArityOperators.Select(op => new FormulaTreeNode(op)));
+            Queue<TreeNode<Operator>> nodes = new Queue<TreeNode<Operator>>(zeroArityOperators.Select(op => new TreeNode<Operator>(op)));
             foreach (Operator op in nonZeroArityOperators)
             {
-                FormulaTreeNode node = _formulaTreeNodeFactory.Create(op, nodes.Dequeue(op.Arity));
+                TreeNode<Operator> node = _formulaTreeNodeFactory.Create(op, nodes.Dequeue(op.Arity));
                 nodes.Enqueue(node);
             }
 

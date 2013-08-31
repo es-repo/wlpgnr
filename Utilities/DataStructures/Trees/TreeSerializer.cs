@@ -18,9 +18,9 @@ namespace WallpaperGenerator.Utilities.DataStructures.Trees
             return string.Join(" ", serializedNodeValues.ToArray());
         }
 
-        public static TreeNode<T> Deserialize<T>(string value, Func<string, T> nodeValueFromString, Func<T, int> getNodeChildrenCount)
+        public static TreeNode<T> Deserialize<T>(string serialized, Func<string, T> nodeValueFromString, Func<T, int> getNodeChildrenCount)
         {
-            string[] tokens = value.Split(new []{' '}, StringSplitOptions.RemoveEmptyEntries);
+            string[] tokens = serialized.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             IEnumerable<T> nodeValues = tokens.Select(nodeValueFromString);
             return Tree<T>.Build(nodeValues, getNodeChildrenCount);
         }
