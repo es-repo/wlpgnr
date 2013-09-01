@@ -95,6 +95,15 @@ namespace WallpaperGenerator.Formulas.FormulaTreeGeneration
                                       })
                 },
 
+                {
+                    OperatorsLibrary.Cosh,
+                    new OperatorGuards(new[]
+                                      {
+                                          new FormulaTreeNodeWrapper(OperatorsLibrary.Atan),
+                                          new FormulaTreeNodeWrapper(OperatorsLibrary.Tanh)
+                                      })
+                },
+
             };
         }
 

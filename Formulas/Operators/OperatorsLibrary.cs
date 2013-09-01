@@ -61,7 +61,7 @@ namespace WallpaperGenerator.Formulas.Operators
             {
                 yield return Sin;
                 yield return Cos;
-                yield return Tan;
+                //yield return Tan;
                 yield return Atan;
                 yield return Sinh;
                 yield return Cosh;
