@@ -29,10 +29,10 @@ namespace WallpaperGenerator.Formulas.Testing.FormulaTreeGeneration
         [Row(3, 9, 3, 2)]
         public void TestCreateRandomFormulaTree(int dimensionsCount, int variablesCount, int constantsCount, int unaryOperatorsCountForFormulaDiluting)
         {
-            TreeNode<Operator> formulaTree = _formulaTreeGenerator.CreateRandomFormulaTree(dimensionsCount, variablesCount, constantsCount, 
+            FormulaTree formulaTree = _formulaTreeGenerator.CreateRandomFormulaTree(dimensionsCount, variablesCount, constantsCount, 
                 unaryOperatorsCountForFormulaDiluting, OperatorsLibrary.All);
 
-            IEnumerable<TreeNode<Operator>> traversedNodes = Tree<Operator>.Traverse(formulaTree, TraversalOrder.BredthFirstPreOrder).Select(ni => ni.Node);
+            IEnumerable<TreeNode<Operator>> traversedNodes = Tree<Operator>.Traverse(formulaTree.Root, TraversalOrder.BredthFirstPreOrder).Select(ni => ni.Node);
             IEnumerable<Variable> variables = traversedNodes.Where(n => n.Value is Variable).Select(n => (Variable)n.Value);
             IEnumerable<Constant> constants = traversedNodes.Where(n => n.Value is Constant).Select(n => (Constant)n.Value);
             IEnumerable<Operator> unaryOperatorNodes = traversedNodes.Where(n => n.Value.Arity == 1).Select(n => n.Value);
@@ -62,12 +62,13 @@ namespace WallpaperGenerator.Formulas.Testing.FormulaTreeGeneration
                 EnumerableExtensions.Repeat(_ => OperatorsLibrary.All.Where(op => op.Arity == a + 1).TakeRandom(random), nonZeroOperatorsCounts[a])).
                     SelectMany(_ => _);
 
-            TreeNode<Operator> formulaTree = _formulaTreeGenerator.CreateFormulaTree(zeroArityOperators, nonZeroArityOperators.Randomize(random));
+            FormulaTree formulaTree = _formulaTreeGenerator.CreateFormulaTree(zeroArityOperators, nonZeroArityOperators.Randomize(random));
 
-            IEnumerable<TreeNodeInfo<Operator>> traversedNodes = Tree<Operator>.Traverse(formulaTree, TraversalOrder.BredthFirstPreOrder);
+            IEnumerable<TreeNodeInfo<Operator>> traversedNodes = Tree<Operator>.Traverse(formulaTree.Root, TraversalOrder.BredthFirstPreOrder);
             for (int a = 0; a < 4; a++)
             {
                 int aa = a;
+
                 IEnumerable<TreeNode<Operator>> nArityNodes = traversedNodes.Select(ni => ni.Node).Where(n => n.Value.Arity == aa);
                 Assert.IsTrue(nArityNodes.All(n => n.Children.Count == a));
             }
@@ -85,8 +86,8 @@ namespace WallpaperGenerator.Formulas.Testing.FormulaTreeGeneration
                     OperatorsLibrary.Minus  
                 };
 
-            TreeNode<Operator> formulaTree = _formulaTreeGenerator.CreateFormulaTree(zeroArityOperators, nonZeroArityOperators);
-            TreeNode<Operator> formulaTreeExpected = new TreeNode<Operator>(
+            FormulaTree formulaTree = _formulaTreeGenerator.CreateFormulaTree(zeroArityOperators, nonZeroArityOperators);
+            TreeNode<Operator> formulaTreeRootExpected = new TreeNode<Operator>(
                 OperatorsLibrary.Minus,
                     new TreeNode<Operator>(OperatorsLibrary.Sum,
                         new TreeNode<Operator>(OperatorsLibrary.Mul,
@@ -97,7 +98,7 @@ namespace WallpaperGenerator.Formulas.Testing.FormulaTreeGeneration
                             new TreeNode<Operator>(new Variable("x3")),
                             new TreeNode<Operator>(new Variable("x4")))));
 
-            Assert.IsTrue(FormulaTree.Equal(formulaTreeExpected, formulaTree));
+            Assert.IsTrue(FormulaTree.Equal(new FormulaTree(formulaTreeRootExpected), formulaTree));
         }
 
         [RowTest]

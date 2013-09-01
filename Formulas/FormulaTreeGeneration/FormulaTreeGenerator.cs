@@ -27,7 +27,7 @@ namespace WallpaperGenerator.Formulas.FormulaTreeGeneration
             _operatorsAndOperandsConstantAcceptanceRules = operatorsAndOperandsConstantAcceptanceRules;
         }
 
-        public TreeNode<Operator> CreateRandomFormulaTree(int dimensionsCount, int variablesCount, int constantsCount, 
+        public FormulaTree CreateRandomFormulaTree(int dimensionsCount, int variablesCount, int constantsCount, 
             int unaryOperatorsCountForFormulaDiluting, IEnumerable<Operator> operatorsLibrary)
         {
             if (dimensionsCount < 0)
@@ -57,7 +57,7 @@ namespace WallpaperGenerator.Formulas.FormulaTreeGeneration
             return CreateRandomFormulaTreeCore(dimensionsCount, variablesCount, constantsCount, unaryOperatorsCountForFormulaDiluting, operatorsLibrary);
         }
 
-        private TreeNode<Operator> CreateRandomFormulaTreeCore(int dimensionsCount, int variablesCount, int constantsCount, 
+        private FormulaTree CreateRandomFormulaTreeCore(int dimensionsCount, int variablesCount, int constantsCount, 
             int unaryOperatorsCountForFormulaDiluting, IEnumerable<Operator> operatorsLibrary)
         {                        
             int zeroOperatorsCount = variablesCount + constantsCount;
@@ -81,7 +81,7 @@ namespace WallpaperGenerator.Formulas.FormulaTreeGeneration
             return CreateFormulaTree(zeroArityOperators, nonZeroArityOperators);
         }
 
-        public TreeNode<Operator> CreateFormulaTree(IEnumerable<Operator> zeroArityOperators, IEnumerable<Operator> nonZeroArityOperators)
+        public FormulaTree CreateFormulaTree(IEnumerable<Operator> zeroArityOperators, IEnumerable<Operator> nonZeroArityOperators)
         {
             if (!zeroArityOperators.Any())
                 throw new ArgumentException("Zero-arity operators enumeration can't be empty.");
@@ -98,7 +98,8 @@ namespace WallpaperGenerator.Formulas.FormulaTreeGeneration
                 nodes.Enqueue(node);
             }
 
-            return nodes.Dequeue();
+            TreeNode<Operator> root = nodes.Dequeue();
+            return new FormulaTree(root);
         }
 
         public IEnumerable<int> GetNonZeroOperatorsAritySequence(int zeroArityOperatorsCount, int unaryOperatorsCount, 

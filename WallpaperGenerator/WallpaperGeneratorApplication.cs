@@ -8,7 +8,6 @@ using WallpaperGenerator.FormulaRendering;
 using WallpaperGenerator.Formulas;
 using WallpaperGenerator.Formulas.FormulaTreeGeneration;
 using WallpaperGenerator.MainWindowControls.ControlPanelControls;
-using WallpaperGenerator.Utilities.DataStructures.Trees;
 
 namespace WallpaperGenerator
 {
@@ -45,9 +44,8 @@ namespace WallpaperGenerator
             {
                 FormulaRenderingArguments currentFormulaRenderingArguments = GetCurrentFormulaRenderingArguments();
 
-                TreeNode<Operator> formulaTreeRoot = CreateRandomFormulaTreeRoot();
-                FormulaTree formulaTree = new FormulaTree(formulaTreeRoot);
-
+                FormulaTree formulaTree = CreateRandomFormulaTree();
+                
                 VariableValuesRangesFor2DProjection variableValuesRanges =
                     CreateRandomVariableValuesRangesFor2DProjection(formulaTree.Variables.Length, currentFormulaRenderingArguments);
 
@@ -96,7 +94,7 @@ namespace WallpaperGenerator
             _mainWindow.Show();
         }
 
-        private TreeNode<Operator> CreateRandomFormulaTreeRoot()
+        private FormulaTree CreateRandomFormulaTree()
         {
             int dimensionsCount = (int)_mainWindow.ControlPanel.DimensionsCountSlider.Value;
             int variablesCount = (int)_mainWindow.ControlPanel.VariablesCountSlider.Value;
