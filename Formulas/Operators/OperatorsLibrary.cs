@@ -22,7 +22,6 @@ namespace WallpaperGenerator.Formulas.Operators
         public static readonly Pow3 Pow3= new Pow3();
         public static readonly Sqrt Sqrt = new Sqrt();
         public static readonly Cbrt Cbrt = new Cbrt();
-        public static readonly Log Log = new Log();
         public static readonly Ln Ln = new Ln();
 
         public static IEnumerable<Operator> Arithmetic
@@ -40,7 +39,6 @@ namespace WallpaperGenerator.Formulas.Operators
                 yield return Pow3;
                 yield return Sqrt;
                 yield return Cbrt;
-                //yield return Log;
                 yield return Ln;
             }
         }
@@ -63,10 +61,10 @@ namespace WallpaperGenerator.Formulas.Operators
             {
                 yield return Sin;
                 yield return Cos;
-                //yield return Tan;
+                yield return Tan;
                 yield return Atan;
                 yield return Sinh;
-                //yield return Cosh;
+                yield return Cosh;
                 yield return Tanh;
             }
         }

@@ -64,6 +64,7 @@
     <Compile Include="FormulaTreeGeneration\OperatorGuard.cs" />
     <Compile Include="FormulaTreeGeneration\OperatorGuards.cs" />
     <Compile Include="FormulaTreeGeneration\OperatorsAndOperandsConstantAcceptanceRules.cs" />
+    <Compile Include="FormulaTreeGenerator2.cs" />
     <Compile Include="Operators\Arithmetic\Abs.cs" />
     <Compile Include="Operators\Arithmetic\Cbrt.cs" />
     <Compile Include="Operators\Arithmetic\Pow3.cs" />
@@ -71,7 +72,6 @@
     <Compile Include="Operators\Arithmetic\Minus.cs" />
     <Compile Include="Operators\Arithmetic\Sqrt.cs" />
     <Compile Include="Operators\Arithmetic\Ln.cs" />
-    <Compile Include="Operators\Arithmetic\Log.cs" />
     <Compile Include="Operators\Arithmetic\Div.cs" />
     <Compile Include="Operators\Arithmetic\Mod.cs" />
     <Compile Include="Operators\Arithmetic\Pow.cs" />

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using MbUnit.Framework;
+using WallpaperGenerator.Utilities.DataStructures.Collections;
 using WallpaperGenerator.Utilities.FormalGrammar;
 using WallpaperGenerator.Utilities.FormalGrammar.RuleSelectors;
 using WallpaperGenerator.Utilities.FormalGrammar.Rules;
@@ -8,29 +9,30 @@ using WallpaperGenerator.Utilities.FormalGrammar.Rules;
 namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
 {
     [TestFixture]
-    public class SequenceGeneratorTests
+    public class GrammarTests
     {
         [RowTest]
         [Row("A0", "x")]
         [Row("A1", "sin atan sin sum x y")]
         [Row("A2", "sum x y")]
         [Row("Inf", "sum sum sum sum sum sum sum sum sum sum")]
-        public void TestGenerate(string startSymbol, string expectedSequence)
+        public void TestGenerateSequence(string startSymbol, string expectedSequence)
         {
-            SymbolsSet<string> symbols = new SymbolsSet<string>(new []
-            {
-                new Symbol<string>("sin", "sin"),
-                new Symbol<string>("atan", "atan"),
-                new Symbol<string>("sum", "sum"),
-                new Symbol<string>("mul", "mul"),
-                new Symbol<string>("x", "x"),
-                new Symbol<string>("y", "y"),
-                new Symbol<string>("3.14", "3.14"),
-                new Symbol<string>("A0"),
-                new Symbol<string>("A1"),
-                new Symbol<string>("A2"),
-                new Symbol<string>("Inf")
-            });
+            KeyedSet<string, Symbol<string>> symbols = new KeyedSet<string, Symbol<string>>(s => s.Name,
+                new []
+                {
+                    new Symbol<string>("sin", "sin"),
+                    new Symbol<string>("atan", "atan"),
+                    new Symbol<string>("sum", "sum"),
+                    new Symbol<string>("mul", "mul"),
+                    new Symbol<string>("x", "x"),
+                    new Symbol<string>("y", "y"),
+                    new Symbol<string>("3.14", "3.14"),
+                    new Symbol<string>("A0"),
+                    new Symbol<string>("A1"),
+                    new Symbol<string>("A2"),
+                    new Symbol<string>("Inf")
+                });
 
             Rule<string>[] rules = new []
             {
@@ -63,10 +65,8 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
                     })
             };
 
-            Grammar<string> grammar = new Grammar<string>(symbols, rules);
-            SequenceGenerator<string> sequenceGenerator = new SequenceGenerator<string>(grammar, startSymbol);
-
-            IEnumerable<string> sequence = sequenceGenerator.Take(10);
+            Grammar<string> grammar = new Grammar<string>(rules);
+            IEnumerable<string> sequence = grammar.GenerateSequence(startSymbol).Take(10);
             Assert.AreEqual(expectedSequence, string.Join(" ", sequence.ToArray()));
         }
 
@@ -75,19 +75,20 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
         [Row(5, "1 2 1 2 0 0 1 2 0 0")]
         public void TestGenerateTree(int treeDepth, string expectedSequenceString)
         {
-            SymbolsSet<string> symbols = new SymbolsSet<string>(new[]
-            {
-                new Symbol<string>("0", "0"),
-                new Symbol<string>("1", "1"),
-                new Symbol<string>("2", "2"),
-                new Symbol<string>("Val0"),
-                new Symbol<string>("Val1"),
-                new Symbol<string>("Val2"),
-                new Symbol<string>("Node0"),
-                new Symbol<string>("Node1"),
-                new Symbol<string>("Node2"),
-                new Symbol<string>("Node")
-            });
+            KeyedSet<string, Symbol<string>> symbols = new KeyedSet<string, Symbol<string>>(s => s.Name,
+                new[]
+                {
+                    new Symbol<string>("0", "0"),
+                    new Symbol<string>("1", "1"),
+                    new Symbol<string>("2", "2"),
+                    new Symbol<string>("Val0"),
+                    new Symbol<string>("Val1"),
+                    new Symbol<string>("Val2"),
+                    new Symbol<string>("Node0"),
+                    new Symbol<string>("Node1"),
+                    new Symbol<string>("Node2"),
+                    new Symbol<string>("Node")
+                });
             
             Rule<string>[] rules = new[]
             {
@@ -114,10 +115,8 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
                     new[] {symbols["Node0"], symbols["Node1"], symbols["Node2"]})
             };
 
-            Grammar<string> grammar = new Grammar<string>(symbols, rules);
-            SequenceGenerator<string> sequenceGenerator = new SequenceGenerator<string>(grammar, "Node");
-
-            IEnumerable<string> sequence = sequenceGenerator.AsEnumerable();
+            Grammar<string> grammar = new Grammar<string>(rules);
+            IEnumerable<string> sequence = grammar.GenerateSequence("Node").AsEnumerable();
             Assert.AreEqual(expectedSequenceString, string.Join(" ", sequence.ToArray()));
         }
     }

@@ -56,6 +56,7 @@
   <ItemGroup>
     <Compile Include="DataStructures\Collections\CircularEnumeration.cs" />
     <Compile Include="DataStructures\Collections\CircularEnumerator.cs" />
+    <Compile Include="DataStructures\Collections\KeyedSet.cs" />
     <Compile Include="DataStructures\Trees\TraversalOrder.cs" />
     <Compile Include="DataStructures\Trees\TreeNodeInfo.cs" />
     <Compile Include="DataStructures\Trees\Tree.cs" />
@@ -72,9 +73,7 @@
     <Compile Include="FormalGrammar\RuleSelector.cs" />
     <Compile Include="FormalGrammar\RuleSelectors\CircularRuleSelector.cs" />
     <Compile Include="FormalGrammar\RuleSelectors\RandomRuleSelector.cs" />
-    <Compile Include="FormalGrammar\SequenceGenerator.cs" />
     <Compile Include="FormalGrammar\Symbol.cs" />
-    <Compile Include="FormalGrammar\SymbolsSet.cs" />
     <Compile Include="MathUtilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueueExtensions.cs" />
