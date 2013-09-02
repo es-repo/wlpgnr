@@ -9,6 +9,10 @@ namespace WallpaperGenerator.Utilities.FormalGrammar.Rules
     {
         private readonly RuleSelector<T> _ruleSelector;
 
+        public OrRule(string from, Func<IEnumerable<Rule<T>>, RuleSelector<T>> createRuleSelector, params Rule<T>[] rules)
+            : this(new Symbol<T>(from), createRuleSelector, rules)
+        {}
+
         public OrRule(Symbol<T> from, Func<IEnumerable<Rule<T>>, RuleSelector<T>> createRuleSelector, params Rule<T>[] rules)
             : base(from, rules)
         {
@@ -20,23 +24,43 @@ namespace WallpaperGenerator.Utilities.FormalGrammar.Rules
             _ruleSelector = createRuleSelector(rules);
         }
 
+        public OrRule(string from, params Rule<T>[] rules)
+            : this(new Symbol<T>(from), rules)
+        {
+        }
+
         public OrRule(Symbol<T> from, params Rule<T>[] rules)
             : this(from, null, rules)
         {
         }
 
         public OrRule(Func<IEnumerable<Rule<T>>, RuleSelector<T>> createRuleSelector, params Rule<T>[] rules)
-            : this(null, createRuleSelector, rules)
+            : this((Symbol<T>)null, createRuleSelector, rules)
         {
         }
 
         public OrRule(params Rule<T>[] rules)
-            : this(null, null, rules)
+            : this((Symbol<T>)null, null, rules)
+        {
+        }
+
+        public OrRule(string from, Func<IEnumerable<Rule<T>>, RuleSelector<T>> createRuleSelector, IEnumerable<Symbol<T>> to)
+            : this(new Symbol<T>(from), createRuleSelector, to)
         {
         }
 
         public OrRule(Symbol<T> from, Func<IEnumerable<Rule<T>>, RuleSelector<T>> createRuleSelector, IEnumerable<Symbol<T>> to)
             : this(from, createRuleSelector, to.Select(s => new Rule<T>(new [] { s })).ToArray())
+        {
+        }
+
+        public OrRule(string from, IEnumerable<T> toTerminalsOnly)
+            : this(from, toTerminalsOnly.Select(v => new Symbol<T>(v.ToString(), v)))
+        {
+        }
+
+        public OrRule(string from, IEnumerable<Symbol<T>> to)
+            : this(new Symbol<T>(from), to)
         {
         }
 
@@ -46,12 +70,17 @@ namespace WallpaperGenerator.Utilities.FormalGrammar.Rules
         }
 
         public OrRule(Func<IEnumerable<Rule<T>>, RuleSelector<T>> createRuleSelector, IEnumerable<Symbol<T>> to)
-            : this(null, createRuleSelector, to.Select(s => new Rule<T>(new []{ s })).ToArray())
+            : this((Symbol<T>)null, createRuleSelector, to.Select(s => new Rule<T>(new []{ s })).ToArray())
+        {
+        }
+
+        public OrRule(IEnumerable<T> toTerminalsOnly)
+            : this(toTerminalsOnly.Select(v => new Symbol<T>(v.ToString(), v)))
         {
         }
 
         public OrRule(IEnumerable<Symbol<T>> to)
-            : this(null, null, to)
+            : this((Symbol<T>)null, null, to)
         {
         }
 

@@ -12,9 +12,7 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
         [Test]
         public void TestProduce()
         {
-            Rule<string> rule = new Rule<string>(new Symbol<string>("A"),
-                new[] { new Symbol<string>("a", "a"), new Symbol<string>("b", "b"), new Symbol<string>("c", "c") });
-
+            Rule<string> rule = new Rule<string>("A", new[] { "a", "b", "c" });
             IEnumerable<Symbol<string>> to = rule.Produce();
             string[] sequence = to.Select(s => s.Value).ToArray();
             string[] expectedSequence = new [] { "a", "b", "c"};
@@ -24,7 +22,7 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
         [Test]
         public void TestApplyWithSpecificFunc()
         {
-            Rule<int> rule = new Rule<int>(new Symbol<int>("A"), 
+            Rule<int> rule = new Rule<int>("A", 
                 () => Enumerable.Repeat(0, 5).Select((e, i) => (i * 2)).Select(v => new Symbol<int>("a", v)));
 
             IEnumerable<Symbol<int>> to = rule.Produce();

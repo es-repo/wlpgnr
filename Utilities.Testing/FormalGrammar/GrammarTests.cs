@@ -25,9 +25,6 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
                     new Symbol<string>("atan", "atan"),
                     new Symbol<string>("sum", "sum"),
                     new Symbol<string>("mul", "mul"),
-                    new Symbol<string>("x", "x"),
-                    new Symbol<string>("y", "y"),
-                    new Symbol<string>("3.14", "3.14"),
                     new Symbol<string>("A0"),
                     new Symbol<string>("A1"),
                     new Symbol<string>("A2"),
@@ -37,11 +34,10 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
             Rule<string>[] rules = new []
             {
                 // A0 -> x|y
-                new OrRule<string>(symbols["A0"], 
-                    new [] { symbols["x"], symbols["y"] }),
+                new OrRule<string>("A0", new [] { "x", "y" }),
                    
                 // A1 -> (sin A1)|(atan A1)|(sin A2)|(atan A2)
-                new OrRule<string>(symbols["A1"], 
+                new OrRule<string>("A1", 
                     new [] 
                     { 
                         new Rule<string>(new []{ symbols["sin"], symbols["A1"] }),
@@ -51,14 +47,14 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
                     }),
                     
                 // A2 -> sum A0 A0
-                new Rule<string>(symbols["A2"], 
+                new Rule<string>("A2", 
                     new [] 
                     { 
                         symbols["sum"], symbols["A0"], symbols["A0"] 
                     }),
 
                 // Inf -> sum Inf
-                new Rule<string>(symbols["Inf"], 
+                new Rule<string>("Inf", 
                     new [] 
                     { 
                         symbols["sum"], symbols["Inf"] 
@@ -78,9 +74,6 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
             KeyedSet<string, Symbol<string>> symbols = new KeyedSet<string, Symbol<string>>(s => s.Name,
                 new[]
                 {
-                    new Symbol<string>("0", "0"),
-                    new Symbol<string>("1", "1"),
-                    new Symbol<string>("2", "2"),
                     new Symbol<string>("Val0"),
                     new Symbol<string>("Val1"),
                     new Symbol<string>("Val2"),
@@ -93,25 +86,25 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
             Rule<string>[] rules = new[]
             {
                 // Val0 -> 0
-                new Rule<string>(symbols["Val0"], new [] { symbols["0"] }),
+                new Rule<string>("Val0", new [] { "0" }),
 
                 // Val1 -> 1
-                new Rule<string>(symbols["Val1"], new [] { symbols["1"] }),
+                new Rule<string>("Val1", new [] { "1" }),
 
                 // Val2 -> 2
-                new Rule<string>(symbols["Val2"], new [] { symbols["2"] }),
+                new Rule<string>("Val2", new [] { "2" }),
                    
                 // Node0 -> Val0
-                new Rule<string>(symbols["Node0"], new [] { symbols["Val0"] }),
+                new Rule<string>("Node0", new [] { symbols["Val0"] }),
 
                 // Node1 -> Val1 Node
-                new Rule<string>(symbols["Node1"], new [] { symbols["Val1"], symbols["Node"] }),
+                new Rule<string>("Node1", new [] { symbols["Val1"], symbols["Node"] }),
 
                 // Node2 -> Val2 Node Node
-                new Rule<string>(symbols["Node2"], new [] { symbols["Val2"], symbols["Node"], symbols["Node"] }),
+                new Rule<string>("Node2", new [] { symbols["Val2"], symbols["Node"], symbols["Node"] }),
 
                 // Node -> Node0|Node1|Node2
-                new OrRule<string>(symbols["Node"], rs => new TreeGenerationRuleSelector<string>(treeDepth, rs),
+                new OrRule<string>("Node", rs => new TreeGenerationRuleSelector<string>(treeDepth, rs),
                     new[] {symbols["Node0"], symbols["Node1"], symbols["Node2"]})
             };
 

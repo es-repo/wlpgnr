@@ -31,7 +31,7 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar.RuleSelectors
             });
             
             // Node -> Node0|Node1|Node2
-            OrRule<string> nodeProducingRule = new OrRule<string>(symbols["Node"],
+            OrRule<string> nodeProducingRule = new OrRule<string>("Node",
                 new[] {symbols["Node0"], symbols["Node1"], symbols["Node2"]});
 
             TreeGenerationRuleSelector<string> ruleSelector = 
@@ -40,7 +40,7 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar.RuleSelectors
             IEnumerable<Rule<string>> rules = ruleSelector.Take(expectedProducedSymbols.Length);
 
             IEnumerable<Rule<string>> expectedRules = 
-                expectedProducedSymbols.Select(s => nodeProducingRule.Rules.First(r => r.Produce().First()  == symbols[s]));
+                expectedProducedSymbols.Select(s => nodeProducingRule.Rules.First(r => Equals(r.Produce().First(), symbols[s])));
 
             CollectionAssert.AreEqual(expectedRules.ToArray(), rules.ToArray());
         }
