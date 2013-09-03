@@ -54,8 +54,15 @@ namespace WallpaperGenerator.Utilities.FormalGrammar.Rules
         {
         }
 
-        public OrRule(string from, IEnumerable<T> toTerminalsOnly)
+// ReSharper disable UnusedParameter.Local
+        public OrRule(string from, int terminalsOnlyMarker, IEnumerable<T> toTerminalsOnly)
+// ReSharper restore UnusedParameter.Local
             : this(from, toTerminalsOnly.Select(v => new Symbol<T>(v.ToString(), v)))
+        {
+        }
+
+        public OrRule(string from, IEnumerable<string> toNonTerminalsOnly)
+            : this(from, toNonTerminalsOnly.Select(v => new Symbol<T>(v)))
         {
         }
 
@@ -74,8 +81,15 @@ namespace WallpaperGenerator.Utilities.FormalGrammar.Rules
         {
         }
 
-        public OrRule(IEnumerable<T> toTerminalsOnly)
+// ReSharper disable UnusedParameter.Local
+        public OrRule(int terminalsOnlyMarker, IEnumerable<T> toTerminalsOnly)
+// ReSharper restore UnusedParameter.Local
             : this(toTerminalsOnly.Select(v => new Symbol<T>(v.ToString(), v)))
+        {
+        }
+
+        public OrRule(IEnumerable<string> toNonTerminalsOnly)
+            : this(toNonTerminalsOnly.Select(v => new Symbol<T>(v)))
         {
         }
 

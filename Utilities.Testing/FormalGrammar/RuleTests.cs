@@ -12,7 +12,7 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
         [Test]
         public void TestProduce()
         {
-            Rule<string> rule = new Rule<string>("A", new[] { "a", "b", "c" });
+            Rule<string> rule = new Rule<string>("A", 0, new [] {"a", "b", "c"} );
             IEnumerable<Symbol<string>> to = rule.Produce();
             string[] sequence = to.Select(s => s.Value).ToArray();
             string[] expectedSequence = new [] { "a", "b", "c"};

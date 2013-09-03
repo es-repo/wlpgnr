@@ -21,6 +21,8 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
             KeyedSet<string, Symbol<string>> symbols = new KeyedSet<string, Symbol<string>>(s => s.Name,
                 new []
                 {
+                    new Symbol<string>("x", "x"),
+                    new Symbol<string>("y", "y"),
                     new Symbol<string>("sin", "sin"),
                     new Symbol<string>("atan", "atan"),
                     new Symbol<string>("sum", "sum"),
@@ -34,7 +36,7 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
             Rule<string>[] rules = new []
             {
                 // A0 -> x|y
-                new OrRule<string>("A0", new [] { "x", "y" }),
+                new OrRule<string>("A0", new [] { symbols["x"], symbols["y"] }),
                    
                 // A1 -> (sin A1)|(atan A1)|(sin A2)|(atan A2)
                 new OrRule<string>("A1", 
@@ -86,13 +88,13 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
             Rule<string>[] rules = new[]
             {
                 // Val0 -> 0
-                new Rule<string>("Val0", new [] { "0" }),
+                new Rule<string>("Val0", 0, new [] { "0" }),
 
                 // Val1 -> 1
-                new Rule<string>("Val1", new [] { "1" }),
+                new Rule<string>("Val1", 0, new [] { "1" }),
 
                 // Val2 -> 2
-                new Rule<string>("Val2", new [] { "2" }),
+                new Rule<string>("Val2", 0, new [] { "2" }),
                    
                 // Node0 -> Val0
                 new Rule<string>("Node0", new [] { symbols["Val0"] }),

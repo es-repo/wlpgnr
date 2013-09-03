@@ -47,8 +47,8 @@ namespace WallpaperGenerator.Utilities.FormalGrammar
                 else
                 {
                     Rule<T> rule = GetRules(currentSymbol).First();
-                    IEnumerable<Symbol<T>> ruleGeneratedSymbols = rule.Produce();
-                    foreach (Symbol<T> symbol in ruleGeneratedSymbols.Reverse())
+                    IEnumerable<Symbol<T>> producedSymbols = rule.Produce();
+                    foreach (Symbol<T> symbol in producedSymbols.Reverse())
                     {
                         stack.Push(symbol);
                     }

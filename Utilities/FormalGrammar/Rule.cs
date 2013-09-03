@@ -26,8 +26,15 @@ namespace WallpaperGenerator.Utilities.FormalGrammar
             _produceFunc = produceFunc;
         }
 
-        public Rule(string from, IEnumerable<T> toTerminalsOnly)
+// ReSharper disable UnusedParameter.Local
+        public Rule(string from, int terminalsOnlyMarker, IEnumerable<T> toTerminalsOnly)
+// ReSharper restore UnusedParameter.Local
             : this(new Symbol<T>(from), toTerminalsOnly.Select(v => new Symbol<T>(v.ToString(), v)))
+        {
+        }
+
+        public Rule(string from, IEnumerable<string> toNonTerminalsOnly)
+            : this(new Symbol<T>(from), toNonTerminalsOnly.Select(v => new Symbol<T>(v)))
         {
         }
 
@@ -41,8 +48,15 @@ namespace WallpaperGenerator.Utilities.FormalGrammar
         {
         }
 
-        public Rule(IEnumerable<T> toTerminalsOnly)
+// ReSharper disable UnusedParameter.Local
+        public Rule(int terminalsOnlyMarker, IEnumerable<T> toTerminalsOnly)
+// ReSharper restore UnusedParameter.Local
             : this(toTerminalsOnly.Select(v => new Symbol<T>(v.ToString(), v)))
+        {
+        }
+
+        public Rule(IEnumerable<string> toNonTerminalsOnly)
+            : this(toNonTerminalsOnly.Select(v => new Symbol<T>(v)))
         {
         }
 
