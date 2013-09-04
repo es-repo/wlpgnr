@@ -17,7 +17,7 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
         [Row("Inf", "sum sum sum sum sum sum sum sum sum sum")]
         public void TestGenerateSequence(string startSymbol, string expectedSequence)
         {
-            SymbolsSet<string> symbols = new SymbolsSet<string>(new[]
+            SymbolsSet<string> s = new SymbolsSet<string>(new[]
                 {
                     new Symbol<string>("x", "x"),
                     new Symbol<string>("y", "y"),
@@ -34,30 +34,30 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
             Rule<string>[] rules = new []
             {
                 // A0 -> x|y
-                new OrRule<string>("A0", new [] { symbols["x"], symbols["y"] }),
+                new OrRule<string>(s["A0"], new [] { s["x"], s["y"] }),
                    
                 // A1 -> (sin A1)|(atan A1)|(sin A2)|(atan A2)
-                new OrRule<string>("A1", 
+                new OrRule<string>(s["A1"], 
                     new [] 
                     { 
-                        new Rule<string>(new []{ symbols["sin"], symbols["A1"] }),
-                        new Rule<string>(new []{ symbols["atan"], symbols["A1"] }),
-                        new Rule<string>(new []{ symbols["sin"], symbols["A2"] }),
-                        new Rule<string>(new []{ symbols["atan"], symbols["A2"] })
+                        new Rule<string>(new []{ s["sin"], s["A1"] }),
+                        new Rule<string>(new []{ s["atan"], s["A1"] }),
+                        new Rule<string>(new []{ s["sin"], s["A2"] }),
+                        new Rule<string>(new []{ s["atan"], s["A2"] })
                     }),
                     
                 // A2 -> sum A0 A0
-                new Rule<string>("A2", 
+                new Rule<string>(s["A2"], 
                     new [] 
                     { 
-                        symbols["sum"], symbols["A0"], symbols["A0"] 
+                        s["sum"], s["A0"], s["A0"] 
                     }),
 
                 // Inf -> sum Inf
-                new Rule<string>("Inf", 
+                new Rule<string>(s["Inf"], 
                     new [] 
                     { 
-                        symbols["sum"], symbols["Inf"] 
+                        s["sum"], s["Inf"] 
                     })
             };
 
@@ -71,8 +71,11 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
         [Row(5, "1 2 1 2 0 0 1 2 0 0")]
         public void TestGenerateTree(int treeDepth, string expectedSequenceString)
         {
-            SymbolsSet<string> symbols = new SymbolsSet<string>(new[]
+            SymbolsSet<string> s = new SymbolsSet<string>(new[]
                 {
+                    new Symbol<string>("0", "0"),
+                    new Symbol<string>("1", "1"),
+                    new Symbol<string>("2", "2"),
                     new Symbol<string>("Val0"),
                     new Symbol<string>("Val1"),
                     new Symbol<string>("Val2"),
@@ -85,26 +88,26 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
             Rule<string>[] rules = new[]
             {
                 // Val0 -> 0
-                new Rule<string>("Val0", 0, new [] { "0" }),
+                new Rule<string>(s["Val0"], new [] { s["0"] }),
 
                 // Val1 -> 1
-                new Rule<string>("Val1", 0, new [] { "1" }),
+                new Rule<string>(s["Val1"], new [] { s["1"] }),
 
                 // Val2 -> 2
-                new Rule<string>("Val2", 0, new [] { "2" }),
+                new Rule<string>(s["Val2"], new [] { s["2"] }),
                    
                 // Node0 -> Val0
-                new Rule<string>("Node0", new [] { symbols["Val0"] }),
+                new Rule<string>(s["Node0"], new [] { s["Val0"] }),
 
                 // Node1 -> Val1 Node
-                new Rule<string>("Node1", new [] { symbols["Val1"], symbols["Node"] }),
+                new Rule<string>(s["Node1"], new [] { s["Val1"], s["Node"] }),
 
                 // Node2 -> Val2 Node Node
-                new Rule<string>("Node2", new [] { symbols["Val2"], symbols["Node"], symbols["Node"] }),
+                new Rule<string>(s["Node2"], new [] { s["Val2"], s["Node"], s["Node"] }),
 
                 // Node -> Node0|Node1|Node2
-                new OrRule<string>("Node", rs => new TreeGenerationRuleSelector<string>(treeDepth, rs),
-                    new[] {symbols["Node0"], symbols["Node1"], symbols["Node2"]})
+                new OrRule<string>(s["Node"], rs => new TreeGenerationRuleSelector<string>(treeDepth, rs),
+                    new[] {s["Node0"], s["Node1"], s["Node2"]})
             };
 
             Grammar<string> grammar = new Grammar<string>(rules);

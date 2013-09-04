@@ -20,7 +20,7 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar.RuleSelectors
         [Row(5, new[] { "Node1", "Node2", "Node1", "Node2", "Node0", "Node0", "Node1", "Node2", "Node0", "Node0" })]
         public void Test(int treeDepth, string[] expectedProducedSymbols)
         {
-            SymbolsSet<string> symbols = new SymbolsSet<string>(new []
+            SymbolsSet<string> s = new SymbolsSet<string>(new []
             {
                 new Symbol<string>("Node0"),
                 new Symbol<string>("Node1"),
@@ -29,8 +29,8 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar.RuleSelectors
             });
             
             // Node -> Node0|Node1|Node2
-            OrRule<string> nodeProducingRule = new OrRule<string>("Node",
-                new[] {symbols["Node0"], symbols["Node1"], symbols["Node2"]});
+            OrRule<string> nodeProducingRule = new OrRule<string>(s["Node"],
+                new[] {s["Node0"], s["Node1"], s["Node2"]});
 
             TreeGenerationRuleSelector<string> ruleSelector = 
                 new TreeGenerationRuleSelector<string>(treeDepth, nodeProducingRule.Rules);
@@ -38,7 +38,7 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar.RuleSelectors
             IEnumerable<Rule<string>> rules = ruleSelector.Take(expectedProducedSymbols.Length);
 
             IEnumerable<Rule<string>> expectedRules = 
-                expectedProducedSymbols.Select(s => nodeProducingRule.Rules.First(r => Equals(r.Produce().First(), symbols[s])));
+                expectedProducedSymbols.Select(sb => nodeProducingRule.Rules.First(r => Equals(r.Produce().First(), s[sb])));
 
             CollectionAssert.AreEqual(expectedRules.ToArray(), rules.ToArray());
         }

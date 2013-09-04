@@ -11,16 +11,16 @@ namespace WallpaperGenerator.Utilities.FormalGrammar
         public bool IsTerminal { get; private set; }
 
         public Symbol(string name)
-            : this(name, default(T), false)
+            : this(default(T), name, false)
         {
         }
 
-        public Symbol(string name, T value)
-            : this(name, value, true)
+        public Symbol(T value, string name = "")
+            : this(value, name, true)
         {
         }
 
-        private Symbol(string name, T value, bool isTerminal)
+        private Symbol(T value, string name, bool isTerminal)
         {
             Name = name;
             Value = value;

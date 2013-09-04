@@ -9,10 +9,6 @@ namespace WallpaperGenerator.Utilities.FormalGrammar.Rules
     {
         private readonly RuleSelector<T> _ruleSelector;
 
-        public OrRule(string from, Func<IEnumerable<Rule<T>>, RuleSelector<T>> createRuleSelector, params Rule<T>[] rules)
-            : this(new Symbol<T>(from), createRuleSelector, rules)
-        {}
-
         public OrRule(Symbol<T> from, Func<IEnumerable<Rule<T>>, RuleSelector<T>> createRuleSelector, params Rule<T>[] rules)
             : base(from, rules)
         {
@@ -24,50 +20,23 @@ namespace WallpaperGenerator.Utilities.FormalGrammar.Rules
             _ruleSelector = createRuleSelector(rules);
         }
 
-        public OrRule(string from, params Rule<T>[] rules)
-            : this(new Symbol<T>(from), rules)
-        {
-        }
-
         public OrRule(Symbol<T> from, params Rule<T>[] rules)
             : this(from, null, rules)
         {
         }
 
         public OrRule(Func<IEnumerable<Rule<T>>, RuleSelector<T>> createRuleSelector, params Rule<T>[] rules)
-            : this((Symbol<T>)null, createRuleSelector, rules)
+            : this(null, createRuleSelector, rules)
         {
         }
 
         public OrRule(params Rule<T>[] rules)
-            : this((Symbol<T>)null, null, rules)
-        {
-        }
-
-        public OrRule(string from, Func<IEnumerable<Rule<T>>, RuleSelector<T>> createRuleSelector, IEnumerable<Symbol<T>> to)
-            : this(new Symbol<T>(from), createRuleSelector, to)
+            : this(null, null, rules)
         {
         }
 
         public OrRule(Symbol<T> from, Func<IEnumerable<Rule<T>>, RuleSelector<T>> createRuleSelector, IEnumerable<Symbol<T>> to)
             : this(from, createRuleSelector, to.Select(s => new Rule<T>(new [] { s })).ToArray())
-        {
-        }
-
-// ReSharper disable UnusedParameter.Local
-        public OrRule(string from, int terminalsOnlyMarker, IEnumerable<T> toTerminalsOnly)
-// ReSharper restore UnusedParameter.Local
-            : this(from, toTerminalsOnly.Select(v => new Symbol<T>(v.ToString(), v)))
-        {
-        }
-
-        public OrRule(string from, IEnumerable<string> toNonTerminalsOnly)
-            : this(from, toNonTerminalsOnly.Select(v => new Symbol<T>(v)))
-        {
-        }
-
-        public OrRule(string from, IEnumerable<Symbol<T>> to)
-            : this(new Symbol<T>(from), to)
         {
         }
 
@@ -77,24 +46,12 @@ namespace WallpaperGenerator.Utilities.FormalGrammar.Rules
         }
 
         public OrRule(Func<IEnumerable<Rule<T>>, RuleSelector<T>> createRuleSelector, IEnumerable<Symbol<T>> to)
-            : this((Symbol<T>)null, createRuleSelector, to.Select(s => new Rule<T>(new []{ s })).ToArray())
-        {
-        }
-
-// ReSharper disable UnusedParameter.Local
-        public OrRule(int terminalsOnlyMarker, IEnumerable<T> toTerminalsOnly)
-// ReSharper restore UnusedParameter.Local
-            : this(toTerminalsOnly.Select(v => new Symbol<T>(v.ToString(), v)))
-        {
-        }
-
-        public OrRule(IEnumerable<string> toNonTerminalsOnly)
-            : this(toNonTerminalsOnly.Select(v => new Symbol<T>(v)))
+            : this(null, createRuleSelector, to.Select(s => new Rule<T>(new []{ s })).ToArray())
         {
         }
 
         public OrRule(IEnumerable<Symbol<T>> to)
-            : this((Symbol<T>)null, null, to)
+            : this(null, null, to)
         {
         }
 
