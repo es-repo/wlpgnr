@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Collections.Generic;
 using MbUnit.Framework;
-using WallpaperGenerator.Utilities.DataStructures.Collections;
 using WallpaperGenerator.Utilities.FormalGrammar;
 using WallpaperGenerator.Utilities.FormalGrammar.RuleSelectors;
 using WallpaperGenerator.Utilities.FormalGrammar.Rules;
@@ -21,8 +20,7 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar.RuleSelectors
         [Row(5, new[] { "Node1", "Node2", "Node1", "Node2", "Node0", "Node0", "Node1", "Node2", "Node0", "Node0" })]
         public void Test(int treeDepth, string[] expectedProducedSymbols)
         {
-            KeyedSet<string, Symbol<string>> symbols = new KeyedSet<string, Symbol<string>>(s => s.Name,
-                new[]
+            SymbolsSet<string> symbols = new SymbolsSet<string>(new []
             {
                 new Symbol<string>("Node0"),
                 new Symbol<string>("Node1"),

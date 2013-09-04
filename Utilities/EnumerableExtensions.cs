@@ -6,6 +6,12 @@ namespace WallpaperGenerator.Utilities
 {
     public static class EnumerableExtensions
     {        
+        public static void ForEach<T>(this IEnumerable<T> items, Action<T> action)
+        {
+            foreach (T i in items)
+                action(i);
+        }
+
         public static IEnumerable<T> Repeat<T>(Func<T> func, int? count = null)
         {
             return Repeat(i => func(), count);

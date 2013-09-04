@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using MbUnit.Framework;
-using WallpaperGenerator.Utilities.DataStructures.Collections;
 using WallpaperGenerator.Utilities.FormalGrammar;
 using WallpaperGenerator.Utilities.FormalGrammar.RuleSelectors;
 using WallpaperGenerator.Utilities.FormalGrammar.Rules;
@@ -18,8 +17,7 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
         [Row("Inf", "sum sum sum sum sum sum sum sum sum sum")]
         public void TestGenerateSequence(string startSymbol, string expectedSequence)
         {
-            KeyedSet<string, Symbol<string>> symbols = new KeyedSet<string, Symbol<string>>(s => s.Name,
-                new []
+            SymbolsSet<string> symbols = new SymbolsSet<string>(new[]
                 {
                     new Symbol<string>("x", "x"),
                     new Symbol<string>("y", "y"),
@@ -73,8 +71,7 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
         [Row(5, "1 2 1 2 0 0 1 2 0 0")]
         public void TestGenerateTree(int treeDepth, string expectedSequenceString)
         {
-            KeyedSet<string, Symbol<string>> symbols = new KeyedSet<string, Symbol<string>>(s => s.Name,
-                new[]
+            SymbolsSet<string> symbols = new SymbolsSet<string>(new[]
                 {
                     new Symbol<string>("Val0"),
                     new Symbol<string>("Val1"),

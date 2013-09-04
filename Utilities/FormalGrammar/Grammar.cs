@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using WallpaperGenerator.Utilities.DataStructures.Collections;
 
 namespace WallpaperGenerator.Utilities.FormalGrammar
 {
     public class Grammar<T>
     {
-        private readonly KeyedSet<string, Symbol<T>> _symbolsSet; 
+        private readonly SymbolsSet<T> _symbolsSet; 
         
         public Rule<T>[] Rules;
 
@@ -14,7 +13,7 @@ namespace WallpaperGenerator.Utilities.FormalGrammar
         {
             Rules = rules;
             IEnumerable<Symbol<T>> symbols = rules.Select(r => r.From);
-            _symbolsSet = new KeyedSet<string, Symbol<T>>(s => s.Name, symbols);
+            _symbolsSet = new SymbolsSet<T>(symbols);
         }
 
         public IEnumerable<Rule<T>> GetRules(Symbol<T> symbol)
