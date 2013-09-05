@@ -55,7 +55,11 @@ namespace WallpaperGenerator.Formulas.FormulaTreeGeneration
                 {
                     OperatorsLibrary.Pow,
                     new OperatorGuards(
-                        null,
+                        /*new[]
+                        {
+                            new FormulaTreeNodeWrapper(OperatorsLibrary.Atan),
+                            new FormulaTreeNodeWrapper(OperatorsLibrary.Tanh)
+                        }*/null,
                         new Dictionary<int, FormulaTreeNodeWrapper[]>
                         {
                             {

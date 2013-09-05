@@ -9,7 +9,7 @@ namespace WallpaperGenerator.Formulas.Operators.Conditionals
             Func<double> op0 = operands[0];
             Func<double> op1 = operands[1];
             Func<double> op2 = operands[2];
-            return () => op0() > 0 ? op2() : op1();
+            return () => op0() > 0 ? op1() : op2();
         }
 
         public override Func<double> Evaluate(params ZeroArityOperator[] operands)
@@ -17,7 +17,7 @@ namespace WallpaperGenerator.Formulas.Operators.Conditionals
             ZeroArityOperator op0 = operands[0];
             ZeroArityOperator op1 = operands[1];
             ZeroArityOperator op2 = operands[2];
-            return () => op0.Value > 0 ? op2.Value : op1.Value;
+            return () => op0.Value > 0 ? op1.Value : op2.Value;
         }
     }
 }

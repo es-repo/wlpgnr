@@ -182,6 +182,12 @@ namespace WallpaperGenerator.Formulas
                     });
         }
 
+        public static FormulaTree Build(IEnumerable<Operator> operators, TraversalOrder nodeValuesOrder = TraversalOrder.DepthFirstPreOrder)
+        {
+            TreeNode<Operator> root = Build(operators, op => op.Arity, nodeValuesOrder);
+            return new FormulaTree(root);
+        }
+
         #endregion
     }
 }

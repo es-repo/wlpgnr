@@ -111,7 +111,7 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
             };
 
             Grammar<string> grammar = new Grammar<string>(rules);
-            IEnumerable<string> sequence = grammar.GenerateSequence("Node").AsEnumerable();
+            IEnumerable<string> sequence = grammar.GenerateSequence("Node");
             Assert.AreEqual(expectedSequenceString, string.Join(" ", sequence.ToArray()));
         }
     }

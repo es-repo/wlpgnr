@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace WallpaperGenerator.Utilities.DataStructures.Collections
 {
@@ -8,6 +9,11 @@ namespace WallpaperGenerator.Utilities.DataStructures.Collections
     {
         private readonly Func<T, K> _getKey;
         private readonly Dictionary<K, T> _set;
+
+        public KeyedSet(Func<T, K> getKey)
+            : this(getKey, Enumerable.Empty<T>())
+        {
+        }
 
         public KeyedSet(Func<T, K> getKey, IEnumerable<T> items)
         {
