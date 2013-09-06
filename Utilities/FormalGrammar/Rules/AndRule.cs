@@ -11,7 +11,7 @@ namespace WallpaperGenerator.Utilities.FormalGrammar.Rules
         }
 
         public AndRule(params Rule<T>[] rules)
-            : this((Symbol<T>)null, rules)
+            : this(null, rules)
         {
         }
 

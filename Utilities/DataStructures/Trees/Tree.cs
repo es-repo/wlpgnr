@@ -31,7 +31,7 @@ namespace WallpaperGenerator.Utilities.DataStructures.Trees
 
         #region Traversal
 
-        public TreeNodeInfo<T>[] Traverse(TraversalOrder order)
+        public TreeNodeInfo<T>[] Traverse(TraversalOrder order = TraversalOrder.DepthFirstPreOrder)
         {
             switch (order)
             {
@@ -66,7 +66,7 @@ namespace WallpaperGenerator.Utilities.DataStructures.Trees
                 (_traversedBredthFirstPreOrder = TraverseBredthFirstPreOrder(Root).ToArray());
         }
 
-        public static IEnumerable<TreeNodeInfo<T>> Traverse(TreeNode<T> root, TraversalOrder order)
+        public static IEnumerable<TreeNodeInfo<T>> Traverse(TreeNode<T> root, TraversalOrder order = TraversalOrder.DepthFirstPreOrder)
         {
             switch (order)
             {

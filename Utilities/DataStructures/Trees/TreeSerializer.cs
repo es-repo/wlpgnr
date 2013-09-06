@@ -13,7 +13,7 @@ namespace WallpaperGenerator.Utilities.DataStructures.Trees
 
         public static string Serialize<T>(TreeNode<T> treeRoot, Func<T, string> valueToString)
         {
-            IEnumerable<TreeNodeInfo<T>> traversedNodes = Tree<T>.Traverse(treeRoot, TraversalOrder.DepthFirstPreOrder);
+            IEnumerable<TreeNodeInfo<T>> traversedNodes = Tree<T>.Traverse(treeRoot);
             IEnumerable<string> serializedNodeValues = traversedNodes.Select(ni => valueToString(ni.Node.Value));
             return string.Join(" ", serializedNodeValues.ToArray());
         }

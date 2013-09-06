@@ -58,13 +58,14 @@
     <Compile Include="DataStructures\Collections\CircularEnumerator.cs" />
     <Compile Include="DataStructures\Collections\KeyedSet.cs" />
     <Compile Include="DataStructures\Trees\TraversalOrder.cs" />
+    <Compile Include="DataStructures\Trees\TreeGenerating\TreeGenerator.cs" />
     <Compile Include="DataStructures\Trees\TreeNodeInfo.cs" />
     <Compile Include="DataStructures\Trees\Tree.cs" />
     <Compile Include="DataStructures\Trees\TreeBuilder.cs" />
     <Compile Include="DataStructures\Trees\TreeNode.cs" />
     <Compile Include="DataStructures\Trees\TreeSerializer.cs" />
     <Compile Include="EnumerableExtensions.cs" />
-    <Compile Include="FormalGrammar\RuleSelectors\TreeGenerationRuleSelector.cs" />
+    <Compile Include="DataStructures\Trees\TreeGenerating\TreeGeneratingRuleSelector.cs" />
     <Compile Include="FormalGrammar\Rules\AndRule.cs" />
     <Compile Include="FormalGrammar\Rules\CompositeRule.cs" />
     <Compile Include="FormalGrammar\Grammar.cs" />

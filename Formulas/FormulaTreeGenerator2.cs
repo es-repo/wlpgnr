@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using WallpaperGenerator.Formulas.Operators;
 using WallpaperGenerator.Utilities;
+using WallpaperGenerator.Utilities.DataStructures.Trees.TreeGenerating;
 using WallpaperGenerator.Utilities.FormalGrammar;
 using WallpaperGenerator.Utilities.FormalGrammar.RuleSelectors;
 using WallpaperGenerator.Utilities.FormalGrammar.Rules;
@@ -136,8 +137,8 @@ namespace WallpaperGenerator.Formulas
                 new Rule<Operator>(s["Node2"],  new[] { s["Op2"], s["Node"], s["Node"] }),
 
                 // Node -> Node0|Node1|Node2
-                new OrRule<Operator>(s["Node"], rs => new TreeGenerationRuleSelector<Operator>(minimalDepth, rs),
-                    new [] { s["Node0"], s["Node1"], s["Node2"] })
+                //new OrRule<Operator>(s["Node"], rs => new TreeGeneratingRuleSelector<Operator>(minimalDepth, rs),
+                //    new [] { s["Node0"], s["Node1"], s["Node2"] })
             };
 
             Grammar<Operator> grammar = new Grammar<Operator>(rules);

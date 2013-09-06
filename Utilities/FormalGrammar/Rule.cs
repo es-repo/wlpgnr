@@ -26,7 +26,7 @@ namespace WallpaperGenerator.Utilities.FormalGrammar
         }
 
         public Rule(IEnumerable<Symbol<T>> to)
-            : this((Symbol<T>)null, to)
+            : this(null, to)
         {
         }
 
