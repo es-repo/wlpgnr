@@ -10,9 +10,17 @@ namespace WallpaperGenerator.Utilities.DataStructures.Trees.TreeGenerating
     {
         private readonly Rule<T> _leafProducingRule; 
         private readonly RuleSelector<T> _nonLeafProducingRulesSelector;
-        private readonly TreeBuilder<T> _treeBuilder;
- 
+        
         public int MinimalTreeDepth { get; private set; }
+
+        public TreeBuilder<T> TreeBuilder { get; set; }
+
+
+        public TreeGeneratingRuleSelector(int minimalTreeDepth, IEnumerable<Rule<T>> nodeProducingRules,
+            Func<IEnumerable<Rule<T>>, RuleSelector<T>> createNonLeafProducingRulesSelector = null)
+            : this(minimalTreeDepth, null, nodeProducingRules, createNonLeafProducingRulesSelector)
+        {
+        }
 
         public TreeGeneratingRuleSelector(int minimalTreeDepth, TreeBuilder<T> treeBuilder, IEnumerable<Rule<T>> nodeProducingRules,
             Func<IEnumerable<Rule<T>>, RuleSelector<T>> createNonLeafProducingRulesSelector = null)
@@ -24,7 +32,7 @@ namespace WallpaperGenerator.Utilities.DataStructures.Trees.TreeGenerating
             }
 
             MinimalTreeDepth = minimalTreeDepth;
-            _treeBuilder = treeBuilder; 
+            TreeBuilder = treeBuilder; 
 
             if (createNonLeafProducingRulesSelector == null)
             {
@@ -38,10 +46,13 @@ namespace WallpaperGenerator.Utilities.DataStructures.Trees.TreeGenerating
 
         public override Rule<T> Next()
         {
-            if (_treeBuilder.IsTreeReady)
+            if (TreeBuilder == null)
+                throw new InvalidOperationException("TreeBuilder is not set.");
+            
+            if (TreeBuilder.IsTreeReady)
                 throw new InvalidOperationException("Tree is already built.");
             
-            bool nextIsLeaf = _treeBuilder.NextAppendingNodeInfo.Depth >= MinimalTreeDepth;
+            bool nextIsLeaf = TreeBuilder.NextAppendingNodeInfo.Depth >= MinimalTreeDepth;
             return nextIsLeaf
                 ? _leafProducingRule 
                 : _nonLeafProducingRulesSelector.Next();

@@ -30,7 +30,6 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees.TreeGenerati
                     new Symbol<string>("Node")
                 });
 
-            TreeBuilder<string> treeBuilder = new TreeBuilder<string>();
             Rule<string>[] rules = new[]
             {
                 // Val0 -> 0
@@ -52,12 +51,12 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees.TreeGenerati
                 new Rule<string>(s["Node2"], new [] { s["Val2"], s["Node"], s["Node"] }),
 
                 // Node -> Node0|Node1|Node2
-                new OrRule<string>(s["Node"], rs => new TreeGeneratingRuleSelector<string>(treeDepth, treeBuilder, rs),
+                new OrRule<string>(s["Node"], rs => new TreeGeneratingRuleSelector<string>(treeDepth, rs),
                     new[] {s["Node0"], s["Node1"], s["Node2"]})
             };
 
             Grammar<string> grammar = new Grammar<string>(rules);
-            TreeNode<string> treeRoot = TreeGenerator.Generate(grammar, "Node", treeBuilder, int.Parse);
+            TreeNode<string> treeRoot = TreeGenerator.Generate(grammar, "Node", int.Parse);
             IEnumerable<string> traversedTree = Tree<string>.Traverse(treeRoot).Select(ni => ni.Node.Value);
             Assert.AreEqual(expectedSequenceString, string.Join(" ", traversedTree.ToArray()));
         }
@@ -104,16 +103,16 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees.TreeGenerati
                 new Rule<string>(s["Node2"], new [] { s["Val2"], s["NodeB"], s["NodeB"] }),
 
                 // NodeA -> Node0|Node2
-                new OrRule<string>(s["NodeA"], rs => new TreeGeneratingRuleSelector<string>(treeDepth, treeBuilder, rs),
+                new OrRule<string>(s["NodeA"], rs => new TreeGeneratingRuleSelector<string>(treeDepth, rs),
                     new[] {s["Node0"], s["Node2"]}),
 
                 // NodeB -> Node0|Node1
-                new OrRule<string>(s["NodeB"], rs => new TreeGeneratingRuleSelector<string>(treeDepth, treeBuilder, rs),
+                new OrRule<string>(s["NodeB"], rs => new TreeGeneratingRuleSelector<string>(treeDepth, rs),
                     new[] {s["Node0"], s["Node1"]})
             };
 
             Grammar<string> grammar = new Grammar<string>(rules);
-            TreeNode<string> treeRoot = TreeGenerator.Generate(grammar, "NodeB", treeBuilder, int.Parse);
+            TreeNode<string> treeRoot = TreeGenerator.Generate(grammar, "NodeB", int.Parse);
             IEnumerable<string> traversedTree = Tree<string>.Traverse(treeRoot).Select(ni => ni.Node.Value);
             Assert.AreEqual(expectedSequenceString, string.Join(" ", traversedTree.ToArray()));
         }
@@ -139,7 +138,6 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees.TreeGenerati
                     new Symbol<string>("NodeB")
                 });
 
-            TreeBuilder<string> treeBuilder = new TreeBuilder<string>();
             Rule<string>[] rules = new[]
             {
                 // Val0 -> 0
@@ -161,16 +159,16 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees.TreeGenerati
                 new Rule<string>(s["Node2"], new [] { s["Val2"], s["NodeB"], s["NodeB"] }),
 
                 // NodeA -> Node0|Node2
-                new OrRule<string>(s["NodeA"], rs => new TreeGeneratingRuleSelector<string>(treeDepth, treeBuilder, rs),
+                new OrRule<string>(s["NodeA"], rs => new TreeGeneratingRuleSelector<string>(treeDepth, rs),
                     new[] {s["Node0"], s["Node2"]}),
 
                 // NodeB -> Node0|Node1
-                new OrRule<string>(s["NodeB"], rs => new TreeGeneratingRuleSelector<string>(treeDepth, treeBuilder, rs),
+                new OrRule<string>(s["NodeB"], rs => new TreeGeneratingRuleSelector<string>(treeDepth, rs),
                     new[] {s["Node0"], s["Node1"]})
             };
 
             Grammar<string> grammar = new Grammar<string>(rules);
-            TreeNode<string> treeRoot = TreeGenerator.Generate(grammar, "NodeB", treeBuilder, int.Parse);
+            TreeNode<string> treeRoot = TreeGenerator.Generate(grammar, "NodeB", int.Parse);
             IEnumerable<string> traversedTree = Tree<string>.Traverse(treeRoot).Select(ni => ni.Node.Value);
             Assert.AreEqual(expectedSequenceString, string.Join(" ", traversedTree.ToArray()));
         }

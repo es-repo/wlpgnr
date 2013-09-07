@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using WallpaperGenerator.Formulas.Operators;
 using WallpaperGenerator.Utilities;
+using WallpaperGenerator.Utilities.DataStructures.Trees;
 using WallpaperGenerator.Utilities.DataStructures.Trees.TreeGenerating;
 using WallpaperGenerator.Utilities.FormalGrammar;
 using WallpaperGenerator.Utilities.FormalGrammar.RuleSelectors;
@@ -142,8 +144,8 @@ namespace WallpaperGenerator.Formulas
             };
 
             Grammar<Operator> grammar = new Grammar<Operator>(rules);
-            IEnumerable<Operator> sequence = grammar.GenerateSequence("Node");
-            return FormulaTree.Build(sequence);
+            TreeNode<Operator> treeRoot = TreeGenerator.Generate(grammar, "OpNode", op => op.Arity);
+            return new FormulaTree(treeRoot);
         }
     }
 }

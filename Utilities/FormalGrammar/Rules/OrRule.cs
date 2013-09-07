@@ -7,7 +7,7 @@ namespace WallpaperGenerator.Utilities.FormalGrammar.Rules
 {
     public class OrRule<T> : CompositeRule<T>
     {
-        private readonly RuleSelector<T> _ruleSelector;
+        public RuleSelector<T> RuleSelector { get; private set; }
 
         public OrRule(Symbol<T> from, Func<IEnumerable<Rule<T>>, RuleSelector<T>> createRuleSelector, params Rule<T>[] rules)
             : base(from, rules)
@@ -17,7 +17,7 @@ namespace WallpaperGenerator.Utilities.FormalGrammar.Rules
                 createRuleSelector = rs => new CircularRuleSelector<T>(rs);
             }
 
-            _ruleSelector = createRuleSelector(rules);
+            RuleSelector = createRuleSelector(rules);
         }
 
         public OrRule(Symbol<T> from, params Rule<T>[] rules)
@@ -57,7 +57,7 @@ namespace WallpaperGenerator.Utilities.FormalGrammar.Rules
 
         public override IEnumerable<Symbol<T>> Produce()
         {
-            Rule<T> rule = _ruleSelector.Next();
+            Rule<T> rule = RuleSelector.Next();
             return rule.Produce();
         }
     }
