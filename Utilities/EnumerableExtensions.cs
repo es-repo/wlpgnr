@@ -70,7 +70,7 @@ namespace WallpaperGenerator.Utilities
             probabilisticRange[probabilisticRange.Length - 1] = 1;
 
             double r = random.NextDouble();
-            int i = probabilisticRange.TakeWhile(p => !(r <= p)).Count();
+            int i = probabilisticRange.TakeWhile(p => r >= p).Count();
             return source.Skip(i).First();
         }
     }

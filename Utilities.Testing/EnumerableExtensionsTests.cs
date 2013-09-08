@@ -18,14 +18,17 @@ namespace WallpaperGenerator.Utilities.Testing
         }
 
         [RowTest]
-        [Row(new[] { 1, 2, 3 }, new[]{0.1, 0.3, 0.6}, new [] {2, 2, 2, 3, 3, 3, 2, 3, 3, 2, 3, 2, 1, 1, 3})]
-        [Row(new[] { 1, 2, 3 }, new[] { 0.1, 0.3, 0.7 }, new []{1}, ExpectedException=typeof(ArgumentException))]
-        [Row(new[] { 1, 2, 3 }, new[] { 0.1, 0.3, 0.3, 0.3}, new []{1}, ExpectedException = typeof(ArgumentException))]
-        public void TestTakeRandomWithProbabilites(int[] source, double[] probabilities, int[] expectedSequence)
+        [Row(new[] { 1, 2, 3 }, new[] {0.1, 0.3, 0.6}, new[] {0.0, 0.1, 0.39, 0.59, 0.99, 0.07}, new [] {1, 2, 2, 3, 3, 1})]
+        [Row(new[] { -1, 0, 1, 2, 3, 4, 5, 6, 7 }, new[] { 0.0, 0.0, 0.3, 0, 0, 0.1, 0.1, 0, 0.5 }, new[] { 0.0, 0.3, 0.0, 0.31, 0.29, 0.4, 0.5, 0.51, 0.7 }, 
+            new[] { 1, 4, 1, 4, 1, 5, 7, 7, 7 })]
+        [Row(new[] { 1, 2, 3 }, new[] { 0.1, 0.3, 0.7 }, new[]{ 0.0 }, new []{0}, ExpectedException=typeof(ArgumentException))]
+        [Row(new[] { 1, 2, 3 }, new[] { 0.1, 0.3, 0.3, 0.3}, new[]{ 0.0 }, new []{0}, ExpectedException = typeof(ArgumentException))]
+        public void TestTakeRandomWithProbabilites(int[] source, double[] probabilities, double[] randomSequence, int[] expectedSequence)
         {
-            Random random = new Random(5);
-            IEnumerable<int> sequence = EnumerableExtensions.Repeat(i => source.TakeRandom(random, probabilities), expectedSequence.Length);
+            Random random = RandomMock.Setup(randomSequence);
+            IEnumerable<int> sequence = EnumerableExtensions.Repeat(i => source.TakeRandom(random, probabilities), expectedSequence.Length).ToArray();
             CollectionAssert.AreEqual(expectedSequence, sequence.ToArray()); 
         }
+
     }
 }
