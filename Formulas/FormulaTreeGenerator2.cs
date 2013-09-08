@@ -13,7 +13,7 @@ using WallpaperGenerator.Utilities.FormalGrammar.Rules;
 
 namespace WallpaperGenerator.Formulas
 {
-    public static class FormulaTreeGenerator2
+    public static class FormulaTreeGenerator2d
     {
         public static FormulaTree CreateRandom(int dimensionsCount, int minimalDepth)
         {
@@ -57,7 +57,6 @@ namespace WallpaperGenerator.Formulas
                 nonTerminalsNames.Add("Node" + a.ToString(CultureInfo.InvariantCulture));
             }
 
-
             IEnumerable<Symbol<Operator>> nonTerminals = nonTerminalsNames.Select(n => new Symbol<Operator>(n));
 
             SymbolsSet<Operator> s = new SymbolsSet<Operator>
@@ -70,33 +69,37 @@ namespace WallpaperGenerator.Formulas
             // C -> c1|c2|...
             // Op0Node -> V|C
 
+            // AbsNode -> abs NoConstOpNode
+            // SqrtNode -> sqrt NoConstOpNode
+            // CqrtNode -> cbrt NoConstOpNode
+            // SinNode -> sin NoConstOpNode
+            // CosNode -> cos NoConstOpNode
+            // AtanNode -> atan NoConstOpNode
+            // TanhNode -> tanh NoConstOpNode
             // InfGuard -> atan|tanh
+            // Pow2Node -> InfGuard pow2 NoConstOpNode
+            // Pow3Node -> InfGuard pow3 NoConstOpNode
+            // LnNode -> InfGuard ln NoConstOpNode
+            // SinhNode -> InfGuard sinh NoConstOpNode
+            // CoshNode -> InfGuard cosh NoConstOpNode
+            // Op1Node -> AbsNode|SqrtNode|CqrtNode|SinNode|CosNode|AtanNode|TanhNode|Pow2Node|Pow3Node|LnNode|SinhNode|CoshNode
 
-            // RegOp1 -> abs|sqrt|cbrt|sin|cos|atan|tanh
-            // RegOp1Node -> RegOp1 NoConstOpNode
-            // InfGuardOp1 -> pow2|pow3|ln|sinh|cosh
-            // InfGuardOp1Node -> InfGuard InfGuardOp1 NoConstOpNode
-            // Op1Node -> RegOp1Node|InfGuardOp1Node
-
-            // RegOp2 -> sum|sub|mul
             // RegOp2Operands -> (OpNode NoConstOpNode)|(NoConstOpNode OpNode)
-            // RegOp2Node -> RegOp2 RegOp2Operands
-            // InfGuardOp2 -> div|pow
-            // InfGuardOp2Node -> InfGuard InfGuardOp2 Op2Operands
-            // SndOpndInfGuardOp2 -> pow
-            // SndOpndInfGuardOp2Node -> SndOpndInfGuardOp2 (NoConstOpNode InfGuard OpNode)|(OpNode InfGuard NoConstOpNode)
-            // NoConstOp2 -> max
-            // NoConstOp2Node -> NoConstOp2 NoConstOpNode NoConstOpNode
+            // SumNode -> sum RegOp2Operands
+            // SubNode -> sub RegOp2Operands
+            // MulNode -> mul RegOp2Operands
+            // DivNode -> InfGuard div RegOp2Operands
+            // PowNode -> InfGuard pow RegOp2Operands
+            // PowAltNode -> pow (NoConstOpNode InfGuard OpNode)|(OpNode InfGuard NoConstOpNode)
+            // MaxNode -> max NoConstOpNode NoConstOpNode
             // ModNode -> mod (NoConstOpNode sum abs OpNode 0.0001)|(OpNode sum abs NoConstOpNode 0.0001)
-            // Op2Node -> RegOp2Node|InfGuardOp1Node|SndOpndInfGuardOp2Node|NoConstOp2Node|ModNode
-            
-            // NoConstOp3 -> ifg0
-            // NoConstOp3Node -> NoConstOp3 NoConstOpNode NoConstOpNode NoConstOpNode
-            // Op3Node -> NoConstOp3Node
-            
-            // NoConstOp4 -> ifg
-            // NoConstOp4Node -> NoConstOp4 NoConstOpNode NoConstOpNode NoConstOpNode NoConstOpNode 
-            // Op4Node -> NoConstOp4Node
+            // Op2Node -> DivNode|PowNode|PowAltNode|MaxNode|ModNode
+
+            // Ifg0Node -> ifg0 NoConstOpNode NoConstOpNode NoConstOpNode
+            // Op3Node -> Ifg0Node
+
+            // IfgNode -> ifg NoConstOpNode NoConstOpNode NoConstOpNode NoConstOpNode 
+            // Op4Node -> IfgNode
 
             // NoConstOpNode -> V|Op1Node|Op2Node|Op3Node|Op4Node
             // OpNode -> Op0Node|Op1Node|Op2Node|Op3Node|Op4Node
