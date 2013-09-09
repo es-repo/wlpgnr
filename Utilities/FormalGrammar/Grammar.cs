@@ -9,9 +9,9 @@ namespace WallpaperGenerator.Utilities.FormalGrammar
         
         public Rule<T>[] Rules;
 
-        public Grammar(Rule<T>[] rules)
+        public Grammar(IEnumerable<Rule<T>> rules)
         {
-            Rules = rules;
+            Rules = rules.ToArray();
             IEnumerable<Symbol<T>> symbols = rules.Select(r => r.From);
             _symbolsSet = new SymbolsSet<T>(symbols);
         }

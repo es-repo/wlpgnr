@@ -20,50 +20,15 @@ namespace WallpaperGenerator.Formulas
             IEnumerable<string> variableNames = EnumerableExtensions.Repeat(i => "x" + i.ToString(CultureInfo.InvariantCulture), dimensionsCount);
             IEnumerable<Operator> variables = variableNames.Select(n => new Variable(n));
             IEnumerable<Operator> operators = OperatorsLibrary.All;
-            
-            //SymbolsSet<Operator> symbols = new SymbolsSet<Operator>(new[]
-            //{
-            //    new Symbol<Operator>( )
-            //});
-
-            return Generate(operators.Concat(variables), minimalDepth);
+            return Generate(operators.Concat(variables), null, minimalDepth);
         }
 
-        public static FormulaTree Generate(IEnumerable<Operator> operators, int minimalDepth)
+        public static FormulaTree Generate(IEnumerable<Operator> operators, Func<double> createConstant, int minimalDepth)
         {
-            if (operators.Count(op => op.Arity == 0) == 0)
-                throw new ArgumentException("Operators should have at least one variable or constant.", "operators");
-
-            IEnumerable<Symbol<Operator>> terminals = operators.Select(op => new Symbol<Operator>(op, op.Name));
-
-            List<string> nonTerminalsNames = new List<string> { "Node" };
-           
-            bool hasVariables = operators.Any(op => op is Variable);
-            if (hasVariables)
-            {
-                nonTerminalsNames.Add("V"); 
-            }
-
-            bool hasConstants = operators.Any(op => op is Constant);
-            if (hasConstants)
-            {
-                nonTerminalsNames.Add("C");
-            }
-
-            IEnumerable<int> arities = operators.Select(op => op.Arity); 
-            foreach (int a in arities)
-            {
-                nonTerminalsNames.Add("Op" + a.ToString(CultureInfo.InvariantCulture));
-                nonTerminalsNames.Add("Node" + a.ToString(CultureInfo.InvariantCulture));
-            }
-
-            IEnumerable<Symbol<Operator>> nonTerminals = nonTerminalsNames.Select(n => new Symbol<Operator>(n));
-
-            SymbolsSet<Operator> s = new SymbolsSet<Operator>
-            {
-                terminals, 
-                nonTerminals
-            };
+            if (!operators.OfType<Variable>().Any())
+                throw new ArgumentException("Operators should have at least one variable.", "operators");
+            
+            SymbolsSet<Operator> s = CreateSymbols(operators);
             
             // V -> x1|x2|...
             // C -> c1|c2|...
@@ -104,51 +69,47 @@ namespace WallpaperGenerator.Formulas
             // NoConstOpNode -> V|Op1Node|Op2Node|Op3Node|Op4Node
             // OpNode -> Op0Node|Op1Node|Op2Node|Op3Node|Op4Node
 
-            Rule<Operator>[] rules = new[]
+            IEnumerable<int> availableArities = operators.Select(op => op.Arity).Distinct().ToArray();
+
+            List<Rule<Operator>> rules = new List<Rule<Operator>>
             {
-                // V -> x1|x2...|xn
-                new OrRule<Operator>(s["V"], terminals.Where(ts => ts.Value is Variable)),
+                new Rule<Operator>(s["C"], () => new[] { new Symbol<Operator>(new Constant(createConstant()))}),
+                new Rule<Operator>(s["V"], operators.OfType<Variable>().Select(v => s[v.Name])),
+                new OrRule<Operator>(s["Op0Node"], new []{ s["C"], s["V"] }), // TODO: apply probability
 
-                // C -> x1|x2...|xn
-                new OrRule<Operator>(s["C"],  terminals.Where(ts => ts.Value is Constant)),
+                new OrRule<Operator>(s["InfGuard"], new []{s["Atan"], s["Tanh"]} /*rs => new RandomRuleSelector<Operator>()*/ ), // TODO: apply randomness
+                new OrRule<Operator>(s["RegOp2Operands"], 
+                    new Rule<Operator>(new[]{s["OpNode"], s["NoConstOpNode"]}), 
+                    new Rule<Operator>(new[]{s["NoConstOpNode"], s["OpNode"]})), // TODO: apply randomness
 
-                // Op0 -> V|C
-                new OrRule<Operator>(s["Op0"], new [] { s["V"], s["C"] }),
+                new OrRule<Operator>(s["NoConstOpNode"], rs => new TreeGeneratingRuleSelector<Operator>(minimalDepth, rs), // TODO: apply probability
+                    new []{ s["V"] }.Concat(availableArities.Where(a => a > 0).Select(a => s["Op" + a + "Node"]))), 
 
-                // Op1 -> abs|sin|...
-                new OrRule<Operator>(s["Op1"], terminals.Where(ts => ts.Value.Arity == 1)),
-
-                // Op2 -> +|-|...
-                new OrRule<Operator>(s["Op2"], terminals.Where(ts => ts.Value.Arity == 2)),
-
-            //    // Op3 -> ifg0|...
-            //    new OrRule<Operator>("Op3", 0, operators.Where(op => op.Arity == 3)),
-
-            //    // Op4 -> ifelse|...
-            //    new OrRule<Operator>("Op4", 0, operators.Where(op => op.Arity == 4)),
-
-                // Node0 -> Op0
-            
-                new Rule<Operator>(s["Node0"], new[] { s["Op0"] }),
-
-                // NodeNon0 -> Node1|Node2
-                // Node1 -> Op1 (V|NodeNon0)
-
-
-                // Node1 -> Op1 Node
-                new Rule<Operator>(s["Node1"], new[] { s["Op1"], s["Node"] }),
-
-                // Node2 -> Op1 Node Node
-                new Rule<Operator>(s["Node2"],  new[] { s["Op2"], s["Node"], s["Node"] }),
-
-                // Node -> Node0|Node1|Node2
-                //new OrRule<Operator>(s["Node"], rs => new TreeGeneratingRuleSelector<Operator>(minimalDepth, rs),
-                //    new [] { s["Node0"], s["Node1"], s["Node2"] })
+                new OrRule<Operator>(s["OpNode"], rs => new TreeGeneratingRuleSelector<Operator>(minimalDepth, rs), // TODO: apply probability
+                    new []{ s["V"] }.Concat(availableArities.Select(a => s["Op" + a + "Node"]))), 
             };
 
             Grammar<Operator> grammar = new Grammar<Operator>(rules);
             TreeNode<Operator> treeRoot = TreeGenerator.Generate(grammar, "OpNode", op => op.Arity);
             return new FormulaTree(treeRoot);
+        }
+       
+        private static SymbolsSet<Operator> CreateSymbols(IEnumerable<Operator> operators)
+        {
+            List<string> nonTerminalsNames = new List<string> 
+            { 
+                "V", "C", "InfGuard", "RegOp2Operands", "OpNode", "NoConstOpNode"
+            };
+
+            IEnumerable<int> availableArities = operators.Select(op => op.Arity).Distinct();
+            nonTerminalsNames.AddRange(availableArities.Select(a => "Op" + a + "Node"));
+
+            Func<Operator, string> getOpNodeName = op => op.Name + "Node";
+            nonTerminalsNames.AddRange(operators.Where(op => op.Arity > 0).Select(getOpNodeName));
+
+            IEnumerable<Symbol<Operator>> terminals = operators.Select(op => new Symbol<Operator>(op, op.Name));
+            IEnumerable<Symbol<Operator>> nonTerminals = nonTerminalsNames.Select(n => new Symbol<Operator>(n));
+            return new SymbolsSet<Operator> { terminals, nonTerminals };
         }
     }
 }
