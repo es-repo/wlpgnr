@@ -1,21 +1,21 @@
 ﻿using System.Collections.Generic;
-using WallpaperGenerator.Utilities.DataStructures.Collections;
 
 namespace WallpaperGenerator.Utilities.FormalGrammar.RuleSelectors
 {
     public class CircularRuleSelector<T> : RuleSelector<T>
     {
-        private readonly CircularEnumeration<Rule<T>> _circularRules;
-
+        private readonly IEnumerator<Rule<T>> _enumerator;
+        
         public CircularRuleSelector(IEnumerable<Rule<T>> rules)
             : base(rules)
         {
-            _circularRules = new CircularEnumeration<Rule<T>>(rules);
+            _enumerator = rules.Repeat().GetEnumerator(); 
         }
         
         public override Rule<T> Next()
         {
-            return _circularRules.Next();
+            _enumerator.MoveNext();
+            return _enumerator.Current;
         }
     }
 }

@@ -9,6 +9,24 @@ namespace WallpaperGenerator.Utilities.Testing
     public class EnumerableExtensionsTests
     {
         [RowTest]
+        [Row(new [] {1, 2, 3}, new [] {1, 2, 3, 1, 2, 3, 1})]
+        [Row(new [] { 1 }, new[] { 1, 1, 1 })]
+        [Row(new int [] {}, new [] { 0 }, ExpectedException = typeof(ArgumentException))]
+        public void TestRepeatSequence(int[] sequence, int[] expectedSequence)
+        {
+            IEnumerable<int> loopedSequence = sequence.Repeat().Take(expectedSequence.Length);
+            CollectionAssert.AreEqual(expectedSequence, loopedSequence.ToArray());
+        }
+
+        [Test]
+        public void TestRepeat()
+        {
+            IEnumerable<int> sequence = EnumerableExtensions.Repeat(i => i, 3); 
+            int[] expectedSequence = new []{0, 1, 2};
+            CollectionAssert.AreEqual(expectedSequence, sequence.ToArray());
+        }
+
+        [RowTest]
         [Row(new int[]{}, new int[]{})]
         [Row(new [] {1, 2, 3, 4}, new [] {3, 5, 8, 12 })]
         public void TestSelectWithFolding(int[] source, int[] expectedSequence)

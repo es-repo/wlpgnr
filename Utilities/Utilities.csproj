@@ -54,8 +54,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataStructures\Collections\CircularEnumeration.cs" />
-    <Compile Include="DataStructures\Collections\CircularEnumerator.cs" />
     <Compile Include="DataStructures\Collections\DictionaryExt.cs" />
     <Compile Include="DataStructures\Trees\TraversalOrder.cs" />
     <Compile Include="DataStructures\Trees\TreeGenerating\TreeGenerator.cs" />
