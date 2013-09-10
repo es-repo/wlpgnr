@@ -4,7 +4,7 @@ using WallpaperGenerator.Utilities.DataStructures.Collections;
 
 namespace WallpaperGenerator.Utilities.FormalGrammar
 {
-    public class SymbolsSet<T> : KeyedSet<string, Symbol<T>>
+    public class SymbolsSet<T> : DictionaryExt<string, Symbol<T>>
     {
         public SymbolsSet()
             : this(Enumerable.Empty<Symbol<T>>())
