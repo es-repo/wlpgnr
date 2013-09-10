@@ -26,12 +26,12 @@ namespace WallpaperGenerator.Utilities.FormalGrammar
             return Rules.Where(r => r.From.Name == symbol);
         } 
 
-        public IEnumerable<T> GenerateSequence(string startSymbol)
+        public IEnumerable<T> Produce(string startSymbol)
         {
-            return GenerateSequence(_symbolsSet[startSymbol]);
+            return Produce(_symbolsSet[startSymbol]);
         }
 
-        public IEnumerable<T> GenerateSequence(Symbol<T> startSymbol)
+        public IEnumerable<T> Produce(Symbol<T> startSymbol)
         {
             Stack<Symbol<T>> stack = new Stack<Symbol<T>>();
             stack.Push(startSymbol);

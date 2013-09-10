@@ -33,8 +33,8 @@ namespace WallpaperGenerator.Utilities.DataStructures.Trees.TreeGenerating
             }
             
             IEnumerable<T> sequence = startSymbol is string 
-                ? grammar.GenerateSequence((string)startSymbol) 
-                : grammar.GenerateSequence((Symbol<T>)startSymbol);
+                ? grammar.Produce((string)startSymbol) 
+                : grammar.Produce((Symbol<T>)startSymbol);
             return treeBuilder.Append(sequence, getNodeChildrenCount);
         }
     }

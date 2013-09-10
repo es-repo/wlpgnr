@@ -14,7 +14,7 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
         [Row("A1", "sin atan sin sum x y")]
         [Row("A2", "sum x y")]
         [Row("Inf", "sum sum sum sum sum sum sum sum sum sum")]
-        public void TestGenerateSequence(string startSymbol, string expectedSequence)
+        public void TestProduce(string startSymbol, string expectedSequence)
         {
             SymbolsSet<string> s = new SymbolsSet<string>(new[]
                 {
@@ -61,7 +61,7 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
             };
 
             Grammar<string> grammar = new Grammar<string>(rules);
-            IEnumerable<string> sequence = grammar.GenerateSequence(startSymbol).Take(10);
+            IEnumerable<string> sequence = grammar.Produce(startSymbol).Take(10);
             Assert.AreEqual(expectedSequence, string.Join(" ", sequence.ToArray()));
         }
     }
