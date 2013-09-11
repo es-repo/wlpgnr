@@ -19,15 +19,19 @@ namespace WallpaperGenerator.Utilities
 
         public static IEnumerable<T> Repeat<T>(Func<int, T> func, int? count = null)
         {
-            return Repeat(Enumerable.Repeat(func, 1), count);
+            int i = 0;
+            while (true)
+            {
+                if (count != null && i >= count)
+                    break;
+
+                yield return func(i);
+
+                i++;
+            }
         }
 
         public static IEnumerable<T> Repeat<T>(this IEnumerable<T> items, int? count = null)
-        {
-            return Repeat(items.Select(item => (Func<int, T>)(i => item)), count);
-        }
-
-        public static IEnumerable<T> Repeat<T>(this IEnumerable<Func<int, T>> items, int? count = null)
         {
             if (!items.Any())
                 throw new ArgumentException("Sequence is empty.", "items");
@@ -38,8 +42,8 @@ namespace WallpaperGenerator.Utilities
                 if (count != null && i >= count)
                     break;
 
-                foreach (Func<int, T> item in items)
-                    yield return item(i);
+                foreach (T item in items)
+                    yield return item;
 
                 i++;
             }
