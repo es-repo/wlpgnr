@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -8,7 +7,6 @@ using WallpaperGenerator.Utilities;
 using WallpaperGenerator.Utilities.DataStructures.Trees;
 using WallpaperGenerator.Utilities.DataStructures.Trees.TreeGenerating;
 using WallpaperGenerator.Utilities.FormalGrammar;
-using WallpaperGenerator.Utilities.FormalGrammar.RuleSelectors;
 using WallpaperGenerator.Utilities.FormalGrammar.Rules;
 
 namespace WallpaperGenerator.Formulas
