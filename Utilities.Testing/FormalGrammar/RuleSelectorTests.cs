@@ -1,11 +1,10 @@
 ﻿using MbUnit.Framework;
 using WallpaperGenerator.Utilities.FormalGrammar;
-using WallpaperGenerator.Utilities.FormalGrammar.RuleSelectors;
 
-namespace WallpaperGenerator.Utilities.Testing.FormalGrammar.RuleSelectors
+namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
 {
     [TestFixture]
-    public class CircularRuleSelectorTests
+    public class RuleSelectorTests
     {
         [Test]
         public void Test()
@@ -17,7 +16,7 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar.RuleSelectors
                     new Rule<string>(new Symbol<string>("C"), new [] { new Symbol<string>("c" ) } )
                 };
 
-            CircularRuleSelector<string> ruleSelector = new CircularRuleSelector<string>(rules);
+            RuleSelector<string> ruleSelector = new RuleSelector<string>(rules);
             Assert.AreEqual(rules[0], ruleSelector.Next());
             Assert.AreEqual(rules[1], ruleSelector.Next());
             Assert.AreEqual(rules[2], ruleSelector.Next());

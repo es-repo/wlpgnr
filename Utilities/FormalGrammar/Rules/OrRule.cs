@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using WallpaperGenerator.Utilities.FormalGrammar.RuleSelectors;
 
 namespace WallpaperGenerator.Utilities.FormalGrammar.Rules
 {
@@ -14,7 +13,7 @@ namespace WallpaperGenerator.Utilities.FormalGrammar.Rules
         {
             if (createRuleSelector == null)
             {
-                createRuleSelector = rs => new CircularRuleSelector<T>(rs);
+                createRuleSelector = rs => new RuleSelector<T>(rs);
             }
 
             RuleSelector = createRuleSelector(rules);

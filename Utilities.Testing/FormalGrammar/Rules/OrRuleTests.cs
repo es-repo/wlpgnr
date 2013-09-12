@@ -1,6 +1,5 @@
 ﻿using MbUnit.Framework;
 using WallpaperGenerator.Utilities.FormalGrammar;
-using WallpaperGenerator.Utilities.FormalGrammar.RuleSelectors;
 using WallpaperGenerator.Utilities.FormalGrammar.Rules;
 
 namespace WallpaperGenerator.Utilities.Testing.FormalGrammar.Rules
@@ -19,7 +18,7 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar.Rules
             RuleAssert.AssertGeneratedSequences(
                 
                 // R -> (ab)|(cd)
-                new OrRule<string>(rules => new CircularRuleSelector<string>(rules),
+                new OrRule<string>(rules => new RuleSelector<string>(rules),
                     new Rule<string>(new[] { a, b }),
                     new Rule<string>(new[] { c, d })),
 
@@ -32,7 +31,7 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar.Rules
             RuleAssert.AssertGeneratedSequences(
 
                 // R -> a|b|c|d
-                new OrRule<string>(rules => new CircularRuleSelector<string>(rules), new[] { a, b, c, d }),
+                new OrRule<string>(rules => new RuleSelector<string>(rules), new[] { a, b, c, d }),
 
                 new[]
                 {

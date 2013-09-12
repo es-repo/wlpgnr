@@ -73,7 +73,7 @@
     <Compile Include="FormalGrammar\Rules\AndRuleTests.cs" />
     <Compile Include="FormalGrammar\Rules\OrRuleTests.cs" />
     <Compile Include="FormalGrammar\RuleAssert.cs" />
-    <Compile Include="FormalGrammar\RuleSelectors\CircularRuleSelectorTests.cs" />
+    <Compile Include="FormalGrammar\RuleSelectorTests.cs" />
     <Compile Include="FormalGrammar\RuleSelectors\RandomRuleSelectorTests.cs" />
     <Compile Include="FormalGrammar\RuleTests.cs" />
     <Compile Include="FormalGrammar\GrammarTests.cs" />

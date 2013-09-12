@@ -70,7 +70,6 @@
     <Compile Include="FormalGrammar\Rules\OrRule.cs" />
     <Compile Include="FormalGrammar\Rule.cs" />
     <Compile Include="FormalGrammar\RuleSelector.cs" />
-    <Compile Include="FormalGrammar\RuleSelectors\CircularRuleSelector.cs" />
     <Compile Include="FormalGrammar\RuleSelectors\RandomRuleSelector.cs" />
     <Compile Include="FormalGrammar\Symbol.cs" />
     <Compile Include="FormalGrammar\SymbolsSet.cs" />

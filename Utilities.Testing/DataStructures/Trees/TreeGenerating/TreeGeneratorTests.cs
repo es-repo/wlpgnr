@@ -81,7 +81,6 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees.TreeGenerati
                     new Symbol<string>("NodeB")
                 });
 
-            TreeBuilder<string> treeBuilder = new TreeBuilder<string>();
             Rule<string>[] rules = new[]
             {
                 // Val0 -> 0

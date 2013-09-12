@@ -24,7 +24,9 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar.RuleSelectors
                     new Rule<string>(new Symbol<string>("C"), new [] { new Symbol<string>("c" ) } )
                 };
 
-            RandomRuleSelector<string> ruleSelector = new RandomRuleSelector<string>(random, rules, probabilities);
+            RandomRuleSelector<string> ruleSelector = probabilities == null
+                ? new RandomRuleSelector<string>(random, rules)
+                : new RandomRuleSelector<string>(random, rules, probabilities);
             IEnumerable<Rule<string>> selectedRules = ruleSelector.Take(expectedIndexes.Length);
             IEnumerable<Rule<string>> expectedRules = expectedIndexes.Select(i => rules[i]);
             CollectionAssert.AreEqual(expectedRules.ToArray(), selectedRules.ToArray());

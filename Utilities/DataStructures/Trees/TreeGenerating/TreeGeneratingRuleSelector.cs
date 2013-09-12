@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using WallpaperGenerator.Utilities.FormalGrammar;
-using WallpaperGenerator.Utilities.FormalGrammar.RuleSelectors;
 
 namespace WallpaperGenerator.Utilities.DataStructures.Trees.TreeGenerating
 {
@@ -15,7 +14,6 @@ namespace WallpaperGenerator.Utilities.DataStructures.Trees.TreeGenerating
 
         public TreeBuilder<T> TreeBuilder { get; set; }
 
-
         public TreeGeneratingRuleSelector(int minimalTreeDepth, IEnumerable<Rule<T>> nodeProducingRules,
             Func<IEnumerable<Rule<T>>, RuleSelector<T>> createNonLeafProducingRulesSelector = null)
             : this(minimalTreeDepth, null, nodeProducingRules, createNonLeafProducingRulesSelector)
@@ -24,7 +22,6 @@ namespace WallpaperGenerator.Utilities.DataStructures.Trees.TreeGenerating
 
         public TreeGeneratingRuleSelector(int minimalTreeDepth, TreeBuilder<T> treeBuilder, IEnumerable<Rule<T>> nodeProducingRules,
             Func<IEnumerable<Rule<T>>, RuleSelector<T>> createNonLeafProducingRulesSelector = null)
-            : base(nodeProducingRules)
         {
             if (minimalTreeDepth < 1)
             {
@@ -36,7 +33,7 @@ namespace WallpaperGenerator.Utilities.DataStructures.Trees.TreeGenerating
 
             if (createNonLeafProducingRulesSelector == null)
             {
-                createNonLeafProducingRulesSelector = rs => new CircularRuleSelector<T>(rs);
+                createNonLeafProducingRulesSelector = rs => new RuleSelector<T>(rs);
             }
 
             _leafProducingRule = nodeProducingRules.First();
