@@ -1,50 +1,35 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace WallpaperGenerator.Utilities.FormalGrammar
 {
-    public class RuleSelector<T> : IEnumerable<Rule<T>>
+    public class RuleSelector<T> : EnumerableNext<Rule<T>>
     {
-        private IEnumerator<Rule<T>> _enumerator;
+        public IEnumerable<Rule<T>> Rules { get; private set; }
 
         public RuleSelector(IEnumerable<Rule<T>> rules)
             : this(rules, rules.Repeat())
         {
-            Init(rules.Repeat());
         }
 
-// ReSharper disable UnusedParameter.Local
+        public RuleSelector(IEnumerable<Rule<T>> rules, Func<Rule<T>> next)
+            : this(rules, EnumerableExtensions.Repeat(next))
+        {
+        }
+
+        // ReSharper disable UnusedParameter.Local
+        protected RuleSelector(IEnumerable<Rule<T>> rules, bool nextOverridenCtor)
+        // ReSharper restore UnusedParameter.Local
+            : this(rules, Enumerable.Empty<Rule<T>>())
+        {
+            Enumerator = EnumerableExtensions.Repeat(Next).GetEnumerator();
+        }
+
         public RuleSelector(IEnumerable<Rule<T>> rules, IEnumerable<Rule<T>> rulesSequence)
-// ReSharper restore UnusedParameter.Local
+            : base(rulesSequence)
         {
-            Init(rulesSequence);
-        }
-
-        public RuleSelector(Func<Rule<T>> next = null)
-        {
-            Init(EnumerableExtensions.Repeat(next ?? Next));
-        }
-
-        private void Init(IEnumerable<Rule<T>> rulesSequence)
-        {
-            _enumerator = rulesSequence.GetEnumerator();
-        }
-
-        public virtual Rule<T> Next()
-        {
-            _enumerator.MoveNext();
-            return _enumerator.Current;
-        }
-    
-        public IEnumerator<Rule<T>> GetEnumerator()
-        {
-            return _enumerator;
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
+            Rules = rules;
         }
     }
 }

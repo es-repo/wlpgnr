@@ -22,6 +22,7 @@ namespace WallpaperGenerator.Utilities.DataStructures.Trees.TreeGenerating
 
         public TreeGeneratingRuleSelector(int minimalTreeDepth, TreeBuilder<T> treeBuilder, IEnumerable<Rule<T>> nodeProducingRules,
             Func<IEnumerable<Rule<T>>, RuleSelector<T>> createNonLeafProducingRulesSelector = null)
+            : base(nodeProducingRules, true)
         {
             if (minimalTreeDepth < 1)
             {
