@@ -3,19 +3,24 @@ using System.Collections.Generic;
 
 namespace WallpaperGenerator.Utilities.FormalGrammar
 {
-    public abstract class RuleSelector<T> : IEnumerable<Rule<T>>
+    public class RuleSelector<T> : IEnumerable<Rule<T>>
     {
         private readonly IEnumerator<Rule<T>> _enumerator;
 
         protected IEnumerable<Rule<T>> Rules { get; private set; }
 
-        protected RuleSelector(IEnumerable<Rule<T>> rules)
+        public RuleSelector(IEnumerable<Rule<T>> rules, IEnumerable<Rule<T>> rulesSequence = null)
         {
             Rules = rules;
-            _enumerator = EnumerableExtensions.Repeat(Next).GetEnumerator();
+            rulesSequence = rulesSequence ?? EnumerableExtensions.Repeat(Next);
+            _enumerator = rulesSequence.GetEnumerator();
         }
 
-        public abstract Rule<T> Next();
+        public virtual Rule<T> Next()
+        {
+            _enumerator.MoveNext();
+            return _enumerator.Current;
+        }
     
         public IEnumerator<Rule<T>> GetEnumerator()
         {
