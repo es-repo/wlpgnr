@@ -76,6 +76,7 @@
     <Compile Include="Operators\Arithmetic\Mod.cs" />
     <Compile Include="Operators\Arithmetic\Pow.cs" />
     <Compile Include="Operators\Arithmetic\Sub.cs" />
+    <Compile Include="Operators\Conditionals\IfG.cs" />
     <Compile Include="Operators\Conditionals\IfG0.cs" />
     <Compile Include="FormulaTreeSerializer.cs" />
     <Compile Include="Operators\Conditionals\Max.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="Operator.cs" />
     <Compile Include="Operators\BinaryOperator.cs" />
     <Compile Include="Operators\Arithmetic\Mul.cs" />
+    <Compile Include="Operators\QuaternaryOperator.cs" />
     <Compile Include="Operators\OperatorsLibrary.cs" />
     <Compile Include="Operators\Arithmetic\Sum.cs" />
     <Compile Include="Operators\TernaryOperator.cs" />
