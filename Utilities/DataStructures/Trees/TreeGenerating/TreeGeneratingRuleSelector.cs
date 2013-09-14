@@ -50,7 +50,7 @@ namespace WallpaperGenerator.Utilities.DataStructures.Trees.TreeGenerating
             if (TreeBuilder.IsTreeReady)
                 throw new InvalidOperationException("Tree is already built.");
             
-            bool nextIsLeaf = TreeBuilder.NextAppendingNodeInfo.Depth >= MinimalTreeDepth;
+            bool nextIsLeaf = TreeBuilder.NextAppendingNodeInfo.Depth >= MinimalTreeDepth || !_nonLeafProducingRulesSelector.Rules.Any();
             return nextIsLeaf
                 ? _leafProducingRule 
                 : _nonLeafProducingRulesSelector.Next();

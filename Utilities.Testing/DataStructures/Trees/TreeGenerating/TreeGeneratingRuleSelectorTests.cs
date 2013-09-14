@@ -13,13 +13,14 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees.TreeGenerati
     public class TreeGeneratingRuleSelectorTests
     {        
         [RowTest]
-        [Row(0, null, ExpectedException = typeof(ArgumentException))]
-        [Row(1, new[] { "Node0" })]
-        [Row(2, new[] { "Node1", "Node0" })]
-        [Row(3, new[] { "Node1", "Node2", "Node0", "Node0" })]
-        [Row(4, new[] { "Node1", "Node2", "Node1", "Node0", "Node2", "Node0", "Node0" })]
-        [Row(5, new[] { "Node1", "Node2", "Node1", "Node2", "Node0", "Node0", "Node1", "Node2", "Node0", "Node0" })]
-        public void Test(int treeDepth, string[] expectedProducedSymbols)
+        [Row(0, null, null, ExpectedException = typeof(ArgumentException))]
+        [Row(1, null, new[] { "Node0" })]
+        [Row(2, null, new[] { "Node1", "Node0" })]
+        [Row(3, null, new[] { "Node1", "Node2", "Node0", "Node0" })]
+        [Row(4, null, new[] { "Node1", "Node2", "Node1", "Node0", "Node2", "Node0", "Node0" })]
+        [Row(5, null, new[] { "Node1", "Node2", "Node1", "Node2", "Node0", "Node0", "Node1", "Node2", "Node0", "Node0" })]
+        [Row(3, new[] {"Node0"}, new[] { "Node0" })]
+        public void Test(int treeDepth, string[] nodeProducingRuleToSymbols, string[] expectedProducedSymbols)
         {
             SymbolsSet<int> s = new SymbolsSet<int>(new []
             {
@@ -30,8 +31,8 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees.TreeGenerati
             });
             
             // Node -> Node0|Node1|Node2
-            OrRule<int> nodeProducingRule = new OrRule<int>(s["Node"],
-                new[] {s["Node0"], s["Node1"], s["Node2"]});
+            nodeProducingRuleToSymbols = nodeProducingRuleToSymbols ?? new [] {"Node0", "Node1", "Node2"};
+            OrRule<int> nodeProducingRule = new OrRule<int>(s["Node"], nodeProducingRuleToSymbols.Select(n => s[n]));
 
             TreeBuilder<int> treeBuilder = new TreeBuilder<int>();
             TreeGeneratingRuleSelector<int> ruleSelector = new TreeGeneratingRuleSelector<int>(treeDepth, treeBuilder, nodeProducingRule.Rules);
