@@ -12,6 +12,13 @@ namespace WallpaperGenerator.Utilities
                 action(i);
         }
 
+        public static IEnumerable<T> Concat<T>(this IEnumerable<T> items, T item)
+        {
+            foreach (T t in items) 
+                yield return t;
+            yield return item;
+        }
+
         public static IEnumerable<T> Repeat<T>(Func<T> func, int? count = null)
         {
             return Repeat(i => func(), count);

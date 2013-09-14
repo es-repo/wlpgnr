@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -84,7 +83,7 @@ namespace WallpaperGenerator.Formulas
             {
                 new Rule<Operator>(s["C"], () => new[] { new Symbol<Operator>(new Constant(createConstant()))}),
                 new Rule<Operator>(s["V"], operators.OfType<Variable>().Select(v => s[v.Name])),
-                new OrRule<Operator>(s["Op0Node"], new []{ s["C"], s["V"] }), // TODO: apply probability
+                new OrRule<Operator>(s["Op0Node"], new []{ s["V"], s["C"] }), // TODO: apply probability
 
                 new OrRule<Operator>(s["InfGuard"], 
                     new []{s[GetOpSymbolName(OperatorsLibrary.Atan)], s[GetOpSymbolName(OperatorsLibrary.Tanh)]} /*rs => new RandomRuleSelector<Operator>()*/ ), // TODO: apply randomness
@@ -184,9 +183,13 @@ namespace WallpaperGenerator.Formulas
 
             // SumNode, SinNode, ...
             nonTerminalsNames.AddRange(operators.Where(op => op.Arity > 0).Select(GetOpNodeSymbolName));
-            nonTerminalsNames.Add("PowAltNode");
+            if (operators.Any(op => op is Pow))
+            {
+                nonTerminalsNames.Add("PowAltNode");
+            }
 
-            IEnumerable<Symbol<Operator>> terminals = operators.Select(op => new Symbol<Operator>(op, GetOpSymbolName(op)));
+            IEnumerable<Operator> terminalGuards = new Operator[] {OperatorsLibrary.Atan, OperatorsLibrary.Tanh};
+            IEnumerable<Symbol<Operator>> terminals = operators.Concat(terminalGuards).Distinct().Select(op => new Symbol<Operator>(op, GetOpSymbolName(op)));
             IEnumerable<Symbol<Operator>> nonTerminals = nonTerminalsNames.Select(n => new Symbol<Operator>(n));
             return new SymbolsSet<Operator> { terminals, nonTerminals };
         }
