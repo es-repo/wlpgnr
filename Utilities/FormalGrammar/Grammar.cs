@@ -51,6 +51,8 @@ namespace WallpaperGenerator.Utilities.FormalGrammar
                     {
                         stack.Push(symbol);
                     }
+
+                    string stackTrace = string.Join(" ", stack.Select(s => s.Name).ToArray());
                 }
             }
         }

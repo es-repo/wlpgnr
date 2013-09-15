@@ -60,11 +60,10 @@ namespace WallpaperGenerator.Formulas
             // SubNode -> sub RegOp2Operands
             // MulNode -> mul RegOp2Operands
             // DivNode -> InfGuard div RegOp2Operands
-            // PowNode -> InfGuard pow RegOp2Operands
-            // PowAltNode -> pow (NoConstOpNode InfGuard OpNode)|(OpNode InfGuard NoConstOpNode)
+            // PowNode -> (InfGuard pow RegOp2Operands)|(pow (NoConstOpNode InfGuard OpNode)|(OpNode InfGuard NoConstOpNode))
             // MaxNode -> max NoConstOpNode NoConstOpNode
             // ModNode -> mod (NoConstOpNode sum abs OpNode 0.0001)|(OpNode sum abs NoConstOpNode 0.0001)
-            // Op2Node -> DivNode|PowNode|PowAltNode|MaxNode|ModNode
+            // Op2Node -> DivNode|PowNode|MaxNode|ModNode
 
             // Ifg0Node -> ifg0 NoConstOpNode NoConstOpNode NoConstOpNode
             // Op3Node -> Ifg0Node
@@ -82,7 +81,7 @@ namespace WallpaperGenerator.Formulas
             List<Rule<Operator>> rules = new List<Rule<Operator>>
             {
                 new Rule<Operator>(s["C"], () => new[] { new Symbol<Operator>(new Constant(createConstant()))}),
-                new Rule<Operator>(s["V"], operators.OfType<Variable>().Select(v => s[v.Name])),
+                new OrRule<Operator>(s["V"], operators.OfType<Variable>().Select(v => s[v.Name])),
                 new OrRule<Operator>(s["Op0Node"], new []{ s["V"], s["C"] }), // TODO: apply probability
 
                 new OrRule<Operator>(s["InfGuard"], 
@@ -96,7 +95,7 @@ namespace WallpaperGenerator.Formulas
                     new []{ s["V"] }.Concat(opArityNodeSymbols.Skip(1))), 
 
                 new OrRule<Operator>(s["OpNode"], rs => new TreeGeneratingRuleSelector<Operator>(minimalDepth, rs), // TODO: apply probability
-                    new []{ s["V"] }.Concat(opArityNodeSymbols)), 
+                    opArityNodeSymbols), 
             };
 
             // AbsNode -> abs NoConstOpNode, 
@@ -121,19 +120,22 @@ namespace WallpaperGenerator.Formulas
             // ...
             rules.AddRange(CreateOpNodeRules(operators,
                 op => new Rule<Operator>(s[GetOpNodeSymbolName(op)], new[] { s["InfGuard"], s[GetOpSymbolName(op)], s["RegOp2Operands"] }),
-                typeof(Div), typeof(Pow)));
+                typeof(Div)));
 
-            // PowAltNode -> pow (NoConstOpNode InfGuard OpNode)|(OpNode InfGuard NoConstOpNode)
+            // PowNode -> (InfGuard pow RegOp2Operands)|(pow (NoConstOpNode InfGuard OpNode)|(OpNode InfGuard NoConstOpNode))
             rules.AddRange(CreateOpNodeRules(operators,
-                op => new AndRule<Operator>(s["PowAltNode"], new Rule<Operator>(new[]{s[GetOpSymbolName(op)]}),
-                    new OrRule<Operator>(
-                        new Rule<Operator>(new []{s["NoConstOpNode"], s["InfGuard"], s["OpNode"]}),
-                        new Rule<Operator>(new []{s["OpNode"], s["InfGuard"], s["NoConstOpNode"]}))),
+                op => new OrRule<Operator>(s[GetOpNodeSymbolName(op)],
+                    new Rule<Operator>(new[] { s["InfGuard"], s[GetOpSymbolName(op)], s["RegOp2Operands"] }),
+                    new AndRule<Operator>(new Rule<Operator>(new[]{s[GetOpSymbolName(op)]}),
+                        new OrRule<Operator>(
+                            new Rule<Operator>(new []{s["NoConstOpNode"], s["InfGuard"], s["OpNode"]}),
+                            new Rule<Operator>(new []{s["OpNode"], s["InfGuard"], s["NoConstOpNode"]})))),
                 typeof(Pow)));
 
             // ModNode -> mod (NoConstOpNode sum abs OpNode 0.0001)|(OpNode sum abs NoConstOpNode 0.0001)
             rules.AddRange(CreateOpNodeRules(operators,
-                op => new AndRule<Operator>(s[GetOpNodeSymbolName(op)], new Rule<Operator>(new[] { s[GetOpSymbolName(op)] }),
+                op => new AndRule<Operator>(s[GetOpNodeSymbolName(op)], 
+                    new Rule<Operator>(new[] { s[GetOpSymbolName(op)] }),
                     new OrRule<Operator>(
                         new Rule<Operator>(new[] { s["NoConstOpNode"], s[GetOpSymbolName(OperatorsLibrary.Sum)], s[GetOpSymbolName(OperatorsLibrary.Abs)], s["OpNode"], new Symbol<Operator>(new Constant(0.0001))}),
                         new Rule<Operator>(new[] { s["OpNode"], s[GetOpSymbolName(OperatorsLibrary.Sum)], s[GetOpSymbolName(OperatorsLibrary.Abs)], s["NoConstOpNode"], new Symbol<Operator>(new Constant(0.0001))}))),
@@ -141,17 +143,17 @@ namespace WallpaperGenerator.Formulas
 
             // MaxNode -> max NoConstOpNode NoConstOpNode
             rules.AddRange(CreateOpNodeRules(operators,
-                op => new Rule<Operator>(s[GetOpNodeSymbolName(op)], new[] { s["NoConstOpNode"], s["NoConstOpNode"] }),
+                op => new Rule<Operator>(s[GetOpNodeSymbolName(op)], new[] { s[GetOpSymbolName(op)], s["NoConstOpNode"], s["NoConstOpNode"] }),
                 typeof(Max)));
 
             // Ifg0Node -> ifg0 NoConstOpNode NoConstOpNode NoConstOpNode
             rules.AddRange(CreateOpNodeRules(operators,
-                op => new Rule<Operator>(s[GetOpNodeSymbolName(op)], new[] { s["NoConstOpNode"], s["NoConstOpNode"], s["NoConstOpNode"] }),
+                op => new Rule<Operator>(s[GetOpNodeSymbolName(op)], new[] { s[GetOpSymbolName(op)], s["NoConstOpNode"], s["NoConstOpNode"], s["NoConstOpNode"] }),
                 typeof(IfG0)));
 
             // IfgNode -> ifg NoConstOpNode NoConstOpNode NoConstOpNode NoConstOpNode 
             rules.AddRange(CreateOpNodeRules(operators,
-                op => new Rule<Operator>(s[GetOpNodeSymbolName(op)], new[] { s["NoConstOpNode"], s["NoConstOpNode"], s["NoConstOpNode"], s["NoConstOpNode"] }),
+                op => new Rule<Operator>(s[GetOpNodeSymbolName(op)], new[] { s[GetOpSymbolName(op)], s["NoConstOpNode"], s["NoConstOpNode"], s["NoConstOpNode"], s["NoConstOpNode"] }),
                 typeof(IfG)));
 
             // Op1Node -> AbsNode|SqrtNode|...
@@ -183,12 +185,8 @@ namespace WallpaperGenerator.Formulas
 
             // SumNode, SinNode, ...
             nonTerminalsNames.AddRange(operators.Where(op => op.Arity > 0).Select(GetOpNodeSymbolName));
-            if (operators.Any(op => op is Pow))
-            {
-                nonTerminalsNames.Add("PowAltNode");
-            }
-
-            IEnumerable<Operator> terminalGuards = new Operator[] {OperatorsLibrary.Atan, OperatorsLibrary.Tanh};
+            
+            IEnumerable<Operator> terminalGuards = new Operator[] {OperatorsLibrary.Atan, OperatorsLibrary.Tanh, OperatorsLibrary.Sum, OperatorsLibrary.Abs};
             IEnumerable<Symbol<Operator>> terminals = operators.Concat(terminalGuards).Distinct().Select(op => new Symbol<Operator>(op, GetOpSymbolName(op)));
             IEnumerable<Symbol<Operator>> nonTerminals = nonTerminalsNames.Select(n => new Symbol<Operator>(n));
             return new SymbolsSet<Operator> { terminals, nonTerminals };
