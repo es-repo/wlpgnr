@@ -22,21 +22,23 @@ namespace WallpaperGenerator.Formulas
             IEnumerable<string> variableNames = EnumerableExtensions.Repeat(i => "x" + i.ToString(CultureInfo.InvariantCulture), dimensionsCount);
             IEnumerable<Operator> variables = variableNames.Select(n => new Variable(n));
             IEnumerable<Operator> operators = OperatorsLibrary.All;
-            return Generate(operators.Concat(variables), null, minimalDepth, random);
+            return Generate(operators.Concat(variables), null, minimalDepth, random, 0, null);
         }
 
-        public static FormulaTree Generate(IEnumerable<Operator> operators, Func<double> createConstant, int minimalDepth, Random random)
+        public static FormulaTree Generate(IEnumerable<Operator> operators, Func<double> createConstant, int minimalDepth, Random random,
+            double constantsVsVariablesProbability, IEnumerable<double> opNodesProbabilities)
         {
-            Grammar<Operator> grammar = CreateGrammar(operators, createConstant, minimalDepth, random); 
+            Grammar<Operator> grammar = CreateGrammar(operators, createConstant, minimalDepth, random, constantsVsVariablesProbability, opNodesProbabilities); 
             TreeNode<Operator> treeRoot = TreeGenerator.Generate(grammar, "OpNode", op => op.Arity);
             return new FormulaTree(treeRoot);
         }
 
-        public static Grammar<Operator> CreateGrammar(IEnumerable<Operator> operators, Func<double> createConstant, int minimalDepth, Random random)
+        public static Grammar<Operator> CreateGrammar(IEnumerable<Operator> operators, Func<double> createConstant, int minimalDepth, Random random,
+            double constantsVsVariablesProbability, IEnumerable<double> opNodesProbabilities)
         {
             if (!operators.OfType<Variable>().Any())
                 throw new ArgumentException("Operators should have at least one variable.", "operators");
-            
+
             // V -> x1|x2|...
             // C -> c1|c2|...
             // Op0Node -> V|C
@@ -83,7 +85,9 @@ namespace WallpaperGenerator.Formulas
             {
                 new Rule<Operator>(s["C"], () => new[] { new Symbol<Operator>(new Constant(createConstant()))}),
                 new OrRule<Operator>(s["V"], rs => new RandomRuleSelector<Operator>(random, rs), operators.OfType<Variable>().Select(v => s[v.Name])),
-                new OrRule<Operator>(s["Op0Node"], rs => new RandomRuleSelector<Operator>(random, rs), new []{ s["V"], s["C"] }), // TODO: apply probability
+                new OrRule<Operator>(s["Op0Node"], 
+                    rs => new RandomRuleSelector<Operator>(random, rs, new []{ 1-constantsVsVariablesProbability, constantsVsVariablesProbability}), 
+                    new []{ s["V"], s["C"] }), 
 
                 new OrRule<Operator>(s["InfGuard"], rs => new RandomRuleSelector<Operator>(random, rs),
                     new []{s[GetOpSymbolName(OperatorsLibrary.Atan)], s[GetOpSymbolName(OperatorsLibrary.Tanh)]}), 
@@ -92,10 +96,14 @@ namespace WallpaperGenerator.Formulas
                     new Rule<Operator>(new[]{s["OpNode"], s["NoConstOpNode"]}), 
                     new Rule<Operator>(new[]{s["NoConstOpNode"], s["OpNode"]})), 
 
-                new OrRule<Operator>(s["NoConstOpNode"], rs => new TreeGeneratingRuleSelector<Operator>(minimalDepth, rs, rls => new RandomRuleSelector<Operator>(random, rls)), // TODO: apply probability
+                new OrRule<Operator>(s["NoConstOpNode"], 
+                    rs => new TreeGeneratingRuleSelector<Operator>(minimalDepth, rs, 
+                        rls => new RandomRuleSelector<Operator>(random, rls, opNodesProbabilities)),
                     new []{ s["V"] }.Concat(opArityNodeSymbols.Skip(1))), 
 
-                new OrRule<Operator>(s["OpNode"], rs => new TreeGeneratingRuleSelector<Operator>(minimalDepth, rs, rls => new RandomRuleSelector<Operator>(random, rls)), // TODO: apply probability
+                new OrRule<Operator>(s["OpNode"], 
+                    rs => new TreeGeneratingRuleSelector<Operator>(minimalDepth, rs, 
+                        rls => new RandomRuleSelector<Operator>(random, rls, opNodesProbabilities)),
                     opArityNodeSymbols), 
             };
 
