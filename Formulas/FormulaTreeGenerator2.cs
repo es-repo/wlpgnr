@@ -10,28 +10,29 @@ using WallpaperGenerator.Utilities;
 using WallpaperGenerator.Utilities.DataStructures.Trees;
 using WallpaperGenerator.Utilities.DataStructures.Trees.TreeGenerating;
 using WallpaperGenerator.Utilities.FormalGrammar;
+using WallpaperGenerator.Utilities.FormalGrammar.RuleSelectors;
 using WallpaperGenerator.Utilities.FormalGrammar.Rules;
 
 namespace WallpaperGenerator.Formulas
 {
     public static class FormulaTreeGenerator2
     {
-        public static FormulaTree CreateRandom(int dimensionsCount, int minimalDepth)
+        public static FormulaTree CreateRandom(int dimensionsCount, int minimalDepth, Random random)
         {
             IEnumerable<string> variableNames = EnumerableExtensions.Repeat(i => "x" + i.ToString(CultureInfo.InvariantCulture), dimensionsCount);
             IEnumerable<Operator> variables = variableNames.Select(n => new Variable(n));
             IEnumerable<Operator> operators = OperatorsLibrary.All;
-            return Generate(operators.Concat(variables), null, minimalDepth);
+            return Generate(operators.Concat(variables), null, minimalDepth, random);
         }
 
-        public static FormulaTree Generate(IEnumerable<Operator> operators, Func<double> createConstant, int minimalDepth)
+        public static FormulaTree Generate(IEnumerable<Operator> operators, Func<double> createConstant, int minimalDepth, Random random)
         {
-            Grammar<Operator> grammar = CreateGrammar(operators, createConstant, minimalDepth); 
+            Grammar<Operator> grammar = CreateGrammar(operators, createConstant, minimalDepth, random); 
             TreeNode<Operator> treeRoot = TreeGenerator.Generate(grammar, "OpNode", op => op.Arity);
             return new FormulaTree(treeRoot);
         }
 
-        public static Grammar<Operator> CreateGrammar(IEnumerable<Operator> operators, Func<double> createConstant, int minimalDepth)
+        public static Grammar<Operator> CreateGrammar(IEnumerable<Operator> operators, Func<double> createConstant, int minimalDepth, Random random)
         {
             if (!operators.OfType<Variable>().Any())
                 throw new ArgumentException("Operators should have at least one variable.", "operators");
@@ -81,20 +82,20 @@ namespace WallpaperGenerator.Formulas
             List<Rule<Operator>> rules = new List<Rule<Operator>>
             {
                 new Rule<Operator>(s["C"], () => new[] { new Symbol<Operator>(new Constant(createConstant()))}),
-                new OrRule<Operator>(s["V"], operators.OfType<Variable>().Select(v => s[v.Name])),
-                new OrRule<Operator>(s["Op0Node"], new []{ s["V"], s["C"] }), // TODO: apply probability
+                new OrRule<Operator>(s["V"], rs => new RandomRuleSelector<Operator>(random, rs), operators.OfType<Variable>().Select(v => s[v.Name])),
+                new OrRule<Operator>(s["Op0Node"], rs => new RandomRuleSelector<Operator>(random, rs), new []{ s["V"], s["C"] }), // TODO: apply probability
 
-                new OrRule<Operator>(s["InfGuard"], 
-                    new []{s[GetOpSymbolName(OperatorsLibrary.Atan)], s[GetOpSymbolName(OperatorsLibrary.Tanh)]} /*rs => new RandomRuleSelector<Operator>()*/ ), // TODO: apply randomness
+                new OrRule<Operator>(s["InfGuard"], rs => new RandomRuleSelector<Operator>(random, rs),
+                    new []{s[GetOpSymbolName(OperatorsLibrary.Atan)], s[GetOpSymbolName(OperatorsLibrary.Tanh)]}), 
                 
-                new OrRule<Operator>(s["RegOp2Operands"], 
+                new OrRule<Operator>(s["RegOp2Operands"], rs => new RandomRuleSelector<Operator>(random, rs),
                     new Rule<Operator>(new[]{s["OpNode"], s["NoConstOpNode"]}), 
-                    new Rule<Operator>(new[]{s["NoConstOpNode"], s["OpNode"]})), // TODO: apply randomness
+                    new Rule<Operator>(new[]{s["NoConstOpNode"], s["OpNode"]})), 
 
-                new OrRule<Operator>(s["NoConstOpNode"], rs => new TreeGeneratingRuleSelector<Operator>(minimalDepth, rs), // TODO: apply probability
+                new OrRule<Operator>(s["NoConstOpNode"], rs => new TreeGeneratingRuleSelector<Operator>(minimalDepth, rs, rls => new RandomRuleSelector<Operator>(random, rls)), // TODO: apply probability
                     new []{ s["V"] }.Concat(opArityNodeSymbols.Skip(1))), 
 
-                new OrRule<Operator>(s["OpNode"], rs => new TreeGeneratingRuleSelector<Operator>(minimalDepth, rs), // TODO: apply probability
+                new OrRule<Operator>(s["OpNode"], rs => new TreeGeneratingRuleSelector<Operator>(minimalDepth, rs, rls => new RandomRuleSelector<Operator>(random, rls)), // TODO: apply probability
                     opArityNodeSymbols), 
             };
 
@@ -124,7 +125,7 @@ namespace WallpaperGenerator.Formulas
 
             // PowNode -> (InfGuard pow RegOp2Operands)|(pow (NoConstOpNode InfGuard OpNode)|(OpNode InfGuard NoConstOpNode))
             rules.AddRange(CreateOpNodeRules(operators,
-                op => new OrRule<Operator>(s[GetOpNodeSymbolName(op)],
+                op => new OrRule<Operator>(s[GetOpNodeSymbolName(op)], rls => new RandomRuleSelector<Operator>(random, rls),
                     new Rule<Operator>(new[] { s["InfGuard"], s[GetOpSymbolName(op)], s["RegOp2Operands"] }),
                     new AndRule<Operator>(new Rule<Operator>(new[]{s[GetOpSymbolName(op)]}),
                         new OrRule<Operator>(
@@ -136,7 +137,7 @@ namespace WallpaperGenerator.Formulas
             rules.AddRange(CreateOpNodeRules(operators,
                 op => new AndRule<Operator>(s[GetOpNodeSymbolName(op)], 
                     new Rule<Operator>(new[] { s[GetOpSymbolName(op)] }),
-                    new OrRule<Operator>(
+                    new OrRule<Operator>(rls => new RandomRuleSelector<Operator>(random, rls),
                         new Rule<Operator>(new[] { s["NoConstOpNode"], s[GetOpSymbolName(OperatorsLibrary.Sum)], s[GetOpSymbolName(OperatorsLibrary.Abs)], s["OpNode"], new Symbol<Operator>(new Constant(0.0001))}),
                         new Rule<Operator>(new[] { s["OpNode"], s[GetOpSymbolName(OperatorsLibrary.Sum)], s[GetOpSymbolName(OperatorsLibrary.Abs)], s["NoConstOpNode"], new Symbol<Operator>(new Constant(0.0001))}))),
                 typeof(Mod)));
@@ -160,8 +161,8 @@ namespace WallpaperGenerator.Formulas
             // Op2Node -> DivNode|PowNode|...
             // ...
             IEnumerable<IGrouping<int, Operator>> operatorsByArity = operators.GroupBy(op => op.Arity).Where(g => g.Key > 0 && g.Any());
-            rules.AddRange(operatorsByArity.Select(g => 
-                new OrRule<Operator>(s[GetOpArityNodeSymbolName(g.Key)], g.Select(op => s[GetOpNodeSymbolName(op)]))));
+            rules.AddRange(operatorsByArity.Select(g =>
+                new OrRule<Operator>(s[GetOpArityNodeSymbolName(g.Key)], rls => new RandomRuleSelector<Operator>(random, rls), g.Select(op => s[GetOpNodeSymbolName(op)]))));
             
             return new Grammar<Operator>(rules);
         }

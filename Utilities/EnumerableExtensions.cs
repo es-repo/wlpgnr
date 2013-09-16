@@ -74,7 +74,7 @@ namespace WallpaperGenerator.Utilities
 
         public static T TakeRandom<T>(this IEnumerable<T> source, Random random)
         {
-            int index = random.Next(source.Count()); 
+            int index = (int)(random.NextDouble() * source.Count()); 
             return source.Skip(index).First();
         }
 

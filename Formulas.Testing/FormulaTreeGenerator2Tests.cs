@@ -5,6 +5,7 @@ using MbUnit.Framework;
 using WallpaperGenerator.Formulas.Operators;
 using WallpaperGenerator.Utilities;
 using WallpaperGenerator.Utilities.FormalGrammar;
+using WallpaperGenerator.Utilities.Testing;
 
 namespace WallpaperGenerator.Formulas.Testing
 {
@@ -41,7 +42,8 @@ namespace WallpaperGenerator.Formulas.Testing
             
             expectedFromSymbols = expectedFromSymbols.OrderBy(s => s);
 
-            Grammar<Operator> grammar = FormulaTreeGenerator2.CreateGrammar(operators, () => 0, 1);
+            Random random = RandomMock.Setup(EnumerableExtensions.Repeat(i => i * 0.1, 10));
+            Grammar<Operator> grammar = FormulaTreeGenerator2.CreateGrammar(operators, () => 0, 1, random);
             IEnumerable<string> fromSymbols = grammar.Rules.Select(r => r.From.Name).OrderBy(s => s);
             CollectionAssert.AreEqual(expectedFromSymbols.ToArray(), fromSymbols.ToArray());
         }
@@ -55,23 +57,23 @@ namespace WallpaperGenerator.Formulas.Testing
                 "x");
 
             TestGenerate(new Operator[] { new Variable("x"), new Variable("y"), OperatorsLibrary.Abs, OperatorsLibrary.Sin }, createConstans, 5,
-                "abs sin abs sin x");
+                "abs abs sin sin y");
 
             TestGenerate(new Operator[] { new Variable("x"), new Variable("y"), 
                 OperatorsLibrary.Sum, OperatorsLibrary.Mul, OperatorsLibrary.Sin, OperatorsLibrary.Abs }, createConstans, 5,
-                "sin abs sum mul x y sin x");
+                "sin sin abs mul y x");
 
             TestGenerate(new Operator[] { new Variable("x"), new Variable("y"), 
                 OperatorsLibrary.Sum, OperatorsLibrary.Mul, OperatorsLibrary.Sin, OperatorsLibrary.Abs, OperatorsLibrary.IfG0 }, createConstans, 5,
-                "sin abs sum mul x y ifg0 x y x");
+                "sin sin mul ifg0 y x x sin x");
 
             TestGenerate(new Operator[] { new Variable("x"), new Variable("y"), new Variable("z"),
-                OperatorsLibrary.Pow, OperatorsLibrary.IfG }, createConstans, 6,
-                "atan pow ifg pow ifg x y z x tanh y atan pow z 1 ifg pow x tanh y ifg z x y z atan pow 2 x ifg y z x y pow ifg z x y z tanh x atan pow ifg y z x y pow 3 tanh z");
+                OperatorsLibrary.Pow, OperatorsLibrary.IfG }, createConstans, 5,
+                "atan pow ifg ifg z x x x pow y tanh 1 ifg x x x y ifg z z z x atan pow y 2");
 
             TestGenerate(new Operator[] { new Variable("x"), new Variable("y"), new Variable("z"),
                 OperatorsLibrary.Div, OperatorsLibrary.Max }, createConstans, 4,
-                    "atan div max x y tanh div z x");
+                    "atan div max y z max x x");
 
             TestGenerate(new Operator[] { new Variable("x"), new Variable("y"), new Variable("z"),
                 OperatorsLibrary.Mod}, createConstans, 2,
@@ -80,7 +82,8 @@ namespace WallpaperGenerator.Formulas.Testing
 
         private static void TestGenerate(IEnumerable<Operator> operators, Func<double> createConstant,  int minimalTreeDepth, string expectedSerializedTree)
         {
-            FormulaTree formulaTree = FormulaTreeGenerator2.Generate(operators, createConstant, minimalTreeDepth);
+            Random random = RandomMock.Setup(EnumerableExtensions.Repeat(i => i * 0.1, 10));
+            FormulaTree formulaTree = FormulaTreeGenerator2.Generate(operators, createConstant, minimalTreeDepth, random);
             Assert.AreEqual(expectedSerializedTree, FormulaTreeSerializer.Serialize(formulaTree).ToLower());
         }
     }
