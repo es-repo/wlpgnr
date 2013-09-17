@@ -88,5 +88,15 @@ namespace WallpaperGenerator.Formulas.Testing
             FormulaTree formulaTree = FormulaTreeGenerator2.Generate(operators, createConstant, minimalTreeDepth, random, 0.3, arityAndOpNodesProbabilityMap);
             Assert.AreEqual(expectedSerializedTree, FormulaTreeSerializer.Serialize(formulaTree).ToLower());
         }
+
+        [Test]
+        public void TestNormalizeOpNodeProbabilities()
+        {
+            IEnumerable<Operator> operators = new Operator[] {OperatorsLibrary.Sin, OperatorsLibrary.Pow};
+            IDictionary<int, double> arityAndProbabiltyMap = new Dictionary<int, double>{{1, 30}, {2, 20}, {3, 30}, {4, 10}};
+            double[] expectedOpNodeProbabilities = new [] {0.6, 0.4};
+            double[] opNodeProbabilities = FormulaTreeGenerator2.NormalizeOpNodeProbabilities(operators, arityAndProbabiltyMap).ToArray();
+            CollectionAssert.AreEqual(expectedOpNodeProbabilities, opNodeProbabilities);
+        }
     }
 }

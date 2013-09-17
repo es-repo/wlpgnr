@@ -17,24 +17,24 @@ namespace WallpaperGenerator.Formulas
 {
     public static class FormulaTreeGenerator2
     {
-        public static FormulaTree CreateRandom(int dimensionsCount, int minimalDepth, Random random)
+        public static FormulaTree CreateRandom(IEnumerable<Operator> operators, Func<double> createConstant, int dimensionsCount, int minimalDepth,
+            Random random, double constantProbability, IDictionary<int, double> arityAndOpNodeProbabiltyMap)
         {
             IEnumerable<string> variableNames = EnumerableExtensions.Repeat(i => "x" + i.ToString(CultureInfo.InvariantCulture), dimensionsCount);
             IEnumerable<Operator> variables = variableNames.Select(n => new Variable(n));
-            IEnumerable<Operator> operators = OperatorsLibrary.All;
-            return Generate(operators.Concat(variables), null, minimalDepth, random, 0, null);
+            return Generate(operators.Concat(variables), createConstant, minimalDepth, random, constantProbability, arityAndOpNodeProbabiltyMap);
         }
 
         public static FormulaTree Generate(IEnumerable<Operator> operators, Func<double> createConstant, int minimalDepth, Random random,
-            double constantsVsVariablesProbability, IEnumerable<double> opNodesProbabilities)
+            double constantProbability, IDictionary<int, double> arityAndOpNodeProbabiltyMap)
         {
-            Grammar<Operator> grammar = CreateGrammar(operators, createConstant, minimalDepth, random, constantsVsVariablesProbability, opNodesProbabilities); 
+            Grammar<Operator> grammar = CreateGrammar(operators, createConstant, minimalDepth, random, constantProbability, arityAndOpNodeProbabiltyMap); 
             TreeNode<Operator> treeRoot = TreeGenerator.Generate(grammar, "OpNode", op => op.Arity);
             return new FormulaTree(treeRoot);
         }
 
         public static Grammar<Operator> CreateGrammar(IEnumerable<Operator> operators, Func<double> createConstant, int minimalDepth, Random random,
-            double constantsVsVariablesProbability, IEnumerable<double> opNodesProbabilities)
+            double constantProbability, IDictionary<int, double> arityAndOpNodeProbabiltyMap)
         {
             if (!operators.OfType<Variable>().Any())
                 throw new ArgumentException("Operators should have at least one variable.", "operators");
@@ -80,13 +80,13 @@ namespace WallpaperGenerator.Formulas
             SymbolsSet<Operator> s = CreateSymbols(operators);
 
             IEnumerable<Symbol<Operator>> opArityNodeSymbols = GetOpArityNodeSymbolNames(operators).Select(n => s[n]).ToArray();
-
+            IEnumerable<double> opNodesProbabilities = NormalizeOpNodeProbabilities(operators, arityAndOpNodeProbabiltyMap);
             List<Rule<Operator>> rules = new List<Rule<Operator>>
             {
                 new Rule<Operator>(s["C"], () => new[] { new Symbol<Operator>(new Constant(createConstant()))}),
                 new OrRule<Operator>(s["V"], rs => new RandomRuleSelector<Operator>(random, rs), operators.OfType<Variable>().Select(v => s[v.Name])),
                 new OrRule<Operator>(s["Op0Node"], 
-                    rs => new RandomRuleSelector<Operator>(random, rs, new []{ 1-constantsVsVariablesProbability, constantsVsVariablesProbability}), 
+                    rs => new RandomRuleSelector<Operator>(random, rs, new []{ 1-constantProbability, constantProbability}), 
                     new []{ s["V"], s["C"] }), 
 
                 new OrRule<Operator>(s["InfGuard"], rs => new RandomRuleSelector<Operator>(random, rs),
@@ -220,6 +220,13 @@ namespace WallpaperGenerator.Formulas
         private static string GetOpSymbolName(Operator op)
         {
             return op.Name;
+        }
+
+        public static IEnumerable<double> NormalizeOpNodeProbabilities(IEnumerable<Operator> operators, 
+            IEnumerable<KeyValuePair<int, double>> arityAndProbabiltyMap)
+        {
+            IEnumerable<double> probabilities = arityAndProbabiltyMap.Where(e => operators.Any(op => op.Arity == e.Key)).Select(e => e.Value);
+            return MathUtilities.Normalize(probabilities);
         }
     }
 }
