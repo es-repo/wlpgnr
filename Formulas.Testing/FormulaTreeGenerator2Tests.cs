@@ -43,8 +43,8 @@ namespace WallpaperGenerator.Formulas.Testing
             expectedFromSymbols = expectedFromSymbols.OrderBy(s => s);
 
             Random random = RandomMock.Setup(EnumerableExtensions.Repeat(i => i * 0.1, 10));
-            IEnumerable<double> opNodesProbabilities = GetOpNodesProbabilities(operators);
-            Grammar<Operator> grammar = FormulaTreeGenerator2.CreateGrammar(operators, () => 0, 1, random, 0.3, opNodesProbabilities);
+            IDictionary<int, double> arityAndOpNodesProbabilityMap = new Dictionary<int, double> { { 1, 0.4 }, { 2, 0.3 }, { 3, 0.2 }, { 4, 0.2 } };
+            Grammar<Operator> grammar = FormulaTreeGenerator2.CreateGrammar(operators, () => 0, 1, random, 0.3, arityAndOpNodesProbabilityMap);
             IEnumerable<string> fromSymbols = grammar.Rules.Select(r => r.From.Name).OrderBy(s => s);
             CollectionAssert.AreEqual(expectedFromSymbols.ToArray(), fromSymbols.ToArray());
         }
@@ -84,21 +84,9 @@ namespace WallpaperGenerator.Formulas.Testing
         private static void TestGenerate(IEnumerable<Operator> operators, Func<double> createConstant,  int minimalTreeDepth, string expectedSerializedTree)
         {
             Random random = RandomMock.Setup(EnumerableExtensions.Repeat(i => i * 0.1, 10));
-            IEnumerable<double> opNodesProbabilities = GetOpNodesProbabilities(operators);
-            FormulaTree formulaTree = FormulaTreeGenerator2.Generate(operators, createConstant, minimalTreeDepth, random, 0.3, opNodesProbabilities);
+            IDictionary<int, double> arityAndOpNodesProbabilityMap = new Dictionary<int, double> { { 1, 0.4 }, { 2, 0.3 }, { 3, 0.2 }, { 4, 0.2 } };
+            FormulaTree formulaTree = FormulaTreeGenerator2.Generate(operators, createConstant, minimalTreeDepth, random, 0.3, arityAndOpNodesProbabilityMap);
             Assert.AreEqual(expectedSerializedTree, FormulaTreeSerializer.Serialize(formulaTree).ToLower());
-        }
-
-        private static IEnumerable<double> GetOpNodesProbabilities(IEnumerable<Operator> operators)
-        {
-            int[] arities = operators.Select(op => op.Arity).Distinct().Where(a => a > 0).ToArray();
-            IEnumerable<double> opNodesProbabilities = arities.Select(a => 1.0 / arities.Length - 0.1);
-            if (opNodesProbabilities.Any())
-            {
-                opNodesProbabilities = opNodesProbabilities.Skip(1);
-                opNodesProbabilities = new[] { 1 - opNodesProbabilities.Sum() }.Concat(opNodesProbabilities);
-            }
-            return opNodesProbabilities;
         }
     }
 }
