@@ -17,7 +17,7 @@ namespace WallpaperGenerator.Formulas
 {
     public static class FormulaTreeGenerator2
     {
-        public static FormulaTree CreateRandom(IEnumerable<Operator> operators, Func<double> createConstant, int dimensionsCount, int minimalDepth,
+        public static FormulaTree Generate(IEnumerable<Operator> operators, Func<double> createConstant, int dimensionsCount, int minimalDepth,
             Random random, double constantProbability, IDictionary<int, double> arityAndOpNodeProbabiltyMap)
         {
             IEnumerable<string> variableNames = EnumerableExtensions.Repeat(i => "x" + i.ToString(CultureInfo.InvariantCulture), dimensionsCount);

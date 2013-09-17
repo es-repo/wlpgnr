@@ -97,13 +97,21 @@ namespace WallpaperGenerator
         private FormulaTree CreateRandomFormulaTree()
         {
             int dimensionsCount = (int)_mainWindow.ControlPanel.DimensionsCountSlider.Value;
-            int variablesCount = (int)_mainWindow.ControlPanel.VariablesCountSlider.Value;
-            int constantsCount = (int)_mainWindow.ControlPanel.ConstantsCountSlider.Value;
-            int unaryOperatorsCount = (int)_mainWindow.ControlPanel.UnaryOperatorsCountSlider.Value;
+            int minimalDepth = (int) _mainWindow.ControlPanel.MinimalDepthSlider.Value;
+            double constantProbability = _mainWindow.ControlPanel.ConstantProbabilitySlider.Value/100;
+            IDictionary<int, double> arityOpNodeProbabilityMap = new Dictionary<int, double>();
+            foreach (var e in _mainWindow.ControlPanel.OpNodesProbabilities)
+            {
+                arityOpNodeProbabilityMap.Add(e.Key, e.Value.Value);
+            }
+                //int variablesCount = (int)_mainWindow.ControlPanel.VariablesCountSlider.Value;
+                //int constantsCount = (int)_mainWindow.ControlPanel.ConstantsCountSlider.Value;
+                //int unaryOperatorsCount = (int)_mainWindow.ControlPanel.UnaryOperatorsCountSlider.Value;
             IEnumerable<OperatorCheckBox> checkedOperatorCheckBoxes = _mainWindow.ControlPanel.OperatorCheckBoxes.Where(cb => cb.IsChecked == true);
             IEnumerable<Operator> operators = checkedOperatorCheckBoxes.Select(cb => cb.Operator);
 
-            return _formulaTreeGenerator.CreateRandomFormulaTree(dimensionsCount, variablesCount, constantsCount, unaryOperatorsCount, operators);
+            return FormulaTreeGenerator2.Generate(operators, () => _random.NextDouble() * 50, dimensionsCount, minimalDepth, 
+                _random, constantProbability, arityOpNodeProbabilityMap);
         }
 
         private VariableValuesRangesFor2DProjection CreateRandomVariableValuesRangesFor2DProjection(int variablesCount, 
