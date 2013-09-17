@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace WallpaperGenerator.Utilities
@@ -37,6 +38,12 @@ namespace WallpaperGenerator.Utilities
                 value = rangeEnd;
 
             return (value - rangeStart) * scale + mappedRangeStart;
+        }
+
+        public static IEnumerable<double> Normalize(IEnumerable<double> numbers)
+        {
+            double sum = numbers.Sum();
+            return numbers.Select(n => n/sum);
         }
     }
 }
