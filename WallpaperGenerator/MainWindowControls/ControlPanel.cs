@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
@@ -30,12 +29,6 @@ namespace WallpaperGenerator.MainWindowControls
 
         public IDictionary<int, Slider> OpNodesProbabilities { get; private set; }
 
-        public Slider VariablesCountSlider { get; private set; }
-
-        public Slider ConstantsCountSlider { get; private set; }
-
-        public Slider UnaryOperatorsCountSlider { get; private set; }
-
         public IEnumerable<OperatorCheckBox> OperatorCheckBoxes { get; private set; }
     
         #endregion
@@ -61,9 +54,7 @@ namespace WallpaperGenerator.MainWindowControls
             Children.Add(RenderFormulaButton);
 
             DimensionsCountSlider = CreateSliderControlsBlock(1, 100, 8, "Dimensions");
-            //DimensionsCountSlider.ValueChanged += (s, a) =>
-            //    VariablesCountSlider.Value = Math.Max(VariablesCountSlider.Value, DimensionsCountSlider.Value);
-
+            
             MinimalDepthSlider = CreateSliderControlsBlock(1, 100, 10, "Minimal depth");
 
             ConstantProbabilitySlider = CreateSliderControlsBlock(0, 100, 20, "Constant probability");
@@ -76,12 +67,6 @@ namespace WallpaperGenerator.MainWindowControls
                 OpNodesProbabilities.Add(arity, CreateSliderControlsBlock(0, 100, (int)(defaultProbabilities[arity] * 100), "Op" + arity + "Node probability"));
             }
 
-            //VariablesCountSlider = CreateSliderControlsBlock(1, 500, 20, "Variables");
-
-            //ConstantsCountSlider = CreateSliderControlsBlock(0, 200, 4, "Constants");
-
-            //UnaryOperatorsCountSlider = CreateSliderControlsBlock(0, 1000, 40, "Unary Operators");
-            
             IEnumerable<KeyValuePair<string, IEnumerable<OperatorCheckBox>>> operatorCheckBoxesByCategories = CreateOperatorCheckBoxesByCategories().ToArray();
             foreach (KeyValuePair<string, IEnumerable<OperatorCheckBox>> entry in operatorCheckBoxesByCategories)
             {

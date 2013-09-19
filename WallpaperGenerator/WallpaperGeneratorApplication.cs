@@ -6,7 +6,6 @@ using System.Windows;
 using System.Windows.Input;
 using WallpaperGenerator.FormulaRendering;
 using WallpaperGenerator.Formulas;
-using WallpaperGenerator.Formulas.FormulaTreeGeneration;
 using WallpaperGenerator.MainWindowControls.ControlPanelControls;
 
 namespace WallpaperGenerator
@@ -17,8 +16,7 @@ namespace WallpaperGenerator
 
         private readonly Random _random = new Random();
         private readonly MainWindow _mainWindow;
-        private readonly FormulaTreeGenerator _formulaTreeGenerator;
-        
+         
         #endregion
 
         #region Properties
@@ -36,15 +34,13 @@ namespace WallpaperGenerator
 
         public WallpaperGeneratorApplication()
         {
-            _formulaTreeGenerator = new FormulaTreeGenerator(_random);
-            
             _mainWindow = new MainWindow { WindowState = WindowState.Maximized };
 
             _mainWindow.ControlPanel.GenerateFormulaButton.Click += (s, a) =>
             {
                 FormulaRenderingArguments currentFormulaRenderingArguments = GetCurrentFormulaRenderingArguments();
 
-                FormulaTree formulaTree = CreateRandomFormulaTree2();
+                FormulaTree formulaTree = CreateRandomFormulaTree();
                 
                 VariableValuesRangesFor2DProjection variableValuesRanges =
                     CreateRandomVariableValuesRangesFor2DProjection(formulaTree.Variables.Length, currentFormulaRenderingArguments);
@@ -94,7 +90,7 @@ namespace WallpaperGenerator
             _mainWindow.Show();
         }
 
-        private FormulaTree CreateRandomFormulaTree2()
+        private FormulaTree CreateRandomFormulaTree()
         {
             int dimensionsCount = (int)_mainWindow.ControlPanel.DimensionsCountSlider.Value;
             int minimalDepth = (int) _mainWindow.ControlPanel.MinimalDepthSlider.Value;
@@ -107,20 +103,8 @@ namespace WallpaperGenerator
             IEnumerable<OperatorCheckBox> checkedOperatorCheckBoxes = _mainWindow.ControlPanel.OperatorCheckBoxes.Where(cb => cb.IsChecked == true);
             IEnumerable<Operator> operators = checkedOperatorCheckBoxes.Select(cb => cb.Operator);
 
-            return FormulaTreeGenerator2.Generate(operators, () => _random.NextDouble() * 50, dimensionsCount, minimalDepth, 
+            return FormulaTreeGenerator.Generate(operators, () => _random.NextDouble() * 50, dimensionsCount, minimalDepth, 
                 _random, constantProbability, arityOpNodeProbabilityMap);
-        }
-
-        private FormulaTree CreateRandomFormulaTree()
-        {
-            int dimensionsCount = (int)_mainWindow.ControlPanel.DimensionsCountSlider.Value;
-            int variablesCount = (int)_mainWindow.ControlPanel.VariablesCountSlider.Value;
-            int constantsCount = (int)_mainWindow.ControlPanel.ConstantsCountSlider.Value;
-            int unaryOperatorsCount = (int)_mainWindow.ControlPanel.UnaryOperatorsCountSlider.Value;
-            IEnumerable<OperatorCheckBox> checkedOperatorCheckBoxes = _mainWindow.ControlPanel.OperatorCheckBoxes.Where(cb => cb.IsChecked == true);
-            IEnumerable<Operator> operators = checkedOperatorCheckBoxes.Select(cb => cb.Operator);
-
-            return _formulaTreeGenerator.CreateRandomFormulaTree(dimensionsCount, variablesCount, constantsCount, unaryOperatorsCount, operators);
         }
 
         private VariableValuesRangesFor2DProjection CreateRandomVariableValuesRangesFor2DProjection(int variablesCount, 

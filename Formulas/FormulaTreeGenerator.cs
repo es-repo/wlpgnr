@@ -15,7 +15,7 @@ using WallpaperGenerator.Utilities.FormalGrammar.Rules;
 
 namespace WallpaperGenerator.Formulas
 {
-    public static class FormulaTreeGenerator2
+    public static class FormulaTreeGenerator
     {
         public static FormulaTree Generate(IEnumerable<Operator> operators, Func<double> createConstant, int dimensionsCount, int minimalDepth,
             Random random, double constantProbability, IDictionary<int, double> arityAndOpNodeProbabiltyMap)
