@@ -105,7 +105,7 @@ namespace WallpaperGenerator
 
             Func<double> createConst = () => 
             {
-                double d = Math.Round(_random.NextDouble() * 50 - 25, 2);
+                double d = Math.Round(_random.NextDouble() * (Configuration.FormulaConstLowBound - Configuration.FormulaConstHighBound) + Configuration.FormulaConstLowBound, 2);
                 return Math.Abs(d - 0) < 0.01 ? 0.01 : d;
             };
 

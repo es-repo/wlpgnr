@@ -2,6 +2,8 @@
 {
     public class Configuration
     {
+        public const double FormulaConstLowBound = -25;
+        public const double FormulaConstHighBound = 25;
         public const int RangeLowBound = -70;
         public const int RangeHighBound = 70;
         public const int ColorChannelPolinomialTransformationCoefficientLowBound = -50;
