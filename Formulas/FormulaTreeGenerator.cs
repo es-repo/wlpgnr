@@ -41,65 +41,66 @@ namespace WallpaperGenerator.Formulas
 
             // V -> x1|x2|...
             // C -> c1|c2|...
-            // Op0Node -> V|C
+            // Op0Node -> V
 
-            // AbsNode -> abs NoConstOpNode
-            // SqrtNode -> sqrt NoConstOpNode
-            // CbrtNode -> cbrt NoConstOpNode
-            // SinNode -> sin NoConstOpNode
-            // CosNode -> cos NoConstOpNode
-            // AtanNode -> atan NoConstOpNode
-            // TanhNode -> tanh NoConstOpNode
+            // AbsNode -> abs OpNode
+            // SqrtNode -> sqrt OpNode
+            // CbrtNode -> cbrt OpNode
+            // SinNode -> sin OpNode
+            // CosNode -> cos OpNode
+            // AtanNode -> atan OpNode
+            // TanhNode -> tanh OpNode
             // InfGuard -> atan|tanh
-            // Pow2Node -> InfGuard pow2 NoConstOpNode
-            // Pow3Node -> InfGuard pow3 NoConstOpNode
-            // LnNode -> InfGuard ln NoConstOpNode
-            // SinhNode -> InfGuard sinh NoConstOpNode
-            // CoshNode -> InfGuard cosh NoConstOpNode
+            // Pow2Node -> InfGuard pow2 OpNode
+            // Pow3Node -> InfGuard pow3 OpNode
+            // LnNode -> InfGuard ln OpNode
+            // SinhNode -> InfGuard sinh OpNode
+            // CoshNode -> InfGuard cosh OpNode
             // Op1Node -> AbsNode|SqrtNode|CbrtNode|SinNode|CosNode|AtanNode|TanhNode|Pow2Node|Pow3Node|LnNode|SinhNode|CoshNode
 
-            // RegOp2Operands -> (OpNode NoConstOpNode)|(NoConstOpNode OpNode)
+            // OpOrConstOperands -> (OpNode C)|(C OpNode)
+            // RegOp2Operands -> (OpNode OpNode)|OpOrConstOperands
             // SumNode -> sum RegOp2Operands
             // SubNode -> sub RegOp2Operands
             // MulNode -> mul RegOp2Operands
-            // DivNode -> InfGuard div RegOp2Operands
-            // PowNode -> (InfGuard pow RegOp2Operands)|(pow (NoConstOpNode InfGuard OpNode)|(OpNode InfGuard NoConstOpNode))
-            // MaxNode -> max NoConstOpNode NoConstOpNode
-            // ModNode -> mod (NoConstOpNode sum abs OpNode 0.0001)|(OpNode sum abs NoConstOpNode 0.0001)
+            // DivNode -> (InfGuard div OpNode OpNode)|(div OpOrConstOperands)
+            // PowNode -> (InfGuard pow RegOp2Operands)|(pow (OpNode InfGuard C)|(C InfGuard OpNode))
+            // MaxNode -> max OpNode OpNode
+            // ModNode -> mod (OpNode sum abs OpNode 0.0001)|(OpNode sum abs OpNode 0.01)
             // Op2Node -> DivNode|PowNode|MaxNode|ModNode
 
-            // Ifg0Node -> ifg0 NoConstOpNode NoConstOpNode NoConstOpNode
+            // Ifg0Node -> ifg0 OpNode OpNode OpNode
             // Op3Node -> Ifg0Node
 
-            // IfgNode -> ifg NoConstOpNode NoConstOpNode NoConstOpNode NoConstOpNode 
+            // IfgNode -> ifg OpNode OpNode OpNode OpNode 
             // Op4Node -> IfgNode
 
-            // NoConstOpNode -> V|Op1Node|Op2Node|Op3Node|Op4Node
             // OpNode -> Op0Node|Op1Node|Op2Node|Op3Node|Op4Node
 
             SymbolsSet<Operator> s = CreateSymbols(operators);
 
             IEnumerable<Symbol<Operator>> opArityNodeSymbols = GetOpArityNodeSymbolNames(operators).Select(n => s[n]).ToArray();
             IEnumerable<double> opNodesProbabilities = NormalizeOpNodeProbabilities(operators, arityAndOpNodeProbabiltyMap);
+            Func<IEnumerable<Rule<Operator>>, RuleSelector<Operator>> createConstRuleSelector = rs => new RandomRuleSelector<Operator>(random, rs, new[] { 1 - constantProbability, constantProbability });
             List<Rule<Operator>> rules = new List<Rule<Operator>>
             {
                 new Rule<Operator>(s["C"], () => new[] { new Symbol<Operator>(new Constant(createConstant()))}),
                 new OrRule<Operator>(s["V"], rs => new RandomRuleSelector<Operator>(random, rs), operators.OfType<Variable>().Select(v => s[v.Name])),
                 new OrRule<Operator>(s["Op0Node"], 
-                    rs => new RandomRuleSelector<Operator>(random, rs, new []{ 1-constantProbability, constantProbability}), 
-                    new []{ s["V"], s["C"] }), 
+                    new []{ s["V"] }), 
 
                 new OrRule<Operator>(s["InfGuard"], rs => new RandomRuleSelector<Operator>(random, rs),
                     new []{s[GetOpSymbolName(OperatorsLibrary.Atan)], s[GetOpSymbolName(OperatorsLibrary.Tanh)]}), 
                 
-                new OrRule<Operator>(s["RegOp2Operands"], rs => new RandomRuleSelector<Operator>(random, rs),
-                    new Rule<Operator>(new[]{s["OpNode"], s["NoConstOpNode"]}), 
-                    new Rule<Operator>(new[]{s["NoConstOpNode"], s["OpNode"]})), 
+                new OrRule<Operator>(s["RegOp2Operands"], 
+                    createConstRuleSelector,
+                    new Rule<Operator>(new[]{s["OpNode"], s["OpNode"]}), 
+                    new Rule<Operator>(new[]{s["OpOrConstOperands"]})), 
 
-                new OrRule<Operator>(s["NoConstOpNode"], 
-                    rs => new TreeGeneratingRuleSelector<Operator>(minimalDepth, rs, 
-                        rls => new RandomRuleSelector<Operator>(random, rls, opNodesProbabilities)),
-                    new []{ s["V"] }.Concat(opArityNodeSymbols.Skip(1))), 
+                new OrRule<Operator>(s["OpOrConstOperands"], 
+                    rs => new RandomRuleSelector<Operator>(random, rs),
+                    new Rule<Operator>(new[]{s["C"], s["OpNode"]}), 
+                    new Rule<Operator>(new[]{s["OpNode"], s["C"]})),
 
                 new OrRule<Operator>(s["OpNode"], 
                     rs => new TreeGeneratingRuleSelector<Operator>(minimalDepth, rs, 
@@ -107,16 +108,16 @@ namespace WallpaperGenerator.Formulas
                     opArityNodeSymbols), 
             };
 
-            // AbsNode -> abs NoConstOpNode, 
+            // AbsNode -> abs OpNode, 
             // ...
             rules.AddRange(CreateOpNodeRules(operators, 
-                op => new Rule<Operator>(s[GetOpNodeSymbolName(op)], new[] { s[GetOpSymbolName(op)], s["NoConstOpNode"] }),
+                op => new Rule<Operator>(s[GetOpNodeSymbolName(op)], new[] { s[GetOpSymbolName(op)], s["OpNode"] }),
                 typeof(Abs), typeof(Sqrt), typeof(Cbrt), typeof(Sin), typeof(Cos), typeof(Atan), typeof(Tanh)));
 
-            // Pow2Node -> InfGuard pow2 NoConstOpNode
+            // Pow2Node -> InfGuard pow2 OpNode
             // ...
             rules.AddRange(CreateOpNodeRules(operators, 
-                op => new Rule<Operator>(s[GetOpNodeSymbolName(op)], new[] { s["InfGuard"], s[GetOpSymbolName(op)], s["NoConstOpNode"] }),
+                op => new Rule<Operator>(s[GetOpNodeSymbolName(op)], new[] { s["InfGuard"], s[GetOpSymbolName(op)], s["OpNode"] }),
                 typeof(Pow2), typeof(Pow3), typeof(Ln), typeof(Sinh), typeof(Cosh)));
 
             // SumNode -> sum RegOp2Operands
@@ -125,44 +126,48 @@ namespace WallpaperGenerator.Formulas
                 op => new Rule<Operator>(s[GetOpNodeSymbolName(op)], new[] { s[GetOpSymbolName(op)], s["RegOp2Operands"] }),
                 typeof(Sum), typeof(Sub), typeof(Mul)));
 
-            // DivNode -> InfGuard div RegOp2Operands
-            // ...
+            // DivNode -> (InfGuard div OpNode OpNode)|(div OpOrConstOperands)
             rules.AddRange(CreateOpNodeRules(operators,
-                op => new Rule<Operator>(s[GetOpNodeSymbolName(op)], new[] { s["InfGuard"], s[GetOpSymbolName(op)], s["RegOp2Operands"] }),
+                op =>
+                    new OrRule<Operator>(s[GetOpNodeSymbolName(op)],
+                        createConstRuleSelector,
+                        new Rule<Operator>(new[] { s["InfGuard"], s[GetOpSymbolName(op)], s["OpNode"], s["OpNode"] }),
+                        new Rule<Operator>(new[] { s[GetOpSymbolName(op)], s["OpOrConstOperands"] })),
                 typeof(Div)));
 
-            // PowNode -> (InfGuard pow RegOp2Operands)|(pow (NoConstOpNode InfGuard OpNode)|(OpNode InfGuard NoConstOpNode))
+            // PowNode -> (InfGuard pow RegOp2Operands)|(pow (OpNode InfGuard C)|(C InfGuard OpNode))
             rules.AddRange(CreateOpNodeRules(operators,
-                op => new OrRule<Operator>(s[GetOpNodeSymbolName(op)], rls => new RandomRuleSelector<Operator>(random, rls),
+                op => new OrRule<Operator>(s[GetOpNodeSymbolName(op)],
+                    createConstRuleSelector,
                     new Rule<Operator>(new[] { s["InfGuard"], s[GetOpSymbolName(op)], s["RegOp2Operands"] }),
                     new AndRule<Operator>(new Rule<Operator>(new[]{s[GetOpSymbolName(op)]}),
                         new OrRule<Operator>(
-                            new Rule<Operator>(new []{s["NoConstOpNode"], s["InfGuard"], s["OpNode"]}),
-                            new Rule<Operator>(new []{s["OpNode"], s["InfGuard"], s["NoConstOpNode"]})))),
+                            new Rule<Operator>(new []{s["OpNode"], s["InfGuard"], s["C"]}),
+                            new Rule<Operator>(new []{s["C"], s["InfGuard"], s["OpNode"]})))),
                 typeof(Pow)));
 
-            // ModNode -> mod (NoConstOpNode sum abs OpNode 0.0001)|(OpNode sum abs NoConstOpNode 0.0001)
+            // ModNode -> mod (OpNode sum abs OpNode 0.01)|OpOrConstOperands
             rules.AddRange(CreateOpNodeRules(operators,
                 op => new AndRule<Operator>(s[GetOpNodeSymbolName(op)], 
                     new Rule<Operator>(new[] { s[GetOpSymbolName(op)] }),
-                    new OrRule<Operator>(rls => new RandomRuleSelector<Operator>(random, rls),
-                        new Rule<Operator>(new[] { s["NoConstOpNode"], s[GetOpSymbolName(OperatorsLibrary.Sum)], s[GetOpSymbolName(OperatorsLibrary.Abs)], s["OpNode"], new Symbol<Operator>(new Constant(0.0001))}),
-                        new Rule<Operator>(new[] { s["OpNode"], s[GetOpSymbolName(OperatorsLibrary.Sum)], s[GetOpSymbolName(OperatorsLibrary.Abs)], s["NoConstOpNode"], new Symbol<Operator>(new Constant(0.0001))}))),
+                    new OrRule<Operator>(createConstRuleSelector,
+                        new Rule<Operator>(new[] { s["OpNode"], s[GetOpSymbolName(OperatorsLibrary.Sum)], s[GetOpSymbolName(OperatorsLibrary.Abs)], s["OpNode"], new Symbol<Operator>(new Constant(0.01))}),
+                        new Rule<Operator>(new[] { s["OpOrConstOperands"] }))),
                 typeof(Mod)));
 
-            // MaxNode -> max NoConstOpNode NoConstOpNode
+            // MaxNode -> max OpNode OpNode
             rules.AddRange(CreateOpNodeRules(operators,
-                op => new Rule<Operator>(s[GetOpNodeSymbolName(op)], new[] { s[GetOpSymbolName(op)], s["NoConstOpNode"], s["NoConstOpNode"] }),
+                op => new Rule<Operator>(s[GetOpNodeSymbolName(op)], new[] { s[GetOpSymbolName(op)], s["OpNode"], s["OpNode"] }),
                 typeof(Max)));
 
-            // Ifg0Node -> ifg0 NoConstOpNode NoConstOpNode NoConstOpNode
+            // Ifg0Node -> ifg0 OpNode OpNode OpNode
             rules.AddRange(CreateOpNodeRules(operators,
-                op => new Rule<Operator>(s[GetOpNodeSymbolName(op)], new[] { s[GetOpSymbolName(op)], s["NoConstOpNode"], s["NoConstOpNode"], s["NoConstOpNode"] }),
+                op => new Rule<Operator>(s[GetOpNodeSymbolName(op)], new[] { s[GetOpSymbolName(op)], s["OpNode"], s["OpNode"], s["OpNode"] }),
                 typeof(IfG0)));
 
-            // IfgNode -> ifg NoConstOpNode NoConstOpNode NoConstOpNode NoConstOpNode 
+            // IfgNode -> ifg OpNode OpNode OpNode OpNode 
             rules.AddRange(CreateOpNodeRules(operators,
-                op => new Rule<Operator>(s[GetOpNodeSymbolName(op)], new[] { s[GetOpSymbolName(op)], s["NoConstOpNode"], s["NoConstOpNode"], s["NoConstOpNode"], s["NoConstOpNode"] }),
+                op => new Rule<Operator>(s[GetOpNodeSymbolName(op)], new[] { s[GetOpSymbolName(op)], s["OpNode"], s["OpNode"], s["OpNode"], s["OpNode"] }),
                 typeof(IfG)));
 
             // Op1Node -> AbsNode|SqrtNode|...
@@ -186,7 +191,7 @@ namespace WallpaperGenerator.Formulas
         {
             List<string> nonTerminalsNames = new List<string> 
             { 
-                "V", "C", "InfGuard", "RegOp2Operands", "OpNode", "NoConstOpNode"
+                "V", "C", "InfGuard", "RegOp2Operands", "OpOrConstOperands", "OpNode"
             };
 
             // Op0Node, Op1Node, ...

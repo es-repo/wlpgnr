@@ -103,7 +103,13 @@ namespace WallpaperGenerator
             IEnumerable<OperatorCheckBox> checkedOperatorCheckBoxes = _mainWindow.ControlPanel.OperatorCheckBoxes.Where(cb => cb.IsChecked == true);
             IEnumerable<Operator> operators = checkedOperatorCheckBoxes.Select(cb => cb.Operator);
 
-            return FormulaTreeGenerator.Generate(operators, () => _random.NextDouble() * 50, dimensionsCount, minimalDepth, 
+            Func<double> createConst = () => 
+            {
+                double d = Math.Round(_random.NextDouble() * 50 - 25, 2);
+                return Math.Abs(d - 0) < 0.01 ? 0.01 : d;
+            };
+
+            return FormulaTreeGenerator.Generate(operators, createConst, dimensionsCount, minimalDepth, 
                 _random, constantProbability, arityOpNodeProbabilityMap);
         }
 

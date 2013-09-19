@@ -36,7 +36,7 @@ namespace WallpaperGenerator.Formulas.Testing
 
         private static void TestCreateGrammar(IEnumerable<Operator> operators)
         {
-            IEnumerable<string> expectedFromSymbols = new [] { "V", "C", "InfGuard", "RegOp2Operands", "OpNode", "NoConstOpNode" };
+            IEnumerable<string> expectedFromSymbols = new[] { "V", "C", "InfGuard", "RegOp2Operands", "OpNode", "OpOrConstOperands" };
             expectedFromSymbols = expectedFromSymbols.Concat(operators.GroupBy(op => op.Arity).Select(g => "Op" + g.Key + "Node"))
                 .Concat(operators.Where(op => op.Arity > 0).Select(op => op.Name + "Node"));
             
@@ -62,15 +62,15 @@ namespace WallpaperGenerator.Formulas.Testing
 
             TestGenerate(new Operator[] { new Variable("x"), new Variable("y"), 
                 OperatorsLibrary.Sum, OperatorsLibrary.Mul, OperatorsLibrary.Sin, OperatorsLibrary.Abs }, createConstans, 5,
-                "sin sin abs mul y x");
+                "sin sin abs mul x 1");
 
             TestGenerate(new Operator[] { new Variable("x"), new Variable("y"), 
                 OperatorsLibrary.Sum, OperatorsLibrary.Mul, OperatorsLibrary.Sin, OperatorsLibrary.Abs, OperatorsLibrary.IfG0 }, createConstans, 6,
-                "sin sin abs mul ifg0 x x x abs y");
+                "sin sin abs mul sin x 2");
 
             TestGenerate(new Operator[] { new Variable("x"), new Variable("y"), new Variable("z"),
                 OperatorsLibrary.Pow, OperatorsLibrary.IfG }, createConstans, 6,
-                "atan pow pow ifg atan pow y z ifg x x x x pow 1 tanh z atan pow y z tanh ifg x x x y pow ifg atan pow y z ifg x x x x pow 2 tanh z atan pow y z tanh ifg x x x y");
+                "atan pow pow ifg atan pow y y ifg z x x x tanh pow z 3 atan pow y y tanh 1 ifg atan pow y y ifg ifg x x x y pow 2 tanh z atan pow y y ifg z x x x tanh pow z 3 atan pow y y");
 
             TestGenerate(new Operator[] { new Variable("x"), new Variable("y"), new Variable("z"),
                 OperatorsLibrary.Div, OperatorsLibrary.Max }, createConstans, 4,
@@ -78,7 +78,7 @@ namespace WallpaperGenerator.Formulas.Testing
 
             TestGenerate(new Operator[] { new Variable("x"), new Variable("y"), new Variable("z"),
                 OperatorsLibrary.Mod}, createConstans, 2,
-                    "mod x sum abs y 0.0001");
+                    "mod x sum abs y 0.01");
         }
 
         private static void TestGenerate(IEnumerable<Operator> operators, Func<double> createConstant,  int minimalTreeDepth, string expectedSerializedTree)
