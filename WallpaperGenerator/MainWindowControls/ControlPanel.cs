@@ -69,17 +69,17 @@ namespace WallpaperGenerator.MainWindowControls
             ConstantProbabilitySlider = CreateSliderControlsBlock(0, 100, 20, "Constant probability");
 
             IEnumerable<int> operatorArities = OperatorsLibrary.All.Select(op => op.Arity).Distinct().Where(a => a > 0);
-            IDictionary<int, double> defaultProbabilities = new Dictionary<int, double>{{1, 0.5}, {2, 0.3}, {3, 0.1}, {4, 0.1}};
+            IDictionary<int, double> defaultProbabilities = new Dictionary<int, double> { { 1, 0.5 }, { 2, 0.3 }, { 3, 0.1 }, { 4, 0.1 } };
             OpNodesProbabilities = new Dictionary<int, Slider>();
             foreach (int arity in operatorArities)
             {
-                OpNodesProbabilities.Add(arity, CreateSliderControlsBlock(0, 100, (int)(defaultProbabilities[arity]*100), "Op" + arity + "Node probability"));
+                OpNodesProbabilities.Add(arity, CreateSliderControlsBlock(0, 100, (int)(defaultProbabilities[arity] * 100), "Op" + arity + "Node probability"));
             }
 
             //VariablesCountSlider = CreateSliderControlsBlock(1, 500, 20, "Variables");
-            
+
             //ConstantsCountSlider = CreateSliderControlsBlock(0, 200, 4, "Constants");
-            
+
             //UnaryOperatorsCountSlider = CreateSliderControlsBlock(0, 1000, 40, "Unary Operators");
             
             IEnumerable<KeyValuePair<string, IEnumerable<OperatorCheckBox>>> operatorCheckBoxesByCategories = CreateOperatorCheckBoxesByCategories().ToArray();

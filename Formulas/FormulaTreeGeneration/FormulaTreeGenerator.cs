@@ -87,9 +87,9 @@ namespace WallpaperGenerator.Formulas.FormulaTreeGeneration
                 throw new ArgumentException("Zero-arity operators enumeration can't be empty.");
             
             // TODO: Count this for operators of any arity.
-            if (nonZeroArityOperators.Count(op => op.Arity == 2)+ 
-                nonZeroArityOperators.Count(op => op.Arity == 3)*2 + 1 != zeroArityOperators.Count())
-                throw new ArgumentException("Number of zero and non-zero -arity operators is not balanced.");
+            //if (nonZeroArityOperators.Count(op => op.Arity == 2)+ 
+            //    nonZeroArityOperators.Count(op => op.Arity == 4)*3 + 1 != zeroArityOperators.Count())
+            //    throw new ArgumentException("Number of zero and non-zero -arity operators is not balanced.");
 
             Queue<TreeNode<Operator>> nodes = new Queue<TreeNode<Operator>>(zeroArityOperators.Select(op => new TreeNode<Operator>(op)));
             foreach (Operator op in nonZeroArityOperators)
@@ -103,7 +103,7 @@ namespace WallpaperGenerator.Formulas.FormulaTreeGeneration
         }
 
         public IEnumerable<int> GetNonZeroOperatorsAritySequence(int zeroArityOperatorsCount, int unaryOperatorsCount, 
-            double ternaryVsBinaryOperatorOccurenceProbability)
+            double quadroVsBinaryOperatorOccurenceProbability)
         {
             if (zeroArityOperatorsCount < 1)
                 throw new ArgumentException("Zero arity operators can't be less then 1.");
@@ -111,7 +111,7 @@ namespace WallpaperGenerator.Formulas.FormulaTreeGeneration
             if (unaryOperatorsCount < 0)
                 throw new ArgumentException("Zero arity operators can't be less then 0.");
 
-            if (ternaryVsBinaryOperatorOccurenceProbability > 0.99)
+            if (quadroVsBinaryOperatorOccurenceProbability > 0.99)
                 throw new ArgumentException("Ternary VS binary operator occurence probability can't be more then 0.99.");
 
             while (zeroArityOperatorsCount > 1)
@@ -120,7 +120,7 @@ namespace WallpaperGenerator.Formulas.FormulaTreeGeneration
                 int arity = _random.GetRandomBetweenTwo(2, 1, unaryOperatorOccurenceProbability);
                 if (arity == 2 && zeroArityOperatorsCount > 2)
                 {
-                    arity = _random.GetRandomBetweenTwo(2, 3, ternaryVsBinaryOperatorOccurenceProbability);
+                    arity = _random.GetRandomBetweenTwo(2, 4, quadroVsBinaryOperatorOccurenceProbability);
                 }
                    
                 yield return arity;

@@ -50,7 +50,7 @@ namespace WallpaperGenerator
             mainPanel.Children.Add(ControlPanel);
 
             StatusPanel = new StatusPanel();
-            mainPanel.Children.Add(StatusPanel);
+            ControlPanel.Children.Add(StatusPanel);
             
             Content = mainPanel;
         }
