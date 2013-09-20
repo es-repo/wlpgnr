@@ -25,6 +25,8 @@ namespace WallpaperGenerator.MainWindowControls
 
         public Slider MinimalDepthSlider { get; private set; }
 
+        public Slider VarOrConstantProbabilitySlider { get; private set; }
+
         public Slider ConstantProbabilitySlider { get; private set; }
 
         public IDictionary<int, Slider> OpNodesProbabilities { get; private set; }
@@ -55,7 +57,9 @@ namespace WallpaperGenerator.MainWindowControls
 
             DimensionsCountSlider = CreateSliderControlsBlock(1, 100, 8, "Dimensions");
             
-            MinimalDepthSlider = CreateSliderControlsBlock(1, 100, 10, "Minimal depth");
+            MinimalDepthSlider = CreateSliderControlsBlock(1, 100, 14, "Minimal depth");
+
+            VarOrConstantProbabilitySlider = CreateSliderControlsBlock(0, 100, 20, "Var or constant probability");
 
             ConstantProbabilitySlider = CreateSliderControlsBlock(0, 100, 20, "Constant probability");
 

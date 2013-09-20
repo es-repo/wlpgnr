@@ -95,6 +95,7 @@ namespace WallpaperGenerator
             int dimensionsCount = (int)_mainWindow.ControlPanel.DimensionsCountSlider.Value;
             int minimalDepth = (int) _mainWindow.ControlPanel.MinimalDepthSlider.Value;
             double constantProbability = _mainWindow.ControlPanel.ConstantProbabilitySlider.Value/100;
+            double varOrConstantProbability = _mainWindow.ControlPanel.VarOrConstantProbabilitySlider.Value / 100;
             IDictionary<int, double> arityOpNodeProbabilityMap = new Dictionary<int, double>();
             foreach (var e in _mainWindow.ControlPanel.OpNodesProbabilities)
             {
@@ -109,8 +110,8 @@ namespace WallpaperGenerator
                 return Math.Abs(d - 0) < 0.01 ? 0.01 : d;
             };
 
-            return FormulaTreeGenerator.Generate(operators, createConst, dimensionsCount, minimalDepth, 
-                _random, constantProbability, arityOpNodeProbabilityMap);
+            return FormulaTreeGenerator.Generate(operators, createConst, dimensionsCount, minimalDepth,
+                _random, varOrConstantProbability, constantProbability, arityOpNodeProbabilityMap);
         }
 
         private VariableValuesRangesFor2DProjection CreateRandomVariableValuesRangesFor2DProjection(int variablesCount, 
