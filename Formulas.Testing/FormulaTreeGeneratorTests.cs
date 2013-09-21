@@ -4,6 +4,7 @@ using System.Linq;
 using MbUnit.Framework;
 using WallpaperGenerator.Formulas.Operators;
 using WallpaperGenerator.Utilities;
+using WallpaperGenerator.Utilities.DataStructures.Collections;
 using WallpaperGenerator.Utilities.FormalGrammar;
 using WallpaperGenerator.Utilities.Testing;
 
@@ -44,7 +45,8 @@ namespace WallpaperGenerator.Formulas.Testing
 
             Random random = RandomMock.Setup(EnumerableExtensions.Repeat(i => i * 0.1, 10));
             IDictionary<int, double> arityAndOpNodesProbabilityMap = new Dictionary<int, double> { { 1, 0.4 }, { 2, 0.3 }, { 3, 0.2 }, { 4, 0.2 } };
-            Grammar<Operator> grammar = FormulaTreeGenerator.CreateGrammar(operators, () => 0, 1, random, 0.3, 0.3, arityAndOpNodesProbabilityMap);
+            IDictionary<Operator, double> operatorAndProbabilityMap = new DictionaryExt<Operator, double>(operators.Select((op, i) => new KeyValuePair<Operator, double>(op, i % 2 + 1)));
+            Grammar<Operator> grammar = FormulaTreeGenerator.CreateGrammar(operatorAndProbabilityMap, () => 0, 1, random, 0.3, 0.3, arityAndOpNodesProbabilityMap);
             IEnumerable<string> fromSymbols = grammar.Rules.Select(r => r.From.Name).OrderBy(s => s);
             CollectionAssert.AreEqual(expectedFromSymbols.ToArray(), fromSymbols.ToArray());
         }
@@ -74,7 +76,7 @@ namespace WallpaperGenerator.Formulas.Testing
 
             TestGenerate(new Operator[] { new Variable("x"), new Variable("y"), new Variable("z"),
                 OperatorsLibrary.Div, OperatorsLibrary.Max }, createConstans, 4,
-                    "atan div max z z atan div y y");
+                    "atan div tanh div z z atan div y y");
 
             TestGenerate(new Operator[] { new Variable("x"), new Variable("y"), new Variable("z"),
                 OperatorsLibrary.Mod}, createConstans, 2,
@@ -85,7 +87,8 @@ namespace WallpaperGenerator.Formulas.Testing
         {
             Random random = RandomMock.Setup(EnumerableExtensions.Repeat(i => i * 0.1, 10));
             IDictionary<int, double> arityAndOpNodesProbabilityMap = new Dictionary<int, double> { { 1, 0.4 }, { 2, 0.3 }, { 3, 0.2 }, { 4, 0.2 } };
-            FormulaTree formulaTree = FormulaTreeGenerator.Generate(operators, createConstant, minimalTreeDepth, random, 0.3, 0.3, arityAndOpNodesProbabilityMap);
+            IDictionary<Operator, double> operatorAndProbabilityMap = new DictionaryExt<Operator, double>(operators.Select((op, i) => new KeyValuePair<Operator, double>(op, i % 2 + 1)));
+            FormulaTree formulaTree = FormulaTreeGenerator.Generate(operatorAndProbabilityMap, createConstant, minimalTreeDepth, random, 0.3, 0.3, arityAndOpNodesProbabilityMap);
             Assert.AreEqual(expectedSerializedTree, FormulaTreeSerializer.Serialize(formulaTree).ToLower());
         }
 

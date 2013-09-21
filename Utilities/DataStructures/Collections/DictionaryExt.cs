@@ -7,7 +7,12 @@ namespace WallpaperGenerator.Utilities.DataStructures.Collections
     public class DictionaryExt<K, T> : Dictionary<K, T>
     {
         private readonly Func<T, K> _getKey;
-        
+
+        public DictionaryExt(IEnumerable<KeyValuePair<K, T>> items)
+        {
+            items.ForEach(i => Add(i.Key, i.Value));
+        }
+
         public DictionaryExt(Func<T, K> getKey)
             : this(getKey, Enumerable.Empty<T>())
         {

@@ -7,6 +7,7 @@ using System.Windows.Input;
 using WallpaperGenerator.FormulaRendering;
 using WallpaperGenerator.Formulas;
 using WallpaperGenerator.MainWindowControls.ControlPanelControls;
+using WallpaperGenerator.Utilities.DataStructures.Collections;
 
 namespace WallpaperGenerator
 {
@@ -101,8 +102,10 @@ namespace WallpaperGenerator
             {
                 arityOpNodeProbabilityMap.Add(e.Key, e.Value.Value);
             }
-            IEnumerable<OperatorCheckBox> checkedOperatorCheckBoxes = _mainWindow.ControlPanel.OperatorCheckBoxes.Where(cb => cb.IsChecked == true);
-            IEnumerable<Operator> operators = checkedOperatorCheckBoxes.Select(cb => cb.Operator);
+            
+            IEnumerable<OperatorControl> checkedOperatorControls = _mainWindow.ControlPanel.OperatorControls.Where(cb => cb.IsChecked);
+            IDictionary<Operator, double> operatorAndProbabilityMap =
+                new DictionaryExt<Operator, double>(checkedOperatorControls.Select(opc => new KeyValuePair<Operator, double>(opc.Operator, opc.Probability)));
 
             Func<double> createConst = () => 
             {
@@ -110,7 +113,7 @@ namespace WallpaperGenerator
                 return Math.Abs(d - 0) < 0.01 ? 0.01 : d;
             };
 
-            return FormulaTreeGenerator.Generate(operators, createConst, dimensionsCount, minimalDepth,
+            return FormulaTreeGenerator.Generate(operatorAndProbabilityMap, createConst, dimensionsCount, minimalDepth,
                 _random, varOrConstantProbability, constantProbability, arityOpNodeProbabilityMap);
         }
 

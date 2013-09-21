@@ -17,27 +17,36 @@ namespace WallpaperGenerator.Formulas
 {
     public static class FormulaTreeGenerator
     {
-        public static FormulaTree Generate(IEnumerable<Operator> operators, Func<double> createConstant, int dimensionsCount, int minimalDepth,
+        public static FormulaTree Generate(IDictionary<Operator, double> operatorAndProbabilityMap, Func<double> createConstant, int dimensionsCount, int minimalDepth,
             Random random, double constOrVarProbability, double constantProbability, IDictionary<int, double> arityAndOpNodeProbabiltyMap)
         {
             IEnumerable<string> variableNames = EnumerableExtensions.Repeat(i => "x" + i.ToString(CultureInfo.InvariantCulture), dimensionsCount);
             IEnumerable<Operator> variables = variableNames.Select(n => new Variable(n));
-            return Generate(operators.Concat(variables), createConstant, minimalDepth, random, constOrVarProbability, constantProbability, arityAndOpNodeProbabiltyMap);
+            variables.ForEach(v => operatorAndProbabilityMap.Add(v, 1));
+            return Generate(operatorAndProbabilityMap, createConstant, minimalDepth, random, constOrVarProbability, constantProbability, arityAndOpNodeProbabiltyMap);
         }
 
-        public static FormulaTree Generate(IEnumerable<Operator> operators, Func<double> createConstant, int minimalDepth, Random random,
+        public static FormulaTree Generate(IDictionary<Operator, double> operatorAndProbabilityMap, Func<double> createConstant, int minimalDepth, Random random,
             double constOrVarProbability, double constantProbability, IDictionary<int, double> arityAndOpNodeProbabiltyMap)
         {
-            Grammar<Operator> grammar = CreateGrammar(operators, createConstant, minimalDepth, random, constOrVarProbability, constantProbability, arityAndOpNodeProbabiltyMap); 
+            Grammar<Operator> grammar = CreateGrammar(operatorAndProbabilityMap, createConstant, minimalDepth, random, constOrVarProbability, constantProbability, arityAndOpNodeProbabiltyMap); 
             TreeNode<Operator> treeRoot = TreeGenerator.Generate(grammar, "OpNode", op => op.Arity);
             return new FormulaTree(treeRoot);
         }
 
-        public static Grammar<Operator> CreateGrammar(IEnumerable<Operator> operators, Func<double> createConstant, int minimalDepth, Random random,
+        public static Grammar<Operator> CreateGrammar(IDictionary<Operator, double> operatorAndProbabilityMap, Func<double> createConstant, int minimalDepth, Random random,
             double constOrVarProbability, double constantProbability, IDictionary<int, double> arityAndOpNodeProbabiltyMap)
         {
+            List<Operator> operatorsWithZeroProbability = operatorAndProbabilityMap.Where(e => e.Value.Equals(0)).Select(e => e.Key).ToList();
+            foreach (Operator op in operatorsWithZeroProbability)
+            {
+                operatorAndProbabilityMap.Remove(op);
+            }
+
+            IEnumerable<Operator> operators = operatorAndProbabilityMap.Keys;
+
             if (!operators.OfType<Variable>().Any())
-                throw new ArgumentException("Operators should have at least one variable.", "operators");
+                throw new ArgumentException("Operators should have at least one variable.", "operatorAndProbabilityMap");
 
             // V -> x1|x2|...d
             // C -> c1|c2|...
@@ -83,7 +92,8 @@ namespace WallpaperGenerator.Formulas
 
             IEnumerable<Symbol<Operator>> opArityNodeSymbols = GetOpArityNodeSymbolNames(operators).Select(n => s[n]).ToArray();
             IEnumerable<double> opNodesProbabilities = NormalizeOpNodeProbabilities(operators, arityAndOpNodeProbabiltyMap);
-            Func<IEnumerable<Rule<Operator>>, RuleSelector<Operator>> createConstOrVarRuleSelector = rs => new RandomRuleSelector<Operator>(random, rs, new[] { 1 - constOrVarProbability, constOrVarProbability });
+            Func<IEnumerable<Rule<Operator>>, RuleSelector<Operator>> createConstOrVarRuleSelector = 
+                rs => new RandomRuleSelector<Operator>(random, rs, new[] { 1 - constOrVarProbability, constOrVarProbability });
             List<Rule<Operator>> rules = new List<Rule<Operator>>
             {
                 new Rule<Operator>(s["C"], () => new[] { new Symbol<Operator>(new Constant(createConstant()))}),
@@ -191,7 +201,9 @@ namespace WallpaperGenerator.Formulas
             // ...
             IEnumerable<IGrouping<int, Operator>> operatorsByArity = operators.GroupBy(op => op.Arity).Where(g => g.Key > 0 && g.Any());
             rules.AddRange(operatorsByArity.Select(g =>
-                new OrRule<Operator>(s[GetOpArityNodeSymbolName(g.Key)], rls => new RandomRuleSelector<Operator>(random, rls), g.Select(op => s[GetOpNodeSymbolName(op)]))));
+                new OrRule<Operator>(s[GetOpArityNodeSymbolName(g.Key)], 
+                    rls => new RandomRuleSelector<Operator>(random, rls, g.Select(op => operatorAndProbabilityMap[op])), 
+                    g.Select(op => s[GetOpNodeSymbolName(op)]))));
             
             return new Grammar<Operator>(rules);
         }

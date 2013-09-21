@@ -31,7 +31,7 @@ namespace WallpaperGenerator.MainWindowControls
 
         public IDictionary<int, Slider> OpNodesProbabilities { get; private set; }
 
-        public IEnumerable<OperatorCheckBox> OperatorCheckBoxes { get; private set; }
+        public IEnumerable<OperatorControl> OperatorControls { get; private set; }
     
         #endregion
 
@@ -39,60 +39,85 @@ namespace WallpaperGenerator.MainWindowControls
 
         public ControlPanel()
         {
-            Orientation = Orientation.Vertical;
-            VerticalAlignment = VerticalAlignment.Stretch;
-            Width = 200;
+            Orientation = Orientation.Horizontal;
+            Children.Add(CreateButtonsAndSlidersPanel());
+            Children.Add(CreateOperatorsPanel());
+        }
+
+        #endregion
+
+        private Panel CreateButtonsAndSlidersPanel()
+        {
+            StackPanel panel = new StackPanel
+            {
+                Orientation = Orientation.Vertical,
+                VerticalAlignment = VerticalAlignment.Stretch,
+                Width = 200
+           };
 
             GenerateFormulaButton = CreateGenerateFormulaButton();
-            Children.Add(GenerateFormulaButton);
-            
+            panel.Children.Add(GenerateFormulaButton);
+
             ChangeRangesButton = CreateChangeRangesButton();
-            Children.Add(ChangeRangesButton);
+            panel.Children.Add(ChangeRangesButton);
 
             ChangeColorButton = CreateChangeColorButton();
-            Children.Add(ChangeColorButton);
+            panel.Children.Add(ChangeColorButton);
 
             RenderFormulaButton = CreateRenderFormulaButton();
-            Children.Add(RenderFormulaButton);
+            panel.Children.Add(RenderFormulaButton);
 
-            DimensionsCountSlider = CreateSliderControlsBlock(1, 100, 8, "Dimensions");
-            
-            MinimalDepthSlider = CreateSliderControlsBlock(1, 100, 14, "Minimal depth");
+            DimensionsCountSlider = CreateSliderControlsBlock(panel,1, 100, 8, "Dimensions");
 
-            VarOrConstantProbabilitySlider = CreateSliderControlsBlock(0, 100, 20, "Var or constant probability");
+            MinimalDepthSlider = CreateSliderControlsBlock(panel,1, 100, 14, "Minimal depth");
 
-            ConstantProbabilitySlider = CreateSliderControlsBlock(0, 100, 20, "Constant probability");
+            VarOrConstantProbabilitySlider = CreateSliderControlsBlock(panel, 0, 100, 20, "Var or constant probability");
+
+            ConstantProbabilitySlider = CreateSliderControlsBlock(panel, 0, 100, 20, "Constant probability");
 
             IEnumerable<int> operatorArities = OperatorsLibrary.All.Select(op => op.Arity).Distinct().Where(a => a > 0);
             IDictionary<int, double> defaultProbabilities = new Dictionary<int, double> { { 1, 0.5 }, { 2, 0.3 }, { 3, 0.1 }, { 4, 0.1 } };
             OpNodesProbabilities = new Dictionary<int, Slider>();
             foreach (int arity in operatorArities)
             {
-                OpNodesProbabilities.Add(arity, CreateSliderControlsBlock(0, 100, (int)(defaultProbabilities[arity] * 100), "Op" + arity + "Node probability"));
+                OpNodesProbabilities.Add(arity, CreateSliderControlsBlock(panel, 0, 100, (int)(defaultProbabilities[arity] * 100), "Op" + arity + "Node probability"));
             }
 
-            IEnumerable<KeyValuePair<string, IEnumerable<OperatorCheckBox>>> operatorCheckBoxesByCategories = CreateOperatorCheckBoxesByCategories().ToArray();
-            foreach (KeyValuePair<string, IEnumerable<OperatorCheckBox>> entry in operatorCheckBoxesByCategories)
+            return panel;
+        }
+
+        private Panel CreateOperatorsPanel()
+        {
+            StackPanel panel = new StackPanel
+            {
+                Orientation = Orientation.Vertical,
+                VerticalAlignment = VerticalAlignment.Stretch,
+                Width = 200,
+                Margin = new Thickness { Left = 20 }  
+            };
+            
+            IEnumerable<KeyValuePair<string, IEnumerable<OperatorControl>>> operatorControls = CreateOperatorControls().ToArray();
+            foreach (KeyValuePair<string, IEnumerable<OperatorControl>> entry in operatorControls)
             {
                 string category = entry.Key;
                 TextBlock textBlock = new TextBlock
-                    {
-                        Text = category, 
-                        FontWeight = FontWeight.FromOpenTypeWeight(999),
-                        Margin = new Thickness { Top = 10 }
-                    };
-                Children.Add(textBlock);
-
-                foreach (OperatorCheckBox checkBox in entry.Value)
                 {
-                    Children.Add(checkBox);
+                    Text = category,
+                    FontWeight = FontWeight.FromOpenTypeWeight(999),
+                    Margin = new Thickness { Top = 10 }
+                };
+                panel.Children.Add(textBlock);
+
+                foreach (OperatorControl operatorControl in entry.Value)
+                {
+                    panel.Children.Add(operatorControl);
                 }
             }
 
-            OperatorCheckBoxes = Children.Cast<object>().OfType<OperatorCheckBox>();
-        }
+            OperatorControls = operatorControls.SelectMany(e => e.Value);
 
-        #endregion
+            return panel;
+        }
 
         private Button CreateGenerateFormulaButton()
         {
@@ -138,7 +163,7 @@ namespace WallpaperGenerator.MainWindowControls
             return button;
         }
 
-        private Slider CreateSliderControlsBlock(int minimumValue, int maximumValue, int defaultValue, string label)
+        private Slider CreateSliderControlsBlock(Panel parentPanel, int minimumValue, int maximumValue, int defaultValue, string label)
         {
             TextBlock labelTextBlock = new TextBlock 
             { 
@@ -150,9 +175,9 @@ namespace WallpaperGenerator.MainWindowControls
             Slider slider = CreatSlider(minimumValue, maximumValue, defaultValue, valueTextBlock);
             StackPanel stackPanel = new StackPanel {Orientation = Orientation.Horizontal};
             stackPanel.Children.Add(labelTextBlock);
-            stackPanel.Children.Add(valueTextBlock); 
-            Children.Add(stackPanel);
-            Children.Add(slider);
+            stackPanel.Children.Add(valueTextBlock);
+            parentPanel.Children.Add(stackPanel);
+            parentPanel.Children.Add(slider);
             return slider;
         }
         
@@ -173,12 +198,12 @@ namespace WallpaperGenerator.MainWindowControls
             return slider;
         }
 
-        private static IEnumerable<KeyValuePair<string, IEnumerable<OperatorCheckBox>>> CreateOperatorCheckBoxesByCategories()
+        private static IEnumerable<KeyValuePair<string, IEnumerable<OperatorControl>>> CreateOperatorControls()
         {
             return OperatorsLibrary.AllByCategories.Select(p =>
-                new KeyValuePair<string, IEnumerable<OperatorCheckBox>>(
+                new KeyValuePair<string, IEnumerable<OperatorControl>>(
                     p.Key,
-                    p.Value.Select(op => new OperatorCheckBox(op) {IsChecked = true})));
+                    p.Value.Select(op => new OperatorControl(op) { IsChecked = true })));
         }
     }
 }
