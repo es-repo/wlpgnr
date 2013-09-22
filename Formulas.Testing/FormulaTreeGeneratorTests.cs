@@ -19,11 +19,10 @@ namespace WallpaperGenerator.Formulas.Testing
             TestCreateGrammar(new[] { new Variable("x"), new Variable("y") });
             TestCreateGrammar(new Operator[] { new Variable("x"), new Variable("y"), OperatorsLibrary.Abs, OperatorsLibrary.Sin });
             TestCreateGrammar(new Operator[] { new Variable("x"), OperatorsLibrary.Abs, OperatorsLibrary.Sin, OperatorsLibrary.Sum });
-            TestCreateGrammar(new Operator[] { new Variable("x"), OperatorsLibrary.Abs, OperatorsLibrary.IfG0 });
             TestCreateGrammar(new Operator[] { new Variable("x"), OperatorsLibrary.IfG });
             TestCreateGrammar(new Operator[] { new Variable("x"), OperatorsLibrary.Abs, OperatorsLibrary.Sin, OperatorsLibrary.Sum });
             TestCreateGrammar(new Operator[] { new Variable("x"), OperatorsLibrary.Abs, OperatorsLibrary.Sin, OperatorsLibrary.Sum,
-                OperatorsLibrary.Pow, OperatorsLibrary.IfG, OperatorsLibrary.Max, OperatorsLibrary.Mod, OperatorsLibrary.IfG0 });
+                OperatorsLibrary.Pow, OperatorsLibrary.IfG, OperatorsLibrary.Max, OperatorsLibrary.Mod });
 
             try
             {
@@ -64,11 +63,7 @@ namespace WallpaperGenerator.Formulas.Testing
             TestGenerate(new Operator[] { new Variable("x"), new Variable("y"), 
                 OperatorsLibrary.Sum, OperatorsLibrary.Mul, OperatorsLibrary.Sin, OperatorsLibrary.Abs }, createConstans, 5,
                 "sin sin abs mul x x");
-
-            TestGenerate(new Operator[] { new Variable("x"), new Variable("y"), 
-                OperatorsLibrary.Sum, OperatorsLibrary.Mul, OperatorsLibrary.Sin, OperatorsLibrary.Abs, OperatorsLibrary.IfG0 }, createConstans, 6,
-                "sin sin abs mul x sin x");
-
+            
             TestGenerate(new Operator[] { new Variable("x"), new Variable("y"), new Variable("z"),
                 OperatorsLibrary.Pow, OperatorsLibrary.IfG }, createConstans, 6,
                 "atan pow pow 1 atan atan pow y z ifg atan pow y y ifg ifg x x x y pow 2 atan x tanh pow z z ifg x x x y pow 3 atan x tanh pow z z");

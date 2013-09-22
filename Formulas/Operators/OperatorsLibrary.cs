@@ -73,7 +73,6 @@ namespace WallpaperGenerator.Formulas.Operators
 
         #region Conditional Operators
 
-        public static readonly IfG0 IfG0 = new IfG0();
         public static readonly IfG IfG = new IfG();
         public static readonly Max Max = new Max();
 
@@ -81,7 +80,6 @@ namespace WallpaperGenerator.Formulas.Operators
         {
             get
             {
-                yield return IfG0;
                 yield return IfG;
                 yield return Max;
             }

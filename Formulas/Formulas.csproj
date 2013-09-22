@@ -68,7 +68,6 @@
     <Compile Include="Operators\Arithmetic\Pow.cs" />
     <Compile Include="Operators\Arithmetic\Sub.cs" />
     <Compile Include="Operators\Conditionals\IfG.cs" />
-    <Compile Include="Operators\Conditionals\IfG0.cs" />
     <Compile Include="FormulaTreeSerializer.cs" />
     <Compile Include="Operators\Conditionals\Max.cs" />
     <Compile Include="Operators\Constant.cs" />

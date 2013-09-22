@@ -80,9 +80,6 @@ namespace WallpaperGenerator.Formulas
             // ModNode -> mod (OpNode sum abs OpNode 0.01)|OpOrOp0NodeOperands
             // Op2Node -> DivNode|PowNode|MaxNode|ModNode
 
-            // Ifg0Node -> ifg0 OpNode OpNode OpNode
-            // Op3Node -> Ifg0Node
-
             // IfgNode -> ifg OpNode OpNode OpNode OpNode  
             // Op4Node -> IfgNode
 
@@ -185,11 +182,6 @@ namespace WallpaperGenerator.Formulas
             rules.AddRange(CreateOpNodeRules(operators,
                 op => new Rule<Operator>(s[GetOpNodeSymbolName(op)], new[] { s[GetOpSymbolName(op)], s["OpOrVNodeOperands"] }),
                 typeof(Max)));
-
-            // Ifg0Node -> ifg0 OpNode OpNode OpNode
-            rules.AddRange(CreateOpNodeRules(operators,
-                op => new Rule<Operator>(s[GetOpNodeSymbolName(op)], new[] { s[GetOpSymbolName(op)], s["OpNode"], s["OpNode"], s["OpNode"] }),
-                typeof(IfG0)));
 
             // IfgNode -> ifg OpNode OpNode OpNode OpNode 
             rules.AddRange(CreateOpNodeRules(operators,
