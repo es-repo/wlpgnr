@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.IO;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using WallpaperGenerator.FormulaRendering;
@@ -57,6 +58,17 @@ namespace WallpaperGenerator
                 colors[j + 3] = 255;
             }
            _bitmap.WritePixels(_rect, colors, _stride, 0);
+        }
+
+        public void SaveToFile(string fileName)
+        {
+            using (FileStream stream = new FileStream(fileName, FileMode.Create))
+            {
+                PngBitmapEncoder encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(_bitmap.Clone()));
+                encoder.Save(stream);
+                stream.Close();
+            }
         }
 
         #endregion

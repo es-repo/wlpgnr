@@ -17,6 +17,7 @@ namespace WallpaperGenerator
 
         private readonly Random _random = new Random();
         private readonly MainWindow _mainWindow;
+        private WallpaperImage _wallpaperImage;
          
         #endregion
 
@@ -81,6 +82,8 @@ namespace WallpaperGenerator
             };
             
             _mainWindow.ControlPanel.RenderFormulaButton.Click += (s, a) => RenderFormula();
+
+            _mainWindow.ControlPanel.SaveButton.Click += (s, a) => SaveFormulaImage();
         }
 
         #endregion
@@ -150,16 +153,21 @@ namespace WallpaperGenerator
                 formulaRenderingArguments.VariableValuesRanges,
                 formulaRenderingArguments.ColorTransformation);
 
-            WallpaperImage wallpaperImage =
-                new WallpaperImage(renderedFormulaImage.WidthInPixels, renderedFormulaImage.HeightInPixels);
-            wallpaperImage.Update(renderedFormulaImage);
+            _wallpaperImage = new WallpaperImage(renderedFormulaImage.WidthInPixels, renderedFormulaImage.HeightInPixels);
+            _wallpaperImage.Update(renderedFormulaImage);
 
-            _mainWindow.WallpaperImage.Source = wallpaperImage.Source;
+            _mainWindow.WallpaperImage.Source = _wallpaperImage.Source;
 
             stopwatch.Stop();
 
             _mainWindow.StatusPanel.RenderedTime = stopwatch.Elapsed;
             _mainWindow.Cursor = Cursors.Arrow;
+        }
+
+        private void SaveFormulaImage()
+        {
+            if (_wallpaperImage != null)
+                _wallpaperImage.SaveToFile("c:/wlp.png");
         }
     }
 }

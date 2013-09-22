@@ -19,6 +19,8 @@ namespace WallpaperGenerator.MainWindowControls
 
         public Button RenderFormulaButton { get; private set; }
 
+        public Button SaveButton { get; private set; }
+
         public Slider DimensionsCountSlider { get; private set; }
 
         public Slider MinimalDepthSlider { get; private set; }
@@ -62,6 +64,9 @@ namespace WallpaperGenerator.MainWindowControls
 
             RenderFormulaButton = CreateRenderFormulaButton();
             panel.Children.Add(RenderFormulaButton);
+
+            SaveButton = CreateSaveButton();
+            panel.Children.Add(SaveButton);
 
             DimensionsCountSlider = CreateSliderControlsBlock(panel,1, 100, 8, "Dimensions");
 
@@ -150,6 +155,17 @@ namespace WallpaperGenerator.MainWindowControls
                 Margin = new Thickness { Top = 10 },
             };
             
+            return button;
+        }
+
+        private Button CreateSaveButton()
+        {
+            Button button = new Button
+            {
+                Content = "Save to file",
+                Margin = new Thickness { Top = 10 },
+            };
+
             return button;
         }
 
