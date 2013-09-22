@@ -167,7 +167,7 @@ namespace WallpaperGenerator
         private void SaveFormulaImage()
         {
             if (_wallpaperImage != null)
-                _wallpaperImage.SaveToFile("c:/wlp.png");
+                _wallpaperImage.SaveToFile("c:/temp/wlp.png");
         }
     }
 }

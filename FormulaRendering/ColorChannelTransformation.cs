@@ -35,11 +35,6 @@ namespace WallpaperGenerator.FormulaRendering
             DispersionCoefficient = dispersionCoefficient;
         }
 
-        public static ColorChannelTransformation CreatePolynomialChannelTransformation(double a, double b, double c, double dispersionCoefficient)
-        {
-            return new ColorChannelTransformation(a, b, c, dispersionCoefficient);
-        }
-
         public static ColorChannelTransformation CreateRandomPolinomialChannelTransformation(Random random, 
             int coefficientLowBound, int coefficientHighBound, double zeroChannelProbabilty)
         {
