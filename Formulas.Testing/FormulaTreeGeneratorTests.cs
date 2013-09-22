@@ -44,9 +44,8 @@ namespace WallpaperGenerator.Formulas.Testing
             expectedFromSymbols = expectedFromSymbols.OrderBy(s => s);
 
             Random random = RandomMock.Setup(EnumerableExtensions.Repeat(i => i * 0.1, 10));
-            IDictionary<int, double> arityAndOpNodesProbabilityMap = new Dictionary<int, double> { { 1, 0.4 }, { 2, 0.3 }, { 3, 0.2 }, { 4, 0.2 } };
             IDictionary<Operator, double> operatorAndProbabilityMap = new DictionaryExt<Operator, double>(operators.Select((op, i) => new KeyValuePair<Operator, double>(op, i % 2 + 1)));
-            Grammar<Operator> grammar = FormulaTreeGenerator.CreateGrammar(operatorAndProbabilityMap, () => 0, 1, random, 0.3, 0.3, arityAndOpNodesProbabilityMap);
+            Grammar<Operator> grammar = FormulaTreeGenerator.CreateGrammar(operatorAndProbabilityMap, () => 0, 1, random, 0.3, 0.3);
             IEnumerable<string> fromSymbols = grammar.Rules.Select(r => r.From.Name).OrderBy(s => s);
             CollectionAssert.AreEqual(expectedFromSymbols.ToArray(), fromSymbols.ToArray());
         }
@@ -86,19 +85,24 @@ namespace WallpaperGenerator.Formulas.Testing
         private static void TestGenerate(IEnumerable<Operator> operators, Func<double> createConstant,  int minimalTreeDepth, string expectedSerializedTree)
         {
             Random random = RandomMock.Setup(EnumerableExtensions.Repeat(i => i * 0.1, 10));
-            IDictionary<int, double> arityAndOpNodesProbabilityMap = new Dictionary<int, double> { { 1, 0.4 }, { 2, 0.3 }, { 3, 0.2 }, { 4, 0.2 } };
             IDictionary<Operator, double> operatorAndProbabilityMap = new DictionaryExt<Operator, double>(operators.Select((op, i) => new KeyValuePair<Operator, double>(op, i % 2 + 1)));
-            FormulaTree formulaTree = FormulaTreeGenerator.Generate(operatorAndProbabilityMap, createConstant, minimalTreeDepth, random, 0.3, 0.3, arityAndOpNodesProbabilityMap);
+            FormulaTree formulaTree = FormulaTreeGenerator.Generate(operatorAndProbabilityMap, createConstant, minimalTreeDepth, random, 0.3, 0.3);
             Assert.AreEqual(expectedSerializedTree, FormulaTreeSerializer.Serialize(formulaTree).ToLower());
         }
 
         [Test]
-        public void TestNormalizeOpNodeProbabilities()
+        public void TestGetOpNodeProbabilities()
         {
-            IEnumerable<Operator> operators = new Operator[] {OperatorsLibrary.Sin, OperatorsLibrary.Pow};
-            IDictionary<int, double> arityAndProbabiltyMap = new Dictionary<int, double>{{1, 30}, {2, 20}, {3, 30}, {4, 10}};
-            double[] expectedOpNodeProbabilities = new [] {0.6, 0.4};
-            double[] opNodeProbabilities = FormulaTreeGenerator.NormalizeOpNodeProbabilities(operators, arityAndProbabiltyMap).ToArray();
+            Dictionary<Operator, double> operatorAndProbabilityMap = new Dictionary<Operator, double>
+            {
+                { OperatorsLibrary.Sin, 30 },
+                { OperatorsLibrary.Ln, 50 },
+                { OperatorsLibrary.Sum, 20 },
+                { OperatorsLibrary.Sub, 30 },
+                { OperatorsLibrary.IfG, 0 },
+            };
+            double[] expectedOpNodeProbabilities = new [] {80.0, 50};
+            double[] opNodeProbabilities = FormulaTreeGenerator.GetOpNodeProbabilities(operatorAndProbabilityMap).ToArray();
             CollectionAssert.AreEqual(expectedOpNodeProbabilities, opNodeProbabilities);
         }
     }

@@ -27,8 +27,6 @@ namespace WallpaperGenerator.MainWindowControls
 
         public Slider ConstantProbabilitySlider { get; private set; }
 
-        public IDictionary<int, Slider> OpNodesProbabilities { get; private set; }
-
         public IEnumerable<OperatorControl> OperatorControls { get; private set; }
     
         #endregion
@@ -37,7 +35,7 @@ namespace WallpaperGenerator.MainWindowControls
 
         public ControlPanel()
         {
-            Orientation = Orientation.Horizontal;
+            Orientation = Orientation.Vertical;
             Children.Add(CreateButtonsAndSlidersPanel());
             Children.Add(CreateOperatorsPanel());
         }
@@ -72,14 +70,6 @@ namespace WallpaperGenerator.MainWindowControls
             VarOrConstantProbabilitySlider = CreateSliderControlsBlock(panel, 0, 100, 20, "Var or constant probability");
 
             ConstantProbabilitySlider = CreateSliderControlsBlock(panel, 0, 100, 20, "Constant probability");
-
-            IEnumerable<int> operatorArities = OperatorsLibrary.All.Select(op => op.Arity).Distinct().Where(a => a > 0);
-            IDictionary<int, double> defaultProbabilities = new Dictionary<int, double> { { 1, 0.5 }, { 2, 0.3 }, { 3, 0.1 }, { 4, 0.1 } };
-            OpNodesProbabilities = new Dictionary<int, Slider>();
-            foreach (int arity in operatorArities)
-            {
-                OpNodesProbabilities.Add(arity, CreateSliderControlsBlock(panel, 0, 100, (int)(defaultProbabilities[arity] * 100), "Op" + arity + "Node probability"));
-            }
 
             return panel;
         }

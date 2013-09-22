@@ -18,24 +18,24 @@ namespace WallpaperGenerator.Formulas
     public static class FormulaTreeGenerator
     {
         public static FormulaTree Generate(IDictionary<Operator, double> operatorAndProbabilityMap, Func<double> createConstant, int dimensionsCount, int minimalDepth,
-            Random random, double constOrVarProbability, double constantProbability, IDictionary<int, double> arityAndOpNodeProbabiltyMap)
+            Random random, double constOrVarProbability, double constantProbability)
         {
             IEnumerable<string> variableNames = EnumerableExtensions.Repeat(i => "x" + i.ToString(CultureInfo.InvariantCulture), dimensionsCount);
             IEnumerable<Operator> variables = variableNames.Select(n => new Variable(n));
             variables.ForEach(v => operatorAndProbabilityMap.Add(v, 1));
-            return Generate(operatorAndProbabilityMap, createConstant, minimalDepth, random, constOrVarProbability, constantProbability, arityAndOpNodeProbabiltyMap);
+            return Generate(operatorAndProbabilityMap, createConstant, minimalDepth, random, constOrVarProbability, constantProbability);
         }
 
         public static FormulaTree Generate(IDictionary<Operator, double> operatorAndProbabilityMap, Func<double> createConstant, int minimalDepth, Random random,
-            double constOrVarProbability, double constantProbability, IDictionary<int, double> arityAndOpNodeProbabiltyMap)
+            double constOrVarProbability, double constantProbability)
         {
-            Grammar<Operator> grammar = CreateGrammar(operatorAndProbabilityMap, createConstant, minimalDepth, random, constOrVarProbability, constantProbability, arityAndOpNodeProbabiltyMap); 
+            Grammar<Operator> grammar = CreateGrammar(operatorAndProbabilityMap, createConstant, minimalDepth, random, constOrVarProbability, constantProbability); 
             TreeNode<Operator> treeRoot = TreeGenerator.Generate(grammar, "OpNode", op => op.Arity);
             return new FormulaTree(treeRoot);
         }
 
         public static Grammar<Operator> CreateGrammar(IDictionary<Operator, double> operatorAndProbabilityMap, Func<double> createConstant, int minimalDepth, Random random,
-            double constOrVarProbability, double constantProbability, IDictionary<int, double> arityAndOpNodeProbabiltyMap)
+            double constOrVarProbability, double constantProbability)
         {
             List<Operator> operatorsWithZeroProbability = operatorAndProbabilityMap.Where(e => e.Value.Equals(0)).Select(e => e.Key).ToList();
             foreach (Operator op in operatorsWithZeroProbability)
@@ -91,7 +91,7 @@ namespace WallpaperGenerator.Formulas
             SymbolsSet<Operator> s = CreateSymbols(operators);
 
             IEnumerable<Symbol<Operator>> opArityNodeSymbols = GetOpArityNodeSymbolNames(operators).Select(n => s[n]).ToArray();
-            IEnumerable<double> opNodesProbabilities = NormalizeOpNodeProbabilities(operators, arityAndOpNodeProbabiltyMap);
+            IEnumerable<double> opNodesProbabilities = GetOpNodeProbabilities(operatorAndProbabilityMap);
             Func<IEnumerable<Rule<Operator>>, RuleSelector<Operator>> createConstOrVarRuleSelector = 
                 rs => new RandomRuleSelector<Operator>(random, rs, new[] { 1 - constOrVarProbability, constOrVarProbability });
             List<Rule<Operator>> rules = new List<Rule<Operator>>
@@ -255,11 +255,14 @@ namespace WallpaperGenerator.Formulas
             return op.Name;
         }
 
-        public static IEnumerable<double> NormalizeOpNodeProbabilities(IEnumerable<Operator> operators, 
-            IEnumerable<KeyValuePair<int, double>> arityAndProbabiltyMap)
+        public static IEnumerable<double> GetOpNodeProbabilities(IDictionary<Operator, double> operatorAndProbabilityMap)
         {
-            IEnumerable<double> probabilities = arityAndProbabiltyMap.Where(e => operators.Any(op => op.Arity == e.Key)).Select(e => e.Value);
-            return MathUtilities.Normalize(probabilities);
+            return operatorAndProbabilityMap
+                .GroupBy(e => e.Key.Arity)
+                .Where(g => g.Key > 0)
+                .OrderBy(g => g.Key)
+                .Select(g => g.Sum(e => e.Value))
+                .Where(p => p > 0);
         }
     }
 }
