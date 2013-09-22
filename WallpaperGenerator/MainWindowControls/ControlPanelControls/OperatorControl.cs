@@ -1,5 +1,4 @@
 ﻿using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using WallpaperGenerator.Formulas;
 
 namespace WallpaperGenerator.MainWindowControls.ControlPanelControls
@@ -14,7 +13,7 @@ namespace WallpaperGenerator.MainWindowControls.ControlPanelControls
         public bool IsChecked
         {
             get { return _checkBox.IsChecked == true; }
-            set { _checkBox.IsChecked = true; }
+            set { _checkBox.IsChecked = value; }
         }
 
         public double Probability 
@@ -27,19 +26,10 @@ namespace WallpaperGenerator.MainWindowControls.ControlPanelControls
             Orientation = Orientation.Horizontal;
             Operator = @operator;
             _checkBox = new CheckBox { Content = Operator.Name, Width = 50};
-
-            _probabilitySlider = new Slider
-            {
-                Minimum = 0,
-                Maximum = 100,
-                Value = 50,
-                TickPlacement = TickPlacement.BottomRight,
-                IsSnapToTickEnabled = true,
-                Width =  150
-            };
-
+            SliderWithValueText sliderWithValueText = new SliderWithValueText(190, 0, 100, 50);
+            _probabilitySlider = sliderWithValueText.Slider;
             Children.Add(_checkBox);
-            Children.Add(_probabilitySlider);
+            Children.Add(sliderWithValueText);
         }
     }
 }

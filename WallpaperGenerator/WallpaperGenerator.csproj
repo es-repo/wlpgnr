@@ -88,6 +88,7 @@
     <Compile Include="MainWindow.cs" />
     <Compile Include="MainWindowControls\ControlPanel.cs" />
     <Compile Include="MainWindowControls\ControlPanelControls\OperatorControl.cs" />
+    <Compile Include="MainWindowControls\SliderWithValueText.cs" />
     <Compile Include="MainWindowControls\StatusPanel.cs" />
     <Compile Include="WallpaperImage.cs" />
     <Compile Include="Program.cs" />

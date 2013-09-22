@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using WallpaperGenerator.Formulas.Operators;
 using WallpaperGenerator.MainWindowControls.ControlPanelControls;
 
@@ -52,7 +50,7 @@ namespace WallpaperGenerator.MainWindowControls
             {
                 Orientation = Orientation.Vertical,
                 VerticalAlignment = VerticalAlignment.Stretch,
-                Width = 200
+                Width = 280
            };
 
             GenerateFormulaButton = CreateGenerateFormulaButton();
@@ -92,12 +90,13 @@ namespace WallpaperGenerator.MainWindowControls
             {
                 Orientation = Orientation.Vertical,
                 VerticalAlignment = VerticalAlignment.Stretch,
-                Width = 200,
+                Width = 280,
                 Margin = new Thickness { Left = 20 }  
             };
             
-            IEnumerable<KeyValuePair<string, IEnumerable<OperatorControl>>> operatorControls = CreateOperatorControls().ToArray();
-            foreach (KeyValuePair<string, IEnumerable<OperatorControl>> entry in operatorControls)
+            IEnumerable<KeyValuePair<string, IEnumerable<OperatorControl>>> categoryAndOperatorControlsMap = CreateOperatorControls().ToArray();
+            List<OperatorControl> operatorControls = new List<OperatorControl>();
+            foreach (KeyValuePair<string, IEnumerable<OperatorControl>> entry in categoryAndOperatorControlsMap)
             {
                 string category = entry.Key;
                 TextBlock textBlock = new TextBlock
@@ -111,10 +110,11 @@ namespace WallpaperGenerator.MainWindowControls
                 foreach (OperatorControl operatorControl in entry.Value)
                 {
                     panel.Children.Add(operatorControl);
+                    operatorControls.Add(operatorControl);
                 }
             }
 
-            OperatorControls = operatorControls.SelectMany(e => e.Value);
+            OperatorControls = operatorControls;
 
             return panel;
         }
@@ -171,31 +171,10 @@ namespace WallpaperGenerator.MainWindowControls
                 FontWeight = FontWeight.FromOpenTypeWeight(999),
                 Margin = new Thickness { Right = 10 }               
             };
-            TextBlock valueTextBlock = new TextBlock();
-            Slider slider = CreatSlider(minimumValue, maximumValue, defaultValue, valueTextBlock);
-            StackPanel stackPanel = new StackPanel {Orientation = Orientation.Horizontal};
-            stackPanel.Children.Add(labelTextBlock);
-            stackPanel.Children.Add(valueTextBlock);
-            parentPanel.Children.Add(stackPanel);
-            parentPanel.Children.Add(slider);
-            return slider;
-        }
-        
-        private static Slider CreatSlider(int minimumValue, int maximumValue, int defaultValue, TextBlock sliderValueLabel)
-        {
-            Slider slider = new Slider
-            {
-                Minimum = minimumValue,
-                Maximum = maximumValue,
-                Value = defaultValue,
-                TickPlacement = TickPlacement.BottomRight,
-                IsSnapToTickEnabled = true
-            };
-
-            sliderValueLabel.Text = slider.Value.ToString(CultureInfo.InvariantCulture);
-            slider.ValueChanged += (s, a) => sliderValueLabel.Text = slider.Value.ToString(CultureInfo.InvariantCulture);
-
-            return slider;
+            SliderWithValueText sliderWithValueText = new SliderWithValueText(250, minimumValue, maximumValue, defaultValue);
+            parentPanel.Children.Add(labelTextBlock);
+            parentPanel.Children.Add(sliderWithValueText);
+            return sliderWithValueText.Slider;
         }
 
         private static IEnumerable<KeyValuePair<string, IEnumerable<OperatorControl>>> CreateOperatorControls()
@@ -203,7 +182,7 @@ namespace WallpaperGenerator.MainWindowControls
             return OperatorsLibrary.AllByCategories.Select(p =>
                 new KeyValuePair<string, IEnumerable<OperatorControl>>(
                     p.Key,
-                    p.Value.Select(op => new OperatorControl(op) { IsChecked = true })));
+                    p.Value.Select(op => new OperatorControl(op) /*{ IsChecked = true }*/)));
         }
     }
 }
