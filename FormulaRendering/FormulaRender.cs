@@ -7,11 +7,11 @@ namespace WallpaperGenerator.FormulaRendering
 {
     public static class FormulaRender
     {
-        public static RenderedFormulaImage Render(FormulaTree formulaTree, VariableValuesRangesFor2DProjection variableValuesRanges, ColorTransformation colorTransformation)
+        public static RenderedFormulaImage Render(FormulaTree formulaTree, RangesForFormula2DProjection ranges, ColorTransformation colorTransformation)
         {
             Stopwatch evaluationStopwatch = new Stopwatch();
             evaluationStopwatch.Start();
-            double[] formulaEvaluatedValues = formulaTree.EvaluateRangesIn2DProjection(variableValuesRanges.Ranges, variableValuesRanges.XCount, variableValuesRanges.YCount);
+            double[] formulaEvaluatedValues = formulaTree.EvaluateRangesIn2DProjection(ranges.Ranges, ranges.XCount, ranges.YCount);
             evaluationStopwatch.Stop();
 
             //double x = 1;
@@ -24,7 +24,7 @@ namespace WallpaperGenerator.FormulaRendering
             //double w1 = -4;
             //Stopwatch stopwatch2 = new Stopwatch();
             //stopwatch2.Start();
-            //double[] arr = new double[variableValuesRanges[0].Count*variableValuesRanges[1].Count];
+            //double[] arr = new double[Ranges[0].Count*Ranges[1].Count];
             //for (int i = 0; i < arr.Length; i++)
             //{
             //    arr[i] = Math.Sqrt((Math.Sin(x) * Math.Sin(y) + Math.Sin(z) * Math.Sin(w)) * (Math.Sin(x1) * Math.Sin(y1) + Math.Sin(z1) * Math.Sin(w1)));
@@ -46,7 +46,7 @@ namespace WallpaperGenerator.FormulaRendering
             byte[] blueChannel = MapToColorChannel(formulaEvaluatedValues, colorTransformation.BlueChannelTransformation);
 
             mapToRgbStopwatch.Stop();
-            return new RenderedFormulaImage(redChannel, greenChannel, blueChannel, variableValuesRanges.XCount, variableValuesRanges.YCount);
+            return new RenderedFormulaImage(redChannel, greenChannel, blueChannel, ranges.XCount, ranges.YCount);
         }
 
         private static byte[] MapToColorChannel(double[] values, ColorChannelTransformation colorChannelTransformation)

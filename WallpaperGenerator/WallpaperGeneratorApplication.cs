@@ -44,11 +44,11 @@ namespace WallpaperGenerator
 
                 FormulaTree formulaTree = CreateRandomFormulaTree();
                 
-                VariableValuesRangesFor2DProjection variableValuesRanges =
+                RangesForFormula2DProjection ranges =
                     CreateRandomVariableValuesRangesFor2DProjection(formulaTree.Variables.Length, currentFormulaRenderingArguments);
 
                 ColorTransformation colorTransformation = CreateRandomColorTransformation();
-                FormulaRenderingArguments formulaRenderingArguments = new FormulaRenderingArguments(formulaTree, variableValuesRanges, colorTransformation);
+                FormulaRenderingArguments formulaRenderingArguments = new FormulaRenderingArguments(formulaTree, ranges, colorTransformation);
 
                 _mainWindow.FormulaTexBox.Text = formulaRenderingArguments.ToString();
             };
@@ -56,12 +56,12 @@ namespace WallpaperGenerator
             _mainWindow.ControlPanel.ChangeRangesButton.Click += (s, a) =>
             {
                 FormulaRenderingArguments currentFormulaRenderingArguments = GetCurrentFormulaRenderingArguments();
-                VariableValuesRangesFor2DProjection variableValuesRanges = CreateRandomVariableValuesRangesFor2DProjection(
+                RangesForFormula2DProjection ranges = CreateRandomVariableValuesRangesFor2DProjection(
                         currentFormulaRenderingArguments.FormulaTree.Variables.Length, currentFormulaRenderingArguments);
 
                 FormulaRenderingArguments formulaRenderingArguments = new FormulaRenderingArguments(
                     currentFormulaRenderingArguments.FormulaTree,
-                    variableValuesRanges,
+                    ranges,
                     currentFormulaRenderingArguments.ColorTransformation);
 
                 _mainWindow.FormulaTexBox.Text = formulaRenderingArguments.ToString();
@@ -74,7 +74,7 @@ namespace WallpaperGenerator
                 ColorTransformation colorTransformation = CreateRandomColorTransformation();
                 FormulaRenderingArguments formulaRenderingArguments = new FormulaRenderingArguments(
                     currentFormulaRenderingArguments.FormulaTree, 
-                    currentFormulaRenderingArguments.VariableValuesRanges, 
+                    currentFormulaRenderingArguments.Ranges, 
                     colorTransformation);
 
                 _mainWindow.FormulaTexBox.Text = formulaRenderingArguments.ToString();
@@ -115,18 +115,18 @@ namespace WallpaperGenerator
                 _random, varOrConstantProbability, constantProbability);
         }
 
-        private VariableValuesRangesFor2DProjection CreateRandomVariableValuesRangesFor2DProjection(int variablesCount, 
+        private RangesForFormula2DProjection CreateRandomVariableValuesRangesFor2DProjection(int variablesCount, 
             FormulaRenderingArguments currentFormulaRenderingArguments)
         {
             int xRangeCount = currentFormulaRenderingArguments != null
-                    ? currentFormulaRenderingArguments.VariableValuesRanges.XCount
+                    ? currentFormulaRenderingArguments.Ranges.XCount
                     : Configuration.DefaultImageWidth;
 
             int yRangeCount = currentFormulaRenderingArguments != null
-                ? currentFormulaRenderingArguments.VariableValuesRanges.YCount
+                ? currentFormulaRenderingArguments.Ranges.YCount
                 : Configuration.DefaultImageWidth;  
             
-            return VariableValuesRangesFor2DProjection.CreateRandom(_random, variablesCount,
+            return RangesForFormula2DProjection.CreateRandom(_random, variablesCount,
                 xRangeCount, yRangeCount,
                 Configuration.RangeLowBound, Configuration.RangeHighBound);
         }
@@ -150,7 +150,7 @@ namespace WallpaperGenerator
 
             RenderedFormulaImage renderedFormulaImage = FormulaRender.Render(
                 formulaRenderingArguments.FormulaTree,
-                formulaRenderingArguments.VariableValuesRanges,
+                formulaRenderingArguments.Ranges,
                 formulaRenderingArguments.ColorTransformation);
 
             _wallpaperImage = new WallpaperImage(renderedFormulaImage.WidthInPixels, renderedFormulaImage.HeightInPixels);

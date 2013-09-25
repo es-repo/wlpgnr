@@ -7,7 +7,7 @@ using WallpaperGenerator.Utilities;
 
 namespace WallpaperGenerator.FormulaRendering
 {
-    public class VariableValuesRangesFor2DProjection
+    public class RangesForFormula2DProjection
     {
         public int XCount { get; private set; }
 
@@ -15,7 +15,7 @@ namespace WallpaperGenerator.FormulaRendering
 
         public Range[] Ranges { get; private set; }
 
-        public VariableValuesRangesFor2DProjection(int xCount, int yCount, IEnumerable<Range> ranges)
+        public RangesForFormula2DProjection(int xCount, int yCount, IEnumerable<Range> ranges)
         {
             XCount = xCount;
             YCount = yCount;
@@ -29,22 +29,22 @@ namespace WallpaperGenerator.FormulaRendering
             return string.Join(";", countStrings.Concat(rangeStrings).ToArray());
         }
 
-        public static VariableValuesRangesFor2DProjection FromString(string value)
+        public static RangesForFormula2DProjection FromString(string value)
         {
             string[] rangeStrings = value.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
             int xCount = int.Parse(rangeStrings[0]);
             int yCount = int.Parse(rangeStrings[1]);
             IEnumerable<Range> ranges = rangeStrings.Skip(2).Select(Range.FromString);
-            return new VariableValuesRangesFor2DProjection(xCount, yCount, ranges);
+            return new RangesForFormula2DProjection(xCount, yCount, ranges);
         }
 
-        public static VariableValuesRangesFor2DProjection CreateRandom(Random random, int variableCount,
+        public static RangesForFormula2DProjection CreateRandom(Random random, int variableCount,
             int xRangeCount, int yRangeCount, int rangeLowBound, int rangeHighBound)
         {
             random.RandomlyShrinkBounds(ref rangeLowBound, ref rangeHighBound);
             IEnumerable<Range> ranges = Enumerable.Repeat(1, variableCount).
                 Select(i => Range.CreateRandom(random, i % 2 == 0 ? xRangeCount : yRangeCount, rangeLowBound, rangeHighBound));
-            return new VariableValuesRangesFor2DProjection(xRangeCount, yRangeCount, ranges);
+            return new RangesForFormula2DProjection(xRangeCount, yRangeCount, ranges);
         }
     }
 }
