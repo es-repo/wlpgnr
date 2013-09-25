@@ -92,37 +92,6 @@ namespace WallpaperGenerator.Formulas
             return results; 
         }
 
-        public IEnumerable<double> EvaluateRanges(params Range[] ranges)
-        {
-            IEnumerable<double>[] series = ranges.Select(r => r.Values).ToArray();
-            return EvaluateSeries(series);
-        }
-
-        public IEnumerable<double> EvaluateSeries(params IEnumerable<double>[] series)
-        {
-            return EvaluateSeriesCore(series, 0);
-        }
-
-        private IEnumerable<double> EvaluateSeriesCore(IEnumerable<double>[] series, int variableIndex)
-        {
-            foreach (double value in series[variableIndex])
-            {
-                Variables[variableIndex].Value = value;
-                if (variableIndex == series.Length - 1)
-                {
-                    yield return Evaluate();
-                }
-                else
-                {
-                    IEnumerable<double> results = EvaluateSeriesCore(series, variableIndex + 1);
-                    foreach (double r in results)
-                    {
-                        yield return r;
-                    }    
-                }
-            }
-        }
-
         public double Evaluate()
         {
             return _compiledFormula();

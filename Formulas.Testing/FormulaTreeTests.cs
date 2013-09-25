@@ -54,30 +54,6 @@ namespace WallpaperGenerator.Formulas.Testing
         }
 
         [RowTest]
-        [Row(new []{5.0}, new []{3.0}, new []{24.0})]
-        [Row(new[] { 1.0, 2.0 }, new[] { 1.0, 2.0 }, new[] { 2.0, -5.0, 11.0, 4.0 })]
-        [Row(new[] { 0.0, 0.0, 0.0 }, new[] { 0.0, 0.0, 0.0 }, new[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0})]
-        public void TestEvaluateSeries(double[] xVariableValues, double[] yVariableValues, double[] expectedResults)
-        {
-            // 2*x + 7*(-y + x)
-            double[] results = new FormulaTree(_formulaRoot).EvaluateSeries(xVariableValues, yVariableValues).ToArray();
-            CollectionAssert.AreElementsEqual(expectedResults, results);
-        }
-
-        [RowTest]
-        [Row(0, 2, 0, 2, new [] {0.0, -7.0, 9.0, 2.0 })]
-        [Row(0, 3, 0, 3, new [] {0.0, -7.0, -14.0, 9.0, 2.0, -5.0, 18.0, 11.0, 4.0 })]
-        [Row(-1, 3, -1, 3, new[] { -2.0, -9.0, -16.0, 7.0, 0.0, -7.0, 16.0, 9.0, 2.0 })]
-        public void TestEvaluateRanges(int rangeXStart, int rangeXCount, int rangeYStart, int rangeYCount, double[] expectedResults)
-        {
-            // 2*x + 7*(-y + x)
-            Range rangeX = new Range(rangeXStart, rangeXCount);
-            Range rangeY = new Range(rangeYStart, rangeYCount);
-            double[] results = new FormulaTree(_formulaRoot).EvaluateRanges(rangeX, rangeY).ToArray();
-            CollectionAssert.AreElementsEqual(expectedResults, results);
-        }
-
-        [RowTest]
         [Row("sum x x", 1, 3, -1, 3, -1, -1, new[] { 2.0, 2.0, 2.0, 4.0, 4.0, 4.0, 6.0, 6.0, 6.0 })]
         [Row("sum x y", 1, 3, 1, 3, -1, -1, new[] { 2.0, 3.0, 4.0, 3.0, 4.0, 5.0, 4.0, 5.0, 6.0 })]
         [Row("sum sum x y z",  1, 3, 1, 3, -3, 3, new[] { -1.0, 0.0, 1.0, 1.0, 2.0, 3.0, 3.0, 4.0, 5.0 })]
