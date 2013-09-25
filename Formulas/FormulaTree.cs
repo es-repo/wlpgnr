@@ -56,102 +56,65 @@ namespace WallpaperGenerator.Formulas
                        .Distinct();
         }
 
-        public IEnumerable<double> EvaluateRanges(params Range[] variableValueRanges)
+        public double[] EvaluateRangesIn2DProjection(Range[] ranges, int xCount, int yCount)
         {
-            IEnumerable<double>[] series = variableValueRanges.Select(r => r.Values).ToArray();
-            return EvaluateSeries(series);
-        }
-
-        public double[] EvaluateRangesIn2DProjection(VariableValuesRangesFor2DProjection variableValuesRanges)
-        {
-            double[] results = new double[variableValuesRanges.XCount * variableValuesRanges.YCount];
-            Range[] ranges = variableValuesRanges.Ranges; 
+            double[] results = new double[xCount * yCount];
+            
             for (int i = 0; i < Variables.Length; i += 2)
             {
-                Variables[i].Value = ranges[i].Start - ranges[i].Step;
+                Variables[i].Value = ranges[i].Start;
             }
 
             int r = 0;
-            for (int y = 0; y < variableValuesRanges.YCount; y++)
+            for (int y = 0; y < yCount; y++)
             {
-                for (int i = 0; i < Variables.Length; i += 2)
-                {
-                    Variables[i].Value += ranges[i].Step;
-                }
-
                 for (int i = 1; i < Variables.Length; i += 2)
                 {
-                    Variables[i].Value = ranges[i].Start - ranges[i].Step;
+                    Variables[i].Value = ranges[i].Start;
                 }
 
-                for (int x = 0; x < variableValuesRanges.XCount; x++)
+                for (int x = 0; x < xCount; x++)
                 {
+                    results[r++] = Evaluate();
+
                     for (int i = 1; i < Variables.Length; i += 2)
                     {
                         Variables[i].Value += ranges[i].Step;
                     }
+                }
 
-                    results[r++] = Evaluate();
+                for (int i = 0; i < Variables.Length; i += 2)
+                {
+                    Variables[i].Value += ranges[i].Step;
                 }
             }
 
             return results; 
         }
 
-        public IEnumerable<double> EvaluateSeriesIn2DProjection(params IEnumerable<double>[] variableValues)
+        public IEnumerable<double> EvaluateRanges(params Range[] ranges)
         {
-            IEnumerator<double>[] variableValuesEnumerators = variableValues.Select(vv => vv.GetEnumerator()).ToArray();
-            while (variableValuesEnumerators[0].MoveNext())
-            {
-                Variables[0].Value = variableValuesEnumerators[0].Current;
-                for (int x = 2; x < variableValuesEnumerators.Length; x+=2)
-                {
-                    variableValuesEnumerators[x].MoveNext();
-                    Variables[x].Value = variableValuesEnumerators[x].Current;
-                }
-
-                if (variableValues.Length > 1)
-                {
-                    while (variableValuesEnumerators[1].MoveNext())
-                    {
-                        Variables[1].Value = variableValuesEnumerators[1].Current;
-                        for (int y = 3; y < variableValuesEnumerators.Length; y += 2)
-                        {
-                            variableValuesEnumerators[y].MoveNext();
-                            Variables[y].Value = variableValuesEnumerators[y].Current;
-                        }
-
-                        yield return Evaluate();
-                    }
-                    for (int y = 1; y < variableValuesEnumerators.Length; y += 2)
-                    {
-                        variableValuesEnumerators[y] = variableValues[y].GetEnumerator();
-                    }
-                }
-                else
-                {
-                    yield return Evaluate();
-                }
-            }
-        } 
-
-        public IEnumerable<double> EvaluateSeries(params IEnumerable<double>[] variableValues)
-        {
-            return EvaluateSeriesCore(variableValues, 0);
+            IEnumerable<double>[] series = ranges.Select(r => r.Values).ToArray();
+            return EvaluateSeries(series);
         }
 
-        private IEnumerable<double> EvaluateSeriesCore(IEnumerable<double>[] variableValues, int variableIndex)
+        public IEnumerable<double> EvaluateSeries(params IEnumerable<double>[] series)
         {
-            foreach (double value in variableValues[variableIndex])
+            return EvaluateSeriesCore(series, 0);
+        }
+
+        private IEnumerable<double> EvaluateSeriesCore(IEnumerable<double>[] series, int variableIndex)
+        {
+            foreach (double value in series[variableIndex])
             {
                 Variables[variableIndex].Value = value;
-                if (variableIndex == variableValues.Length - 1)
+                if (variableIndex == series.Length - 1)
                 {
                     yield return Evaluate();
                 }
                 else
                 {
-                    IEnumerable<double> results = EvaluateSeriesCore(variableValues, variableIndex + 1);
+                    IEnumerable<double> results = EvaluateSeriesCore(series, variableIndex + 1);
                     foreach (double r in results)
                     {
                         yield return r;

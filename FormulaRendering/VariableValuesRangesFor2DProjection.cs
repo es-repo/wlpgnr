@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using WallpaperGenerator.Formulas;
 using WallpaperGenerator.Utilities;
 
-namespace WallpaperGenerator.Formulas
+namespace WallpaperGenerator.FormulaRendering
 {
     public class VariableValuesRangesFor2DProjection
     {
