@@ -67,6 +67,21 @@ namespace WallpaperGenerator.Utilities.ProgressReporting
 
             _progressObservers.ForEach(o => o.OnCompleted());
         }
+
+        public ProgressFullInfo GetProgressFullInfo()
+        {
+            return new ProgressFullInfo(EnumerateAllProgresses());
+        }
+
+        private IEnumerable<ScopeProgress> EnumerateAllProgresses()
+        {
+            ProgressReportScope scope = this;
+            while (scope != null)
+            {
+                yield return new ScopeProgress(scope.Name, scope.Progress);
+                scope = scope.ChildScope;
+            }
+        }
         
         public void Dispose()
         {

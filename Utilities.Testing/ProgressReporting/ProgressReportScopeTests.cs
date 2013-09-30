@@ -18,7 +18,7 @@ namespace WallpaperGenerator.Utilities.Testing.ProgressReporting
 
             ProgressReportScope progressReportScope = new ProgressReportScope();
             progressReportScope.Subscribe(progressObserver);
-            
+
             using (ProgressReportScope childProgressReportScope = progressReportScope.CreateChildScope(0.5, "Test08"))
                 DumbFuncA(childProgressReportScope);
 
@@ -37,10 +37,17 @@ namespace WallpaperGenerator.Utilities.Testing.ProgressReporting
                 });
             }
 
-            using (var childScope = progressReportScope.CreateChildScope(0.2))
+            using (var childScope = progressReportScope.CreateChildScope(0.2, "Test02"))
             {
-                using (var childScope2 = childScope.CreateChildScope(0.25))
+                using (var childScope2 = childScope.CreateChildScope(0.25, "Test02025"))
+                {
                     DumbFuncC(childScope2);
+                    ProgressFullInfo progressFullInfo = progressReportScope.GetProgressFullInfo();
+                    double[] expectedScopeProgresses = new [] { 0.85, 0.25, 1.0 };
+                    CollectionAssert.AreEqual(expectedScopeProgresses, progressFullInfo.Select(sp => sp.Progress).ToArray());
+                    string[] expectedScopeNames = new [] {"Test", "Test02", "Test02025" };
+                    CollectionAssert.AreEqual(expectedScopeNames, progressFullInfo.Select(sp => sp.Name).ToArray());
+                }
 
                 using (var childScope2 = childScope.CreateChildScope(0.5))
                     DumbFuncC(childScope2);
