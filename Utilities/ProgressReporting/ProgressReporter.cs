@@ -10,7 +10,7 @@ namespace WallpaperGenerator.Utilities.ProgressReporting
         public static ProgressReportScope CreateScope(double childScopeSpan = 1, [CallerMemberName] string name = "")
         {
             bool isFirstScope = _scopePerThread.Value == null;
-            ProgressReportScope scope = _scopePerThread.Value ?? new ProgressReportScope(name);
+            ProgressReportScope scope = _scopePerThread.Value ?? new ProgressReportScope(name: name);
             if (isFirstScope)
             {
                 _scopePerThread.Value = scope;
