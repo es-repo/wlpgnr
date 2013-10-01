@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using MbUnit.Framework;
-using TestingUtilities;
 using WallpaperGenerator.Utilities.ProgressReporting;
 
 namespace WallpaperGenerator.Utilities.Testing.ProgressReporting
@@ -11,54 +8,76 @@ namespace WallpaperGenerator.Utilities.Testing.ProgressReporting
     public class ProgressReporterTests
     {
         [Test]
-        public void Test()
+        public void TestNestedScopes()
         {
             List<double> progress = new List<double>();
-            Observer<double> progressObserver = new Observer<double>(progress.Add);
-
-            ProgressReportScope progressReportScope = ProgressReporter.CreateScope();
-            progressReportScope.Subscribe(progressObserver);
-
-            using (ProgressReporter.CreateScope(0.5, "Test08")) 
-                DumbFuncA();
-
-            AssertExtensions.ExceptionExpected<ArgumentException>(() =>
+            ProgressReporter.Subscribe(new ProgressObserver(progress.Add));
+            using (ProgressReporter.CreateScope())
             {
-                using (ProgressReporter.CreateScope(0.7)) DumbFuncC();
-            });
+                using (ProgressReporter.CreateScope(0.5))
+                    DumbFunc();
 
-            using (progressReportScope.CreateChildScope(0.3)) DumbFuncC();
-            
-            using (ProgressReporter.CreateScope(0.2))
-            {
-                using (ProgressReporter.CreateScope(0.25)) DumbFuncC();
+                using (ProgressReporter.CreateScope(0.2))
+                {
+                    using (ProgressReporter.CreateScope(0.5))
+                        DumbFunc();
 
-                using (ProgressReporter.CreateScope(0.5)) DumbFuncC();
+                    using (ProgressReporter.CreateScope(0.5))
+                        DumbFunc();
+                }
             }
-
-            progressReportScope.Complete();
-
-            AssertExtensions.ExceptionExpected<InvalidOperationException>(progressReportScope.Complete);
-
-            double[] expectedProgress = new[] { 0.5, 0.8, 0.85, 0.95, 1 };
-            double[] progressNormilized = progress.Distinct().Select(p => Math.Round(p, 2)).ToArray();
-            CollectionAssert.AreEqual(expectedProgress, progressNormilized);
+            ProgressAssert.AreEqual(new[] { 0.5, 0.6, 0.7, 1.0 }, progress);
         }
 
-        private static void DumbFuncA()
+        [RowTest]
+        [Row(5, 1, 2, new[] { 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 })]
+        [Row(2, 0.5, 2, new[] { 0.125, 0.25, 0.5, 0.625, 0.75, 1.0 })]
+        public void TestNestedScopesWithSteps(int stepsCount, double childScopeSpan, int childScopeStepsCount, double[] expectedProgress)
         {
-            using (ProgressReporter.CreateScope())
-                DumbFuncB();
+            List<double> progress = new List<double>();
+            ProgressReporter.Subscribe(new ProgressObserver(progress.Add));
+            using (ProgressReporter.CreateScope(stepsCount))
+            {
+                for (int i = 0; i < stepsCount; i++)
+                {
+                    using (ProgressReporter.CreateScope(childScopeStepsCount, childScopeSpan))
+                    {
+                        for (int j = 0; j < childScopeStepsCount; j++)
+                        {
+                            ProgressReporter.Increase();
+                        }
+                    }
+
+                    ProgressReporter.Increase();
+                }
+            }
+            ProgressAssert.AreEqual(expectedProgress, progress);
         }
 
-        private static void DumbFuncB()
+        [Test]
+        public void TestComplete()
         {
+            List<double> progress = new List<double>();
+            ProgressReporter.Subscribe(new ProgressObserver(progress.Add));
+            ProgressReporter.CreateScope();
+                ProgressReporter.CreateScope(0.5);
+                    DumbFunc();
+                ProgressReporter.Complete();
+                ProgressReporter.CreateScope(0.2);
+                    ProgressReporter.CreateScope(0.5);
+                        DumbFunc();
+                    ProgressReporter.Complete();
+                    ProgressReporter.CreateScope(0.5);
+                        DumbFunc();
+                    ProgressReporter.Complete();
+                ProgressReporter.Complete();
+            ProgressReporter.Complete();
+            
+            ProgressAssert.AreEqual(new[] { 0.5, 0.6, 0.7, 1.0 }, progress);
         }
 
-        private static void DumbFuncC()
+        private static void DumbFunc()
         {
-            using (ProgressReporter.CreateScope())
-                DumbFuncB();
         }
     }
 }

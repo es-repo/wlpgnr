@@ -5,23 +5,43 @@ namespace WallpaperGenerator.Utilities.ProgressReporting
 {
     public static class ProgressReporter
     {
-        private readonly static ThreadLocal<ProgressReportScope> _scopePerThread = new ThreadLocal<ProgressReportScope>();
+        private readonly static ThreadLocal<ThreadProgressReporter> _threadProgressReporter = new ThreadLocal<ThreadProgressReporter>(() => new ThreadProgressReporter());
 
-        public static ProgressReportScope CreateScope(double childScopeSpan = 1, [CallerMemberName] string name = "")
+        public static ProgressReportScope CreateScope([CallerMemberName] string name = "")
         {
-            bool isFirstScope = _scopePerThread.Value == null;
-            ProgressReportScope scope = _scopePerThread.Value ?? new ProgressReportScope(name: name);
-            if (isFirstScope)
-            {
-                _scopePerThread.Value = scope;
-            }
-            else
-            {
-                while (scope.ChildScope != null) scope = scope.ChildScope;
-                scope = scope.CreateChildScope(childScopeSpan, name);
-            }
+            return CreateScope(1, 1, name);
+        }
 
-            return scope;
+        public static ProgressReportScope CreateScope(double span, [CallerMemberName] string name = "")
+        {
+            return CreateScope(1, span, name);
+        }
+
+        public static ProgressReportScope CreateScope(int stepsCount, [CallerMemberName] string name = "")
+        {
+            return CreateScope(stepsCount, 1, name);
+        }
+
+        public static ProgressReportScope CreateScope(int stepsCount, double childScopeSpan, [CallerMemberName] string name = "")
+        {
+            return _threadProgressReporter.Value.MainScope == null
+                ? _threadProgressReporter.Value.CreateMainScope(stepsCount, name)
+                : _threadProgressReporter.Value.CreateChildScope(stepsCount, childScopeSpan, name);
+        }
+
+        public static void Increase()
+        {
+            _threadProgressReporter.Value.IncreaseMostNestedScope();
+        }
+
+        public static void Complete()
+        {
+            _threadProgressReporter.Value.CompleteMostNestedScope();
+        }
+
+        public static void Subscribe(ProgressObserver progressObserver)
+        {
+            _threadProgressReporter.Value.Subscribe(progressObserver);
         }
     }
 }

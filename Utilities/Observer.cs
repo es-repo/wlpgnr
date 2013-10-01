@@ -2,7 +2,7 @@
 
 namespace WallpaperGenerator.Utilities
 {
-    public sealed class Observer<T> : IObserver<T>
+    public class Observer<T> : IObserver<T>
     {
         private readonly Action<T> _onNext;
         private readonly Action<Exception> _onError;

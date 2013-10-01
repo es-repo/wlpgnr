@@ -50,7 +50,7 @@ namespace WallpaperGenerator.Utilities.Testing.ProgressReporting
         public void TestNestedScopes()
         {
             List<double> progress = new List<double>();
-            Observer<double> progressObserver = new Observer<double>(progress.Add);
+            ProgressObserver progressObserver = new ProgressObserver(progress.Add);
             using (ProgressReportScope scope = new ProgressReportScope())
             {
                 scope.Subscribe(progressObserver);
@@ -66,7 +66,7 @@ namespace WallpaperGenerator.Utilities.Testing.ProgressReporting
                         DumbFunc();
                 }
             }
-            AssertProgress(new []{0.5, 0.6, 0.7, 1.0}, progress);
+            ProgressAssert.AreEqual(new[] { 0.5, 0.6, 0.7, 1.0 }, progress);
         }
 
         [RowTest]
@@ -75,7 +75,7 @@ namespace WallpaperGenerator.Utilities.Testing.ProgressReporting
         public void TestScopeWithSteps(int stepsCount, int stepsPassed, double[] expectedProgress)
         {
             List<double> progress = new List<double>();
-            Observer<double> progressObserver = new Observer<double>(progress.Add);
+            ProgressObserver progressObserver = new ProgressObserver(progress.Add);
             using (ProgressReportScope scope = new ProgressReportScope(stepsCount))
             {
                 scope.Subscribe(progressObserver);
@@ -84,24 +84,24 @@ namespace WallpaperGenerator.Utilities.Testing.ProgressReporting
                     scope.Increase();
                 }
             }
-            AssertProgress(expectedProgress, progress);
+            ProgressAssert.AreEqual(expectedProgress, progress);
         }
 
         [RowTest]
         [Row(5, 1, 2, new[] { 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 })]
         [Row(2, 0.5, 2, new[] { 0.125, 0.25, 0.5, 0.625, 0.75, 1.0 })]
-        public void TestNestedScopesWithSteps(int stepsCount, double chilsScopeSpan, int chilsScopeStepsCount, double[] expectedProgress)
+        public void TestNestedScopesWithSteps(int stepsCount, double childScopeSpan, int childScopeStepsCount, double[] expectedProgress)
         {
             List<double> progress = new List<double>();
-            Observer<double> progressObserver = new Observer<double>(progress.Add);
+            ProgressObserver progressObserver = new ProgressObserver(progress.Add);
             using (ProgressReportScope scope = new ProgressReportScope(stepsCount))
             {
                 scope.Subscribe(progressObserver);
                 for (int i = 0; i < stepsCount; i++)
                 {
-                    using (ProgressReportScope childScope = scope.CreateChildScope(chilsScopeStepsCount, chilsScopeSpan))
+                    using (ProgressReportScope childScope = scope.CreateChildScope(childScopeStepsCount, childScopeSpan))
                     {
-                        for (int j = 0; j < chilsScopeStepsCount; j++)
+                        for (int j = 0; j < childScopeStepsCount; j++)
                         {
                             childScope.Increase();
                         }
@@ -110,7 +110,7 @@ namespace WallpaperGenerator.Utilities.Testing.ProgressReporting
                     scope.Increase();
                 }
             }
-            AssertProgress(expectedProgress, progress);
+            ProgressAssert.AreEqual(expectedProgress, progress);
         }
         
         [Test]
@@ -143,19 +143,13 @@ namespace WallpaperGenerator.Utilities.Testing.ProgressReporting
         public void TestChildScopeNotCompleted()
         {
             List<double> progress = new List<double>();
-            Observer<double> progressObserver = new Observer<double>(progress.Add);
+            ProgressObserver progressObserver = new ProgressObserver(progress.Add);
             using (ProgressReportScope scope = new ProgressReportScope())
             {
                 scope.Subscribe(progressObserver);
                 scope.CreateChildScope(0.5);
             }
-            AssertProgress(new[] { 0.5, 1.0 }, progress);
-        }
-
-        private static void AssertProgress(double[] expectedProgress, IEnumerable<double> progress)
-        {
-            double[] progressNormilized = progress.Distinct().Select(p => Math.Round(p, 3)).ToArray();
-            CollectionAssert.AreEqual(expectedProgress, progressNormilized);
+            ProgressAssert.AreEqual(new[] { 0.5, 1.0 }, progress);
         }
 
         private static void DumbFunc()

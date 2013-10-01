@@ -78,6 +78,7 @@
     <Compile Include="FormalGrammar\RuleTests.cs" />
     <Compile Include="FormalGrammar\GrammarTests.cs" />
     <Compile Include="MathUtilitiesTests.cs" />
+    <Compile Include="ProgressReporting\ProgressAssert.cs" />
     <Compile Include="ProgressReporting\ProgressReporterTests.cs" />
     <Compile Include="ProgressReporting\ProgressReportScopeTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
