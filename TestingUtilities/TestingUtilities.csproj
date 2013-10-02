@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MbUnit.Framework">
-      <HintPath>..\Formulas.Testing\bin\Debug\MbUnit.Framework.dll</HintPath>
+      <HintPath>..\Lib\MbUnit\MbUnit.Framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

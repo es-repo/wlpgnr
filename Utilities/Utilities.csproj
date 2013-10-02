@@ -78,11 +78,11 @@
     <Compile Include="MathUtilities.cs" />
     <Compile Include="ObjectExtensions.cs" />
     <Compile Include="Observer.cs" />
-    <Compile Include="ProgressReporting\ProgressFullInfo.cs" />
+    <Compile Include="ProgressReporting\IProgressObservable.cs" />
+    <Compile Include="ProgressReporting\IProgressObserver.cs" />
     <Compile Include="ProgressReporting\ProgressObserver.cs" />
     <Compile Include="ProgressReporting\ProgressReporter.cs" />
     <Compile Include="ProgressReporting\ProgressReportScope.cs" />
-    <Compile Include="ProgressReporting\ScopeProgress.cs" />
     <Compile Include="ProgressReporting\ThreadProgressReporter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueueExtensions.cs" />

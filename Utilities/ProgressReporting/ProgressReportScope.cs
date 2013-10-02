@@ -4,12 +4,12 @@ using System.Runtime.CompilerServices;
 
 namespace WallpaperGenerator.Utilities.ProgressReporting
 {
-    public sealed class ProgressReportScope : IDisposable, IObservable<double>, IObserver<double>
+    public sealed class ProgressReportScope : IDisposable, IProgressObservable, IProgressObserver
     {
         private double _progress;
         private double _previouseProgress;
         private bool _isCompleted;
-        private readonly List<IObserver<double>> _progressObservers;
+        private readonly List<IProgressObserver> _progressObservers;
         private IDisposable _childScopeUnsubscriber;
 
         public double ChildScopeSpan { get; private set; }
@@ -39,7 +39,7 @@ namespace WallpaperGenerator.Utilities.ProgressReporting
             Name = name;
             StepsCount = stepsCount;
             StepSize = 1.0/stepsCount;
-            _progressObservers = new List<IObserver<double>>();
+            _progressObservers = new List<IProgressObserver>();
         }
 
         public ProgressReportScope CreateChildScope(double span, [CallerMemberName] string name = "")
@@ -91,33 +91,14 @@ namespace WallpaperGenerator.Utilities.ProgressReporting
             _progressObservers.ForEach(o => o.OnCompleted());
         }
 
-        public ProgressFullInfo GetProgressFullInfo()
-        {
-            return new ProgressFullInfo(EnumerateAllProgresses());
-        }
-
-        private IEnumerable<ScopeProgress> EnumerateAllProgresses()
-        {
-            ProgressReportScope scope = this;
-            while (scope != null)
-            {
-                yield return new ScopeProgress(scope.Name, scope.Progress);
-                scope = scope.ChildScope;
-            }
-        }
-        
         public void Dispose()
         {
             Complete();
         }
 
-        public IDisposable Subscribe(IObserver<double> progressObserver)
+        public IDisposable Subscribe(IProgressObserver progressObserver)
         {
-            if (progressObserver == null)
-                throw new ArgumentNullException("progressObserver");
-
-            _progressObservers.Add(progressObserver);
-            return new Disposable(() => _progressObservers.Remove(progressObserver));
+            return ((IObservable<double>) this).Subscribe(progressObserver);
         }
 
         void IObserver<double>.OnNext(double value)
@@ -140,6 +121,17 @@ namespace WallpaperGenerator.Utilities.ProgressReporting
         private string GetExceptionMessage(string messageBase)
         {
             return string.Format("{0}=[Name:\"{1}\"]. {2}", GetType().Name, Name, messageBase);
+        }
+
+        IDisposable IObservable<double>.Subscribe(IObserver<double> observer)
+        {
+            if (observer == null)
+                throw new ArgumentNullException("observer");
+
+            IProgressObserver progressObserver = (IProgressObserver) observer;
+
+            _progressObservers.Add(progressObserver);
+            return new Disposable(() => _progressObservers.Remove(progressObserver));
         }
     }
 }

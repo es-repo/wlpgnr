@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using MbUnit.Framework;
 using WallpaperGenerator.Utilities.ProgressReporting;
 
@@ -113,32 +112,6 @@ namespace WallpaperGenerator.Utilities.Testing.ProgressReporting
             ProgressAssert.AreEqual(expectedProgress, progress);
         }
         
-        [Test]
-        public void TestGetProgressFullInfo()
-        {
-            using (ProgressReportScope scope = new ProgressReportScope(name: "s1"))
-            {
-                using (scope.CreateChildScope(0.5))
-                    DumbFunc();
-
-                using (ProgressReportScope child = scope.CreateChildScope(0.2, "s2"))
-                {
-                    using (child.CreateChildScope(0.5))
-                        DumbFunc();
-
-                    using (child.CreateChildScope(0.5, "s3"))
-                    {
-                        DumbFunc();
-                        ProgressFullInfo progressFullInfo = scope.GetProgressFullInfo();
-                        double[] expectedScopeProgresses = new[] { 0.6, 0.5, 0.0 };
-                        CollectionAssert.AreEqual(expectedScopeProgresses, progressFullInfo.Select(sp => sp.Progress).ToArray());
-                        string[] expectedScopeNames = new[] { "s1", "s2", "s3" };
-                        CollectionAssert.AreEqual(expectedScopeNames, progressFullInfo.Select(sp => sp.Name).ToArray());
-                    }
-                }
-            }
-        }
-
         [Test]
         public void TestChildScopeNotCompleted()
         {
