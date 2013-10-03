@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using WallpaperGenerator.Formulas.Operators;
 using WallpaperGenerator.Utilities.DataStructures.Trees;
+using WallpaperGenerator.Utilities.ProgressReporting;
 
 namespace WallpaperGenerator.Formulas
 {
@@ -66,6 +67,7 @@ namespace WallpaperGenerator.Formulas
             }
 
             int r = 0;
+            using (ProgressReporter.CreateScope(yCount))
             for (int y = 0; y < yCount; y++)
             {
                 for (int i = 1; i < Variables.Length; i += 2)
@@ -87,6 +89,7 @@ namespace WallpaperGenerator.Formulas
                 {
                     Variables[i].Value += ranges[i].Step;
                 }
+                ProgressReporter.Increase();
             }
 
             return results; 

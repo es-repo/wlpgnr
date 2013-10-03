@@ -33,6 +33,11 @@ namespace WallpaperGenerator.Utilities.ProgressReporting
             }
         }
 
+        public double ProgressInPercents1d
+        {
+            get { return Math.Round(Progress*100, 1); }
+        }
+
         public ProgressReportScope(int stepsCount = 1, [CallerMemberName] string name = "")
         {
             Name = name;

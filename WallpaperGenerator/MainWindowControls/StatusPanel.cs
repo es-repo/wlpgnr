@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Controls;
 using System.Windows;
+using WallpaperGenerator.Utilities;
 
 namespace WallpaperGenerator.MainWindowControls
 {
@@ -8,6 +9,7 @@ namespace WallpaperGenerator.MainWindowControls
     {
         private TimeSpan _renderedTime;
         private readonly TextBlock _renderedTimeText;
+        private readonly TextBlock _renderingProgressText;
 
         public TimeSpan RenderedTime
         {
@@ -22,19 +24,32 @@ namespace WallpaperGenerator.MainWindowControls
             }
         }
 
+        public double RenderingProgress
+        {
+            set { _renderingProgressText.Text = Math.Round(value, 2).ToInvariantString() + "%"; }
+        }
+
         public StatusPanel()
         {
-            Orientation = Orientation.Horizontal;
+            Orientation = Orientation.Vertical;
+            _renderedTimeText = CreateTextBlockWithLabel("Rendered Time:");
+            _renderingProgressText = CreateTextBlockWithLabel("Rendering:");
+        }
 
-            TextBlock renderedTimeLabel = new TextBlock
+        private TextBlock CreateTextBlockWithLabel(string label)
+        {
+            StackPanel panel = new StackPanel {Orientation = Orientation.Horizontal};
+            TextBlock labelTextBlock = new TextBlock
             {
-                Text = "Rendered Time:",
+                Text = label,
                 FontWeight = FontWeight.FromOpenTypeWeight(999)
             };
-            Children.Add(renderedTimeLabel);
+            panel.Children.Add(labelTextBlock);
 
-            _renderedTimeText = new TextBlock();
-            Children.Add(_renderedTimeText);
+            TextBlock textBlock = new TextBlock();
+            panel.Children.Add(textBlock);
+            Children.Add(panel);
+            return textBlock;
         }
     }
 }

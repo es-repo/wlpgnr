@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using WallpaperGenerator.Formulas.Operators;
 using WallpaperGenerator.MainWindowControls.ControlPanelControls;
+using WallpaperGenerator.Utilities;
 
 namespace WallpaperGenerator.MainWindowControls
 {
@@ -20,6 +21,15 @@ namespace WallpaperGenerator.MainWindowControls
         public Button RenderFormulaButton { get; private set; }
 
         public Button SaveButton { get; private set; }
+
+        public bool IsButtonsEnabled
+        {
+            set
+            {
+                Button[] buttons = new Button[] { GenerateFormulaButton, ChangeColorButton, ChangeRangesButton, RenderFormulaButton, SaveButton };
+                buttons.ForEach(b => b.IsEnabled = value);
+            }
+        }
 
         public Slider DimensionsCountSlider { get; private set; }
 

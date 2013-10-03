@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using WallpaperGenerator.FormulaRendering;
 using WallpaperGenerator.Formulas;
 using WallpaperGenerator.MainWindowControls.ControlPanelControls;
 using WallpaperGenerator.Utilities.DataStructures.Collections;
+using WallpaperGenerator.Utilities.ProgressReporting;
 
 namespace WallpaperGenerator
 {
@@ -139,19 +142,22 @@ namespace WallpaperGenerator
                 Configuration.ColorChannelZeroProbabilty);
         }
 
-        private void RenderFormula()
+        private async void RenderFormula()
         {
+            _mainWindow.ControlPanel.IsButtonsEnabled = false;
             _mainWindow.Cursor = Cursors.Wait;
-
-            FormulaRenderingArguments formulaRenderingArguments = GetCurrentFormulaRenderingArguments();
 
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            RenderedFormulaImage renderedFormulaImage = FormulaRender.Render(
-                formulaRenderingArguments.FormulaTree,
-                formulaRenderingArguments.Ranges,
-                formulaRenderingArguments.ColorTransformation);
+            FormulaRenderingArguments formulaRenderingArguments = GetCurrentFormulaRenderingArguments();
+            
+            ProgressObserver renderingProgressObserver = new ProgressObserver(
+                p => _mainWindow.StatusPanel.Dispatcher.Invoke(DispatcherPriority.Normal, 
+                    new Action(delegate
+                        { _mainWindow.StatusPanel.RenderingProgress = p.ProgressInPercents1d; })));
+            
+            RenderedFormulaImage renderedFormulaImage = await GetRenderedFormulaImageAsync(formulaRenderingArguments, renderingProgressObserver);
 
             _wallpaperImage = new WallpaperImage(renderedFormulaImage.WidthInPixels, renderedFormulaImage.HeightInPixels);
             _wallpaperImage.Update(renderedFormulaImage);
@@ -159,9 +165,24 @@ namespace WallpaperGenerator
             _mainWindow.WallpaperImage.Source = _wallpaperImage.Source;
 
             stopwatch.Stop();
-
             _mainWindow.StatusPanel.RenderedTime = stopwatch.Elapsed;
             _mainWindow.Cursor = Cursors.Arrow;
+            _mainWindow.ControlPanel.IsButtonsEnabled = true;
+        }
+
+        private async Task<RenderedFormulaImage> GetRenderedFormulaImageAsync(FormulaRenderingArguments formulaRenderingArguments, 
+            ProgressObserver renderingProgressObserver)
+        {
+            RenderedFormulaImage renderedFormulaImage = null;
+            await Task.Run(() =>
+            {
+                ProgressReporter.Subscribe(renderingProgressObserver);
+                renderedFormulaImage = FormulaRender.Render(
+                    formulaRenderingArguments.FormulaTree,
+                    formulaRenderingArguments.Ranges,
+                    formulaRenderingArguments.ColorTransformation);
+            });
+            return renderedFormulaImage;
         }
 
         private void SaveFormulaImage()

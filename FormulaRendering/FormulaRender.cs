@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using WallpaperGenerator.Formulas;
 using WallpaperGenerator.Utilities;
+using WallpaperGenerator.Utilities.ProgressReporting;
 
 namespace WallpaperGenerator.FormulaRendering
 {
@@ -11,7 +12,11 @@ namespace WallpaperGenerator.FormulaRendering
         {
             Stopwatch evaluationStopwatch = new Stopwatch();
             evaluationStopwatch.Start();
+
+            ProgressReporter.CreateScope(0.95);
             double[] formulaEvaluatedValues = formulaTree.EvaluateRangesIn2DProjection(ranges.Ranges, ranges.XCount, ranges.YCount);
+            ProgressReporter.Complete();
+            
             evaluationStopwatch.Stop();
 
             //double x = 1;
@@ -41,9 +46,13 @@ namespace WallpaperGenerator.FormulaRendering
 
             Stopwatch mapToRgbStopwatch = new Stopwatch();
             mapToRgbStopwatch.Start();
+            ProgressReporter.CreateScope(3, 0.05);
             byte[] redChannel = MapToColorChannel(formulaEvaluatedValues, colorTransformation.RedChannelTransformation);
+            ProgressReporter.Increase();
             byte[] greenChannel = MapToColorChannel(formulaEvaluatedValues, colorTransformation.GreenChannelTransformation);
+            ProgressReporter.Increase();
             byte[] blueChannel = MapToColorChannel(formulaEvaluatedValues, colorTransformation.BlueChannelTransformation);
+            ProgressReporter.Complete();
 
             mapToRgbStopwatch.Stop();
             return new RenderedFormulaImage(redChannel, greenChannel, blueChannel, ranges.XCount, ranges.YCount);
