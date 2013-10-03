@@ -10,8 +10,7 @@ namespace WallpaperGenerator.Utilities.ProgressReporting
         private double _previouseProgress;
         private bool _isCompleted;
         private readonly List<IProgressObserver> _progressObservers;
-        private IDisposable _childScopeUnsubscriber;
-
+        
         public double ChildScopeSpan { get; private set; }
 
         public ProgressReportScope ChildScope { get; private set; }
@@ -67,7 +66,7 @@ namespace WallpaperGenerator.Utilities.ProgressReporting
             
             ChildScope = new ProgressReportScope(stepsCount, name);
             _previouseProgress = Progress;
-            _childScopeUnsubscriber = ChildScope.Subscribe(this);
+            ChildScope.Subscribe(this);
             return ChildScope;
         }
 
@@ -113,8 +112,6 @@ namespace WallpaperGenerator.Utilities.ProgressReporting
         void IObserver<ProgressReportScope>.OnCompleted()
         {
             ChildScope = null;
-            _childScopeUnsubscriber.Dispose();
-            _childScopeUnsubscriber = null;
             Progress = _previouseProgress + ChildScopeSpan;
         }
 
