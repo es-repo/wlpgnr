@@ -26,7 +26,7 @@ namespace WallpaperGenerator.MainWindowControls
         {
             set
             {
-                Button[] buttons = new Button[] { GenerateFormulaButton, ChangeColorButton, ChangeRangesButton, RenderFormulaButton, SaveButton };
+                Button[] buttons = new [] { GenerateFormulaButton, ChangeColorButton, ChangeRangesButton, RenderFormulaButton, SaveButton };
                 buttons.ForEach(b => b.IsEnabled = value);
             }
         }
