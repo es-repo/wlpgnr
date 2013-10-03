@@ -11,7 +11,7 @@ namespace WallpaperGenerator.Utilities.Testing.ProgressReporting
         public void TestNestedScopes()
         {
             List<double> progress = new List<double>();
-            ProgressReporter.Subscribe(new ProgressObserver(progress.Add));
+            ProgressReporter.Subscribe(new ProgressObserver(s => progress.Add(s.Progress)));
             using (ProgressReporter.CreateScope())
             {
                 using (ProgressReporter.CreateScope(0.5))
@@ -35,7 +35,7 @@ namespace WallpaperGenerator.Utilities.Testing.ProgressReporting
         public void TestNestedScopesWithSteps(int stepsCount, double childScopeSpan, int childScopeStepsCount, double[] expectedProgress)
         {
             List<double> progress = new List<double>();
-            ProgressReporter.Subscribe(new ProgressObserver(progress.Add));
+            ProgressReporter.Subscribe(new ProgressObserver(s => progress.Add(s.Progress)));
             using (ProgressReporter.CreateScope(stepsCount))
             {
                 for (int i = 0; i < stepsCount; i++)
@@ -58,7 +58,7 @@ namespace WallpaperGenerator.Utilities.Testing.ProgressReporting
         public void TestComplete()
         {
             List<double> progress = new List<double>();
-            ProgressReporter.Subscribe(new ProgressObserver(progress.Add));
+            ProgressReporter.Subscribe(new ProgressObserver(s => progress.Add(s.Progress)));
             ProgressReporter.CreateScope();
                 ProgressReporter.CreateScope(0.5);
                     DumbFunc();

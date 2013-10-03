@@ -49,7 +49,7 @@ namespace WallpaperGenerator.Utilities.Testing.ProgressReporting
         public void TestNestedScopes()
         {
             List<double> progress = new List<double>();
-            ProgressObserver progressObserver = new ProgressObserver(progress.Add);
+            ProgressObserver progressObserver = new ProgressObserver(s => progress.Add(s.Progress));
             using (ProgressReportScope scope = new ProgressReportScope())
             {
                 scope.Subscribe(progressObserver);
@@ -74,7 +74,7 @@ namespace WallpaperGenerator.Utilities.Testing.ProgressReporting
         public void TestScopeWithSteps(int stepsCount, int stepsPassed, double[] expectedProgress)
         {
             List<double> progress = new List<double>();
-            ProgressObserver progressObserver = new ProgressObserver(progress.Add);
+            ProgressObserver progressObserver = new ProgressObserver(s => progress.Add(s.Progress));
             using (ProgressReportScope scope = new ProgressReportScope(stepsCount))
             {
                 scope.Subscribe(progressObserver);
@@ -92,7 +92,7 @@ namespace WallpaperGenerator.Utilities.Testing.ProgressReporting
         public void TestNestedScopesWithSteps(int stepsCount, double childScopeSpan, int childScopeStepsCount, double[] expectedProgress)
         {
             List<double> progress = new List<double>();
-            ProgressObserver progressObserver = new ProgressObserver(progress.Add);
+            ProgressObserver progressObserver = new ProgressObserver(s => progress.Add(s.Progress));
             using (ProgressReportScope scope = new ProgressReportScope(stepsCount))
             {
                 scope.Subscribe(progressObserver);
@@ -116,7 +116,7 @@ namespace WallpaperGenerator.Utilities.Testing.ProgressReporting
         public void TestChildScopeNotCompleted()
         {
             List<double> progress = new List<double>();
-            ProgressObserver progressObserver = new ProgressObserver(progress.Add);
+            ProgressObserver progressObserver = new ProgressObserver(s => progress.Add(s.Progress));
             using (ProgressReportScope scope = new ProgressReportScope())
             {
                 scope.Subscribe(progressObserver);

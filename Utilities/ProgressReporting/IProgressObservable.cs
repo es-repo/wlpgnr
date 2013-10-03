@@ -2,7 +2,7 @@
 
 namespace WallpaperGenerator.Utilities.ProgressReporting
 {
-    public interface IProgressObservable : IObservable<double>
+    public interface IProgressObservable : IObservable<ProgressReportScope>
     {
     }
 }

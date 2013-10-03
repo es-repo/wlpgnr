@@ -27,10 +27,10 @@ namespace WallpaperGenerator.Utilities.ProgressReporting
             get { return _progress; }
             set
             {
-                if (value > 1)
+                if (value > 1.000001)
                     throw new InvalidOperationException(GetExceptionMessage(string.Format("Attempt to setup progress with value \"{0}\" more then 1.", value)));
                 _progress = value;
-                _progressObservers.ForEach(o => o.OnNext(_progress));
+                _progressObservers.ForEach(o => o.OnNext(this));
             }
         }
 
@@ -98,19 +98,19 @@ namespace WallpaperGenerator.Utilities.ProgressReporting
 
         public IDisposable Subscribe(IProgressObserver progressObserver)
         {
-            return ((IObservable<double>) this).Subscribe(progressObserver);
+            return ((IObservable<ProgressReportScope>) this).Subscribe(progressObserver);
         }
 
-        void IObserver<double>.OnNext(double value)
+        void IObserver<ProgressReportScope>.OnNext(ProgressReportScope scope)
         {
-            Progress = _previouseProgress + value * ChildScopeSpan;
+            Progress = _previouseProgress + scope.Progress * ChildScopeSpan;
         }
 
-        void IObserver<double>.OnError(Exception error)
+        void IObserver<ProgressReportScope>.OnError(Exception error)
         {
         }
 
-        void IObserver<double>.OnCompleted()
+        void IObserver<ProgressReportScope>.OnCompleted()
         {
             ChildScope = null;
             _childScopeUnsubscriber.Dispose();
@@ -123,7 +123,7 @@ namespace WallpaperGenerator.Utilities.ProgressReporting
             return string.Format("{0}=[Name:\"{1}\"]. {2}", GetType().Name, Name, messageBase);
         }
 
-        IDisposable IObservable<double>.Subscribe(IObserver<double> observer)
+        IDisposable IObservable<ProgressReportScope>.Subscribe(IObserver<ProgressReportScope> observer)
         {
             if (observer == null)
                 throw new ArgumentNullException("observer");

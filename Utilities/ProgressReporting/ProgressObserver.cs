@@ -2,9 +2,9 @@ using System;
 
 namespace WallpaperGenerator.Utilities.ProgressReporting
 {
-    public class ProgressObserver : Observer<double>, IProgressObserver
+    public class ProgressObserver : Observer<ProgressReportScope>, IProgressObserver
     {
-        public ProgressObserver(Action<double> onNext = null, Action onComplete = null)
+        public ProgressObserver(Action<ProgressReportScope> onNext = null, Action onComplete = null)
             : base(onNext, onComplete)
         {
         }

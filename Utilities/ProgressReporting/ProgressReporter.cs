@@ -39,7 +39,7 @@ namespace WallpaperGenerator.Utilities.ProgressReporting
             _threadProgressReporter.Value.CompleteMostNestedScope();
         }
 
-        public static void Subscribe(ProgressObserver progressObserver)
+        public static void Subscribe(IProgressObserver progressObserver)
         {
             _threadProgressReporter.Value.Subscribe(progressObserver);
         }

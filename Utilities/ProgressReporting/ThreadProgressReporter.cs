@@ -5,7 +5,7 @@ namespace WallpaperGenerator.Utilities.ProgressReporting
 {
     internal sealed class ThreadProgressReporter
     {
-        private readonly List<ProgressObserver> _mainProgressObservers;
+        private readonly List<IProgressObserver> _mainProgressObservers;
 
         public ProgressReportScope MainScope { get; private set; }
 
@@ -21,7 +21,7 @@ namespace WallpaperGenerator.Utilities.ProgressReporting
 
         public ThreadProgressReporter()
         {
-            _mainProgressObservers = new List<ProgressObserver>();
+            _mainProgressObservers = new List<IProgressObserver>();
         }
 
         public ProgressReportScope CreateMainScope(int stepsCount, string name)
@@ -53,7 +53,7 @@ namespace WallpaperGenerator.Utilities.ProgressReporting
             MostNestedScope.Complete();
         }
 
-        public void Subscribe(ProgressObserver progressObserver)
+        public void Subscribe(IProgressObserver progressObserver)
         {
             if (MainScope == null)
             {
