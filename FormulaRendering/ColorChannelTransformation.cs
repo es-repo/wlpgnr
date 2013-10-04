@@ -7,9 +7,9 @@ namespace WallpaperGenerator.FormulaRendering
 {
     public class ColorChannelTransformation
     {
-        private readonly double _polinomCoefficcientA;
-        private readonly double _polinomCoefficcientB;
-        private readonly double _polinomCoefficcientC;
+        public double _polinomCoefficcientA;
+        public double _polinomCoefficcientB;
+        public double _polinomCoefficcientC;
         
         public Func<double, double> TransformationFunction { get; private set; }
 

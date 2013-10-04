@@ -7,9 +7,9 @@ namespace WallpaperGenerator.Formulas
 {
     public class Range
     {
-        public double Start { get; private set; }
-        public double Step { get; private set; }
-        public int Count { get; private set; }
+        public double Start { get; set; }
+        public double Step { get; set; }
+        public int Count { get; set; }
 
         public Range(double start, int count)
             : this(start, 1, count)

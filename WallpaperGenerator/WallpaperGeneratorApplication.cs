@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Threading;
 using WallpaperGenerator.FormulaRendering;
 using WallpaperGenerator.Formulas;
 using WallpaperGenerator.MainWindowControls.ControlPanelControls;
@@ -87,7 +86,8 @@ namespace WallpaperGenerator
 
             _mainWindow.ControlPanel.RenderFormulaButton.Click += async (s, a) => await RenderFormula();
 
-            _mainWindow.ControlPanel.StartStopRandomAnimationButton.Click += (s, a) => StartStopAnimation();
+            _mainWindow.ControlPanel.StartStopRandomAnimationButton.Click += (s, a) => StartStopRandomAnimation();
+            _mainWindow.ControlPanel.StartStopSmoothAnimationButton.Click += (s, a) => StartStopSmoothAnimation();
 
             _mainWindow.ControlPanel.SaveButton.Click += (s, a) => SaveFormulaImage();
         }
@@ -145,38 +145,86 @@ namespace WallpaperGenerator
                 Configuration.ColorChannelZeroProbabilty);
         }
 
-        private bool _isAnimationStarted;
+        private bool _isRandomAnimationStarted;
 
-        private void StartStopAnimation()
+        private void StartStopRandomAnimation()
         {
-            _isAnimationStarted = !_isAnimationStarted;
-            if (_isAnimationStarted)
+            _isRandomAnimationStarted = !_isRandomAnimationStarted;
+            if (_isRandomAnimationStarted)
             {
-                StartAnimation();
+                StartRandomAnimation();
             }
         }
 
-        private async void StartAnimation()
+        private async void StartRandomAnimation()
         {
-            while (_isAnimationStarted)
+            while (_isRandomAnimationStarted)
             {
-                FormulaRenderingArguments currentFormulaRenderingArguments = GetCurrentFormulaRenderingArguments();
-            
-                RangesForFormula2DProjection ranges = CreateRandomVariableValuesRangesFor2DProjection(
-                    currentFormulaRenderingArguments.FormulaTree.Variables.Length, currentFormulaRenderingArguments);
-
-                FormulaRenderingArguments formulaRenderingArguments = new FormulaRenderingArguments(
-                    currentFormulaRenderingArguments.FormulaTree,
-                    ranges,
-                    currentFormulaRenderingArguments.ColorTransformation);
-
-                _mainWindow.FormulaTexBox.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                Func<FormulaRenderingArguments, FormulaRenderingArguments> getNextFormulaRenderingArguments = args =>
                 {
-                    _mainWindow.FormulaTexBox.Text = formulaRenderingArguments.ToString();
-                }));
+                    RangesForFormula2DProjection ranges = CreateRandomVariableValuesRangesFor2DProjection(args.FormulaTree.Variables.Length, args);
+                    return new FormulaRenderingArguments(args.FormulaTree, ranges, args.ColorTransformation);
+                };
 
-                await RenderFormula();
+                await DoAnimationStep(getNextFormulaRenderingArguments);
             }
+        }
+
+        private bool _isSmoothAnimationStarted;
+
+        private void StartStopSmoothAnimation()
+        {
+            _isSmoothAnimationStarted = !_isSmoothAnimationStarted;
+            if (_isSmoothAnimationStarted)
+            {
+                StartSmoothAnimation();
+            }
+        }
+
+        private async void StartSmoothAnimation()
+        {
+            FormulaRenderingArguments formulaRenderingArguments = GetCurrentFormulaRenderingArguments();
+            Func<double[]> getNextRangeStepDeltas = () => formulaRenderingArguments.Ranges.Ranges.Select(r => (-0.5 + _random.NextDouble()) * 0.01).ToArray();
+            Func<double[]> getNextRangeStartDeltas = () => formulaRenderingArguments.Ranges.Ranges.Select(r => (-0.5 + _random.NextDouble()) * 0.01).ToArray();
+            
+            double[] rangeStepDeltas = getNextRangeStepDeltas();
+            double[] rangeStartDeltas = getNextRangeStartDeltas();
+            int j = 0;
+            while (_isSmoothAnimationStarted)
+            {
+                
+                Func<FormulaRenderingArguments, FormulaRenderingArguments> getNextFormulaRenderingArguments = args =>
+                {
+                    int i = 0;
+                    foreach (var range in args.Ranges.Ranges)
+                    {
+                        range.Step += rangeStepDeltas[i];
+                        range.Start += rangeStartDeltas[i];
+                        i++;
+                    }
+
+                    return args;
+                };
+
+                if (j > 20)
+                {
+                    j = 0;
+                    rangeStepDeltas = getNextRangeStepDeltas();
+                    rangeStartDeltas = getNextRangeStartDeltas();
+                }
+
+                j++;
+
+                await DoAnimationStep(getNextFormulaRenderingArguments);
+            }
+        }
+
+        private async Task DoAnimationStep(Func<FormulaRenderingArguments, FormulaRenderingArguments> getNextFormulaRenderingArguments)
+        {
+            FormulaRenderingArguments formulaRenderingArguments = GetCurrentFormulaRenderingArguments();
+            formulaRenderingArguments = getNextFormulaRenderingArguments(formulaRenderingArguments);
+            _mainWindow.FormulaTexBox.Dispatcher.Invoke(() => _mainWindow.FormulaTexBox.Text = formulaRenderingArguments.ToString());
+            await RenderFormula();
         }
 
         private async Task RenderFormula()
