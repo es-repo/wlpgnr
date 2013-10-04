@@ -20,16 +20,9 @@ namespace WallpaperGenerator.MainWindowControls
 
         public Button RenderFormulaButton { get; private set; }
 
-        public Button SaveButton { get; private set; }
+        public Button StartStopRandomAnimationButton { get; private set; }
 
-        public bool IsButtonsEnabled
-        {
-            set
-            {
-                Button[] buttons = new [] { GenerateFormulaButton, ChangeColorButton, ChangeRangesButton, RenderFormulaButton, SaveButton };
-                buttons.ForEach(b => b.IsEnabled = value);
-            }
-        }
+        public Button SaveButton { get; private set; }
 
         public Slider DimensionsCountSlider { get; private set; }
 
@@ -63,21 +56,20 @@ namespace WallpaperGenerator.MainWindowControls
                 Width = 280
            };
 
-            GenerateFormulaButton = CreateGenerateFormulaButton();
-            panel.Children.Add(GenerateFormulaButton);
+            GenerateFormulaButton = CreateButton(panel, "Generate");
+            ChangeRangesButton = CreateButton(panel, "Change ranges");
+            ChangeColorButton = CreateButton(panel, "Change colors");
+            RenderFormulaButton = CreateButton(panel, "Render");
 
-            ChangeRangesButton = CreateChangeRangesButton();
-            panel.Children.Add(ChangeRangesButton);
+            const string animateRandomlyText = "Animate randomly";
+            const string stopAnimationText = "Stop animation"; 
+            
+            StartStopRandomAnimationButton = CreateButton(panel, animateRandomlyText);
+            StartStopRandomAnimationButton.Click +=
+                (s, a) => StartStopRandomAnimationButton.Content = StartStopRandomAnimationButton.Content.ToString() == animateRandomlyText ? stopAnimationText : animateRandomlyText;
 
-            ChangeColorButton = CreateChangeColorButton();
-            panel.Children.Add(ChangeColorButton);
-
-            RenderFormulaButton = CreateRenderFormulaButton();
-            panel.Children.Add(RenderFormulaButton);
-
-            SaveButton = CreateSaveButton();
-            panel.Children.Add(SaveButton);
-
+            SaveButton = CreateButton(panel, "Save");
+            
             DimensionsCountSlider = CreateSliderControlsBlock(panel,1, 100, 8, "Dimensions");
 
             MinimalDepthSlider = CreateSliderControlsBlock(panel,1, 100, 14, "Minimal depth");
@@ -124,58 +116,14 @@ namespace WallpaperGenerator.MainWindowControls
             return panel;
         }
 
-        private Button CreateGenerateFormulaButton()
+        private Button CreateButton(Panel panel, string text)
         {
             Button button = new Button
             {
-                Content = "Generate",
+                Content = text,
                 Margin = new Thickness { Top = 10 },
             };
-
-            return button;
-        }
-
-        private Button CreateChangeColorButton()
-        {
-            Button button = new Button
-            {
-                Content = "Change Colors",
-                Margin = new Thickness { Top = 10 },
-            };
-
-            return button;
-        }
-
-        private Button CreateChangeRangesButton()
-        {
-            Button button = new Button
-            {
-                Content = "Change Ranges",
-                Margin = new Thickness { Top = 10 },
-            };
-
-            return button;
-        }
-
-        private Button CreateRenderFormulaButton()
-        {
-            Button button = new Button
-            {
-                Content = "Render",
-                Margin = new Thickness { Top = 10 },
-            };
-            
-            return button;
-        }
-
-        private Button CreateSaveButton()
-        {
-            Button button = new Button
-            {
-                Content = "Save to file",
-                Margin = new Thickness { Top = 10 },
-            };
-
+            panel.Children.Add(button);
             return button;
         }
 

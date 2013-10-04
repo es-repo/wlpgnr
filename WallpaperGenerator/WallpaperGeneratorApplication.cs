@@ -28,8 +28,9 @@ namespace WallpaperGenerator
 
         public FormulaRenderingArguments GetCurrentFormulaRenderingArguments()
         {
-            return _mainWindow.FormulaTexBox.Text != "" 
-                ? FormulaRenderingArguments.FromString(_mainWindow.FormulaTexBox.Text)
+            string formuleString = _mainWindow.FormulaTexBox.Dispatcher.Invoke(() => _mainWindow.FormulaTexBox.Text);
+            return formuleString != ""
+                ? FormulaRenderingArguments.FromString(formuleString)
                 : null;
         }
 
@@ -56,7 +57,7 @@ namespace WallpaperGenerator
                 _mainWindow.FormulaTexBox.Text = formulaRenderingArguments.ToString();
             };
 
-            _mainWindow.ControlPanel.ChangeRangesButton.Click += (s, a) =>
+            _mainWindow.ControlPanel.ChangeRangesButton.Click += async (s, a) =>
             {
                 FormulaRenderingArguments currentFormulaRenderingArguments = GetCurrentFormulaRenderingArguments();
                 RangesForFormula2DProjection ranges = CreateRandomVariableValuesRangesFor2DProjection(
@@ -68,10 +69,10 @@ namespace WallpaperGenerator
                     currentFormulaRenderingArguments.ColorTransformation);
 
                 _mainWindow.FormulaTexBox.Text = formulaRenderingArguments.ToString();
-                RenderFormula();
+                await RenderFormula();
             };
 
-            _mainWindow.ControlPanel.ChangeColorButton.Click += (s, a) =>
+            _mainWindow.ControlPanel.ChangeColorButton.Click += async (s, a) =>
             {
                 FormulaRenderingArguments currentFormulaRenderingArguments = GetCurrentFormulaRenderingArguments(); 
                 ColorTransformation colorTransformation = CreateRandomColorTransformation();
@@ -81,10 +82,12 @@ namespace WallpaperGenerator
                     colorTransformation);
 
                 _mainWindow.FormulaTexBox.Text = formulaRenderingArguments.ToString();
-                RenderFormula();
+                await RenderFormula();
             };
-            
-            _mainWindow.ControlPanel.RenderFormulaButton.Click += (s, a) => RenderFormula();
+
+            _mainWindow.ControlPanel.RenderFormulaButton.Click += async (s, a) => await RenderFormula();
+
+            _mainWindow.ControlPanel.StartStopRandomAnimationButton.Click += (s, a) => StartStopAnimation();
 
             _mainWindow.ControlPanel.SaveButton.Click += (s, a) => SaveFormulaImage();
         }
@@ -142,9 +145,42 @@ namespace WallpaperGenerator
                 Configuration.ColorChannelZeroProbabilty);
         }
 
-        private async void RenderFormula()
+        private bool _isAnimationStarted;
+
+        private void StartStopAnimation()
         {
-            _mainWindow.ControlPanel.IsButtonsEnabled = false;
+            _isAnimationStarted = !_isAnimationStarted;
+            if (_isAnimationStarted)
+            {
+                StartAnimation();
+            }
+        }
+
+        private async void StartAnimation()
+        {
+            while (_isAnimationStarted)
+            {
+                FormulaRenderingArguments currentFormulaRenderingArguments = GetCurrentFormulaRenderingArguments();
+            
+                RangesForFormula2DProjection ranges = CreateRandomVariableValuesRangesFor2DProjection(
+                    currentFormulaRenderingArguments.FormulaTree.Variables.Length, currentFormulaRenderingArguments);
+
+                FormulaRenderingArguments formulaRenderingArguments = new FormulaRenderingArguments(
+                    currentFormulaRenderingArguments.FormulaTree,
+                    ranges,
+                    currentFormulaRenderingArguments.ColorTransformation);
+
+                _mainWindow.FormulaTexBox.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                {
+                    _mainWindow.FormulaTexBox.Text = formulaRenderingArguments.ToString();
+                }));
+
+                await RenderFormula();
+            }
+        }
+
+        private async Task RenderFormula()
+        {
             _mainWindow.Cursor = Cursors.Wait;
 
             Stopwatch stopwatch = new Stopwatch();
@@ -153,9 +189,7 @@ namespace WallpaperGenerator
             FormulaRenderingArguments formulaRenderingArguments = GetCurrentFormulaRenderingArguments();
             
             ProgressObserver renderingProgressObserver = new ProgressObserver(
-                p => _mainWindow.StatusPanel.Dispatcher.Invoke(DispatcherPriority.Normal, 
-                    new Action(delegate
-                        { _mainWindow.StatusPanel.RenderingProgress = p.ProgressInPercents1d; })));
+                p => _mainWindow.StatusPanel.Dispatcher.Invoke(() => _mainWindow.StatusPanel.RenderingProgress = p.ProgressInPercents1d));
             
             RenderedFormulaImage renderedFormulaImage = await GetRenderedFormulaImageAsync(formulaRenderingArguments, renderingProgressObserver);
 
@@ -167,7 +201,6 @@ namespace WallpaperGenerator
             stopwatch.Stop();
             _mainWindow.StatusPanel.RenderedTime = stopwatch.Elapsed;
             _mainWindow.Cursor = Cursors.Arrow;
-            _mainWindow.ControlPanel.IsButtonsEnabled = true;
         }
 
         private async Task<RenderedFormulaImage> GetRenderedFormulaImageAsync(FormulaRenderingArguments formulaRenderingArguments, 
