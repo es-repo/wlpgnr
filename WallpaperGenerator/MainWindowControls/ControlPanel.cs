@@ -4,7 +4,6 @@ using System.Windows;
 using System.Windows.Controls;
 using WallpaperGenerator.Formulas.Operators;
 using WallpaperGenerator.MainWindowControls.ControlPanelControls;
-using WallpaperGenerator.Utilities;
 
 namespace WallpaperGenerator.MainWindowControls
 {
@@ -19,8 +18,6 @@ namespace WallpaperGenerator.MainWindowControls
         public Button ChangeRangesButton { get; private set; }
 
         public Button RenderFormulaButton { get; private set; }
-
-        public Button StartStopRandomAnimationButton { get; private set; }
 
         public Button StartStopSmoothAnimationButton { get; private set; }
 
@@ -63,19 +60,12 @@ namespace WallpaperGenerator.MainWindowControls
             ChangeColorButton = CreateButton(panel, "Change colors");
             RenderFormulaButton = CreateButton(panel, "Render");
 
-            const string animateRandomlyText = "Animate randomly";
             const string stopAnimationText = "Stop animation"; 
-            
-            StartStopRandomAnimationButton = CreateButton(panel, animateRandomlyText);
-            StartStopRandomAnimationButton.Click +=
-                (s, a) => StartStopRandomAnimationButton.Content = StartStopRandomAnimationButton.Content.ToString() == animateRandomlyText ? stopAnimationText : animateRandomlyText;
-
             const string animateSmoothlyText = "Animate smoothly";
 
             StartStopSmoothAnimationButton = CreateButton(panel, animateSmoothlyText);
             StartStopSmoothAnimationButton.Click +=
                 (s, a) => StartStopSmoothAnimationButton.Content = StartStopSmoothAnimationButton.Content.ToString() == animateSmoothlyText ? stopAnimationText : animateSmoothlyText;
-
 
             SaveButton = CreateButton(panel, "Save");
             

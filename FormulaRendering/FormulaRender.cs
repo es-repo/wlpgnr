@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using WallpaperGenerator.Formulas;
 using WallpaperGenerator.Utilities;
 using WallpaperGenerator.Utilities.ProgressReporting;
@@ -8,14 +9,32 @@ namespace WallpaperGenerator.FormulaRendering
 {
     public static class FormulaRender
     {
-        public static RenderedFormulaImage Render(FormulaTree formulaTree, RangesForFormula2DProjection ranges, ColorTransformation colorTransformation)
+        public static RenderedFormulaImage Render(FormulaTree formulaTree, RangesForFormula2DProjection rangesForFormula2DProjection, ColorTransformation colorTransformation)
         {
             Stopwatch evaluationStopwatch = new Stopwatch();
             evaluationStopwatch.Start();
 
-            ProgressReporter.CreateScope(0.95);
-            double[] formulaEvaluatedValues = formulaTree.EvaluateRangesIn2DProjection(ranges.Ranges, ranges.XCount, ranges.YCount);
-            ProgressReporter.Complete();
+            double[] formulaEvaluatedValues = new double[rangesForFormula2DProjection.XCount * rangesForFormula2DProjection.YCount];
+            using (ProgressReporter.CreateScope(0.95))
+            {
+                using (ProgressReporter.CreateScope(rangesForFormula2DProjection.IterationsCount))
+                {
+                    Range[] ranges = rangesForFormula2DProjection.Ranges.ToArray();
+                    for (int i = 0; i < rangesForFormula2DProjection.IterationsCount; i++)
+                    {
+                        double[] values = formulaTree.EvaluateRangesIn2DProjection(ranges, rangesForFormula2DProjection.XCount, rangesForFormula2DProjection.YCount);
+                        for (int j = 0; j < values.Length; j++)
+                        {
+                            formulaEvaluatedValues[j] += values[j];
+                        }
+
+                        ranges = ranges.Select((r, k) => new Range(r.Start*rangesForFormula2DProjection.IterationRangeScales[k],
+                                                r.Step*rangesForFormula2DProjection.IterationRangeScales[k],
+                                                r.Count)).ToArray();
+                    }
+                    ProgressReporter.Increase();
+                }
+            }
             
             evaluationStopwatch.Stop();
 
@@ -55,7 +74,7 @@ namespace WallpaperGenerator.FormulaRendering
             ProgressReporter.Complete();
 
             mapToRgbStopwatch.Stop();
-            return new RenderedFormulaImage(redChannel, greenChannel, blueChannel, ranges.XCount, ranges.YCount);
+            return new RenderedFormulaImage(redChannel, greenChannel, blueChannel, rangesForFormula2DProjection.XCount, rangesForFormula2DProjection.YCount);
         }
 
         private static byte[] MapToColorChannel(double[] values, ColorChannelTransformation colorChannelTransformation)

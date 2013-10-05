@@ -4,9 +4,14 @@ namespace WallpaperGenerator.Utilities
 {
     public static class ObjectExtensions
     {
-        public static string ToInvariantString(this double d)
+        public static string ToInvariantString(this double o)
         {
-            return d.ToString(CultureInfo.InvariantCulture);
+            return o.ToString(CultureInfo.InvariantCulture);
+        }
+
+        public static string ToInvariantString(this int o)
+        {
+            return o.ToString(CultureInfo.InvariantCulture);
         }
     }
 }

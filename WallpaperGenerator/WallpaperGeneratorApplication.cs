@@ -86,7 +86,6 @@ namespace WallpaperGenerator
 
             _mainWindow.ControlPanel.RenderFormulaButton.Click += async (s, a) => await RenderFormula();
 
-            _mainWindow.ControlPanel.StartStopRandomAnimationButton.Click += (s, a) => StartStopRandomAnimation();
             _mainWindow.ControlPanel.StartStopSmoothAnimationButton.Click += (s, a) => StartStopSmoothAnimation();
 
             _mainWindow.ControlPanel.SaveButton.Click += (s, a) => SaveFormulaImage();
@@ -133,7 +132,7 @@ namespace WallpaperGenerator
                 : Configuration.DefaultImageWidth;  
             
             return RangesForFormula2DProjection.CreateRandom(_random, variablesCount,
-                xRangeCount, yRangeCount,
+                xRangeCount, yRangeCount, 1,
                 Configuration.RangeLowBound, Configuration.RangeHighBound);
         }
 
@@ -143,31 +142,6 @@ namespace WallpaperGenerator
                 Configuration.ColorChannelPolinomialTransformationCoefficientLowBound,
                 Configuration.ColorChannelPolinomialTransformationCoefficientHighBound,
                 Configuration.ColorChannelZeroProbabilty);
-        }
-
-        private bool _isRandomAnimationStarted;
-
-        private void StartStopRandomAnimation()
-        {
-            _isRandomAnimationStarted = !_isRandomAnimationStarted;
-            if (_isRandomAnimationStarted)
-            {
-                StartRandomAnimation();
-            }
-        }
-
-        private async void StartRandomAnimation()
-        {
-            while (_isRandomAnimationStarted)
-            {
-                Func<FormulaRenderingArguments, FormulaRenderingArguments> getNextFormulaRenderingArguments = args =>
-                {
-                    RangesForFormula2DProjection ranges = CreateRandomVariableValuesRangesFor2DProjection(args.FormulaTree.Variables.Length, args);
-                    return new FormulaRenderingArguments(args.FormulaTree, ranges, args.ColorTransformation);
-                };
-
-                await DoAnimationStep(getNextFormulaRenderingArguments);
-            }
         }
 
         private bool _isSmoothAnimationStarted;

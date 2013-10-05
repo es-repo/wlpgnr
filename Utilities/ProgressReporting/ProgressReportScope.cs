@@ -26,7 +26,7 @@ namespace WallpaperGenerator.Utilities.ProgressReporting
             get { return _progress; }
             set
             {
-                if (value > 1.000001)
+                if (value > 1.00001)
                     throw new InvalidOperationException(GetExceptionMessage(string.Format("Attempt to setup progress with value \"{0}\" more then 1.", value)));
                 _progress = value;
                 _progressObservers.ForEach(o => o.OnNext(this));
@@ -66,7 +66,7 @@ namespace WallpaperGenerator.Utilities.ProgressReporting
 
             ChildScopeSpan = span * StepSize;
 
-            if (Progress + ChildScopeSpan > 1)
+            if (Progress + ChildScopeSpan > 1.00001)
                 throw new ArgumentException(GetExceptionMessage("Child scope span plus current progress is more then 1."), "span");
             
             ChildScope = new ProgressReportScope(stepsCount, name);
