@@ -12,7 +12,6 @@ namespace WallpaperGenerator
 
         private readonly WriteableBitmap _bitmap;
         private readonly Int32Rect _rect;
-        private readonly int _bytesPerPixel;
         private readonly int _stride;
         
         #endregion
@@ -39,8 +38,8 @@ namespace WallpaperGenerator
 
             _bitmap = new WriteableBitmap(WidthInPixels, HeightInPixels, 96, 96, PixelFormats.Bgra32, null);
             _rect = new Int32Rect(0, 0, _bitmap.PixelWidth, _bitmap.PixelHeight);
-            _bytesPerPixel = (_bitmap.Format.BitsPerPixel + 7) / 8;
-            _stride = _bitmap.PixelWidth * _bytesPerPixel;
+            int bytesPerPixel = (_bitmap.Format.BitsPerPixel + 7) / 8;
+            _stride = _bitmap.PixelWidth * bytesPerPixel;
         }
 
         #endregion

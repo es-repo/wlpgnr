@@ -37,7 +37,7 @@ namespace WallpaperGenerator.Formulas.Testing
         public void TestSelectVariables()
         {
             string[] variableNames = FormulaTree.SelectVariables(_formulaRoot).Select(v => v.Name).ToArray();
-            string[] expectedVariableNames = new []{_xVariable.Name, _yVariable.Name};
+            string[] expectedVariableNames = {_xVariable.Name, _yVariable.Name};
             CollectionAssert.AreElementsEqual(expectedVariableNames, variableNames);
         }
         

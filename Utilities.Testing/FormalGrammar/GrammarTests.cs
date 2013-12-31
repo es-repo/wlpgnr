@@ -30,7 +30,7 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
                     new Symbol<string>("Inf")
                 });
 
-            Rule<string>[] rules = new []
+            Rule<string>[] rules =
             {
                 // A0 -> x|y
                 new OrRule<string>(s["A0"], new [] { s["x"], s["y"] }),

@@ -14,32 +14,28 @@ namespace WallpaperGenerator.FormulaRendering
 
         public Range[] Ranges { get; private set; }
 
-        public int IterationsCount { get; private set; }
+        public int IterationCount { get; private set; }
 
-        public double[] IterationRangeScales { get; private set; }
+        public double IterationScale { get; private set; }
 
-        public RangesForFormula2DProjection(int xCount, int yCount, int iterationsCount, IEnumerable<Range> ranges, IEnumerable<double> iterationRangeScales)
+        public RangesForFormula2DProjection(int xCount, int yCount, IEnumerable<Range> ranges, int iterationCount, double iterationScale)
         {
             XCount = xCount;
             YCount = yCount;
             Ranges = ranges.Select((r, i) => new Range(r.Start, r.Step, i%2 == 0 ? XCount : YCount)).ToArray();
 
-            if (iterationsCount < 1)
-                throw new ArgumentException("Iterations count should be greater then 0", "iterationsCount");
+            if (iterationCount < 1)
+                throw new ArgumentException("Iterations count should be greater then 0", "iterationCount");
 
-            IterationsCount = iterationsCount;
-            IterationRangeScales = iterationRangeScales.ToArray();
-
-            if (Ranges.Length != IterationRangeScales.Length)
-                throw new ArgumentException("Number of ranges should be equal to number of iteration range scales.", "iterationRangeScales");
+            IterationCount = iterationCount;
+            IterationScale = iterationScale;
         }
 
         public override string ToString()
         {
-            string[] countStrings = new [] { XCount.ToInvariantString(), YCount.ToInvariantString(), IterationsCount.ToInvariantString() };
+            string[] countStrings = { XCount.ToInvariantString(), YCount.ToInvariantString(), IterationCount.ToInvariantString(), IterationScale.ToInvariantString() };
             IEnumerable<string> rangeStrings = Ranges.Select(r => r.ToString(true));
-            IEnumerable<string> scaleStrings = IterationRangeScales.Select(r => r.ToInvariantString());
-            return string.Join(";", countStrings.Concat(rangeStrings).Concat(scaleStrings).ToArray());
+            return string.Join(";", countStrings.Concat(rangeStrings).ToArray());
         }
 
         public static RangesForFormula2DProjection FromString(string value)
@@ -47,12 +43,12 @@ namespace WallpaperGenerator.FormulaRendering
             string[] rangeStrings = value.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
             int xCount = int.Parse(rangeStrings[0]);
             int yCount = int.Parse(rangeStrings[1]);
-            int iterationsCount = int.Parse(rangeStrings[2]);
-            const int rangesStartIndex = 3;
-            int rangesCount = (rangeStrings.Length - rangesStartIndex) / 2;
+            int iterationCount = int.Parse(rangeStrings[2]);
+            double iterationScale = double.Parse(rangeStrings[3]);
+            const int rangesStartIndex = 4;
+            int rangesCount = rangeStrings.Length - rangesStartIndex;
             IEnumerable<Range> ranges = rangeStrings.Skip(rangesStartIndex).Take(rangesCount).Select(Range.FromString);
-            IEnumerable<double> scales = rangeStrings.Skip(rangesStartIndex + rangesCount).Select(double.Parse);
-            return new RangesForFormula2DProjection(xCount, yCount, iterationsCount, ranges, scales);
+            return new RangesForFormula2DProjection(xCount, yCount, ranges, iterationCount, iterationScale);
         }
 
         public static RangesForFormula2DProjection CreateRandom(Random random, int variableCount,
@@ -61,8 +57,8 @@ namespace WallpaperGenerator.FormulaRendering
             random.RandomlyShrinkBounds(ref rangeLowBound, ref rangeHighBound);
             IEnumerable<Range> ranges = EnumerableExtensions.Repeat(
                 i => Range.CreateRandom(random, i % 2 == 0 ? xRangeCount : yRangeCount, rangeLowBound, rangeHighBound), variableCount);
-            IEnumerable<double> scales = EnumerableExtensions.Repeat(() => Math.Round(random.NextDouble() * 2 + 0.01, 2), variableCount);
-            return new RangesForFormula2DProjection(xRangeCount, yRangeCount, iterationsCount, ranges, scales);
+            double scale = Math.Round(1 + random.NextDouble() * 0.5, 2);
+            return new RangesForFormula2DProjection(xRangeCount, yRangeCount, ranges, iterationsCount, scale);
         }
     }
 }

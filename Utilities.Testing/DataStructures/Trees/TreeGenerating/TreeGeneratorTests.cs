@@ -30,7 +30,7 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees.TreeGenerati
                     new Symbol<string>("Node")
                 });
 
-            Rule<string>[] rules = new[]
+            Rule<string>[] rules =
             {
                 // Val0 -> 0
                 new Rule<string>(s["Val0"], new [] { s["0"] }),
@@ -81,7 +81,7 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees.TreeGenerati
                     new Symbol<string>("NodeB")
                 });
 
-            Rule<string>[] rules = new[]
+            Rule<string>[] rules =
             {
                 // Val0 -> 0
                 new Rule<string>(s["Val0"], new [] { s["0"] }),
@@ -137,7 +137,7 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees.TreeGenerati
                     new Symbol<string>("NodeB")
                 });
 
-            Rule<string>[] rules = new[]
+            Rule<string>[] rules =
             {
                 // Val0 -> 0
                 new Rule<string>(s["Val0"], new [] { s["0"] }),

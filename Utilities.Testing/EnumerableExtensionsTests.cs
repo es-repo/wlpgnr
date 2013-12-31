@@ -22,7 +22,7 @@ namespace WallpaperGenerator.Utilities.Testing
         public void TestRepeat()
         {
             IEnumerable<int> sequence = EnumerableExtensions.Repeat(i => i, 3); 
-            int[] expectedSequence = new []{0, 1, 2};
+            int[] expectedSequence = {0, 1, 2};
             CollectionAssert.AreEqual(expectedSequence, sequence.ToArray());
         }
 

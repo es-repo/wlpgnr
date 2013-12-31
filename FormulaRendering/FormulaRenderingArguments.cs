@@ -22,7 +22,7 @@ namespace WallpaperGenerator.FormulaRendering
             string formulaString = FormulaTreeSerializer.Serialize(FormulaTree);
             string variableRangesString = Ranges.ToString();
             string colorTransformationString = ColorTransformation.ToString();
-            string[] lines = new[] { variableRangesString, colorTransformationString, formulaString };
+            string[] lines = { variableRangesString, colorTransformationString, formulaString };
             return string.Join("\r\n", lines);
         }
 

@@ -17,10 +17,10 @@ namespace WallpaperGenerator.FormulaRendering
             double[] formulaEvaluatedValues = new double[rangesForFormula2DProjection.XCount * rangesForFormula2DProjection.YCount];
             using (ProgressReporter.CreateScope(0.95))
             {
-                using (ProgressReporter.CreateScope(rangesForFormula2DProjection.IterationsCount))
+                using (ProgressReporter.CreateScope(rangesForFormula2DProjection.IterationCount))
                 {
                     Range[] ranges = rangesForFormula2DProjection.Ranges.ToArray();
-                    for (int i = 0; i < rangesForFormula2DProjection.IterationsCount; i++)
+                    for (int i = 0; i < rangesForFormula2DProjection.IterationCount; i++)
                     {
                         double[] values = formulaTree.EvaluateRangesIn2DProjection(ranges, rangesForFormula2DProjection.XCount, rangesForFormula2DProjection.YCount);
                         for (int j = 0; j < values.Length; j++)
@@ -28,8 +28,8 @@ namespace WallpaperGenerator.FormulaRendering
                             formulaEvaluatedValues[j] += values[j];
                         }
 
-                        ranges = ranges.Select((r, k) => new Range(r.Start*rangesForFormula2DProjection.IterationRangeScales[k],
-                                                r.Step*rangesForFormula2DProjection.IterationRangeScales[k],
+                        ranges = ranges.Select(r => new Range(r.Start*rangesForFormula2DProjection.IterationScale,
+                                                r.Step*rangesForFormula2DProjection.IterationScale,
                                                 r.Count)).ToArray();
                     }
                     ProgressReporter.Increase();

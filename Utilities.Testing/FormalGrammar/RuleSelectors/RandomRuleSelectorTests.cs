@@ -17,12 +17,12 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar.RuleSelectors
         {
             Random random = new Random(7);
             
-            Rule<string>[] rules = new[]
-                {
-                    new Rule<string>(new Symbol<string>("A"), new [] { new Symbol<string>("a" ) } ),
-                    new Rule<string>(new Symbol<string>("B"), new [] { new Symbol<string>("b" ) } ),
-                    new Rule<string>(new Symbol<string>("C"), new [] { new Symbol<string>("c" ) } )
-                };
+            Rule<string>[] rules =
+            {
+                new Rule<string>(new Symbol<string>("A"), new [] { new Symbol<string>("a" ) } ),
+                new Rule<string>(new Symbol<string>("B"), new [] { new Symbol<string>("b" ) } ),
+                new Rule<string>(new Symbol<string>("C"), new [] { new Symbol<string>("c" ) } )
+            };
 
             RandomRuleSelector<string> ruleSelector = probabilities == null
                 ? new RandomRuleSelector<string>(random, rules)

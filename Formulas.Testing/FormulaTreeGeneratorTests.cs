@@ -96,7 +96,7 @@ namespace WallpaperGenerator.Formulas.Testing
                 { OperatorsLibrary.Sub, 30 },
                 { OperatorsLibrary.IfG, 0 },
             };
-            double[] expectedOpNodeProbabilities = new [] {80.0, 50};
+            double[] expectedOpNodeProbabilities = {80.0, 50};
             double[] opNodeProbabilities = FormulaTreeGenerator.GetOpNodeProbabilities(operatorAndProbabilityMap).ToArray();
             CollectionAssert.AreEqual(expectedOpNodeProbabilities, opNodeProbabilities);
         }

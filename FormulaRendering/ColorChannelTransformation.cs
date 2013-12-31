@@ -59,7 +59,7 @@ namespace WallpaperGenerator.FormulaRendering
 
         public override string ToString()
         {
-            double[] coefficcients = new [] {_polinomCoefficcientA, _polinomCoefficcientB, _polinomCoefficcientC, DispersionCoefficient};
+            double[] coefficcients = {_polinomCoefficcientA, _polinomCoefficcientB, _polinomCoefficcientC, DispersionCoefficient};
             return string.Join(",", coefficcients.Select(c => c.ToString(CultureInfo.InvariantCulture)).ToArray());
         }
 

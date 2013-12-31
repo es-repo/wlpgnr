@@ -22,7 +22,7 @@ namespace WallpaperGenerator.FormulaRendering
 
         public override string ToString()
         {
-            ColorChannelTransformation[] transformations = new []
+            ColorChannelTransformation[] transformations =
             {
                 RedChannelTransformation,
                 GreenChannelTransformation,
