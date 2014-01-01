@@ -78,9 +78,13 @@
     <Folder Include="Assets\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Utilities\Utilities.csproj">
-      <Project>{7d4a8b31-9e0b-4c8a-914b-e469d622f21c}</Project>
-      <Name>Utilities</Name>
+    <ProjectReference Include="..\FormulaRendering\FormulaRendering.csproj">
+      <Project>{c4dd7aac-acfb-45ca-b1b3-7bef7714deb0}</Project>
+      <Name>FormulaRendering</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Formulas\Formulas.csproj">
+      <Project>{190058e2-f017-4d78-b076-cb6ac313246d}</Project>
+      <Name>Formulas</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
