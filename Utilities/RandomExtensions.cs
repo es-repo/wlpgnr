@@ -36,5 +36,10 @@ namespace WallpaperGenerator.Utilities
             lowBound = newLowBound;
             highBound = newHighBound;
         }
+
+        public static double Next(this Random random, double minValue, double maxValue)
+        {
+            return Math.Round(random.NextDouble() * (maxValue - minValue) + minValue, 2);
+        }
     }
 }

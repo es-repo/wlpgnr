@@ -57,6 +57,28 @@ namespace WallpaperGenerator.Android
 			}
 		}
 		
+		public partial class Id
+		{
+			
+			// aapt resource value: 0x7f070000
+			public const int SCROLLER_ID = 2131165184;
+			
+			// aapt resource value: 0x7f070001
+			public const int formulaTextView = 2131165185;
+			
+			// aapt resource value: 0x7f070002
+			public const int generateMenuItem = 2131165186;
+			
+			static Id()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Id()
+			{
+			}
+		}
+		
 		public partial class Layout
 		{
 			
@@ -73,11 +95,30 @@ namespace WallpaperGenerator.Android
 			}
 		}
 		
+		public partial class Menu
+		{
+			
+			// aapt resource value: 0x7f060000
+			public const int Main = 2131099648;
+			
+			static Menu()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Menu()
+			{
+			}
+		}
+		
 		public partial class String
 		{
 			
 			// aapt resource value: 0x7f040000
 			public const int ApplicationName = 2130968576;
+			
+			// aapt resource value: 0x7f040001
+			public const int Generate = 2130968577;
 			
 			static String()
 			{

@@ -84,7 +84,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration.cs" />
     <Compile Include="MainWindow.cs" />
     <Compile Include="MainWindowControls\ControlPanel.cs" />
     <Compile Include="MainWindowControls\ControlPanelControls\OperatorControl.cs" />
@@ -139,6 +138,10 @@
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{7D4A8B31-9E0B-4C8A-914B-E469D622F21C}</Project>
       <Name>Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WallpaperGenerator.Core\WallpaperGenerator.Core.csproj">
+      <Project>{abb75337-fcc9-4569-9b7e-ad338134726e}</Project>
+      <Name>WallpaperGenerator.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
