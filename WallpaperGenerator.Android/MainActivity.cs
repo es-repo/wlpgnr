@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content.PM;
+using Android.Graphics;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
@@ -19,13 +21,17 @@ namespace WallpaperGenerator.Android
     {
         private readonly Random _random = new Random();
         private TextView _formulaTextView;
+        private ImageView _wallpaperImageView;
 
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
+
             SetContentView(Resource.Layout.Main);
+            
 
             _formulaTextView = FindViewById<TextView>(Resource.Id.formulaTextView);
+            _wallpaperImageView = FindViewById<ImageView>(Resource.Id.wallpaperImageView);
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -39,12 +45,40 @@ namespace WallpaperGenerator.Android
             switch (item.ItemId)
             {
                 case Resource.Id.generateMenuItem:
-                    FormulaRenderingArguments args = GenerateRandomFormulaRenderingArguments();
-                    _formulaTextView.Text = args.ToString();
+                    GenerateAndRenderWallpaper();
                     return true;
             }
 
             return base.OnOptionsItemSelected(item);
+        }
+
+        private async void GenerateAndRenderWallpaper()
+        {
+            FormulaRenderingArguments args = await GenerateRandomFormulaRenderingArgumentsAsync();
+            _formulaTextView.Text = args.ToString();
+            Bitmap bitmap = await RenderWallpaperBitmapAsync(args);
+            _wallpaperImageView.SetImageBitmap(bitmap);
+        }
+
+        private Task<Bitmap> RenderWallpaperBitmapAsync(FormulaRenderingArguments args)
+        {
+            return Task.Run(() => RenderWallpaperBitmap(args));
+        }
+
+        private Bitmap RenderWallpaperBitmap(FormulaRenderingArguments args)
+        {
+            const int width = Configuration.DefaultImageWidth; // TODO: Take screen pixels width.
+            const int height = Configuration.DefaultImageWidth; // TODO: Take screen pixels height.
+            Bitmap bitmap = Bitmap.CreateBitmap(width, height, Bitmap.Config.Argb8888);
+            for (int i = 0; i < width; i++)
+                for (int j = 0; j < height; j++)
+                    bitmap.SetPixel(i, j, Color.Argb(128, i + j, i % (j + 1), i * j));
+            return bitmap;
+        }
+
+        private Task<FormulaRenderingArguments> GenerateRandomFormulaRenderingArgumentsAsync()
+        {
+            return Task.Run(() => GenerateRandomFormulaRenderingArguments());
         }
 
         // TODO: Move to Core.

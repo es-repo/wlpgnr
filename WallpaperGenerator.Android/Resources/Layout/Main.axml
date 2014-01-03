@@ -2,19 +2,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:minWidth="25px"
-    android:minHeight="25px">
+    android:layout_height="fill_parent">
     <ScrollView
-        android:id="@+id/SCROLLER_ID"
+        android:id="@+id/scrollView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:scrollbars="vertical"
         android:fillViewport="true">
-        <TextView
-            android:text=""
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/formulaTextView" />
+            android:layout_height="fill_parent">
+            <ImageView
+                android:src="@android:drawable/ic_menu_gallery"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/wallpaperImageView" />
+            <TextView
+                android:id="@+id/formulaTextView"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
     </ScrollView>
 </LinearLayout>
