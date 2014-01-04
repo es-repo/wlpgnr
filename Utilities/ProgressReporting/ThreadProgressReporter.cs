@@ -24,9 +24,9 @@ namespace WallpaperGenerator.Utilities.ProgressReporting
             _mainProgressObservers = new List<IProgressObserver>();
         }
 
-        public ProgressReportScope CreateMainScope(int stepsCount, double span, string name)
+        public ProgressReportScope CreateMainScope(int stepsCount, double span, double initProgress, string name)
         {
-            MainScope = new ProgressReportScope(stepsCount, span, name);
+            MainScope = new ProgressReportScope(stepsCount, span, initProgress, name);
             _mainProgressObservers.ForEach(o => MainScope.Subscribe(o));
             _mainProgressObservers.Clear();
             MainScope.Subscribe(new ProgressObserver(onComplete: () => MainScope = null));

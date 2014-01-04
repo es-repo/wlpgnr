@@ -6,6 +6,7 @@ namespace WallpaperGenerator.Utilities.ProgressReporting
 {
     public sealed class ProgressReportScope : IDisposable, IProgressObservable, IProgressObserver
     {
+        private const double ProgressError = 1.00001;
         private double _progress;
         private double _previouseProgress;
         private bool _isCompleted;
@@ -23,12 +24,14 @@ namespace WallpaperGenerator.Utilities.ProgressReporting
 
         public double Span { get; private set; }
 
+        public double InitProgress { get; private set; }
+
         public double Progress
         {
             get { return _progress; }
             set
             {
-                if (value > 1.00001)
+                if (value > ProgressError)
                     throw new InvalidOperationException(GetExceptionMessage(string.Format("Attempt to setup progress with value \"{0}\" more then 1.", value)));
                 _progress = value;
                 _progressObservers.ForEach(o => o.OnNext(this));
@@ -40,12 +43,17 @@ namespace WallpaperGenerator.Utilities.ProgressReporting
             get { return Math.Round(Progress*100, 1); }
         }
 
-        public ProgressReportScope(int stepsCount = 1, double span = 1, [CallerMemberName] string name = "")
+        public ProgressReportScope(int stepsCount = 1, double span = 1, double initProgress = 0, [CallerMemberName] string name = "")
         {
             Name = name;
             StepsCount = stepsCount;
             Span = span;
             StepSize = span/stepsCount;
+            if (span + initProgress > ProgressError)
+                throw new ArgumentException("Span plus init progress is more then 1.", "initProgress");
+            
+            InitProgress = initProgress;
+            _progress = initProgress;
             _progressObservers = new List<IProgressObserver>();
         }
 
@@ -65,14 +73,14 @@ namespace WallpaperGenerator.Utilities.ProgressReporting
                 throw new InvalidOperationException(GetExceptionMessage("Child scope is alredy created and not completed yet."));
 
             if (span <= 0)
-                throw new ArgumentException(GetExceptionMessage("ChildScopeSpan should be greater then 0."), "span");
+                throw new ArgumentException(GetExceptionMessage("Span should be greater then 0."), "span");
 
             ChildScopeSpan = span * StepSize;
 
-            if (Progress + ChildScopeSpan > 1.00001)
+            if (Progress + ChildScopeSpan > ProgressError)
                 throw new ArgumentException(GetExceptionMessage("Child scope span plus current progress is more then 1."), "span");
             
-            ChildScope = new ProgressReportScope(stepsCount, 1, name);
+            ChildScope = new ProgressReportScope(stepsCount, 1, 0, name);
             _previouseProgress = Progress;
             ChildScope.Subscribe(this);
             return ChildScope;
@@ -92,7 +100,7 @@ namespace WallpaperGenerator.Utilities.ProgressReporting
             if (ChildScope != null)
                 ChildScope.Complete();
 
-            Progress = Span;
+            Progress = Span + InitProgress;
             _isCompleted = true;
 
             _progressObservers.ForEach(o => o.OnCompleted());
