@@ -2,7 +2,13 @@
   <item
       android:id="@+id/generateMenuItem"
       android:icon="@android:drawable/ic_menu_edit"
-      android:showAsAction="ifRoom"
+      android:showAsAction="ifRoom|withText"
       android:title="@string/Generate">
-  </item>  
+  </item>
+  <item
+      android:id="@+id/renderMenuItem"
+      android:icon="@android:drawable/ic_menu_gallery"
+      android:showAsAction="ifRoom|withText"
+      android:title="@string/Render">
+  </item>
 </menu>

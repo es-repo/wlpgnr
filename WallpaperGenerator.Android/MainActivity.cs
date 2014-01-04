@@ -22,6 +22,7 @@ namespace WallpaperGenerator.Android
         private readonly Random _random = new Random();
         private TextView _formulaTextView;
         private ImageView _wallpaperImageView;
+        private FormulaRenderingArguments _formulaRenderingArguments;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -29,9 +30,10 @@ namespace WallpaperGenerator.Android
 
             SetContentView(Resource.Layout.Main);
             
-
             _formulaTextView = FindViewById<TextView>(Resource.Id.formulaTextView);
             _wallpaperImageView = FindViewById<ImageView>(Resource.Id.wallpaperImageView);
+
+            ClearWallpaperImageView();
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -45,35 +47,53 @@ namespace WallpaperGenerator.Android
             switch (item.ItemId)
             {
                 case Resource.Id.generateMenuItem:
-                    GenerateAndRenderWallpaper();
+                    OnGenerateMenuItemSelected();
+                    return true;
+
+                case Resource.Id.renderMenuItem:
+                    OnRenderMenuItemSelected();
                     return true;
             }
 
             return base.OnOptionsItemSelected(item);
         }
 
-        private async void GenerateAndRenderWallpaper()
+        private async void OnGenerateMenuItemSelected()
         {
-            FormulaRenderingArguments args = await GenerateRandomFormulaRenderingArgumentsAsync();
-            _formulaTextView.Text = args.ToString();
-            Bitmap bitmap = await RenderWallpaperBitmapAsync(args);
+            _formulaRenderingArguments = await GenerateRandomFormulaRenderingArgumentsAsync();
+            _formulaTextView.Text = _formulaRenderingArguments.ToString();
+        }
+
+        private async void OnRenderMenuItemSelected()
+        {
+            if (_formulaRenderingArguments == null)
+                return;
+
+            ClearWallpaperImageView();
+            Bitmap bitmap = await RenderWallpaperBitmapAsync(_formulaRenderingArguments);
             _wallpaperImageView.SetImageBitmap(bitmap);
         }
 
-        private Task<Bitmap> RenderWallpaperBitmapAsync(FormulaRenderingArguments args)
+        private void ClearWallpaperImageView()
         {
-            return Task.Run(() => RenderWallpaperBitmap(args));
+            if (_formulaRenderingArguments == null)
+                return;
+            int width = _formulaRenderingArguments.Ranges.XCount; 
+            int height = _formulaRenderingArguments.Ranges.YCount; 
+            int[] pixels = new int[width * height];
+            Bitmap blankBitmap = Bitmap.CreateBitmap(pixels, width, height, Bitmap.Config.Argb8888);
+            _wallpaperImageView.SetImageBitmap(blankBitmap);
         }
 
-        private Bitmap RenderWallpaperBitmap(FormulaRenderingArguments args)
+        private async Task<Bitmap> RenderWallpaperBitmapAsync(FormulaRenderingArguments args)
         {
-            const int width = Configuration.DefaultImageWidth; // TODO: Take screen pixels width.
-            const int height = Configuration.DefaultImageWidth; // TODO: Take screen pixels height.
-            Bitmap bitmap = Bitmap.CreateBitmap(width, height, Bitmap.Config.Argb8888);
-            for (int i = 0; i < width; i++)
-                for (int j = 0; j < height; j++)
-                    bitmap.SetPixel(i, j, Color.Argb(128, i + j, i % (j + 1), i * j));
-            return bitmap;
+            RenderedFormulaImage formulaImage = await RenderedFormulaImageAsync(args);
+            int length = formulaImage.RedChannel.Length;
+            int[] pixels = new int[length];
+            for (int i = 0; i < length; i++)
+                pixels[i] = Color.Argb(255, formulaImage.RedChannel[i], formulaImage.GreenChannel[i], formulaImage.BlueChannel[i]);
+
+            return Bitmap.CreateBitmap(pixels, formulaImage.WidthInPixels, formulaImage.HeightInPixels, Bitmap.Config.Argb8888);
         }
 
         private Task<FormulaRenderingArguments> GenerateRandomFormulaRenderingArgumentsAsync()
@@ -125,6 +145,15 @@ namespace WallpaperGenerator.Android
             };
 
             return FormulaTreeGenerator.Generate(operatorAndProbabilityMap, createConst, dimensionsCount, minimalDepth, _random, varOrConstantProbability, constantProbability);
+        }
+
+        private Task<RenderedFormulaImage> RenderedFormulaImageAsync(FormulaRenderingArguments formulaRenderingArguments/*, 
+            /*ProgressObserver renderingProgressObserver*/)
+        {
+            return Task.Run(() => FormulaRender.Render(
+                formulaRenderingArguments.FormulaTree,
+                formulaRenderingArguments.Ranges,
+                formulaRenderingArguments.ColorTransformation));
         }
     }
 }

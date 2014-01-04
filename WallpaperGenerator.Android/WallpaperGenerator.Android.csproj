@@ -18,7 +18,7 @@
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <AndroidUseLatestPlatformSdk />
     <TargetFrameworkVersion>v4.3</TargetFrameworkVersion>
-    <AndroidSupportedAbis>armeabi,armeabi-v7a,x86</AndroidSupportedAbis>
+    <AndroidSupportedAbis>armeabi-v7a</AndroidSupportedAbis>
     <AndroidStoreUncompressedFileExtensions />
     <MandroidI18n />
     <JavaMaximumHeapSize />
@@ -73,7 +73,9 @@
   <ItemGroup>
     <Content Include="Properties\AndroidManifest.xml" />
     <AndroidResource Include="Resources\Values\Styles.xml" />
-    <AndroidResource Include="Resources\Menu\Main.xml" />
+    <AndroidResource Include="Resources\Menu\Main.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\" />

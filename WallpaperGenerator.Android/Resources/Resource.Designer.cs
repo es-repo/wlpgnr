@@ -66,6 +66,9 @@ namespace WallpaperGenerator.Android
 			// aapt resource value: 0x7f070003
 			public const int generateMenuItem = 2131165187;
 			
+			// aapt resource value: 0x7f070004
+			public const int renderMenuItem = 2131165188;
+			
 			// aapt resource value: 0x7f070000
 			public const int scrollView = 2131165184;
 			
@@ -122,6 +125,9 @@ namespace WallpaperGenerator.Android
 			
 			// aapt resource value: 0x7f040001
 			public const int Generate = 2130968577;
+			
+			// aapt resource value: 0x7f040002
+			public const int Render = 2130968578;
 			
 			static String()
 			{
