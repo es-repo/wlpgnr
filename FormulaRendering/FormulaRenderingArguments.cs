@@ -8,13 +8,16 @@ namespace WallpaperGenerator.FormulaRendering
         public FormulaTree FormulaTree { get; private set; }
         public RangesForFormula2DProjection Ranges { get; private set; }
         public ColorTransformation ColorTransformation { get; private set; }
+        public int WidthInPixels { get; private set; }
+        public int HeightInPixels { get; private set; }
 
-        public FormulaRenderingArguments(FormulaTree formulaTree, RangesForFormula2DProjection ranges, 
-            ColorTransformation colorTransformation)
+        public FormulaRenderingArguments(FormulaTree formulaTree, RangesForFormula2DProjection ranges, ColorTransformation colorTransformation)
         {
             FormulaTree = formulaTree;
             Ranges = ranges;
-            ColorTransformation = colorTransformation; 
+            ColorTransformation = colorTransformation;
+            WidthInPixels = ranges.XCount;
+            HeightInPixels = ranges.YCount;
         }
 
         public override string ToString()

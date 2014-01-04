@@ -87,7 +87,7 @@ namespace WallpaperGenerator.Android
 
         private async Task<Bitmap> RenderWallpaperBitmapAsync(FormulaRenderingArguments args)
         {
-            RenderedFormulaImage formulaImage = await RenderedFormulaImageAsync(args);
+            RenderedFormulaImage formulaImage = await RenderFormulaImageAsync(args);
             int length = formulaImage.RedChannel.Length;
             int[] pixels = new int[length];
             for (int i = 0; i < length; i++)
@@ -147,7 +147,7 @@ namespace WallpaperGenerator.Android
             return FormulaTreeGenerator.Generate(operatorAndProbabilityMap, createConst, dimensionsCount, minimalDepth, _random, varOrConstantProbability, constantProbability);
         }
 
-        private Task<RenderedFormulaImage> RenderedFormulaImageAsync(FormulaRenderingArguments formulaRenderingArguments/*, 
+        private Task<RenderedFormulaImage> RenderFormulaImageAsync(FormulaRenderingArguments formulaRenderingArguments/*, 
             /*ProgressObserver renderingProgressObserver*/)
         {
             return Task.Run(() => FormulaRender.Render(

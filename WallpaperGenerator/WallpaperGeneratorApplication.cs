@@ -22,6 +22,7 @@ namespace WallpaperGenerator
         private readonly Random _random = new Random();
         private readonly MainWindow _mainWindow;
         private WallpaperImage _wallpaperImage;
+        private double[] _lastEvaluatedFormulaValues;
          
         #endregion
 
@@ -70,7 +71,7 @@ namespace WallpaperGenerator
                     currentFormulaRenderingArguments.ColorTransformation);
 
                 _mainWindow.FormulaTexBox.Text = formulaRenderingArguments.ToString();
-                await RenderFormula();
+                await RenderFormula(GetCurrentFormulaRenderingArguments(), true);
             };
 
             _mainWindow.ControlPanel.ChangeColorButton.Click += async (s, a) =>
@@ -83,10 +84,10 @@ namespace WallpaperGenerator
                     colorTransformation);
 
                 _mainWindow.FormulaTexBox.Text = formulaRenderingArguments.ToString();
-                await RenderFormula();
+                await RenderFormula(GetCurrentFormulaRenderingArguments(), false);
             };
 
-            _mainWindow.ControlPanel.RenderFormulaButton.Click += async (s, a) => await RenderFormula();
+            _mainWindow.ControlPanel.RenderFormulaButton.Click += async (s, a) => await RenderFormula(GetCurrentFormulaRenderingArguments(), true);
 
             _mainWindow.ControlPanel.StartStopSmoothAnimationButton.Click += (s, a) => StartStopSmoothAnimation();
 
@@ -200,22 +201,29 @@ namespace WallpaperGenerator
             FormulaRenderingArguments formulaRenderingArguments = GetCurrentFormulaRenderingArguments();
             formulaRenderingArguments = getNextFormulaRenderingArguments(formulaRenderingArguments);
             _mainWindow.FormulaTexBox.Dispatcher.Invoke(() => _mainWindow.FormulaTexBox.Text = formulaRenderingArguments.ToString());
-            await RenderFormula();
+            await RenderFormula(formulaRenderingArguments, true);
         }
 
-        private async Task RenderFormula()
+        private async Task RenderFormula(FormulaRenderingArguments formulaRenderingArguments, bool reevaluateFormulaValues)
         {
             _mainWindow.Cursor = Cursors.Wait;
 
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            FormulaRenderingArguments formulaRenderingArguments = GetCurrentFormulaRenderingArguments();
-            
             ProgressObserver renderingProgressObserver = new ProgressObserver(
                 p => _mainWindow.StatusPanel.Dispatcher.Invoke(() => _mainWindow.StatusPanel.RenderingProgress = p.ProgressInPercents1d));
-            
-            RenderedFormulaImage renderedFormulaImage = await GetRenderedFormulaImageAsync(formulaRenderingArguments, renderingProgressObserver);
+
+            double evaluationProgressSpan = 0;
+            if (reevaluateFormulaValues)
+            {
+                evaluationProgressSpan = 0.95;
+                _lastEvaluatedFormulaValues = await EvaluateFormulaAsync(formulaRenderingArguments, evaluationProgressSpan, renderingProgressObserver);
+            }
+
+            RenderedFormulaImage renderedFormulaImage = await RenderFormulaAsync(_lastEvaluatedFormulaValues, formulaRenderingArguments.WidthInPixels,
+                formulaRenderingArguments.HeightInPixels, formulaRenderingArguments.ColorTransformation,
+                1 - evaluationProgressSpan, evaluationProgressSpan, renderingProgressObserver);
 
             _wallpaperImage = new WallpaperImage(renderedFormulaImage.WidthInPixels, renderedFormulaImage.HeightInPixels);
             _wallpaperImage.Update(renderedFormulaImage);
@@ -227,20 +235,38 @@ namespace WallpaperGenerator
             _mainWindow.Cursor = Cursors.Arrow;
         }
 
-        private async Task<RenderedFormulaImage> GetRenderedFormulaImageAsync(FormulaRenderingArguments formulaRenderingArguments, 
-            ProgressObserver renderingProgressObserver)
+        private Task<double[]> EvaluateFormulaAsync(FormulaRenderingArguments formulaRenderingArguments, double progressSpan, ProgressObserver progressObserver)
         {
-            RenderedFormulaImage renderedFormulaImage = null;
-            await Task.Run(() =>
+            return Task.Run(() =>
             {
-                ProgressReporter.Subscribe(renderingProgressObserver);
-                renderedFormulaImage = FormulaRender.Render(
-                    formulaRenderingArguments.FormulaTree,
-                    formulaRenderingArguments.Ranges,
-                    formulaRenderingArguments.ColorTransformation);
+                ProgressReporter.Subscribe(progressObserver);
+                using (ProgressReporter.CreateScope(progressSpan))
+                    return FormulaRender.EvaluateFormula(formulaRenderingArguments.FormulaTree, formulaRenderingArguments.Ranges);
             });
-            return renderedFormulaImage;
         }
+
+        private Task<RenderedFormulaImage> RenderFormulaAsync(double[] evaluatedFormulaValues, int widthInPixels, int heightInPixels, ColorTransformation colorTransformation,
+            double progressSpan, double initProgress, ProgressObserver progressObserver)
+        {
+            return Task.Run(() =>
+            {
+                ProgressReporter.Subscribe(progressObserver);
+                using (ProgressReporter.CreateScope(progressSpan, initProgress))
+                    return FormulaRender.Render(evaluatedFormulaValues, widthInPixels, heightInPixels, colorTransformation);
+            });
+        }
+
+        //private Task<RenderedFormulaImage> RenderFormulaImageAsync(FormulaRenderingArguments formulaRenderingArguments, ProgressObserver progressObserver)
+        //{
+        //    return Task.Run(() =>
+        //    {
+        //        ProgressReporter.Subscribe(progressObserver);
+        //        return FormulaRender.Render(
+        //            formulaRenderingArguments.FormulaTree,
+        //            formulaRenderingArguments.Ranges,
+        //            formulaRenderingArguments.ColorTransformation);
+        //    });
+        //}
 
         private void SaveFormulaImage()
         {
