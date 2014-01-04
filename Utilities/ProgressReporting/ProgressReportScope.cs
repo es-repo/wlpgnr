@@ -45,6 +45,9 @@ namespace WallpaperGenerator.Utilities.ProgressReporting
 
         public ProgressReportScope(int stepsCount = 1, double span = 1, double initProgress = 0, [CallerMemberName] string name = "")
         {
+            if (span <= 0  || span > 1)
+                throw new ArgumentException("Span can't be less then or equal to 0 and more then 1.", "span");
+
             Name = name;
             StepsCount = stepsCount;
             Span = span;
@@ -53,7 +56,7 @@ namespace WallpaperGenerator.Utilities.ProgressReporting
                 throw new ArgumentException("Span plus init progress is more then 1.", "initProgress");
             
             InitProgress = initProgress;
-            _progress = initProgress;
+            _previouseProgress = _progress = initProgress;
             _progressObservers = new List<IProgressObserver>();
         }
 

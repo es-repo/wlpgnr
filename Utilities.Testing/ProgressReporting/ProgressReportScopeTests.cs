@@ -24,7 +24,7 @@ namespace WallpaperGenerator.Utilities.Testing.ProgressReporting
 
         [Test]
         [ExpectedException(typeof(InvalidOperationException))]
-        public void TestChildSCopeIsAlreadeCreated()
+        public void TestChildScopeIsAlreadeCreated()
         {
             using (ProgressReportScope scope = new ProgressReportScope())
             {
@@ -123,6 +123,20 @@ namespace WallpaperGenerator.Utilities.Testing.ProgressReporting
                 scope.CreateChildScope(0.5);
             }
             ProgressAssert.AreEqual(new[] { 0.5, 1.0 }, progress);
+        }
+
+        [Test]
+        public void TestScopeWithSpanAndInitProgress()
+        {
+            List<double> progress = new List<double>();
+            ProgressObserver progressObserver = new ProgressObserver(s => progress.Add(s.Progress));
+            const int steps = 3;
+            using (ProgressReportScope scope = new ProgressReportScope(steps, 0.3, 0.65))
+            {
+                scope.Subscribe(progressObserver);
+                for ( int i = 0; i < steps; i++) scope.Increase();
+            }
+            ProgressAssert.AreEqual(new[] { 0.75, 0.85, 0.95 }, progress);
         }
 
         private static void DumbFunc()
