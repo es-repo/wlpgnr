@@ -217,7 +217,7 @@ namespace WallpaperGenerator
             double evaluationProgressSpan = 0;
             if (reevaluateFormulaValues)
             {
-                evaluationProgressSpan = 0.95;
+                evaluationProgressSpan = 0.98;
                 _lastEvaluatedFormulaValues = await EvaluateFormulaAsync(formulaRenderingArguments, evaluationProgressSpan, renderingProgressObserver);
             }
 
