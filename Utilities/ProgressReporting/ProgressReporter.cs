@@ -22,11 +22,11 @@ namespace WallpaperGenerator.Utilities.ProgressReporting
             return CreateScope(stepsCount, 1, name);
         }
 
-        public static ProgressReportScope CreateScope(int stepsCount, double childScopeSpan, [CallerMemberName] string name = "")
+        public static ProgressReportScope CreateScope(int stepsCount, double span, [CallerMemberName] string name = "")
         {
             return _threadProgressReporter.Value.MainScope == null
-                ? _threadProgressReporter.Value.CreateMainScope(stepsCount, name)
-                : _threadProgressReporter.Value.CreateChildScope(stepsCount, childScopeSpan, name);
+                ? _threadProgressReporter.Value.CreateMainScope(stepsCount, span, name)
+                : _threadProgressReporter.Value.CreateChildScope(stepsCount, span, name);
         }
 
         public static void Increase()

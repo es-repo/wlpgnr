@@ -21,6 +21,8 @@ namespace WallpaperGenerator.Utilities.ProgressReporting
 
         public double StepSize { get; private set; }
 
+        public double Span { get; private set; }
+
         public double Progress
         {
             get { return _progress; }
@@ -38,11 +40,12 @@ namespace WallpaperGenerator.Utilities.ProgressReporting
             get { return Math.Round(Progress*100, 1); }
         }
 
-        public ProgressReportScope(int stepsCount = 1, [CallerMemberName] string name = "")
+        public ProgressReportScope(int stepsCount = 1, double span = 1, [CallerMemberName] string name = "")
         {
             Name = name;
             StepsCount = stepsCount;
-            StepSize = 1.0/stepsCount;
+            Span = span;
+            StepSize = span/stepsCount;
             _progressObservers = new List<IProgressObserver>();
         }
 
@@ -69,7 +72,7 @@ namespace WallpaperGenerator.Utilities.ProgressReporting
             if (Progress + ChildScopeSpan > 1.00001)
                 throw new ArgumentException(GetExceptionMessage("Child scope span plus current progress is more then 1."), "span");
             
-            ChildScope = new ProgressReportScope(stepsCount, name);
+            ChildScope = new ProgressReportScope(stepsCount, 1, name);
             _previouseProgress = Progress;
             ChildScope.Subscribe(this);
             return ChildScope;
@@ -89,7 +92,7 @@ namespace WallpaperGenerator.Utilities.ProgressReporting
             if (ChildScope != null)
                 ChildScope.Complete();
 
-            Progress = 1;
+            Progress = Span;
             _isCompleted = true;
 
             _progressObservers.ForEach(o => o.OnCompleted());
