@@ -32,29 +32,22 @@ namespace WallpaperGenerator.Android
 
         protected override void OnCreate(Bundle bundle)
         {
-            try
-            {
-                base.OnCreate(bundle);
+            base.OnCreate(bundle);
 
-                SetContentView(Resource.Layout.Main);
+            SetContentView(Resource.Layout.Main);
 
-                _formulaTextView = FindViewById<TextView>(Resource.Id.formulaTextView);
-                _progressTextView = FindViewById<TextView>(Resource.Id.progressTextView);
-                _renderTimeTextView = FindViewById<TextView>(Resource.Id.renderTimeTextView);
-                _wallpaperImageView = FindViewById<ImageView>(Resource.Id.wallpaperImageView);
+            _formulaTextView = FindViewById<TextView>(Resource.Id.formulaTextView);
+            _progressTextView = FindViewById<TextView>(Resource.Id.progressTextView);
+            _renderTimeTextView = FindViewById<TextView>(Resource.Id.renderTimeTextView);
+            _wallpaperImageView = FindViewById<ImageView>(Resource.Id.wallpaperImageView);
 
-                _formulaRenderingArguments = FormulaRenderingArguments.FromString(
-                    @"720;1280;1;1.45;4.31,0.0299;-2.79,0.0193;-0.72,0.0322;-16.12,0.0275;-15.81,0.0524;-11.44,0.0124;-5.41,0.0137;-4.97,0.0156
+            _formulaRenderingArguments = FormulaRenderingArguments.FromString(
+                @"720;1280;1;1.45;4.31,0.0299;-2.79,0.0193;-0.72,0.0322;-16.12,0.0275;-15.81,0.0524;-11.44,0.0124;-5.41,0.0137;-4.97,0.0156
 1.93,13.3,6.87,0.16;0.13,0,1.72,0.04;2.23,-3.87,-2.57,0.24
 Sum Sub Atan Ln Sin Sub Tanh Ln Sub Sin Atan Ln Sin x3 Sum Sin Sum x2 Sum x0 x6 Tanh Ln Sum x6 x4 Sin Tanh Ln Tanh Ln Sin Sin x7 Atan Ln Sum Atan Ln Sub Tanh Ln Atan Ln Sin x7 Sin Sum 4.63 Atan Ln Sin x7 Sin Sub Tanh Ln Sum Sub Atan Ln x1 Tanh Ln x1 Sin Sum Sum x5 x3 Tanh Ln x6 Sub Sin Sum Sum Tanh Ln x6 x6 Sin Atan Ln x0 Sum Sin Sum Sub Sum x2 x1 Tanh Ln x1 Atan Ln x7 Sub Sum Sub x2 Sub x7 x1 Sin Sub x5 x4 Sub Tanh Ln x6 Sin Sum x2 x3 Sin Sin Sum Atan Ln Sum Sub Atan Ln Atan Ln Tanh Ln x1 Sum Sub Sum x5 Sub Sin x5 Sin x0 Sum Atan Ln x2 Sum Sub x7 x6 Sin x4 Atan Ln Sum x3 Sub x5 x1 Atan Ln Sin Sum Sin Sum x7 x3 Sub Atan Ln x4 Sub x3 x2 x5");
-                _formulaTextView.Text = _formulaRenderingArguments.ToString();
+            _formulaTextView.Text = _formulaRenderingArguments.ToString();
 
-                ClearWallpaperImageView();
-            }
-            catch (Exception e)
-            {
-                Toast.MakeText(this, e.Message, ToastLength.Long).Show();
-            }
+            ClearWallpaperImageView();
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
