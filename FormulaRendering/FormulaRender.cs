@@ -83,12 +83,13 @@ namespace WallpaperGenerator.FormulaRendering
             using (ProgressReporter.CreateScope())
             {
                 double[] formulaEvaluatedValues;
-                using (ProgressReporter.CreateScope(0.95))
+                const double evaluationSpan = 0.98;
+                using (ProgressReporter.CreateScope(evaluationSpan))
                 {
                     formulaEvaluatedValues = EvaluateFormula(formulaTree, rangesForFormula2DProjection);
                 }
 
-                using (ProgressReporter.CreateScope(0.05))
+                using (ProgressReporter.CreateScope(1 - evaluationSpan))
                 {
                     return Render(formulaEvaluatedValues, rangesForFormula2DProjection.XCount, rangesForFormula2DProjection.YCount, colorTransformation);
                 }

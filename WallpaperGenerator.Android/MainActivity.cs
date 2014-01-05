@@ -23,6 +23,7 @@ namespace WallpaperGenerator.Android
         private TextView _formulaTextView;
         private ImageView _wallpaperImageView;
         private FormulaRenderingArguments _formulaRenderingArguments;
+        private double[] _lastEvaluatedFormulaValues;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -53,6 +54,14 @@ namespace WallpaperGenerator.Android
                 case Resource.Id.renderMenuItem:
                     OnRenderMenuItemSelected();
                     return true;
+
+                case Resource.Id.changeColorMenuItem:
+                    OnChangeColorMenuItemSelected();
+                    return true;
+
+                case Resource.Id.transformMenuItem:
+                    OnTransformMenuItemSelected();
+                    return true;
             }
 
             return base.OnOptionsItemSelected(item);
@@ -70,8 +79,35 @@ namespace WallpaperGenerator.Android
                 return;
 
             ClearWallpaperImageView();
-            Bitmap bitmap = await RenderWallpaperBitmapAsync(_formulaRenderingArguments);
-            _wallpaperImageView.SetImageBitmap(bitmap);
+            await RenderWallpaperBitmapAsync(_formulaRenderingArguments, true);
+        }
+
+        private async void OnChangeColorMenuItemSelected()
+        {
+            if (_formulaRenderingArguments == null)
+                return;
+
+            ColorTransformation colorTransformation = CreateRandomColorTransformation();
+            _formulaRenderingArguments = new FormulaRenderingArguments(
+                _formulaRenderingArguments.FormulaTree,
+                _formulaRenderingArguments.Ranges,
+                colorTransformation);
+            _formulaTextView.Text = _formulaRenderingArguments.ToString();
+            await RenderWallpaperBitmapAsync(_formulaRenderingArguments, false);
+        }
+
+        private async void OnTransformMenuItemSelected()
+        {
+            if (_formulaRenderingArguments == null)
+                return;
+
+            RangesForFormula2DProjection ranges = CreateRandomVariableValuesRangesFor2DProjection(_formulaRenderingArguments.FormulaTree.Variables.Length);
+            _formulaRenderingArguments = new FormulaRenderingArguments(
+                _formulaRenderingArguments.FormulaTree,
+                ranges,
+                _formulaRenderingArguments.ColorTransformation);
+            _formulaTextView.Text = _formulaRenderingArguments.ToString();
+            await RenderWallpaperBitmapAsync(_formulaRenderingArguments, true);
         }
 
         private void ClearWallpaperImageView()
@@ -85,15 +121,19 @@ namespace WallpaperGenerator.Android
             _wallpaperImageView.SetImageBitmap(blankBitmap);
         }
 
-        private async Task<Bitmap> RenderWallpaperBitmapAsync(FormulaRenderingArguments args)
+        private async Task RenderWallpaperBitmapAsync(FormulaRenderingArguments args, bool reevaluateFormula)
         {
-            RenderedFormulaImage formulaImage = await RenderFormulaImageAsync(args);
+            Tuple<RenderedFormulaImage, double[]> formulaImageAndValues = await RenderFormulaAsync(args, reevaluateFormula ? null : _lastEvaluatedFormulaValues);
+            _lastEvaluatedFormulaValues = formulaImageAndValues.Item2;
+            RenderedFormulaImage formulaImage = formulaImageAndValues.Item1;
+            
             int length = formulaImage.RedChannel.Length;
             int[] pixels = new int[length];
             for (int i = 0; i < length; i++)
                 pixels[i] = Color.Argb(255, formulaImage.RedChannel[i], formulaImage.GreenChannel[i], formulaImage.BlueChannel[i]);
 
-            return Bitmap.CreateBitmap(pixels, formulaImage.WidthInPixels, formulaImage.HeightInPixels, Bitmap.Config.Argb8888);
+            Bitmap bitmap = Bitmap.CreateBitmap(pixels, formulaImage.WidthInPixels, formulaImage.HeightInPixels, Bitmap.Config.Argb8888);
+            _wallpaperImageView.SetImageBitmap(bitmap);
         }
 
         private Task<FormulaRenderingArguments> GenerateRandomFormulaRenderingArgumentsAsync()
@@ -147,13 +187,44 @@ namespace WallpaperGenerator.Android
             return FormulaTreeGenerator.Generate(operatorAndProbabilityMap, createConst, dimensionsCount, minimalDepth, _random, varOrConstantProbability, constantProbability);
         }
 
-        private Task<RenderedFormulaImage> RenderFormulaImageAsync(FormulaRenderingArguments formulaRenderingArguments/*, 
-            /*ProgressObserver renderingProgressObserver*/)
+        // TODO: move to Core.
+        private static async Task<Tuple<RenderedFormulaImage, double[]>> RenderFormulaAsync(FormulaRenderingArguments formulaRenderingArguments, double[] evaluatedFormulaValues)
         {
-            return Task.Run(() => FormulaRender.Render(
-                formulaRenderingArguments.FormulaTree,
-                formulaRenderingArguments.Ranges,
-                formulaRenderingArguments.ColorTransformation));
+            //double evaluationProgressSpan = 0;
+            if (evaluatedFormulaValues == null)
+            {
+                //evaluationProgressSpan = 0.98;
+                evaluatedFormulaValues = await EvaluateFormulaAsync(formulaRenderingArguments/*, evaluationProgressSpan/*, renderingProgressObserver*/);
+            }
+
+            RenderedFormulaImage renderedFormulaImage = await RenderFormulaAsync(evaluatedFormulaValues, formulaRenderingArguments.WidthInPixels,
+                formulaRenderingArguments.HeightInPixels, formulaRenderingArguments.ColorTransformation
+                /*1 - evaluationProgressSpan, evaluationProgressSpan, renderingProgressObserver*/);
+
+            return Tuple.Create(renderedFormulaImage, evaluatedFormulaValues);
+        }
+
+        // TODO: move to Core.
+        private static Task<double[]> EvaluateFormulaAsync(FormulaRenderingArguments formulaRenderingArguments/*, double progressSpan, ProgressObserver progressObserver*/)
+        {
+            return Task.Run(() =>
+            {
+                //ProgressReporter.Subscribe(progressObserver);
+                //using (ProgressReporter.CreateScope(progressSpan))
+                    return FormulaRender.EvaluateFormula(formulaRenderingArguments.FormulaTree, formulaRenderingArguments.Ranges);
+            });
+        }
+
+        // TODO: move to Core.
+        private static Task<RenderedFormulaImage> RenderFormulaAsync(double[] evaluatedFormulaValues, int widthInPixels, int heightInPixels, ColorTransformation colorTransformation
+            /*double progressSpan, double initProgress, ProgressObserver progressObserver*/)
+        {
+            return Task.Run(() =>
+            {
+                //ProgressReporter.Subscribe(progressObserver);
+                //using (ProgressReporter.CreateScope(progressSpan, initProgress))
+                    return FormulaRender.Render(evaluatedFormulaValues, widthInPixels, heightInPixels, colorTransformation);
+            });
         }
     }
 }

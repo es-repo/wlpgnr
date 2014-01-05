@@ -204,7 +204,7 @@ namespace WallpaperGenerator
             await RenderFormula(formulaRenderingArguments, true);
         }
 
-        private async Task RenderFormula(FormulaRenderingArguments formulaRenderingArguments, bool reevaluateFormulaValues)
+        private async Task RenderFormula(FormulaRenderingArguments formulaRenderingArguments, bool reevaluateFormula)
         {
             _mainWindow.Cursor = Cursors.Wait;
 
@@ -215,7 +215,7 @@ namespace WallpaperGenerator
                 p => _mainWindow.StatusPanel.Dispatcher.Invoke(() => _mainWindow.StatusPanel.RenderingProgress = p.ProgressInPercents1d));
 
             double evaluationProgressSpan = 0;
-            if (reevaluateFormulaValues)
+            if (reevaluateFormula)
             {
                 evaluationProgressSpan = 0.98;
                 _lastEvaluatedFormulaValues = await EvaluateFormulaAsync(formulaRenderingArguments, evaluationProgressSpan, renderingProgressObserver);

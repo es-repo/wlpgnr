@@ -3,12 +3,20 @@
       android:id="@+id/generateMenuItem"
       android:icon="@android:drawable/ic_menu_edit"
       android:showAsAction="ifRoom|withText"
-      android:title="@string/Generate">
-  </item>
+      android:title="@string/Generate"/>
   <item
       android:id="@+id/renderMenuItem"
       android:icon="@android:drawable/ic_menu_gallery"
       android:showAsAction="ifRoom|withText"
-      android:title="@string/Render">
-  </item>
+      android:title="@string/Render"/>
+  <item
+      android:id="@+id/changeColorMenuItem"
+      android:icon="@android:drawable/ic_menu_compass"
+      android:showAsAction="ifRoom|withText"
+      android:title="@string/ChangeColors"/>
+  <item
+    android:id="@+id/transformMenuItem"
+    android:icon="@android:drawable/ic_menu_crop"
+    android:showAsAction="ifRoom|withText"
+    android:title="@string/Transform"/>
 </menu>

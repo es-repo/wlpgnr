@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="ApplicationName">Magic Wallpapers</string>
+  <string name="ApplicationName">Wallpaper Generator</string>
   <string name="Generate">Generate</string>
   <string name="Render">Render</string>
+  <string name="Transform">Transform</string>
+  <string name="ChangeColors">Change colors</string>
 </resources>

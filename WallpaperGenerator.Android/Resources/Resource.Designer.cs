@@ -60,6 +60,9 @@ namespace WallpaperGenerator.Android
 		public partial class Id
 		{
 			
+			// aapt resource value: 0x7f070005
+			public const int changeColorMenuItem = 2131165189;
+			
 			// aapt resource value: 0x7f070002
 			public const int formulaTextView = 2131165186;
 			
@@ -71,6 +74,9 @@ namespace WallpaperGenerator.Android
 			
 			// aapt resource value: 0x7f070000
 			public const int scrollView = 2131165184;
+			
+			// aapt resource value: 0x7f070006
+			public const int transformMenuItem = 2131165190;
 			
 			// aapt resource value: 0x7f070001
 			public const int wallpaperImageView = 2131165185;
@@ -123,11 +129,17 @@ namespace WallpaperGenerator.Android
 			// aapt resource value: 0x7f040000
 			public const int ApplicationName = 2130968576;
 			
+			// aapt resource value: 0x7f040004
+			public const int ChangeColors = 2130968580;
+			
 			// aapt resource value: 0x7f040001
 			public const int Generate = 2130968577;
 			
 			// aapt resource value: 0x7f040002
 			public const int Render = 2130968578;
+			
+			// aapt resource value: 0x7f040003
+			public const int Transform = 2130968579;
 			
 			static String()
 			{
