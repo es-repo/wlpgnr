@@ -44,4 +44,24 @@
     android:icon="@android:drawable/ic_menu_revert"
     android:showAsAction="ifRoom|withText"
     android:title="@string/Back"/>
+  <item
+    android:id="@+id/RemoveAdsMenuItem"
+    android:icon="@android:drawable/ic_menu_info_details"
+    android:showAsAction="ifRoom|withText"
+    android:title="@string/RemoveAds"/>
+  <item
+    android:id="@+id/SettingsMenuItem"
+    android:icon="@android:drawable/ic_menu_sort_by_size"
+    android:showAsAction="ifRoom|withText"
+    android:title="@string/Settings"/>
+  <item
+    android:id="@+id/RateAppMenuItem"
+    android:icon="@android:drawable/ic_menu_myplaces"
+    android:showAsAction="ifRoom|withText"
+    android:title="@string/RateApp"/>
+  <item
+    android:id="@+id/FeedbackMenuItem"
+    android:icon="@android:drawable/ic_menu_sort_alphabetically"
+    android:showAsAction="ifRoom|withText"
+    android:title="@string/Feedback"/>
 </menu>

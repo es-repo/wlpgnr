@@ -97,6 +97,18 @@ namespace WallpaperGenerator.Android
 		public partial class Id
 		{
 			
+			// aapt resource value: 0x7f080013
+			public const int FeedbackMenuItem = 2131230739;
+			
+			// aapt resource value: 0x7f080012
+			public const int RateAppMenuItem = 2131230738;
+			
+			// aapt resource value: 0x7f080010
+			public const int RemoveAdsMenuItem = 2131230736;
+			
+			// aapt resource value: 0x7f080011
+			public const int SettingsMenuItem = 2131230737;
+			
 			// aapt resource value: 0x7f08000f
 			public const int backMenuItem = 2131230735;
 			
@@ -196,8 +208,8 @@ namespace WallpaperGenerator.Android
 			// aapt resource value: 0x7f050001
 			public const int ApplicationName = 2131034113;
 			
-			// aapt resource value: 0x7f05000a
-			public const int Back = 2131034122;
+			// aapt resource value: 0x7f050006
+			public const int Back = 2131034118;
 			
 			// aapt resource value: 0x7f050005
 			public const int ChangeColors = 2131034117;
@@ -205,26 +217,38 @@ namespace WallpaperGenerator.Android
 			// aapt resource value: 0x7f050000
 			public const int CrashReport = 2131034112;
 			
+			// aapt resource value: 0x7f05000e
+			public const int Feedback = 2131034126;
+			
 			// aapt resource value: 0x7f050002
 			public const int Generate = 2131034114;
+			
+			// aapt resource value: 0x7f05000d
+			public const int RateApp = 2131034125;
+			
+			// aapt resource value: 0x7f05000b
+			public const int RemoveAds = 2131034123;
 			
 			// aapt resource value: 0x7f050003
 			public const int Render = 2131034115;
 			
-			// aapt resource value: 0x7f050008
-			public const int Save = 2131034120;
-			
-			// aapt resource value: 0x7f050006
-			public const int SetAsWallpaper = 2131034118;
+			// aapt resource value: 0x7f050009
+			public const int Save = 2131034121;
 			
 			// aapt resource value: 0x7f050007
-			public const int Share = 2131034119;
+			public const int SetAsWallpaper = 2131034119;
+			
+			// aapt resource value: 0x7f05000c
+			public const int Settings = 2131034124;
+			
+			// aapt resource value: 0x7f050008
+			public const int Share = 2131034120;
 			
 			// aapt resource value: 0x7f050004
 			public const int Transform = 2131034116;
 			
-			// aapt resource value: 0x7f050009
-			public const int ViewGallery = 2131034121;
+			// aapt resource value: 0x7f05000a
+			public const int ViewGallery = 2131034122;
 			
 			static String()
 			{
