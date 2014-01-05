@@ -226,7 +226,7 @@ Sum Sub Atan Ln Sin Sub Tanh Ln Sub Sin Atan Ln Sin x3 Sum Sin Sum x2 Sum x0 x6 
             double evaluationProgressSpan = 0;
             if (evaluatedFormulaValues == null)
             {
-                evaluationProgressSpan = 0.98;
+                evaluationProgressSpan = 0.97;
                 evaluatedFormulaValues = await EvaluateFormulaAsync(formulaRenderingArguments, evaluationProgressSpan, progressObserver);
             }
 

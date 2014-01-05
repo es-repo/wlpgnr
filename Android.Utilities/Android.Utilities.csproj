@@ -50,7 +50,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\AboutResources.txt" />
     <AndroidResource Include="Resources\Layout\CrashReport.axml" />
   </ItemGroup>
   <ItemGroup>

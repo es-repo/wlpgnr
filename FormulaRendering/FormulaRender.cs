@@ -120,7 +120,7 @@ namespace WallpaperGenerator.FormulaRendering
                 double standardDeviation = MathUtilities.StandardDeviation(channelValues);
                 ProgressReporter.Complete();
 
-                ProgressReporter.CreateScope(0.9);
+                ProgressReporter.CreateScope(0.09);
                 double limit = standardDeviation*(1 + 2*colorChannelTransformation.DispersionCoefficient);
                 if (double.IsNegativeInfinity(limit))
                     limit = lowBound;
