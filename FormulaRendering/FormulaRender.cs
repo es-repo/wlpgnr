@@ -98,44 +98,60 @@ namespace WallpaperGenerator.FormulaRendering
 
         private static byte[] MapToColorChannel(double[] values, ColorChannelTransformation colorChannelTransformation)
         {
-            double[] channelValues = TransformChannelValues(values, colorChannelTransformation.TransformationFunction);
-
-            const double factor = 1e175;
-            const double lowBound = double.MinValue * factor;
-            const double highBound = double.MaxValue / factor;
-            LimitValue(channelValues, lowBound, highBound);
-
-            double mathExpectation = MathUtilities.MathExpectation(channelValues);
-            double standardDeviation = MathUtilities.StandardDeviation(channelValues);
-            double limit = standardDeviation * (1 + 2 * colorChannelTransformation.DispersionCoefficient);
-            if (double.IsNegativeInfinity(limit))
-                limit = lowBound;
-            if (double.IsPositiveInfinity(limit))
-                limit = highBound;
-
-            double rangeStart = mathExpectation - limit;
-            double rangeEnd = mathExpectation + limit;
-            if (rangeStart > rangeEnd)
+            using (ProgressReporter.CreateScope())
             {
-                double tmp = rangeStart;
-                rangeStart = rangeEnd;
-                rangeEnd = tmp;
+                ProgressReporter.CreateScope(0.16);
+                double[] channelValues = TransformChannelValues(values,
+                    colorChannelTransformation.TransformationFunction);
+                ProgressReporter.Complete();
+
+                ProgressReporter.CreateScope(0.06);
+                const double factor = 1e175;
+                const double lowBound = double.MinValue*factor;
+                const double highBound = double.MaxValue/factor;
+                LimitValue(channelValues, lowBound, highBound);
+                ProgressReporter.Complete();
+
+                ProgressReporter.CreateScope(0.21);
+                double mathExpectation = MathUtilities.MathExpectation(channelValues);
+                ProgressReporter.Complete();
+
+                ProgressReporter.CreateScope(0.48);
+                double standardDeviation = MathUtilities.StandardDeviation(channelValues);
+                ProgressReporter.Complete();
+
+                ProgressReporter.CreateScope(0.9);
+                double limit = standardDeviation*(1 + 2*colorChannelTransformation.DispersionCoefficient);
+                if (double.IsNegativeInfinity(limit))
+                    limit = lowBound;
+                if (double.IsPositiveInfinity(limit))
+                    limit = highBound;
+
+                double rangeStart = mathExpectation - limit;
+                double rangeEnd = mathExpectation + limit;
+                if (rangeStart > rangeEnd)
+                {
+                    double tmp = rangeStart;
+                    rangeStart = rangeEnd;
+                    rangeEnd = tmp;
+                }
+                double range = rangeEnd - rangeStart;
+                double scale = 255/range;
+
+                byte[] bytes = new byte[channelValues.Length];
+                for (int i = 0; i < channelValues.Length; i++)
+                {
+                    if (channelValues[i] < rangeStart)
+                        channelValues[i] = rangeStart;
+                    else if (channelValues[i] > rangeEnd)
+                        channelValues[i] = rangeEnd;
+
+                    bytes[i] = (byte) ((channelValues[i] - rangeStart)*scale);
+                }
+                ProgressReporter.Complete();
+
+                return bytes;
             }
-            double range = rangeEnd - rangeStart;
-            double scale = 255 / range;
-
-            byte[] bytes = new byte[channelValues.Length];
-            for (int i = 0; i < channelValues.Length; i++)
-            {
-                if (channelValues[i] < rangeStart)
-                    channelValues[i] = rangeStart;
-                else if (channelValues[i] > rangeEnd)
-                    channelValues[i] = rangeEnd;
-
-                bytes[i] = (byte)((channelValues[i] - rangeStart) * scale);
-            }
-
-            return bytes;
         }
 
         private static double[] TransformChannelValues(double[] values, Func<double, double> channelTransformingFunction)

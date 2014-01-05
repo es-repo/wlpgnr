@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WallpaperGenerator.Android"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WallpaperGenerator.Core", "WallpaperGenerator.Core\WallpaperGenerator.Core.csproj", "{ABB75337-FCC9-4569-9B7E-AD338134726E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Android.Utilities", "Android.Utilities\Android.Utilities.csproj", "{5461607B-E975-4592-95D8-781DE36D6E11}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{ABB75337-FCC9-4569-9B7E-AD338134726E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ABB75337-FCC9-4569-9B7E-AD338134726E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ABB75337-FCC9-4569-9B7E-AD338134726E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5461607B-E975-4592-95D8-781DE36D6E11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5461607B-E975-4592-95D8-781DE36D6E11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5461607B-E975-4592-95D8-781DE36D6E11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5461607B-E975-4592-95D8-781DE36D6E11}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

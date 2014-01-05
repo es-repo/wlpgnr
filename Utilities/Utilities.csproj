@@ -50,6 +50,7 @@
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="DataStructures\Trees\TreeGenerating\TreeGeneratingRuleSelector.cs" />
     <Compile Include="EnumerableNext.cs" />
+    <Compile Include="ExceptionExtensions.cs" />
     <Compile Include="FormalGrammar\Rules\AndRule.cs" />
     <Compile Include="FormalGrammar\Rules\CompositeRule.cs" />
     <Compile Include="FormalGrammar\Grammar.cs" />

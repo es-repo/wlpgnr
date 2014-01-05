@@ -26,6 +26,15 @@ namespace WallpaperGenerator.Android
 		
 		public static void UpdateIdValues()
 		{
+			global::Android.Utilities.Resource.Dimension.activity_horizontal_margin = global::WallpaperGenerator.Android.Resource.Dimension.activity_horizontal_margin;
+			global::Android.Utilities.Resource.Dimension.activity_vertical_margin = global::WallpaperGenerator.Android.Resource.Dimension.activity_vertical_margin;
+			global::Android.Utilities.Resource.Dimension.default_text_size = global::WallpaperGenerator.Android.Resource.Dimension.default_text_size;
+			global::Android.Utilities.Resource.Dimension.small_text_size = global::WallpaperGenerator.Android.Resource.Dimension.small_text_size;
+			global::Android.Utilities.Resource.Dimension.very_small_text_size = global::WallpaperGenerator.Android.Resource.Dimension.very_small_text_size;
+			global::Android.Utilities.Resource.Id.errorScrollView = global::WallpaperGenerator.Android.Resource.Id.errorScrollView;
+			global::Android.Utilities.Resource.Id.errorTextView = global::WallpaperGenerator.Android.Resource.Id.errorTextView;
+			global::Android.Utilities.Resource.Layout.CrashReport = global::WallpaperGenerator.Android.Resource.Layout.CrashReport;
+			global::Android.Utilities.Resource.String.CrashReport = global::WallpaperGenerator.Android.Resource.String.CrashReport;
 		}
 		
 		public partial class Attribute
@@ -37,6 +46,34 @@ namespace WallpaperGenerator.Android
 			}
 			
 			private Attribute()
+			{
+			}
+		}
+		
+		public partial class Dimension
+		{
+			
+			// aapt resource value: 0x7f040000
+			public const int activity_horizontal_margin = 2130968576;
+			
+			// aapt resource value: 0x7f040001
+			public const int activity_vertical_margin = 2130968577;
+			
+			// aapt resource value: 0x7f040002
+			public const int default_text_size = 2130968578;
+			
+			// aapt resource value: 0x7f040003
+			public const int small_text_size = 2130968579;
+			
+			// aapt resource value: 0x7f040004
+			public const int very_small_text_size = 2130968580;
+			
+			static Dimension()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Dimension()
 			{
 			}
 		}
@@ -60,41 +97,53 @@ namespace WallpaperGenerator.Android
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f07000b
-			public const int backMenuItem = 2131165195;
+			// aapt resource value: 0x7f08000f
+			public const int backMenuItem = 2131230735;
 			
-			// aapt resource value: 0x7f070005
-			public const int changeColorMenuItem = 2131165189;
+			// aapt resource value: 0x7f080009
+			public const int changeColorMenuItem = 2131230729;
 			
-			// aapt resource value: 0x7f070002
-			public const int formulaTextView = 2131165186;
+			// aapt resource value: 0x7f080000
+			public const int errorScrollView = 2131230720;
 			
-			// aapt resource value: 0x7f070003
-			public const int generateMenuItem = 2131165187;
+			// aapt resource value: 0x7f080001
+			public const int errorTextView = 2131230721;
 			
-			// aapt resource value: 0x7f070004
-			public const int renderMenuItem = 2131165188;
+			// aapt resource value: 0x7f080006
+			public const int formulaTextView = 2131230726;
 			
-			// aapt resource value: 0x7f070009
-			public const int saveMenuItem = 2131165193;
+			// aapt resource value: 0x7f080007
+			public const int generateMenuItem = 2131230727;
 			
-			// aapt resource value: 0x7f070000
-			public const int scrollView = 2131165184;
+			// aapt resource value: 0x7f080004
+			public const int progressTextView = 2131230724;
 			
-			// aapt resource value: 0x7f070007
-			public const int setAsWallpaperMenuItem = 2131165191;
+			// aapt resource value: 0x7f080008
+			public const int renderMenuItem = 2131230728;
 			
-			// aapt resource value: 0x7f070008
-			public const int shareMenuItem = 2131165192;
+			// aapt resource value: 0x7f080005
+			public const int renderTimeTextView = 2131230725;
 			
-			// aapt resource value: 0x7f070006
-			public const int transformMenuItem = 2131165190;
+			// aapt resource value: 0x7f08000d
+			public const int saveMenuItem = 2131230733;
 			
-			// aapt resource value: 0x7f07000a
-			public const int viewGalleryMenuItem = 2131165194;
+			// aapt resource value: 0x7f080002
+			public const int scrollView = 2131230722;
 			
-			// aapt resource value: 0x7f070001
-			public const int wallpaperImageView = 2131165185;
+			// aapt resource value: 0x7f08000b
+			public const int setAsWallpaperMenuItem = 2131230731;
+			
+			// aapt resource value: 0x7f08000c
+			public const int shareMenuItem = 2131230732;
+			
+			// aapt resource value: 0x7f08000a
+			public const int transformMenuItem = 2131230730;
+			
+			// aapt resource value: 0x7f08000e
+			public const int viewGalleryMenuItem = 2131230734;
+			
+			// aapt resource value: 0x7f080003
+			public const int wallpaperImageView = 2131230723;
 			
 			static Id()
 			{
@@ -110,7 +159,10 @@ namespace WallpaperGenerator.Android
 		{
 			
 			// aapt resource value: 0x7f030000
-			public const int Main = 2130903040;
+			public const int CrashReport = 2130903040;
+			
+			// aapt resource value: 0x7f030001
+			public const int Main = 2130903041;
 			
 			static Layout()
 			{
@@ -125,8 +177,8 @@ namespace WallpaperGenerator.Android
 		public partial class Menu
 		{
 			
-			// aapt resource value: 0x7f060000
-			public const int Main = 2131099648;
+			// aapt resource value: 0x7f070000
+			public const int Main = 2131165184;
 			
 			static Menu()
 			{
@@ -141,35 +193,38 @@ namespace WallpaperGenerator.Android
 		public partial class String
 		{
 			
-			// aapt resource value: 0x7f040000
-			public const int ApplicationName = 2130968576;
+			// aapt resource value: 0x7f050001
+			public const int ApplicationName = 2131034113;
 			
-			// aapt resource value: 0x7f040009
-			public const int Back = 2130968585;
+			// aapt resource value: 0x7f05000a
+			public const int Back = 2131034122;
 			
-			// aapt resource value: 0x7f040004
-			public const int ChangeColors = 2130968580;
+			// aapt resource value: 0x7f050005
+			public const int ChangeColors = 2131034117;
 			
-			// aapt resource value: 0x7f040001
-			public const int Generate = 2130968577;
+			// aapt resource value: 0x7f050000
+			public const int CrashReport = 2131034112;
 			
-			// aapt resource value: 0x7f040002
-			public const int Render = 2130968578;
+			// aapt resource value: 0x7f050002
+			public const int Generate = 2131034114;
 			
-			// aapt resource value: 0x7f040007
-			public const int Save = 2130968583;
+			// aapt resource value: 0x7f050003
+			public const int Render = 2131034115;
 			
-			// aapt resource value: 0x7f040005
-			public const int SetAsWallpaper = 2130968581;
+			// aapt resource value: 0x7f050008
+			public const int Save = 2131034120;
 			
-			// aapt resource value: 0x7f040006
-			public const int Share = 2130968582;
+			// aapt resource value: 0x7f050006
+			public const int SetAsWallpaper = 2131034118;
 			
-			// aapt resource value: 0x7f040003
-			public const int Transform = 2130968579;
+			// aapt resource value: 0x7f050007
+			public const int Share = 2131034119;
 			
-			// aapt resource value: 0x7f040008
-			public const int ViewGallery = 2130968584;
+			// aapt resource value: 0x7f050004
+			public const int Transform = 2131034116;
+			
+			// aapt resource value: 0x7f050009
+			public const int ViewGallery = 2131034121;
 			
 			static String()
 			{
@@ -184,8 +239,8 @@ namespace WallpaperGenerator.Android
 		public partial class Style
 		{
 			
-			// aapt resource value: 0x7f050000
-			public const int AppBaseTheme = 2131034112;
+			// aapt resource value: 0x7f060000
+			public const int AppBaseTheme = 2131099648;
 			
 			static Style()
 			{

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content.PM;
 using Android.Graphics;
+using Android.Utilities;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
@@ -13,28 +15,46 @@ using WallpaperGenerator.FormulaRendering;
 using WallpaperGenerator.Formulas;
 using WallpaperGenerator.Formulas.Operators;
 using WallpaperGenerator.Utilities;
+using WallpaperGenerator.Utilities.ProgressReporting;
 
 namespace WallpaperGenerator.Android
 {
     [Activity(Label = "@string/ApplicationName", MainLauncher = true, Icon = "@drawable/icon", ConfigurationChanges = ConfigChanges.Orientation)]
-    public class MainActivity : Activity
+    public class MainActivity : BaseActivity
     {
         private readonly Random _random = new Random();
         private TextView _formulaTextView;
+        private TextView _progressTextView;
+        private TextView _renderTimeTextView;
         private ImageView _wallpaperImageView;
         private FormulaRenderingArguments _formulaRenderingArguments;
         private double[] _lastEvaluatedFormulaValues;
 
         protected override void OnCreate(Bundle bundle)
         {
-            base.OnCreate(bundle);
+            try
+            {
+                base.OnCreate(bundle);
 
-            SetContentView(Resource.Layout.Main);
-            
-            _formulaTextView = FindViewById<TextView>(Resource.Id.formulaTextView);
-            _wallpaperImageView = FindViewById<ImageView>(Resource.Id.wallpaperImageView);
+                SetContentView(Resource.Layout.Main);
 
-            ClearWallpaperImageView();
+                _formulaTextView = FindViewById<TextView>(Resource.Id.formulaTextView);
+                _progressTextView = FindViewById<TextView>(Resource.Id.progressTextView);
+                _renderTimeTextView = FindViewById<TextView>(Resource.Id.renderTimeTextView);
+                _wallpaperImageView = FindViewById<ImageView>(Resource.Id.wallpaperImageView);
+
+                _formulaRenderingArguments = FormulaRenderingArguments.FromString(
+                    @"720;1280;1;1.45;4.31,0.0299;-2.79,0.0193;-0.72,0.0322;-16.12,0.0275;-15.81,0.0524;-11.44,0.0124;-5.41,0.0137;-4.97,0.0156
+1.93,13.3,6.87,0.16;0.13,0,1.72,0.04;2.23,-3.87,-2.57,0.24
+Sum Sub Atan Ln Sin Sub Tanh Ln Sub Sin Atan Ln Sin x3 Sum Sin Sum x2 Sum x0 x6 Tanh Ln Sum x6 x4 Sin Tanh Ln Tanh Ln Sin Sin x7 Atan Ln Sum Atan Ln Sub Tanh Ln Atan Ln Sin x7 Sin Sum 4.63 Atan Ln Sin x7 Sin Sub Tanh Ln Sum Sub Atan Ln x1 Tanh Ln x1 Sin Sum Sum x5 x3 Tanh Ln x6 Sub Sin Sum Sum Tanh Ln x6 x6 Sin Atan Ln x0 Sum Sin Sum Sub Sum x2 x1 Tanh Ln x1 Atan Ln x7 Sub Sum Sub x2 Sub x7 x1 Sin Sub x5 x4 Sub Tanh Ln x6 Sin Sum x2 x3 Sin Sin Sum Atan Ln Sum Sub Atan Ln Atan Ln Tanh Ln x1 Sum Sub Sum x5 Sub Sin x5 Sin x0 Sum Atan Ln x2 Sum Sub x7 x6 Sin x4 Atan Ln Sum x3 Sub x5 x1 Atan Ln Sin Sum Sin Sum x7 x3 Sub Atan Ln x4 Sub x3 x2 x5");
+                _formulaTextView.Text = _formulaRenderingArguments.ToString();
+
+                ClearWallpaperImageView();
+            }
+            catch (Exception e)
+            {
+                Toast.MakeText(this, e.Message, ToastLength.Long).Show();
+            }
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -123,17 +143,27 @@ namespace WallpaperGenerator.Android
 
         private async Task RenderWallpaperBitmapAsync(FormulaRenderingArguments args, bool reevaluateFormula)
         {
-            Tuple<RenderedFormulaImage, double[]> formulaImageAndValues = await RenderFormulaAsync(args, reevaluateFormula ? null : _lastEvaluatedFormulaValues);
-            _lastEvaluatedFormulaValues = formulaImageAndValues.Item2;
-            RenderedFormulaImage formulaImage = formulaImageAndValues.Item1;
-            
-            int length = formulaImage.RedChannel.Length;
+            ProgressObserver renderingProgressObserver = new ProgressObserver(
+                p => RunOnUiThread(() => _progressTextView.Text = ProgressToString(p.ProgressInPercents1d)));
+
+            RenderFormulaResult renderFormulaResult = await RenderFormulaAsync(args, reevaluateFormula ? null : _lastEvaluatedFormulaValues, renderingProgressObserver);
+            _lastEvaluatedFormulaValues = renderFormulaResult.FormulaEvaluatedValues;
+
+            _renderTimeTextView.Text = renderFormulaResult.ElapsedTime.ToString();
+
+            RenderedFormulaImage image = renderFormulaResult.Image;
+            int length = image.RedChannel.Length;
             int[] pixels = new int[length];
             for (int i = 0; i < length; i++)
-                pixels[i] = Color.Argb(255, formulaImage.RedChannel[i], formulaImage.GreenChannel[i], formulaImage.BlueChannel[i]);
+                pixels[i] = Color.Argb(255, image.RedChannel[i], image.GreenChannel[i], image.BlueChannel[i]);
 
-            Bitmap bitmap = Bitmap.CreateBitmap(pixels, formulaImage.WidthInPixels, formulaImage.HeightInPixels, Bitmap.Config.Argb8888);
+            Bitmap bitmap = Bitmap.CreateBitmap(pixels, image.WidthInPixels, image.HeightInPixels, Bitmap.Config.Argb8888);
             _wallpaperImageView.SetImageBitmap(bitmap);
+        }
+
+        private static string ProgressToString(double value)
+        {
+            return Math.Round(value, 2).ToInvariantString() + "%";
         }
 
         private Task<FormulaRenderingArguments> GenerateRandomFormulaRenderingArgumentsAsync()
@@ -188,41 +218,47 @@ namespace WallpaperGenerator.Android
         }
 
         // TODO: move to Core.
-        private static async Task<Tuple<RenderedFormulaImage, double[]>> RenderFormulaAsync(FormulaRenderingArguments formulaRenderingArguments, double[] evaluatedFormulaValues)
+        private static async Task<RenderFormulaResult> RenderFormulaAsync(FormulaRenderingArguments formulaRenderingArguments, double[] evaluatedFormulaValues,
+            ProgressObserver progressObserver)
         {
-            //double evaluationProgressSpan = 0;
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            double evaluationProgressSpan = 0;
             if (evaluatedFormulaValues == null)
             {
-                //evaluationProgressSpan = 0.98;
-                evaluatedFormulaValues = await EvaluateFormulaAsync(formulaRenderingArguments/*, evaluationProgressSpan/*, renderingProgressObserver*/);
+                evaluationProgressSpan = 0.98;
+                evaluatedFormulaValues = await EvaluateFormulaAsync(formulaRenderingArguments, evaluationProgressSpan, progressObserver);
             }
 
             RenderedFormulaImage renderedFormulaImage = await RenderFormulaAsync(evaluatedFormulaValues, formulaRenderingArguments.WidthInPixels,
-                formulaRenderingArguments.HeightInPixels, formulaRenderingArguments.ColorTransformation
-                /*1 - evaluationProgressSpan, evaluationProgressSpan, renderingProgressObserver*/);
+                formulaRenderingArguments.HeightInPixels, formulaRenderingArguments.ColorTransformation,
+                1 - evaluationProgressSpan, evaluationProgressSpan, progressObserver);
 
-            return Tuple.Create(renderedFormulaImage, evaluatedFormulaValues);
+            stopwatch.Stop();
+            return new RenderFormulaResult(renderedFormulaImage, evaluatedFormulaValues, stopwatch.Elapsed);
         }
 
         // TODO: move to Core.
-        private static Task<double[]> EvaluateFormulaAsync(FormulaRenderingArguments formulaRenderingArguments/*, double progressSpan, ProgressObserver progressObserver*/)
+        private static Task<double[]> EvaluateFormulaAsync(FormulaRenderingArguments formulaRenderingArguments, double progressSpan, ProgressObserver progressObserver)
         {
             return Task.Run(() =>
             {
-                //ProgressReporter.Subscribe(progressObserver);
-                //using (ProgressReporter.CreateScope(progressSpan))
+                if (progressObserver != null)
+                    ProgressReporter.Subscribe(progressObserver);
+                using (ProgressReporter.CreateScope(progressSpan))
                     return FormulaRender.EvaluateFormula(formulaRenderingArguments.FormulaTree, formulaRenderingArguments.Ranges);
             });
         }
 
         // TODO: move to Core.
-        private static Task<RenderedFormulaImage> RenderFormulaAsync(double[] evaluatedFormulaValues, int widthInPixels, int heightInPixels, ColorTransformation colorTransformation
-            /*double progressSpan, double initProgress, ProgressObserver progressObserver*/)
+        private static Task<RenderedFormulaImage> RenderFormulaAsync(double[] evaluatedFormulaValues, int widthInPixels, int heightInPixels, ColorTransformation colorTransformation,
+            double progressSpan, double initProgress, ProgressObserver progressObserver)
         {
             return Task.Run(() =>
             {
-                //ProgressReporter.Subscribe(progressObserver);
-                //using (ProgressReporter.CreateScope(progressSpan, initProgress))
+                if (progressObserver != null)
+                    ProgressReporter.Subscribe(progressObserver);
+                using (ProgressReporter.CreateScope(progressSpan, initProgress))
                     return FormulaRender.Render(evaluatedFormulaValues, widthInPixels, heightInPixels, colorTransformation);
             });
         }

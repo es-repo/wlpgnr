@@ -132,7 +132,7 @@ namespace WallpaperGenerator
 
             int yRangeCount = currentFormulaRenderingArguments != null
                 ? currentFormulaRenderingArguments.Ranges.YCount
-                : Configuration.DefaultImageWidth;  
+                : Configuration.DefaultImageHeight;  
             
             return RangesForFormula2DProjection.CreateRandom(_random, variablesCount,
                 xRangeCount, yRangeCount, 1,
