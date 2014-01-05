@@ -154,7 +154,7 @@ namespace WallpaperGenerator.Android
         private RangesForFormula2DProjection CreateRandomVariableValuesRangesFor2DProjection(int variablesCount)
         {
             const int xRangeCount = Configuration.DefaultImageWidth; // TODO: Take screen pixels width.
-            const int yRangeCount = Configuration.DefaultImageWidth; // TODO: Take screen pixels height.
+            const int yRangeCount = Configuration.DefaultImageHeight; // TODO: Take screen pixels height.
             return RangesForFormula2DProjection.CreateRandom(_random, variablesCount, xRangeCount, yRangeCount, 1, Configuration.RangeLowBound, Configuration.RangeHighBound);
         }
 

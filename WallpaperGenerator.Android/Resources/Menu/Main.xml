@@ -19,4 +19,29 @@
     android:icon="@android:drawable/ic_menu_crop"
     android:showAsAction="ifRoom|withText"
     android:title="@string/Transform"/>
+  <item
+    android:id="@+id/setAsWallpaperMenuItem"
+    android:icon="@android:drawable/ic_menu_mapmode"
+    android:showAsAction="ifRoom|withText"
+    android:title="@string/SetAsWallpaper"/>
+  <item
+    android:id="@+id/shareMenuItem"
+    android:icon="@android:drawable/ic_menu_share"
+    android:showAsAction="ifRoom|withText"
+    android:title="@string/Share"/>
+  <item
+    android:id="@+id/saveMenuItem"
+    android:icon="@android:drawable/ic_menu_save"
+    android:showAsAction="ifRoom|withText"
+    android:title="@string/Save"/>
+  <item
+    android:id="@+id/viewGalleryMenuItem"
+    android:icon="@android:drawable/ic_menu_view"
+    android:showAsAction="ifRoom|withText"
+    android:title="@string/ViewGallery"/>
+  <item
+    android:id="@+id/backMenuItem"
+    android:icon="@android:drawable/ic_menu_revert"
+    android:showAsAction="ifRoom|withText"
+    android:title="@string/Back"/>
 </menu>
