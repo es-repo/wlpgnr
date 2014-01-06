@@ -143,7 +143,7 @@ Sum Sub Atan Ln Sin Sub Tanh Ln Sub Sin Atan Ln Sin x3 Sum Sin Sum x2 Sum x0 x6 
         private async Task RenderWallpaperBitmapAsync(FormulaRenderingArguments args, bool reevaluateFormula)
         {
             ProgressObserver renderingProgressObserver = new ProgressObserver(
-                p => RunOnUiThread(() => _progressTextView.Text = ProgressToString(p.ProgressInPercents1d)));
+                p => RunOnUiThread(() => _progressTextView.Text = ProgressToString(p.ProgressInPercents1d)), TimeSpan.FromMilliseconds(100));
 
             RenderFormulaResult renderFormulaResult = await RenderFormulaAsync(args, reevaluateFormula ? null : _lastEvaluatedFormulaValues, renderingProgressObserver);
             _lastEvaluatedFormulaValues = renderFormulaResult.FormulaEvaluatedValues;
