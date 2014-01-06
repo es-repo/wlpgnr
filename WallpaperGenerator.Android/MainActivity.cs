@@ -58,35 +58,41 @@ Sum Sub Atan Ln Sin Sub Tanh Ln Sub Sin Atan Ln Sin x3 Sum Sin Sum x2 Sum x0 x6 
 
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
+            Task t;
             switch (item.ItemId)
             {
                 case Resource.Id.generateMenuItem:
-                    OnGenerateMenuItemSelected();
-                    return true;
+                    t = OnGenerateMenuItemSelected();
+                    break;
 
                 case Resource.Id.renderMenuItem:
-                    OnRenderMenuItemSelected();
-                    return true;
+                    t = OnRenderMenuItemSelected();
+                    break;
 
                 case Resource.Id.changeColorMenuItem:
-                    OnChangeColorMenuItemSelected();
-                    return true;
+                    t = OnChangeColorMenuItemSelected();
+                    break;
 
                 case Resource.Id.transformMenuItem:
-                    OnTransformMenuItemSelected();
-                    return true;
+                    t = OnTransformMenuItemSelected();
+                    break;
+
+                default:
+                    return base.OnOptionsItemSelected(item);
             }
 
-            return base.OnOptionsItemSelected(item);
+            if (t == null)
+                throw new InvalidOperationException();
+            return true;
         }
 
-        private async void OnGenerateMenuItemSelected()
+        private async Task OnGenerateMenuItemSelected()
         {
             _formulaRenderingArguments = await GenerateRandomFormulaRenderingArgumentsAsync();
             _formulaTextView.Text = _formulaRenderingArguments.ToString();
         }
 
-        private async void OnRenderMenuItemSelected()
+        private async Task OnRenderMenuItemSelected()
         {
             if (_formulaRenderingArguments == null)
                 return;
@@ -95,7 +101,7 @@ Sum Sub Atan Ln Sin Sub Tanh Ln Sub Sin Atan Ln Sin x3 Sum Sin Sum x2 Sum x0 x6 
             await RenderWallpaperBitmapAsync(_formulaRenderingArguments, true);
         }
 
-        private async void OnChangeColorMenuItemSelected()
+        private async Task OnChangeColorMenuItemSelected()
         {
             if (_formulaRenderingArguments == null)
                 return;
@@ -109,7 +115,7 @@ Sum Sub Atan Ln Sin Sub Tanh Ln Sub Sin Atan Ln Sin x3 Sum Sin Sum x2 Sum x0 x6 
             await RenderWallpaperBitmapAsync(_formulaRenderingArguments, false);
         }
 
-        private async void OnTransformMenuItemSelected()
+        private async Task OnTransformMenuItemSelected()
         {
             if (_formulaRenderingArguments == null)
                 return;
