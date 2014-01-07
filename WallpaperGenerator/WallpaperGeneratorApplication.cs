@@ -109,7 +109,7 @@ namespace WallpaperGenerator
             int dimensionsCount = (int)_mainWindow.ControlPanel.DimensionsCountSlider.Value;
             int minimalDepth = (int) _mainWindow.ControlPanel.MinimalDepthSlider.Value;
             double constantProbability = _mainWindow.ControlPanel.ConstantProbabilitySlider.Value/100;
-            double varOrConstantProbability = _mainWindow.ControlPanel.VarOrConstantProbabilitySlider.Value / 100;
+            double leafProbability = _mainWindow.ControlPanel.LeafProbabilitySlider.Value / 100;
             
             IEnumerable<OperatorControl> checkedOperatorControls = _mainWindow.ControlPanel.OperatorControls.Where(cb => cb.IsChecked);
             IDictionary<Operator, double> operatorAndProbabilityMap =
@@ -122,7 +122,7 @@ namespace WallpaperGenerator
             };
 
             return FormulaTreeGenerator.Generate(operatorAndProbabilityMap, createConst, dimensionsCount, minimalDepth,
-                _random, varOrConstantProbability, constantProbability);
+                _random, leafProbability, constantProbability);
         }
 
         private RangesForFormula2DProjection CreateRandomVariableValuesRangesFor2DProjection(int variablesCount, 

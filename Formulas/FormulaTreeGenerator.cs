@@ -18,24 +18,24 @@ namespace WallpaperGenerator.Formulas
     public static class FormulaTreeGenerator
     {
         public static FormulaTree Generate(IDictionary<Operator, double> operatorAndProbabilityMap, Func<double> createConstant, int dimensionsCount, int minimalDepth,
-            Random random, double constOrVarProbability, double constantProbability)
+            Random random, double leafProbability, double constantProbability)
         {
             IEnumerable<string> variableNames = EnumerableExtensions.Repeat(i => "x" + i.ToString(CultureInfo.InvariantCulture), dimensionsCount);
             IEnumerable<Operator> variables = variableNames.Select(n => new Variable(n));
             variables.ForEach(v => operatorAndProbabilityMap.Add(v, 1));
-            return Generate(operatorAndProbabilityMap, createConstant, minimalDepth, random, constOrVarProbability, constantProbability);
+            return Generate(operatorAndProbabilityMap, createConstant, minimalDepth, random, leafProbability, constantProbability);
         }
 
         public static FormulaTree Generate(IDictionary<Operator, double> operatorAndProbabilityMap, Func<double> createConstant, int minimalDepth, Random random,
-            double constOrVarProbability, double constantProbability)
+            double leafProbability, double constantProbability)
         {
-            Grammar<Operator> grammar = CreateGrammar(operatorAndProbabilityMap, createConstant, minimalDepth, random, constOrVarProbability, constantProbability); 
+            Grammar<Operator> grammar = CreateGrammar(operatorAndProbabilityMap, createConstant, minimalDepth, random, leafProbability, constantProbability); 
             TreeNode<Operator> treeRoot = TreeGenerator.Generate(grammar, "OpNode", op => op.Arity);
             return new FormulaTree(treeRoot);
         }
 
         public static Grammar<Operator> CreateGrammar(IDictionary<Operator, double> operatorAndProbabilityMap, Func<double> createConstant, int minimalDepth, Random random,
-            double constOrVarProbability, double constantProbability)
+            double leafProbability, double constantProbability)
         {
             List<Operator> operatorsWithZeroProbability = operatorAndProbabilityMap.Where(e => e.Value.Equals(0)).Select(e => e.Key).ToList();
             foreach (Operator op in operatorsWithZeroProbability)
@@ -89,8 +89,8 @@ namespace WallpaperGenerator.Formulas
 
             IEnumerable<Symbol<Operator>> opArityNodeSymbols = GetOpArityNodeSymbolNames(operators).Select(n => s[n]).ToArray();
             IEnumerable<double> opNodesProbabilities = GetOpNodeProbabilities(operatorAndProbabilityMap);
-            Func<IEnumerable<Rule<Operator>>, RuleSelector<Operator>> createConstOrVarRuleSelector = 
-                rs => new RandomRuleSelector<Operator>(random, rs, new[] { 1 - constOrVarProbability, constOrVarProbability });
+            Func<IEnumerable<Rule<Operator>>, RuleSelector<Operator>> createNonLeafOrLeafRuleSelector = 
+                rs => new RandomRuleSelector<Operator>(random, rs, new[] { 1 - leafProbability, leafProbability });
             List<Rule<Operator>> rules = new List<Rule<Operator>>
             {
                 new Rule<Operator>(s["C"], () => new[] { new Symbol<Operator>(new Constant(createConstant()))}),
@@ -117,12 +117,12 @@ namespace WallpaperGenerator.Formulas
 
                 // OpOrVNode -> OpNode|V
                 new OrRule<Operator>(s["OpOrVNode"], 
-                    createConstOrVarRuleSelector,
+                    createNonLeafOrLeafRuleSelector,
                     new[]{s["OpNode"], s["V"]}),
 
                 // RegOp2Operands -> (OpNode OpNode)|OpOrOp0NodeOperands
                 new OrRule<Operator>(s["RegOp2Operands"], 
-                    createConstOrVarRuleSelector,
+                    createNonLeafOrLeafRuleSelector,
                     new Rule<Operator>(new[]{s["OpNode"], s["OpNode"]}), 
                     new Rule<Operator>(new[]{s["OpOrOp0NodeOperands"]})), 
                 
@@ -153,7 +153,7 @@ namespace WallpaperGenerator.Formulas
             rules.AddRange(CreateOpNodeRules(operators,
                 op =>
                     new OrRule<Operator>(s[GetOpNodeSymbolName(op)],
-                        createConstOrVarRuleSelector,
+                        createNonLeafOrLeafRuleSelector,
                         new Rule<Operator>(new[] { s["InfGuard"], s[GetOpSymbolName(op)], s["OpNode"], s["OpNode"] }),
                         new Rule<Operator>(new[] { s[GetOpSymbolName(op)], s["OpOrOp0NodeOperands"] })),
                 typeof(Div)));
@@ -161,7 +161,7 @@ namespace WallpaperGenerator.Formulas
             // PowNode -> (InfGuard pow RegOp2Operands)|(pow (OpNode InfGuard Op0Node)|(Op0Node InfGuard OpNode))
             rules.AddRange(CreateOpNodeRules(operators,
                 op => new OrRule<Operator>(s[GetOpNodeSymbolName(op)],
-                    createConstOrVarRuleSelector,
+                    createNonLeafOrLeafRuleSelector,
                     new Rule<Operator>(new[] { s["InfGuard"], s[GetOpSymbolName(op)], s["RegOp2Operands"] }),
                     new AndRule<Operator>(new Rule<Operator>(new[]{s[GetOpSymbolName(op)]}),
                         new OrRule<Operator>(rs => new RandomRuleSelector<Operator>(random, rs),
@@ -173,7 +173,7 @@ namespace WallpaperGenerator.Formulas
             rules.AddRange(CreateOpNodeRules(operators,
                 op => new AndRule<Operator>(s[GetOpNodeSymbolName(op)], 
                     new Rule<Operator>(new[] { s[GetOpSymbolName(op)] }),
-                    new OrRule<Operator>(createConstOrVarRuleSelector,
+                    new OrRule<Operator>(createNonLeafOrLeafRuleSelector,
                         new Rule<Operator>(new[] { s["OpNode"], s[GetOpSymbolName(OperatorsLibrary.Sum)], s[GetOpSymbolName(OperatorsLibrary.Abs)], s["OpNode"], new Symbol<Operator>(new Constant(0.01))}),
                         new Rule<Operator>(new[] { s["OpOrOp0NodeOperands"] }))),
                 typeof(Mod)));

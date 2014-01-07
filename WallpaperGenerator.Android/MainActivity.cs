@@ -236,7 +236,7 @@ Sum Sub Atan Ln Sin Sub Tanh Ln Sub Sin Atan Ln Sin x3 Sum Sin Sum x2 Sum x0 x6 
             int dimensionsCount = _random.Next(Configuration.DimensionCountLowBound, Configuration.DimensionCountHighBound);
             int minimalDepth = _random.Next(Configuration.MinimalDepthLowBound, Configuration.MinimalDepthHighBound);
             double constantProbability = _random.Next(Configuration.ConstantProbabilityLowBound, Configuration.ConstantProbabilityHighBound);
-            double varOrConstantProbability = _random.Next(Configuration.VariableOrConstasntProbabilityLowBound, Configuration.VariableOrConstasntProbabilityLowBound);
+            double varOrConstantProbability = _random.Next(Configuration.LeafProbabilityLowBound, Configuration.LeafProbabilityLowBound);
 
             Operator[] operators = { OperatorsLibrary.Sum, OperatorsLibrary.Sub, OperatorsLibrary.Ln, OperatorsLibrary.Sin };
             IDictionary<Operator, double> operatorAndProbabilityMap = operators.ToDictionary(op => op, op => 0.5);

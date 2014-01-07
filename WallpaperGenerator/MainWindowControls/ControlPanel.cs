@@ -27,7 +27,7 @@ namespace WallpaperGenerator.MainWindowControls
 
         public Slider MinimalDepthSlider { get; private set; }
 
-        public Slider VarOrConstantProbabilitySlider { get; private set; }
+        public Slider LeafProbabilitySlider { get; private set; }
 
         public Slider ConstantProbabilitySlider { get; private set; }
 
@@ -73,7 +73,7 @@ namespace WallpaperGenerator.MainWindowControls
 
             MinimalDepthSlider = CreateSliderControlsBlock(panel,1, 100, 14, "Minimal depth");
 
-            VarOrConstantProbabilitySlider = CreateSliderControlsBlock(panel, 0, 100, 20, "Var or constant probability");
+            LeafProbabilitySlider = CreateSliderControlsBlock(panel, 0, 100, 20, "Leaf probability");
 
             ConstantProbabilitySlider = CreateSliderControlsBlock(panel, 0, 100, 20, "Constant probability");
 
