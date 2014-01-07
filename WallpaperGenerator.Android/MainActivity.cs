@@ -4,8 +4,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Android.App;
+using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
+using Android.Graphics.Drawables;
+using Android.Util;
 using Android.Utilities;
 using Android.Views;
 using Android.Widget;
@@ -27,6 +30,8 @@ namespace WallpaperGenerator.Android
         private TextView _progressTextView;
         private TextView _renderTimeTextView;
         private ImageView _wallpaperImageView;
+        private int _imageWidth;
+        private int _imageHeight;
         private FormulaRenderingArguments _formulaRenderingArguments;
         private double[] _lastEvaluatedFormulaValues;
 
@@ -40,6 +45,11 @@ namespace WallpaperGenerator.Android
             _progressTextView = FindViewById<TextView>(Resource.Id.progressTextView);
             _renderTimeTextView = FindViewById<TextView>(Resource.Id.renderTimeTextView);
             _wallpaperImageView = FindViewById<ImageView>(Resource.Id.wallpaperImageView);
+
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            WindowManager.DefaultDisplay.GetMetrics(displayMetrics);
+            _imageWidth = displayMetrics.WidthPixels;
+            _imageHeight = displayMetrics.HeightPixels;
 
             _formulaRenderingArguments = FormulaRenderingArguments.FromString(
                 @"720;1280;1;1.45;4.31,0.0299;-2.79,0.0193;-0.72,0.0322;-16.12,0.0275;-15.81,0.0524;-11.44,0.0124;-5.41,0.0137;-4.97,0.0156
@@ -76,6 +86,10 @@ Sum Sub Atan Ln Sin Sub Tanh Ln Sub Sin Atan Ln Sin x3 Sum Sin Sum x2 Sum x0 x6 
                 case Resource.Id.transformMenuItem:
                     t = OnTransformMenuItemSelected();
                     break;
+
+                case Resource.Id.setAsWallpaperMenuItem:
+                    OnSetAsWallpaperMenuItem();
+                    return true;
 
                 default:
                     return base.OnOptionsItemSelected(item);
@@ -127,6 +141,28 @@ Sum Sub Atan Ln Sin Sub Tanh Ln Sub Sin Atan Ln Sin x3 Sum Sin Sum x2 Sum x0 x6 
                 _formulaRenderingArguments.ColorTransformation);
             _formulaTextView.Text = _formulaRenderingArguments.ToString();
             await RenderWallpaperBitmapAsync(_formulaRenderingArguments, true);
+        }
+
+        private void OnSetAsWallpaperMenuItem()
+        {
+            bool imgaeIsReady = _lastEvaluatedFormulaValues != null;
+            if (!imgaeIsReady)
+                return;
+
+            Bitmap bitmap = ((BitmapDrawable)_wallpaperImageView.Drawable).Bitmap;
+            WallpaperManager wallpaperManager = WallpaperManager.GetInstance(this);
+            
+            // TODO: wrap in try..catch block
+            wallpaperManager.SetBitmapWithExactScreenSize(bitmap);
+            GoHome();
+        }
+
+        private void GoHome()
+        {
+            Intent startMain = new Intent(Intent.ActionMain);
+            startMain.AddCategory(Intent.CategoryHome);
+            //startMain.SetFlags(ActivityFlags.NewTask);
+            StartActivity(startMain);
         }
 
         private void ClearWallpaperImageView()
@@ -182,9 +218,7 @@ Sum Sub Atan Ln Sin Sub Tanh Ln Sub Sin Atan Ln Sin x3 Sum Sin Sum x2 Sum x0 x6 
         // TODO: Move to Core.
         private RangesForFormula2DProjection CreateRandomVariableValuesRangesFor2DProjection(int variablesCount)
         {
-            const int xRangeCount = Configuration.DefaultImageWidth; // TODO: Take screen pixels width.
-            const int yRangeCount = Configuration.DefaultImageHeight; // TODO: Take screen pixels height.
-            return RangesForFormula2DProjection.CreateRandom(_random, variablesCount, xRangeCount, yRangeCount, 1, Configuration.RangeLowBound, Configuration.RangeHighBound);
+            return RangesForFormula2DProjection.CreateRandom(_random, variablesCount, _imageWidth, _imageHeight, 1, Configuration.RangeLowBound, Configuration.RangeHighBound);
         }
 
         // TODO: Move to Core.

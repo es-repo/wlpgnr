@@ -23,6 +23,8 @@ namespace WallpaperGenerator
         private readonly MainWindow _mainWindow;
         private WallpaperImage _wallpaperImage;
         private double[] _lastEvaluatedFormulaValues;
+        public const int imageWidth = 720;
+        public const int imageHeight = 1280;
          
         #endregion
 
@@ -128,11 +130,11 @@ namespace WallpaperGenerator
         {
             int xRangeCount = currentFormulaRenderingArguments != null
                     ? currentFormulaRenderingArguments.Ranges.XCount
-                    : Configuration.DefaultImageWidth;
+                    : imageWidth;
 
             int yRangeCount = currentFormulaRenderingArguments != null
                 ? currentFormulaRenderingArguments.Ranges.YCount
-                : Configuration.DefaultImageHeight;  
+                : imageHeight;  
             
             return RangesForFormula2DProjection.CreateRandom(_random, variablesCount,
                 xRangeCount, yRangeCount, 1,
