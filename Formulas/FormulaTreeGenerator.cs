@@ -88,7 +88,7 @@ namespace WallpaperGenerator.Formulas
             SymbolsSet<Operator> s = CreateSymbols(operators);
 
             IEnumerable<Symbol<Operator>> opArityNodeSymbols = GetOpArityNodeSymbolNames(operators).Select(n => s[n]).ToArray();
-            IEnumerable<double> opNodesProbabilities = GetOpNodeProbabilities(operatorAndProbabilityMap);
+            double[] opNodesProbabilities = GetOpNodeProbabilities(operatorAndProbabilityMap);
             Func<IEnumerable<Rule<Operator>>, RuleSelector<Operator>> createNonLeafOrLeafRuleSelector = 
                 rs => new RandomRuleSelector<Operator>(random, rs, new[] { 1 - leafProbability, leafProbability });
             List<Rule<Operator>> rules = new List<Rule<Operator>>
@@ -247,14 +247,15 @@ namespace WallpaperGenerator.Formulas
             return op.Name;
         }
 
-        public static IEnumerable<double> GetOpNodeProbabilities(IDictionary<Operator, double> operatorAndProbabilityMap)
+        public static double[] GetOpNodeProbabilities(IDictionary<Operator, double> operatorAndProbabilityMap)
         {
             return operatorAndProbabilityMap
                 .GroupBy(e => e.Key.Arity)
                 .Where(g => g.Key > 0)
                 .OrderBy(g => g.Key)
                 .Select(g => g.Sum(e => e.Value))
-                .Where(p => p > 0);
+                .Where(p => p > 0)
+                .ToArray();
         }
     }
 }
