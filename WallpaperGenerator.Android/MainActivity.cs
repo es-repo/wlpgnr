@@ -235,7 +235,7 @@ Sum Sub Atan Ln Sin Sub Tanh Ln Sub Sin Atan Ln Sin x3 Sum Sin Sum x2 Sum x0 x6 
             int dimensionsCount = _random.Next(Configuration.DimensionCountBounds);
             int minimalDepth = _random.Next(Configuration.MinimalDepthBounds);
             double constantProbability = _random.Next(Configuration.ConstantProbabilityBounds);
-            double varOrConstantProbability = _random.Next(Configuration.LeafProbabilityBounds);
+            double leafProbability = _random.Next(Configuration.LeafProbabilityBounds);
 
             Operator[] operators = { OperatorsLibrary.Sum, OperatorsLibrary.Sub, OperatorsLibrary.Ln, OperatorsLibrary.Sin, 
                                        OperatorsLibrary.Max, OperatorsLibrary.Mul, OperatorsLibrary.Cbrt, OperatorsLibrary.Pow3 };
@@ -247,7 +247,7 @@ Sum Sub Atan Ln Sin Sub Tanh Ln Sub Sin Atan Ln Sin x3 Sum Sin Sum x2 Sum x0 x6 
                 return Math.Abs(c - 0) < 0.01 ? 0.01 : c;
             };
 
-            return FormulaTreeGenerator.Generate(operatorAndProbabilityMap, createConst, dimensionsCount, minimalDepth, _random, varOrConstantProbability, constantProbability);
+            return FormulaTreeGenerator.Generate(operatorAndProbabilityMap, createConst, dimensionsCount, minimalDepth, _random, leafProbability, constantProbability);
         }
 
         // TODO: move to Core.
