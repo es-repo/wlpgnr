@@ -218,32 +218,32 @@ Sum Sub Atan Ln Sin Sub Tanh Ln Sub Sin Atan Ln Sin x3 Sum Sin Sum x2 Sum x0 x6 
         // TODO: Move to Core.
         private RangesForFormula2DProjection CreateRandomVariableValuesRangesFor2DProjection(int variablesCount)
         {
-            return RangesForFormula2DProjection.CreateRandom(_random, variablesCount, _imageWidth, _imageHeight, 1, Configuration.RangeLowBound, Configuration.RangeHighBound);
+            return RangesForFormula2DProjection.CreateRandom(_random, variablesCount, _imageWidth, _imageHeight, 1, Configuration.RangeBounds);
         }
 
         // TODO: Move to Core.
         private ColorTransformation CreateRandomColorTransformation()
         {
             return ColorTransformation.CreateRandomPolynomialColorTransformation(_random,
-                Configuration.ColorChannelPolinomialTransformationCoefficientLowBound,
-                Configuration.ColorChannelPolinomialTransformationCoefficientHighBound,
+                Configuration.ColorChannelPolinomialTransformationCoefficientBounds,
                 Configuration.ColorChannelZeroProbabilty);
         }
 
         // TODO: Move to Core.
         private FormulaTree CreateRandomFormulaTree()
         {
-            int dimensionsCount = _random.Next(Configuration.DimensionCountLowBound, Configuration.DimensionCountHighBound);
-            int minimalDepth = _random.Next(Configuration.MinimalDepthLowBound, Configuration.MinimalDepthHighBound);
-            double constantProbability = _random.Next(Configuration.ConstantProbabilityLowBound, Configuration.ConstantProbabilityHighBound);
-            double varOrConstantProbability = _random.Next(Configuration.LeafProbabilityLowBound, Configuration.LeafProbabilityLowBound);
+            int dimensionsCount = _random.Next(Configuration.DimensionCountBounds);
+            int minimalDepth = _random.Next(Configuration.MinimalDepthBounds);
+            double constantProbability = _random.Next(Configuration.ConstantProbabilityBounds);
+            double varOrConstantProbability = _random.Next(Configuration.LeafProbabilityBounds);
 
-            Operator[] operators = { OperatorsLibrary.Sum, OperatorsLibrary.Sub, OperatorsLibrary.Ln, OperatorsLibrary.Sin };
+            Operator[] operators = { OperatorsLibrary.Sum, OperatorsLibrary.Sub, OperatorsLibrary.Ln, OperatorsLibrary.Sin, 
+                                       OperatorsLibrary.Max, OperatorsLibrary.Mul, OperatorsLibrary.Cbrt, OperatorsLibrary.Pow3 };
             IDictionary<Operator, double> operatorAndProbabilityMap = operators.ToDictionary(op => op, op => 0.5);
             
             Func<double> createConst = () =>
             {
-                double c = _random.Next(Configuration.ConstantLowBound, Configuration.ConstantHighBound);
+                double c = _random.Next(Configuration.ConstantBounds);
                 return Math.Abs(c - 0) < 0.01 ? 0.01 : c;
             };
 

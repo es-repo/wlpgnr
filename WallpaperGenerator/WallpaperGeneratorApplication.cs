@@ -117,7 +117,7 @@ namespace WallpaperGenerator
 
             Func<double> createConst = () => 
             {
-                double d = _random.Next(Configuration.ConstantLowBound, Configuration.ConstantHighBound);
+                double d = _random.Next(Configuration.ConstantBounds);
                 return Math.Abs(d - 0) < 0.01 ? 0.01 : d;
             };
 
@@ -137,15 +137,13 @@ namespace WallpaperGenerator
                 : imageHeight;  
             
             return RangesForFormula2DProjection.CreateRandom(_random, variablesCount,
-                xRangeCount, yRangeCount, 1,
-                Configuration.RangeLowBound, Configuration.RangeHighBound);
+                xRangeCount, yRangeCount, 1, Configuration.RangeBounds);
         }
 
         private ColorTransformation CreateRandomColorTransformation()
         {
             return ColorTransformation.CreateRandomPolynomialColorTransformation(_random,
-                Configuration.ColorChannelPolinomialTransformationCoefficientLowBound,
-                Configuration.ColorChannelPolinomialTransformationCoefficientHighBound,
+                Configuration.ColorChannelPolinomialTransformationCoefficientBounds,
                 Configuration.ColorChannelZeroProbabilty);
         }
 

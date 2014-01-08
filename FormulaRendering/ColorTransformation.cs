@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Linq;  
+using System.Linq;
+using WallpaperGenerator.Utilities;
 
 namespace WallpaperGenerator.FormulaRendering
 {
@@ -41,16 +42,16 @@ namespace WallpaperGenerator.FormulaRendering
             return new ColorTransformation(redChannelTransformation, greenChannelTransformation, blueChannelTransformation);
         }
 
-        public static ColorTransformation CreateRandomPolynomialColorTransformation(Random random, int coefficientLowBound, int coefficientHighBound, double zeroChannelProbabilty)
+        public static ColorTransformation CreateRandomPolynomialColorTransformation(Random random, Bounds coefficientBounds, double zeroChannelProbabilty)
         {
-            ColorChannelTransformation redChannelTransofrmation = ColorChannelTransformation.CreateRandomPolinomialChannelTransformation(random, coefficientLowBound, coefficientHighBound, zeroChannelProbabilty);
-            ColorChannelTransformation greenChannelTransofrmation = ColorChannelTransformation.CreateRandomPolinomialChannelTransformation(random, coefficientLowBound, coefficientHighBound, zeroChannelProbabilty);
+            ColorChannelTransformation redChannelTransofrmation = ColorChannelTransformation.CreateRandomPolinomialChannelTransformation(random, coefficientBounds, zeroChannelProbabilty);
+            ColorChannelTransformation greenChannelTransofrmation = ColorChannelTransformation.CreateRandomPolinomialChannelTransformation(random, coefficientBounds, zeroChannelProbabilty);
             if (redChannelTransofrmation.IsZero && greenChannelTransofrmation.IsZero)
             {
                 zeroChannelProbabilty = 0;
             }
-            
-            ColorChannelTransformation blueChannelTransofrmation = ColorChannelTransformation.CreateRandomPolinomialChannelTransformation(random, coefficientLowBound, coefficientHighBound, zeroChannelProbabilty);
+
+            ColorChannelTransformation blueChannelTransofrmation = ColorChannelTransformation.CreateRandomPolinomialChannelTransformation(random, coefficientBounds, zeroChannelProbabilty);
             return new ColorTransformation(redChannelTransofrmation, greenChannelTransofrmation, blueChannelTransofrmation);
         }
     }

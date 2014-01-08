@@ -38,6 +38,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Bounds.cs" />
     <Compile Include="DataStructures\Collections\DictionaryExt.cs" />
     <Compile Include="DataStructures\Trees\TraversalOrder.cs" />
     <Compile Include="DataStructures\Trees\TreeGenerating\TreeGenerator.cs" />

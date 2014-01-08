@@ -1,21 +1,16 @@
-﻿namespace WallpaperGenerator.Core
+﻿using WallpaperGenerator.Utilities;
+
+namespace WallpaperGenerator.Core
 {
     public class Configuration
     {
-        public const int DimensionCountLowBound = 4;
-        public const int DimensionCountHighBound = 20;
-        public const int MinimalDepthLowBound = 10;
-        public const int MinimalDepthHighBound = 20;
-        public const double ConstantLowBound = -25;
-        public const double ConstantHighBound = 25;
-        public const double ConstantProbabilityLowBound = 0;
-        public const double ConstantProbabilityHighBound = 1;
-        public const double LeafProbabilityLowBound = 0;
-        public const double LeafProbabilityHighBound = 1;
-        public const int RangeLowBound = -50;
-        public const int RangeHighBound = 50;
-        public const int ColorChannelPolinomialTransformationCoefficientLowBound = -50;
-        public const int ColorChannelPolinomialTransformationCoefficientHighBound = 50;
-        public const double ColorChannelZeroProbabilty = 0.1;
+        public static readonly Bounds<int> DimensionCountBounds = new Bounds<int>(4, 20);
+        public static readonly Bounds<int> MinimalDepthBounds = new Bounds<int>(7, 12);
+        public static readonly Bounds ConstantBounds = new Bounds(-25, 25);
+        public static readonly Bounds ConstantProbabilityBounds = new Bounds(0, 1);
+        public static readonly Bounds LeafProbabilityBounds = new Bounds(0, 1);
+        public static readonly Bounds RangeBounds = new Bounds(-50, 50);
+        public static readonly Bounds ColorChannelPolinomialTransformationCoefficientBounds = new Bounds(-50, 50);
+        public static readonly double ColorChannelZeroProbabilty = 0.1;
     }
 }

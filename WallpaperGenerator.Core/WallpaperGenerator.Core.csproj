@@ -38,6 +38,10 @@
       <Project>{C4DD7AAC-ACFB-45CA-B1B3-7BEF7714DEB0}</Project>
       <Name>FormulaRendering</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Utilities\Utilities.csproj">
+      <Project>{7D4A8B31-9E0B-4C8A-914B-E469D622F21C}</Project>
+      <Name>Utilities</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration.cs" />

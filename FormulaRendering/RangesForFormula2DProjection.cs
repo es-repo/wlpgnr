@@ -52,11 +52,11 @@ namespace WallpaperGenerator.FormulaRendering
         }
 
         public static RangesForFormula2DProjection CreateRandom(Random random, int variableCount,
-            int xRangeCount, int yRangeCount, int iterationsCount, int rangeLowBound, int rangeHighBound)
+            int xRangeCount, int yRangeCount, int iterationsCount, Bounds rangeBounds)
         {
-            random.RandomlyShrinkBounds(ref rangeLowBound, ref rangeHighBound);
+            rangeBounds = random.RandomlyShrinkBounds(rangeBounds, 1);
             IEnumerable<Range> ranges = EnumerableExtensions.Repeat(
-                i => Range.CreateRandom(random, i % 2 == 0 ? xRangeCount : yRangeCount, rangeLowBound, rangeHighBound), variableCount);
+                i => Range.CreateRandom(random, i % 2 == 0 ? xRangeCount : yRangeCount, rangeBounds.Low, rangeBounds.High), variableCount);
             double scale = Math.Round(1 + random.NextDouble() * 0.5, 2);
             return new RangesForFormula2DProjection(xRangeCount, yRangeCount, ranges, iterationsCount, scale);
         }

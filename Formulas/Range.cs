@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using WallpaperGenerator.Utilities;
 
 namespace WallpaperGenerator.Formulas
 {
@@ -57,7 +58,7 @@ namespace WallpaperGenerator.Formulas
             return new Range(start, step, count);
         }
 
-        public static Range CreateRandom(Random random, int rangeCount, int rangeLowBound, int rangeHighBound)
+        public static Range CreateRandom(Random random, int rangeCount, double rangeLowBound, double rangeHighBound)
         {
             double start = Math.Round(random.NextDouble() * random.Next(rangeLowBound, rangeHighBound), 2);
             double end = Math.Round(random.NextDouble() * random.Next(rangeLowBound, rangeHighBound), 2);

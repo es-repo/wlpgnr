@@ -21,25 +21,28 @@ namespace WallpaperGenerator.Utilities
                     : first;                    
         }
 
-        public static void RandomlyShrinkBounds(this Random random, ref int lowBound, ref int highBound)
+        public static Bounds RandomlyShrinkBounds(this Random random, Bounds bounds, double minDiff)
         {
-            if (lowBound > highBound)
-                throw new ArgumentException("Low bound can't be bigger then high bound.", "lowBound");
-            
             double shrinkCoeficient = random.NextDouble();
-            
-            int newLowBound = (int)(lowBound * shrinkCoeficient);
-            int newHighBound = (int)(highBound * shrinkCoeficient);
-            if (newLowBound == newHighBound)
-                return;
-
-            lowBound = newLowBound;
-            highBound = newHighBound;
+            double newLowBound = bounds.Low * shrinkCoeficient;
+            double newHighBound = bounds.High * shrinkCoeficient;
+            return Math.Abs(newLowBound - newHighBound) < minDiff 
+                ? bounds 
+                : new Bounds(newLowBound, newHighBound);
         }
 
         public static double Next(this Random random, double minValue, double maxValue)
         {
             return Math.Round(random.NextDouble() * (maxValue - minValue) + minValue, 2);
+        }
+
+        public static T Next<T>(this Random random, Bounds<T> bounds) where T : IComparable
+        {
+            if (typeof (T) == typeof (int))
+            {
+                return (T)(object)random.Next((int) (object) bounds.Low, (int) (object) bounds.High + 1);
+            }
+            return (T)(object)random.Next((double)(object)bounds.Low, (double)(object)bounds.High);
         }
     }
 }

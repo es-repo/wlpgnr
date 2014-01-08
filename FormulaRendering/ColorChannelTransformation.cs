@@ -35,22 +35,21 @@ namespace WallpaperGenerator.FormulaRendering
             DispersionCoefficient = dispersionCoefficient;
         }
 
-        public static ColorChannelTransformation CreateRandomPolinomialChannelTransformation(Random random, 
-            int coefficientLowBound, int coefficientHighBound, double zeroChannelProbabilty)
+        public static ColorChannelTransformation CreateRandomPolinomialChannelTransformation(Random random, Bounds coefficientBounds, double zeroChannelProbabilty)
         {
             double zeroChannel = random.NextDouble();
             if (zeroChannel < zeroChannelProbabilty)
                 return new ColorChannelTransformation(0, 0, 0, 0);
 
-            random.RandomlyShrinkBounds(ref coefficientLowBound, ref coefficientHighBound);
+            coefficientBounds = random.RandomlyShrinkBounds(coefficientBounds, 1);
 
-            double a = Math.Round(random.NextDouble() * random.Next(coefficientLowBound, coefficientHighBound), 2);
-            double b = Math.Round(random.NextDouble() * random.Next(coefficientLowBound, coefficientHighBound), 2);
-            double c = Math.Round(random.NextDouble() * random.Next(coefficientLowBound, coefficientHighBound), 2);
+            double a = Math.Round(random.NextDouble() * random.Next(coefficientBounds.Low, coefficientBounds.High), 2);
+            double b = Math.Round(random.NextDouble() * random.Next(coefficientBounds.Low, coefficientBounds.High), 2);
+            double c = Math.Round(random.NextDouble() * random.Next(coefficientBounds.Low, coefficientBounds.High), 2);
 
             if (a.Equals(0) && b.Equals(0) && c.Equals(0))
             {
-                a = b = c = (coefficientHighBound - coefficientLowBound)/2.0;
+                a = b = c = (coefficientBounds.High - coefficientBounds.Low) / 2.0;
             }
 
             double dispersionCoefficient = Math.Round(random.NextDouble(), 2);
