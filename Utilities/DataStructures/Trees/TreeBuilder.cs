@@ -89,15 +89,10 @@ namespace WallpaperGenerator.Utilities.DataStructures.Trees
             }
 
             Tuple<TreeNodeInfo<T>, int> nextParentNodeInfoAndChildrenCount = _stack.Count > 0 ? _stack.Peek() : null;
-            if (nextParentNodeInfoAndChildrenCount == null)
-            {
-                NextAppendingNodeInfo = null;
-            }
-            else
-            {
-                TreeNodeInfo<T> nextParentNodeInfo = nextParentNodeInfoAndChildrenCount.Item1;
-                NextAppendingNodeInfo = new TreeNodeInfo<T>(null, nextParentNodeInfo.Node, nextParentNodeInfo.Node.Children.Count, nextParentNodeInfo.Depth + 1);
-            }
+            TreeNodeInfo<T> nextParentNodeInfo = nextParentNodeInfoAndChildrenCount != null ? nextParentNodeInfoAndChildrenCount.Item1 : null;
+            NextAppendingNodeInfo = nextParentNodeInfoAndChildrenCount == null 
+                ? null 
+                : new TreeNodeInfo<T>(null, nextParentNodeInfo.Node, nextParentNodeInfo.Node.Children.Count, nextParentNodeInfo.Depth + 1);
 
             return nodeInfo;
         }

@@ -258,18 +258,6 @@ namespace WallpaperGenerator
             });
         }
 
-        //private Task<RenderedFormulaImage> RenderFormulaImageAsync(FormulaRenderingArguments formulaRenderingArguments, ProgressObserver progressObserver)
-        //{
-        //    return Task.Run(() =>
-        //    {
-        //        ProgressReporter.Subscribe(progressObserver);
-        //        return FormulaRender.Render(
-        //            formulaRenderingArguments.FormulaTree,
-        //            formulaRenderingArguments.Ranges,
-        //            formulaRenderingArguments.ColorTransformation);
-        //    });
-        //}
-
         private void SaveFormulaImage()
         {
             if (_wallpaperImage != null)

@@ -57,4 +57,3 @@ namespace WallpaperGenerator.Utilities.DataStructures.Trees.TreeGenerating
         }
     }
 }
-
