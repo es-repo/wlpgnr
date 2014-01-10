@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using WallpaperGenerator.Utilities;
 
-namespace WallpaperGenerator.MainWindowControls
+namespace WallpaperGenerator.UI.Windows.MainWindowControls
 {
     public class SliderWithValueText : StackPanel
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace WallpaperGenerator
+namespace WallpaperGenerator.UI.Windows
 {
     internal static class Program
     {

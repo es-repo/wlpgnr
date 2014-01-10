@@ -4,7 +4,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using WallpaperGenerator.FormulaRendering;
 
-namespace WallpaperGenerator
+namespace WallpaperGenerator.UI.Windows
 {
     public class WallpaperImage
     {

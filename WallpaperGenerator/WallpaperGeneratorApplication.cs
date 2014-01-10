@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using WallpaperGenerator.Core;
 using WallpaperGenerator.FormulaRendering;
 using WallpaperGenerator.Formulas;
-using WallpaperGenerator.MainWindowControls.ControlPanelControls;
+using WallpaperGenerator.UI.Core;
+using WallpaperGenerator.UI.Windows.MainWindowControls.ControlPanelControls;
 using WallpaperGenerator.Utilities;
 using WallpaperGenerator.Utilities.DataStructures.Collections;
 using WallpaperGenerator.Utilities.ProgressReporting;
-using Stopwatch = System.Diagnostics.Stopwatch;
 
-namespace WallpaperGenerator
+namespace WallpaperGenerator.UI.Windows
 {
     public class WallpaperGeneratorApplication : Application
     {        
@@ -117,7 +117,7 @@ namespace WallpaperGenerator
 
             Func<double> createConst = () => 
             {
-                double d = _random.Next(Configuration.ConstantBounds);
+                double d = _random.Next(FormulaRenderConfiguration.ConstantBounds);
                 return Math.Abs(d - 0) < 0.01 ? 0.01 : d;
             };
 
@@ -137,14 +137,14 @@ namespace WallpaperGenerator
                 : imageHeight;  
             
             return RangesForFormula2DProjection.CreateRandom(_random, variablesCount,
-                xRangeCount, yRangeCount, 1, Configuration.RangeBounds);
+                xRangeCount, yRangeCount, 1, FormulaRenderConfiguration.RangeBounds);
         }
 
         private ColorTransformation CreateRandomColorTransformation()
         {
             return ColorTransformation.CreateRandomPolynomialColorTransformation(_random,
-                Configuration.ColorChannelPolinomialTransformationCoefficientBounds,
-                Configuration.ColorChannelZeroProbabilty);
+                FormulaRenderConfiguration.ColorChannelPolinomialTransformationCoefficientBounds,
+                FormulaRenderConfiguration.ColorChannelZeroProbabilty);
         }
 
         private bool _isSmoothAnimationStarted;

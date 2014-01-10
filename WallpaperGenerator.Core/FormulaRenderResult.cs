@@ -1,15 +1,15 @@
 ﻿using System;
 using WallpaperGenerator.FormulaRendering;
 
-namespace WallpaperGenerator.Core
+namespace WallpaperGenerator.UI.Core
 {
-    public class RenderFormulaResult
+    public class FormulaRenderResult
     {
         public RenderedFormulaImage Image { get; private set; }
         public double[] FormulaEvaluatedValues { get; private set; }
         public TimeSpan ElapsedTime { get; private set; }
 
-        public RenderFormulaResult(RenderedFormulaImage image, double[] formulaEvaluatedValues, TimeSpan elapsedTime)
+        public FormulaRenderResult(RenderedFormulaImage image, double[] formulaEvaluatedValues, TimeSpan elapsedTime)
         {
             Image = image;
             FormulaEvaluatedValues = formulaEvaluatedValues;

@@ -3,9 +3,9 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using WallpaperGenerator.Formulas.Operators;
-using WallpaperGenerator.MainWindowControls.ControlPanelControls;
+using WallpaperGenerator.UI.Windows.MainWindowControls.ControlPanelControls;
 
-namespace WallpaperGenerator.MainWindowControls
+namespace WallpaperGenerator.UI.Windows.MainWindowControls
 {
     public class ControlPanel : StackPanel
     {

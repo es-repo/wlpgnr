@@ -8,19 +8,19 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
 using Android.Graphics.Drawables;
+using Android.OS;
 using Android.Util;
 using Android.Utilities;
 using Android.Views;
 using Android.Widget;
-using Android.OS;
-using WallpaperGenerator.Core;
 using WallpaperGenerator.FormulaRendering;
 using WallpaperGenerator.Formulas;
 using WallpaperGenerator.Formulas.Operators;
+using WallpaperGenerator.UI.Core;
 using WallpaperGenerator.Utilities;
 using WallpaperGenerator.Utilities.ProgressReporting;
 
-namespace WallpaperGenerator.Android
+namespace WallpaperGenerator.UI.Android
 {
     [Activity(Label = "@string/ApplicationName", MainLauncher = true, Icon = "@drawable/icon", ConfigurationChanges = ConfigChanges.Orientation)]
     public class MainActivity : BaseActivity
@@ -181,12 +181,12 @@ Sum Sin Cbrt Sub Tanh Ln Cbrt Sin Sin Atan Ln Atan Ln x7 Atan Ln Sin Atan Ln Tan
             ProgressObserver renderingProgressObserver = new ProgressObserver(
                 p => RunOnUiThread(() => _progressTextView.Text = ProgressToString(p.ProgressInPercents1d)), TimeSpan.FromMilliseconds(100));
 
-            RenderFormulaResult renderFormulaResult = await RenderFormulaAsync(args, reevaluateFormula ? null : _lastEvaluatedFormulaValues, renderingProgressObserver);
-            _lastEvaluatedFormulaValues = renderFormulaResult.FormulaEvaluatedValues;
+            FormulaRenderResult formulaRenderResult = await RenderFormulaAsync(args, reevaluateFormula ? null : _lastEvaluatedFormulaValues, renderingProgressObserver);
+            _lastEvaluatedFormulaValues = formulaRenderResult.FormulaEvaluatedValues;
 
-            _renderTimeTextView.Text = renderFormulaResult.ElapsedTime.ToString();
+            _renderTimeTextView.Text = formulaRenderResult.ElapsedTime.ToString();
 
-            RenderedFormulaImage image = renderFormulaResult.Image;
+            RenderedFormulaImage image = formulaRenderResult.Image;
             int length = image.RedChannel.Length;
             int[] pixels = new int[length];
             for (int i = 0; i < length; i++)
@@ -218,24 +218,24 @@ Sum Sin Cbrt Sub Tanh Ln Cbrt Sin Sin Atan Ln Atan Ln x7 Atan Ln Sin Atan Ln Tan
         // TODO: Move to Core.
         private RangesForFormula2DProjection CreateRandomVariableValuesRangesFor2DProjection(int variablesCount)
         {
-            return RangesForFormula2DProjection.CreateRandom(_random, variablesCount, _imageWidth, _imageHeight, 1, Configuration.RangeBounds);
+            return RangesForFormula2DProjection.CreateRandom(_random, variablesCount, _imageWidth, _imageHeight, 1, FormulaRenderConfiguration.RangeBounds);
         }
 
         // TODO: Move to Core.
         private ColorTransformation CreateRandomColorTransformation()
         {
             return ColorTransformation.CreateRandomPolynomialColorTransformation(_random,
-                Configuration.ColorChannelPolinomialTransformationCoefficientBounds,
-                Configuration.ColorChannelZeroProbabilty);
+                FormulaRenderConfiguration.ColorChannelPolinomialTransformationCoefficientBounds,
+                FormulaRenderConfiguration.ColorChannelZeroProbabilty);
         }
 
         // TODO: Move to Core.
         private FormulaTree CreateRandomFormulaTree()
         {
-            int dimensionsCount = _random.Next(Configuration.DimensionCountBounds);
-            int minimalDepth = _random.Next(Configuration.MinimalDepthBounds);
-            double constantProbability = _random.Next(Configuration.ConstantProbabilityBounds);
-            double leafProbability = _random.Next(Configuration.LeafProbabilityBounds);
+            int dimensionsCount = _random.Next(FormulaRenderConfiguration.DimensionCountBounds);
+            int minimalDepth = _random.Next(FormulaRenderConfiguration.MinimalDepthBounds);
+            double constantProbability = _random.Next(FormulaRenderConfiguration.ConstantProbabilityBounds);
+            double leafProbability = _random.Next(FormulaRenderConfiguration.LeafProbabilityBounds);
 
             Operator[] operators = { OperatorsLibrary.Sum, OperatorsLibrary.Sub, OperatorsLibrary.Ln, OperatorsLibrary.Sin, 
                                        OperatorsLibrary.Max, OperatorsLibrary.Mul, OperatorsLibrary.Cbrt, OperatorsLibrary.Pow3 };
@@ -243,7 +243,7 @@ Sum Sin Cbrt Sub Tanh Ln Cbrt Sin Sin Atan Ln Atan Ln x7 Atan Ln Sin Atan Ln Tan
             
             Func<double> createConst = () =>
             {
-                double c = _random.Next(Configuration.ConstantBounds);
+                double c = _random.Next(FormulaRenderConfiguration.ConstantBounds);
                 return Math.Abs(c - 0) < 0.01 ? 0.01 : c;
             };
 
@@ -251,7 +251,7 @@ Sum Sin Cbrt Sub Tanh Ln Cbrt Sin Sin Atan Ln Atan Ln x7 Atan Ln Sin Atan Ln Tan
         }
 
         // TODO: move to Core.
-        private static async Task<RenderFormulaResult> RenderFormulaAsync(FormulaRenderingArguments formulaRenderingArguments, double[] evaluatedFormulaValues,
+        private static async Task<FormulaRenderResult> RenderFormulaAsync(FormulaRenderingArguments formulaRenderingArguments, double[] evaluatedFormulaValues,
             ProgressObserver progressObserver)
         {
             Stopwatch stopwatch = new Stopwatch();
@@ -268,7 +268,7 @@ Sum Sin Cbrt Sub Tanh Ln Cbrt Sin Sin Atan Ln Atan Ln x7 Atan Ln Sin Atan Ln Tan
                 1 - evaluationProgressSpan, evaluationProgressSpan, progressObserver);
 
             stopwatch.Stop();
-            return new RenderFormulaResult(renderedFormulaImage, evaluatedFormulaValues, stopwatch.Elapsed);
+            return new FormulaRenderResult(renderedFormulaImage, evaluatedFormulaValues, stopwatch.Elapsed);
         }
 
         // TODO: move to Core.

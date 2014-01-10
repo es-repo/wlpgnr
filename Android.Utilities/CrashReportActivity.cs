@@ -13,7 +13,7 @@ namespace Android.Utilities
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.CrashReport);
             TextView errorTextView = FindViewById<TextView>(Resource.Id.errorTextView);
-            String error = this.Intent.GetStringExtra("error");
+            String error = Intent.GetStringExtra("error");
             if (error != null)
                 errorTextView.Text = error;
         }
