@@ -161,33 +161,26 @@ namespace WallpaperGenerator
         private async void StartSmoothAnimation()
         {
             FormulaRenderingArguments formulaRenderingArguments = GetCurrentFormulaRenderingArguments();
-            Func<double[]> getNextRangeStepDeltas = () => formulaRenderingArguments.Ranges.Ranges.Select(r => (-0.5 + _random.NextDouble()) * 0.01).ToArray();
-            Func<double[]> getNextRangeStartDeltas = () => formulaRenderingArguments.Ranges.Ranges.Select(r => (-0.5 + _random.NextDouble()) * 0.01).ToArray();
+            Func<double[]> getNextRangeDeltas = () => EnumerableExtensions.Repeat(() => (-0.5 + _random.NextDouble()) * 0.1, formulaRenderingArguments.Ranges.Ranges.Length).ToArray();
             
-            double[] rangeStepDeltas = getNextRangeStepDeltas();
-            double[] rangeStartDeltas = getNextRangeStartDeltas();
+            double[] rangeStartDeltas = getNextRangeDeltas();
+            double[] rangeEndDeltas = getNextRangeDeltas();
+            
+            Func<FormulaRenderingArguments, FormulaRenderingArguments> getNextFormulaRenderingArguments = args =>
+            {
+                IEnumerable<Range> ranges = args.Ranges.Ranges.Select((r, i) => new Range(r.Start + rangeStartDeltas[i], r.End + rangeEndDeltas[i], r.Count));
+                args.Ranges.Ranges = ranges.ToArray();
+                return args;
+            };
+            
             int j = 0;
             while (_isSmoothAnimationStarted)
             {
-                
-                Func<FormulaRenderingArguments, FormulaRenderingArguments> getNextFormulaRenderingArguments = args =>
-                {
-                    int i = 0;
-                    foreach (var range in args.Ranges.Ranges)
-                    {
-                        range.Step += rangeStepDeltas[i];
-                        range.Start += rangeStartDeltas[i];
-                        i++;
-                    }
-
-                    return args;
-                };
-
                 if (j > 20)
                 {
                     j = 0;
-                    rangeStepDeltas = getNextRangeStepDeltas();
-                    rangeStartDeltas = getNextRangeStartDeltas();
+                    rangeStartDeltas = getNextRangeDeltas();
+                    rangeEndDeltas = getNextRangeDeltas();
                 }
 
                 j++;

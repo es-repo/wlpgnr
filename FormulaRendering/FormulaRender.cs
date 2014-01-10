@@ -28,8 +28,8 @@ namespace WallpaperGenerator.FormulaRendering
                     }
 
                     ranges = ranges.Select(r => new Range(r.Start * rangesForFormula2DProjection.IterationScale,
-                                            r.Step * rangesForFormula2DProjection.IterationScale,
-                                            r.Count)).ToArray();
+                                            r.End * rangesForFormula2DProjection.IterationScale,
+                                            r.Step * rangesForFormula2DProjection.IterationScale)).ToArray();
                 }
                 ProgressReporter.Increase();
             }

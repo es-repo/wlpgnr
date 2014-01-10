@@ -54,23 +54,26 @@ namespace WallpaperGenerator.Formulas.Testing
         }
 
         [RowTest]
-        [Row("sum x x", 1, 3, -1, 3, -1, -1, new[] { 2.0, 2.0, 2.0, 4.0, 4.0, 4.0, 6.0, 6.0, 6.0 })]
-        [Row("sum x y", 1, 3, 1, 3, -1, -1, new[] { 2.0, 3.0, 4.0, 3.0, 4.0, 5.0, 4.0, 5.0, 6.0 })]
-        [Row("sum sum x y z",  1, 3, 1, 3, -3, 3, new[] { -1.0, 0.0, 1.0, 1.0, 2.0, 3.0, 3.0, 4.0, 5.0 })]
-        public void TestEvaluateRangesIn2DProjection(string formula, double rangeXStart, int rangeXCount, double rangeYStart, int rangeYCount, double rangeZStart, int rangeZCount, double[] expectedResults)
+        [Row("sum x x", 1, 3, -1, 3, -1, -1, 3, 3, new[] { 2.0, 2.0, 2.0, 4.0, 4.0, 4.0, 6.0, 6.0, 6.0 })]
+        [Row("sum x y", 1, 3, 1, 3, -1, -1, 3, 3, new[] { 2.0, 3.0, 4.0, 3.0, 4.0, 5.0, 4.0, 5.0, 6.0 })]
+        [Row("sum sum x y z", 1, 3, 1, 3, -3, 3, 3, 3, new[] { -1.0, 0.0, 1.0, 1.0, 2.0, 3.0, 3.0, 4.0, 5.0 })]
+        public void TestEvaluateRangesIn2DProjection(string formula, double rangeXStart, double rangeXEnd,
+            double rangeYStart, double rangeYEnd,
+            double rangeZStart, double rangeZEnd,
+            int xCount, int yCount, double[] expectedResults)
         {
             FormulaTree formulaTree = FormulaTreeSerializer.Deserialize(formula);
             List<Range> ranges = new List<Range>();
             if (!rangeXStart.Equals(-1))
-                ranges.Add(new Range(rangeXStart, rangeXCount));
+                ranges.Add(new Range(rangeXStart, rangeXEnd));
 
             if (!rangeYStart.Equals(-1))
-                ranges.Add(new Range(rangeYStart, rangeYCount));
+                ranges.Add(new Range(rangeYStart, rangeYEnd));
 
             if (!rangeZStart.Equals(-1))
-                ranges.Add(new Range(rangeZStart, rangeZCount));
+                ranges.Add(new Range(rangeZStart, rangeZEnd));
 
-            double[] results = formulaTree.EvaluateRangesIn2DProjection(ranges.ToArray(), rangeXCount, rangeYCount).ToArray();
+            double[] results = formulaTree.EvaluateRangesIn2DProjection(ranges.ToArray(), xCount, yCount).ToArray();
             CollectionAssert.AreElementsEqual(expectedResults, results);
         }
     }

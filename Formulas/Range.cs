@@ -8,30 +8,31 @@ namespace WallpaperGenerator.Formulas
 {
     public class Range
     {
-        public double Start { get; set; }
-        public double Step { get; set; }
-        public int Count { get; set; }
+        public double Start { get; private set; }
+        public double End { get; private set; }
+        public double Step { get; private set; }
+        public int Count { get; private set; }
 
-        public Range(double start, int count)
-            : this(start, 1, count)
+        public Range(double start, double end)
+            : this(start, end, 1.0)
         {
         }
 
-        public Range(double start, double step, int count)
+        public Range(double start, double end, int count)
+            : this(start, end, (end - start) / count)
         {
             Start = start;
+            End = end;
             Count = count;
-            Step = step;
+            Step = (End - Start) / Count;
         }
 
-        public IEnumerable<double> Values
+        public Range(double start, double end, double step)
         {
-            get
-            {
-                double v = Start; 
-                for (int i = 0; i < Count; i++, v+= Step)
-                    yield return v;
-            }
+            Start = start;
+            End = end;
+            Step = step;
+            Count = (int)((End - Start)/Step);
         }
 
         public override string ToString()
@@ -39,12 +40,12 @@ namespace WallpaperGenerator.Formulas
             return ToString(false);
         }
 
-        public string ToString(bool omitCount)
+        public string ToString(bool omitStep)
         {
-            List<double> rangeElements = new List<double> { Start, Step };
-            if (!omitCount)
+            List<double> rangeElements = new List<double> { Start, End };
+            if (!omitStep)
             {
-                rangeElements.Add(Count);
+                rangeElements.Add(Step);
             }
             return string.Join(",", rangeElements.Select(c => c.ToString(CultureInfo.InvariantCulture)).ToArray());
         }
@@ -53,9 +54,9 @@ namespace WallpaperGenerator.Formulas
         {
             string[] rangeElements = value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             double start = double.Parse(rangeElements[0]);
-            double step = double.Parse(rangeElements[1]);
-            int count = rangeElements.Length > 2 ? int.Parse(rangeElements[2]) : 0;
-            return new Range(start, step, count);
+            double end = double.Parse(rangeElements[1]);
+            double step = rangeElements.Length > 2 ? double.Parse(rangeElements[2]) : 1.0;
+            return new Range(start, end, step);
         }
 
         public static Range CreateRandom(Random random, int rangeCount, double rangeLowBound, double rangeHighBound)
@@ -73,8 +74,8 @@ namespace WallpaperGenerator.Formulas
                 start = rangeLowBound;
                 end = rangeHighBound;
             }
-            double step = Math.Round((end - start) / rangeCount, 4);
-            return new Range(start, step, rangeCount);
+           
+            return new Range(start, end, rangeCount);
         }
     }
 }

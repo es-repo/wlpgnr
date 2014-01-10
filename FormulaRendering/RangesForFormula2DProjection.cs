@@ -12,7 +12,7 @@ namespace WallpaperGenerator.FormulaRendering
 
         public int YCount { get; private set; }
 
-        public Range[] Ranges { get; private set; }
+        public Range[] Ranges { get; set; }
 
         public int IterationCount { get; private set; }
 
@@ -22,7 +22,7 @@ namespace WallpaperGenerator.FormulaRendering
         {
             XCount = xCount;
             YCount = yCount;
-            Ranges = ranges.Select((r, i) => new Range(r.Start, r.Step, i%2 == 0 ? XCount : YCount)).ToArray();
+            Ranges = ranges.Select((r, i) => new Range(r.Start, r.End, i%2 == 0 ? XCount : YCount)).ToArray();
 
             if (iterationCount < 1)
                 throw new ArgumentException("Iterations count should be greater then 0", "iterationCount");
