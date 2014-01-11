@@ -9,10 +9,9 @@ namespace Android.Utilities
         {
             // On TouchWiz (Samsung Galaxy S3,4 and etc) desired min width is equal to height but not to real screen width.
             // To proper set bitmap on these phones need to create blank bitmap and put specified one into center of the blank.
-            int desiredMinimumWidth = wallpaperManager.DesiredMinimumWidth;
-            if (bitmap.Width < desiredMinimumWidth)
+            if (bitmap.Width < wallpaperManager.DesiredMinimumWidth)
             {
-                bitmap = CreateOverlayedBitmap(bitmap, desiredMinimumWidth, bitmap.Height);
+                bitmap = CreateOverlayedBitmap(bitmap, wallpaperManager.DesiredMinimumWidth, bitmap.Height);
             }
             
             wallpaperManager.SetBitmap(bitmap);

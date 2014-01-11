@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using WallpaperGenerator.Utilities;
 
 namespace WallpaperGenerator.UI.Windows.MainWindowControls
 {
@@ -26,7 +25,7 @@ namespace WallpaperGenerator.UI.Windows.MainWindowControls
 
         public double RenderingProgress
         {
-            set { _renderingProgressText.Text = Math.Round(value, 2).ToInvariantString() + "%"; }
+            set { _renderingProgressText.Text = value.ToString("P2"); }
         }
 
         public StatusPanel()

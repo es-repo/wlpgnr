@@ -205,7 +205,7 @@ namespace WallpaperGenerator.UI.Windows
             stopwatch.Start();
 
             ProgressObserver renderingProgressObserver = new ProgressObserver(
-                p => _mainWindow.StatusPanel.Dispatcher.Invoke(() => _mainWindow.StatusPanel.RenderingProgress = p.ProgressInPercents1d));
+                p => _mainWindow.StatusPanel.Dispatcher.Invoke(() => _mainWindow.StatusPanel.RenderingProgress = p.Progress));
 
             double evaluationProgressSpan = 0;
             if (reevaluateFormula)

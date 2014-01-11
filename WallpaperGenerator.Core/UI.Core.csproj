@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="FormulaRenderConfiguration.cs" />
     <Compile Include="FormulaRenderArguments.cs" />
+    <Compile Include="FormulaRenderWorkflow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FormulaRenderResult.cs" />
   </ItemGroup>
