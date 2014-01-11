@@ -25,14 +25,15 @@ namespace WallpaperGenerator.UI.Android
     [Activity(Label = "@string/ApplicationName", MainLauncher = true, Icon = "@drawable/icon", ConfigurationChanges = ConfigChanges.Orientation)]
     public class MainActivity : BaseActivity
     {
-        private readonly Random _random = new Random();
         private TextView _formulaTextView;
         private TextView _progressTextView;
         private TextView _renderTimeTextView;
-        private ImageView _wallpaperImageView;
+        private ImageView _imageView;
+
+        private readonly Random _random = new Random();
         private int _imageWidth;
         private int _imageHeight;
-        private FormulaRenderingArguments _formulaRenderingArguments;
+        private FormulaRenderArguments _formulaRenderArguments;
         private double[] _lastEvaluatedFormulaValues;
 
         protected override void OnCreate(Bundle bundle)
@@ -44,20 +45,20 @@ namespace WallpaperGenerator.UI.Android
             _formulaTextView = FindViewById<TextView>(Resource.Id.formulaTextView);
             _progressTextView = FindViewById<TextView>(Resource.Id.progressTextView);
             _renderTimeTextView = FindViewById<TextView>(Resource.Id.renderTimeTextView);
-            _wallpaperImageView = FindViewById<ImageView>(Resource.Id.wallpaperImageView);
+            _imageView = FindViewById<ImageView>(Resource.Id.imageView);
 
             DisplayMetrics displayMetrics = new DisplayMetrics();
             WindowManager.DefaultDisplay.GetMetrics(displayMetrics);
             _imageWidth = displayMetrics.WidthPixels;
             _imageHeight = displayMetrics.HeightPixels;
 
-            _formulaRenderingArguments = FormulaRenderingArguments.FromString(
+            _formulaRenderArguments = FormulaRenderArguments.FromString(
 @"720;1280;-5.35,6.11;-21.74,-0.21;2.98,20.68;-0.56,18.97;-2.6,1.76;-7.25,0.25;-5.88,3.87;-4.73,1.87;1;1.28
 0,0,0,0;-0.93,0.5,-1.24,0.02;0.04,-0.92,0.47,0.05
 Sum Sin Cbrt Sub Tanh Ln Cbrt Sin Sin Atan Ln Atan Ln x7 Atan Ln Sin Atan Ln Tanh Ln Sin Sum x3 x7 Atan Ln Sum Sum Cbrt Sub x1 Sum Cbrt Tanh Ln Sum Sin x0 Sub x2 x6 Sum Sin Sub x7 Sin Sub x7 x2 x3 Sub Sum Atan Ln Sum Tanh Ln Sum x6 x4 Sin Sin Tanh Ln x0 Tanh Ln Cbrt Cbrt Sum Sum x4 x5 Sum x3 x2 Sin Sin Atan Ln Sub Sub Sub x1 x1 Sum x4 x5 x6 Atan Ln Tanh Ln Atan Ln Sub -7.47 Sin Atan Ln x0"); 
-            _formulaTextView.Text = _formulaRenderingArguments.ToString();
+            _formulaTextView.Text = _formulaRenderArguments.ToString();
 
-            ClearWallpaperImageView();
+            ClearImageView();
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -102,45 +103,45 @@ Sum Sin Cbrt Sub Tanh Ln Cbrt Sin Sin Atan Ln Atan Ln x7 Atan Ln Sin Atan Ln Tan
 
         private async Task OnGenerateMenuItemSelected()
         {
-            _formulaRenderingArguments = await GenerateRandomFormulaRenderingArgumentsAsync();
-            _formulaTextView.Text = _formulaRenderingArguments.ToString();
+            _formulaRenderArguments = await GenerateRandomFormulaRenderArgumentsAsync();
+            _formulaTextView.Text = _formulaRenderArguments.ToString();
         }
 
         private async Task OnRenderMenuItemSelected()
         {
-            if (_formulaRenderingArguments == null)
+            if (_formulaRenderArguments == null)
                 return;
 
-            ClearWallpaperImageView();
-            await RenderWallpaperBitmapAsync(_formulaRenderingArguments, true);
+            ClearImageView();
+            await RenderImageAsync(_formulaRenderArguments, true);
         }
 
         private async Task OnChangeColorMenuItemSelected()
         {
-            if (_formulaRenderingArguments == null)
+            if (_formulaRenderArguments == null)
                 return;
 
             ColorTransformation colorTransformation = CreateRandomColorTransformation();
-            _formulaRenderingArguments = new FormulaRenderingArguments(
-                _formulaRenderingArguments.FormulaTree,
-                _formulaRenderingArguments.Ranges,
+            _formulaRenderArguments = new FormulaRenderArguments(
+                _formulaRenderArguments.FormulaTree,
+                _formulaRenderArguments.Ranges,
                 colorTransformation);
-            _formulaTextView.Text = _formulaRenderingArguments.ToString();
-            await RenderWallpaperBitmapAsync(_formulaRenderingArguments, false);
+            _formulaTextView.Text = _formulaRenderArguments.ToString();
+            await RenderImageAsync(_formulaRenderArguments, false);
         }
 
         private async Task OnTransformMenuItemSelected()
         {
-            if (_formulaRenderingArguments == null)
+            if (_formulaRenderArguments == null)
                 return;
 
-            RangesForFormula2DProjection ranges = CreateRandomVariableValuesRangesFor2DProjection(_formulaRenderingArguments.FormulaTree.Variables.Length);
-            _formulaRenderingArguments = new FormulaRenderingArguments(
-                _formulaRenderingArguments.FormulaTree,
+            RangesForFormula2DProjection ranges = CreateRandomVariableValuesRangesFor2DProjection(_formulaRenderArguments.FormulaTree.Variables.Length);
+            _formulaRenderArguments = new FormulaRenderArguments(
+                _formulaRenderArguments.FormulaTree,
                 ranges,
-                _formulaRenderingArguments.ColorTransformation);
-            _formulaTextView.Text = _formulaRenderingArguments.ToString();
-            await RenderWallpaperBitmapAsync(_formulaRenderingArguments, true);
+                _formulaRenderArguments.ColorTransformation);
+            _formulaTextView.Text = _formulaRenderArguments.ToString();
+            await RenderImageAsync(_formulaRenderArguments, true);
         }
 
         private void OnSetAsWallpaperMenuItem()
@@ -149,7 +150,7 @@ Sum Sin Cbrt Sub Tanh Ln Cbrt Sin Sin Atan Ln Atan Ln x7 Atan Ln Sin Atan Ln Tan
             if (!imgaeIsReady)
                 return;
 
-            Bitmap bitmap = ((BitmapDrawable)_wallpaperImageView.Drawable).Bitmap;
+            Bitmap bitmap = ((BitmapDrawable)_imageView.Drawable).Bitmap;
             WallpaperManager wallpaperManager = WallpaperManager.GetInstance(this);
             
             // TODO: wrap in try..catch block
@@ -161,22 +162,21 @@ Sum Sin Cbrt Sub Tanh Ln Cbrt Sin Sin Atan Ln Atan Ln x7 Atan Ln Sin Atan Ln Tan
         {
             Intent startMain = new Intent(Intent.ActionMain);
             startMain.AddCategory(Intent.CategoryHome);
-            //startMain.SetFlags(ActivityFlags.NewTask);
             StartActivity(startMain);
         }
 
-        private void ClearWallpaperImageView()
+        private void ClearImageView()
         {
-            if (_formulaRenderingArguments == null)
+            if (_formulaRenderArguments == null)
                 return;
-            int width = _formulaRenderingArguments.Ranges.XCount; 
-            int height = _formulaRenderingArguments.Ranges.YCount; 
+            int width = _formulaRenderArguments.Ranges.XCount; 
+            int height = _formulaRenderArguments.Ranges.YCount; 
             int[] pixels = new int[width * height];
             Bitmap blankBitmap = Bitmap.CreateBitmap(pixels, width, height, Bitmap.Config.Argb8888);
-            _wallpaperImageView.SetImageBitmap(blankBitmap);
+            _imageView.SetImageBitmap(blankBitmap);
         }
 
-        private async Task RenderWallpaperBitmapAsync(FormulaRenderingArguments args, bool reevaluateFormula)
+        private async Task RenderImageAsync(FormulaRenderArguments args, bool reevaluateFormula)
         {
             ProgressObserver renderingProgressObserver = new ProgressObserver(
                 p => RunOnUiThread(() => _progressTextView.Text = ProgressToString(p.ProgressInPercents1d)), TimeSpan.FromMilliseconds(100));
@@ -193,26 +193,28 @@ Sum Sin Cbrt Sub Tanh Ln Cbrt Sin Sin Atan Ln Atan Ln x7 Atan Ln Sin Atan Ln Tan
                 pixels[i] = Color.Argb(255, image.RedChannel[i], image.GreenChannel[i], image.BlueChannel[i]);
 
             Bitmap bitmap = Bitmap.CreateBitmap(pixels, image.WidthInPixels, image.HeightInPixels, Bitmap.Config.Argb8888);
-            _wallpaperImageView.SetImageBitmap(bitmap);
+            _imageView.SetImageBitmap(bitmap);
         }
 
+        // TODO: Move to Core.
         private static string ProgressToString(double value)
         {
             return Math.Round(value, 2).ToInvariantString() + "%";
         }
 
-        private Task<FormulaRenderingArguments> GenerateRandomFormulaRenderingArgumentsAsync()
+        // TODO: Move to Core.
+        private Task<FormulaRenderArguments> GenerateRandomFormulaRenderArgumentsAsync()
         {
-            return Task.Run(() => GenerateRandomFormulaRenderingArguments());
+            return Task.Run(() => GenerateRandomFormulaRenderArguments());
         }
 
         // TODO: Move to Core.
-        private FormulaRenderingArguments GenerateRandomFormulaRenderingArguments()
+        private FormulaRenderArguments GenerateRandomFormulaRenderArguments()
         {
             FormulaTree formulaTree = CreateRandomFormulaTree();
             RangesForFormula2DProjection ranges = CreateRandomVariableValuesRangesFor2DProjection(formulaTree.Variables.Length);
             ColorTransformation colorTransformation = CreateRandomColorTransformation();
-            return new FormulaRenderingArguments(formulaTree, ranges, colorTransformation);
+            return new FormulaRenderArguments(formulaTree, ranges, colorTransformation);
         }
 
         // TODO: Move to Core.
@@ -251,7 +253,7 @@ Sum Sin Cbrt Sub Tanh Ln Cbrt Sin Sin Atan Ln Atan Ln x7 Atan Ln Sin Atan Ln Tan
         }
 
         // TODO: move to Core.
-        private static async Task<FormulaRenderResult> RenderFormulaAsync(FormulaRenderingArguments formulaRenderingArguments, double[] evaluatedFormulaValues,
+        private static async Task<FormulaRenderResult> RenderFormulaAsync(FormulaRenderArguments formulaRenderArguments, double[] evaluatedFormulaValues,
             ProgressObserver progressObserver)
         {
             Stopwatch stopwatch = new Stopwatch();
@@ -260,11 +262,11 @@ Sum Sin Cbrt Sub Tanh Ln Cbrt Sin Sin Atan Ln Atan Ln x7 Atan Ln Sin Atan Ln Tan
             if (evaluatedFormulaValues == null)
             {
                 evaluationProgressSpan = 0.97;
-                evaluatedFormulaValues = await EvaluateFormulaAsync(formulaRenderingArguments, evaluationProgressSpan, progressObserver);
+                evaluatedFormulaValues = await EvaluateFormulaAsync(formulaRenderArguments, evaluationProgressSpan, progressObserver);
             }
 
-            RenderedFormulaImage renderedFormulaImage = await RenderFormulaAsync(evaluatedFormulaValues, formulaRenderingArguments.WidthInPixels,
-                formulaRenderingArguments.HeightInPixels, formulaRenderingArguments.ColorTransformation,
+            RenderedFormulaImage renderedFormulaImage = await RenderFormulaAsync(evaluatedFormulaValues, formulaRenderArguments.WidthInPixels,
+                formulaRenderArguments.HeightInPixels, formulaRenderArguments.ColorTransformation,
                 1 - evaluationProgressSpan, evaluationProgressSpan, progressObserver);
 
             stopwatch.Stop();
@@ -272,14 +274,14 @@ Sum Sin Cbrt Sub Tanh Ln Cbrt Sin Sin Atan Ln Atan Ln x7 Atan Ln Sin Atan Ln Tan
         }
 
         // TODO: move to Core.
-        private static Task<double[]> EvaluateFormulaAsync(FormulaRenderingArguments formulaRenderingArguments, double progressSpan, ProgressObserver progressObserver)
+        private static Task<double[]> EvaluateFormulaAsync(FormulaRenderArguments formulaRenderArguments, double progressSpan, ProgressObserver progressObserver)
         {
             return Task.Run(() =>
             {
                 if (progressObserver != null)
                     ProgressReporter.Subscribe(progressObserver);
                 using (ProgressReporter.CreateScope(progressSpan))
-                    return FormulaRender.EvaluateFormula(formulaRenderingArguments.FormulaTree, formulaRenderingArguments.Ranges);
+                    return FormulaRender.EvaluateFormula(formulaRenderArguments.FormulaTree, formulaRenderArguments.Ranges);
             });
         }
 

@@ -127,6 +127,9 @@ namespace WallpaperGenerator.UI.Android
 			// aapt resource value: 0x7f080007
 			public const int generateMenuItem = 2131230727;
 			
+			// aapt resource value: 0x7f080003
+			public const int imageView = 2131230723;
+			
 			// aapt resource value: 0x7f080004
 			public const int progressTextView = 2131230724;
 			
@@ -153,9 +156,6 @@ namespace WallpaperGenerator.UI.Android
 			
 			// aapt resource value: 0x7f08000e
 			public const int viewGalleryMenuItem = 2131230734;
-			
-			// aapt resource value: 0x7f080003
-			public const int wallpaperImageView = 2131230723;
 			
 			static Id()
 			{

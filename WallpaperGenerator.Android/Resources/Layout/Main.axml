@@ -16,7 +16,7 @@
             <ImageView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/wallpaperImageView" />
+                android:id="@+id/imageView" />
             <TextView
                 android:id="@+id/progressTextView"
                 android:layout_width="fill_parent"
