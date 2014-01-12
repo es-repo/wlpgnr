@@ -15,8 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormulaRendering", "Formula
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormulaRendering.Testing", "FormulaRendering.Testing\FormulaRendering.Testing.csproj", "{0AF9C28E-CEF2-4C86-8CFD-0E509B339B3B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestingUtilities", "TestingUtilities\TestingUtilities.csproj", "{5185D552-F618-4DB7-99D4-F4F01DAC2A48}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI.Android", "WallpaperGenerator.Android\UI.Android.csproj", "{B0BDA0D4-093E-48D7-9E5D-C2D0C14951F9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI.Core", "WallpaperGenerator.Core\UI.Core.csproj", "{ABB75337-FCC9-4569-9B7E-AD338134726E}"
@@ -59,10 +57,6 @@ Global
 		{0AF9C28E-CEF2-4C86-8CFD-0E509B339B3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0AF9C28E-CEF2-4C86-8CFD-0E509B339B3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0AF9C28E-CEF2-4C86-8CFD-0E509B339B3B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5185D552-F618-4DB7-99D4-F4F01DAC2A48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5185D552-F618-4DB7-99D4-F4F01DAC2A48}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5185D552-F618-4DB7-99D4-F4F01DAC2A48}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5185D552-F618-4DB7-99D4-F4F01DAC2A48}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B0BDA0D4-093E-48D7-9E5D-C2D0C14951F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B0BDA0D4-093E-48D7-9E5D-C2D0C14951F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0BDA0D4-093E-48D7-9E5D-C2D0C14951F9}.Debug|Any CPU.Deploy.0 = Debug|Any CPU

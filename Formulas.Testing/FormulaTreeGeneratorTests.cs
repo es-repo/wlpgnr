@@ -46,7 +46,7 @@ namespace WallpaperGenerator.Formulas.Testing
             IDictionary<Operator, double> operatorAndProbabilityMap = new DictionaryExt<Operator, double>(operators.Select((op, i) => new KeyValuePair<Operator, double>(op, i % 2 + 1)));
             Grammar<Operator> grammar = FormulaTreeGenerator.CreateGrammar(operatorAndProbabilityMap, () => 0, 1, random, 0.3, 0.3);
             IEnumerable<string> fromSymbols = grammar.Rules.Select(r => r.From.Name).OrderBy(s => s);
-            CollectionAssert.AreEqual(expectedFromSymbols.ToArray(), fromSymbols.ToArray());
+            Assert.AreElementsEqual(expectedFromSymbols.ToArray(), fromSymbols.ToArray());
         }
 
         [Test]
@@ -98,7 +98,7 @@ namespace WallpaperGenerator.Formulas.Testing
             };
             double[] expectedOpNodeProbabilities = {80.0, 50};
             double[] opNodeProbabilities = FormulaTreeGenerator.GetOpNodeProbabilities(operatorAndProbabilityMap);
-            CollectionAssert.AreEqual(expectedOpNodeProbabilities, opNodeProbabilities);
+            Assert.AreElementsEqual(expectedOpNodeProbabilities, opNodeProbabilities);
         }
     }
 }

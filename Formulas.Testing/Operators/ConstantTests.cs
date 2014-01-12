@@ -6,7 +6,7 @@ namespace WallpaperGenerator.Formulas.Testing.Operators
     [TestFixture]
     public class ConstantTests
     {
-        [RowTest]
+        [Test]
         [Row(0, 0)]
         [Row(2, 2)]
         [Row(-2, -2)]

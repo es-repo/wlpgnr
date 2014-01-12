@@ -86,10 +86,6 @@
     <Compile Include="RandomMock.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TestingUtilities\TestingUtilities.csproj">
-      <Project>{5185D552-F618-4DB7-99D4-F4F01DAC2A48}</Project>
-      <Name>TestingUtilities</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{7D4A8B31-9E0B-4C8A-914B-E469D622F21C}</Project>
       <Name>Utilities</Name>

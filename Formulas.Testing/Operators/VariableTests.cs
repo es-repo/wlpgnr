@@ -7,7 +7,7 @@ namespace WallpaperGenerator.Formulas.Testing.Operators
     [TestFixture]
     public class VariableTests
     {
-        [RowTest]
+        [Test]
         [Row(0.0, 0.0)]
         [Row(2.0, 2.0)]
         [Row(-2.0, -2.0)]
@@ -18,7 +18,7 @@ namespace WallpaperGenerator.Formulas.Testing.Operators
             Assert.AreEqual(expected, result);
         }
 
-        [RowTest]
+        [Test]
         [Row(null, ExpectedException = typeof(ArgumentException))]
         [Row("", ExpectedException = typeof(ArgumentException))]
         [Row("123", ExpectedException = typeof(ArgumentException))]

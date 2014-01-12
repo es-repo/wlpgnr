@@ -38,10 +38,10 @@ namespace WallpaperGenerator.Formulas.Testing
         {
             string[] variableNames = FormulaTree.SelectVariables(_formulaRoot).Select(v => v.Name).ToArray();
             string[] expectedVariableNames = {_xVariable.Name, _yVariable.Name};
-            CollectionAssert.AreElementsEqual(expectedVariableNames, variableNames);
+            Assert.AreElementsEqual(expectedVariableNames, variableNames);
         }
         
-        [RowTest]
+        [Test]
         [Row(5.0, 3.0, 24)]
         [Row(0.0, 0.0, 0.0)]
         public void TestEvaluate(double xVariableValue, double yVariableValue, double expectedResult)
@@ -53,7 +53,7 @@ namespace WallpaperGenerator.Formulas.Testing
             Assert.AreEqual(expectedResult, result);
         }
 
-        [RowTest]
+        [Test]
         [Row("sum x x", 1, 3, -1, 3, -1, -1, 3, 3, new[] { 2.0, 2.0, 2.0, 4.0, 4.0, 4.0, 6.0, 6.0, 6.0 })]
         [Row("sum x y", 1, 3, 1, 3, -1, -1, 3, 3, new[] { 2.0, 3.0, 4.0, 3.0, 4.0, 5.0, 4.0, 5.0, 6.0 })]
         [Row("sum sum x y z", 1, 3, 1, 3, -3, 3, 3, 3, new[] { -1.0, 0.0, 1.0, 1.0, 2.0, 3.0, 3.0, 4.0, 5.0 })]
@@ -74,7 +74,7 @@ namespace WallpaperGenerator.Formulas.Testing
                 ranges.Add(new Range(rangeZStart, rangeZEnd));
 
             double[] results = formulaTree.EvaluateRangesIn2DProjection(ranges.ToArray(), xCount, yCount).ToArray();
-            CollectionAssert.AreElementsEqual(expectedResults, results);
+            Assert.AreElementsEqual(expectedResults, results);
         }
     }
 }

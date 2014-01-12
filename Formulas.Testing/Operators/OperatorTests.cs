@@ -6,7 +6,7 @@ namespace WallpaperGenerator.Formulas.Testing.Operators
     [TestFixture]
     public class OperatorTests
     {
-        [RowTest]
+        [Test]
         [Row(new double[] {1, 2}, 3)]
         public void TestBinaryOperator(double[] operands, double expectedResult)
         {
