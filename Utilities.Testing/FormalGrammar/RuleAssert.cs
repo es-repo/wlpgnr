@@ -12,7 +12,7 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
             foreach (Symbol<T>[] expectedSequence in expectedSequences)
             {
                 IEnumerable<Symbol<T>> sequence = rule.Produce();
-                CollectionAssert.AreEqual(expectedSequence, sequence.ToArray());
+                Assert.AreElementsEqual(expectedSequence, sequence.ToArray());
             }
         }
     }

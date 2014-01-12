@@ -11,7 +11,7 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees.TreeGenerati
     [TestFixture]
     public class TreeGeneratorTests
     {
-        [RowTest]
+        [Test]
         [Row(4, "1 2 1 0 2 0 0")]
         [Row(5, "1 2 1 2 0 0 1 2 0 0")]
         public void TestGenerateTree(int treeDepth, string expectedSequenceString)
@@ -61,7 +61,7 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees.TreeGenerati
             Assert.AreEqual(expectedSequenceString, string.Join(" ", traversedTree.ToArray()));
         }
 
-        [RowTest]
+        [Test]
         [Row(4, "1 2 1 0 1 0")]
         [Row(5, "1 2 1 2 0 0 1 2 0 0")]
         public void TestGenerateTreeWithSeveralTreeGenerationRules(int treeDepth, string expectedSequenceString)
@@ -116,7 +116,7 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees.TreeGenerati
             Assert.AreEqual(expectedSequenceString, string.Join(" ", traversedTree.ToArray()));
         }
 
-        [RowTest]
+        [Test]
         [Row(4, "1 2 0 2 0 0")]
         [Row(5, "1 2 0 2 1 2 0 0 1 2 0 0")]
         public void TestGenerateTreeWithSubTreeRules(int treeDepth, string expectedSequenceString)

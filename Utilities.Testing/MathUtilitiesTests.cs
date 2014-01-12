@@ -5,7 +5,7 @@ namespace WallpaperGenerator.Utilities.Testing
     [TestFixture]
     public class MathUtilitiesTests
     {
-        [RowTest]
+        [Test]
         [Row(new double[] { 1 }, 1)]
         [Row(new double[] { 1, 2, 3, 4, 5, 6 }, 3.5)]
         [Row(new double[] { -1, 0, 1 }, 0)]
@@ -16,7 +16,7 @@ namespace WallpaperGenerator.Utilities.Testing
             Assert.AreEqual(expectedMathExpectation, mathExpectation);
         }
 
-        [RowTest]
+        [Test]
         [Row(new double[] { }, double.NaN)]
         [Row(new double[] { 1 }, 0)]
         [Row(new double[] { 1, 2, 3, 4, 5, 6 }, 3.5)]
@@ -25,10 +25,10 @@ namespace WallpaperGenerator.Utilities.Testing
         public void TestVariance(double[] values, double expectedVariance)
         {
             double variance = MathUtilities.Variance(values);
-            Assert.AreEqual(expectedVariance, variance);
+            Assert.AreApproximatelyEqual(expectedVariance, variance, 0.00000001);
         }
 
-        [RowTest]
+        [Test]
         [Row(new double[] { }, double.NaN)]
         [Row(new double[] { 1 }, 0)]
         [Row(new double[] { 1, 2, 3, 4, 5, 6 }, 1.870828693386971)]
@@ -37,10 +37,10 @@ namespace WallpaperGenerator.Utilities.Testing
         public void TestStandardDeviation(double[] values, double expectedStandardDeviation)
         {
             double standardDeviation = MathUtilities.StandardDeviation(values);
-            Assert.AreEqual(expectedStandardDeviation, standardDeviation);
+            Assert.AreApproximatelyEqual(expectedStandardDeviation, standardDeviation, 0.00000001);
         }
 
-        [RowTest]
+        [Test]
         [Row(0, 0, 1, 0, 1, 0)]
         [Row(0, 0, 1, 1, 2, 1)]
         [Row(-10, -11, -10, 0, 1, 1)]

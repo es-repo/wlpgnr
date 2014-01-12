@@ -12,7 +12,7 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees.TreeGenerati
     [TestFixture]
     public class TreeGeneratingRuleSelectorTests
     {        
-        [RowTest]
+        [Test]
         [Row(0, null, null, ExpectedException = typeof(ArgumentException))]
         [Row(1, null, new[] { "Node0" })]
         [Row(2, null, new[] { "Node1", "Node0" })]
@@ -47,7 +47,7 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees.TreeGenerati
                 producedSymbols.Add(sn);
             }
 
-            CollectionAssert.AreEqual(expectedProducedSymbols, producedSymbols);
+            Assert.AreElementsEqual(expectedProducedSymbols, producedSymbols);
         }
     }
 }

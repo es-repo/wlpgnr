@@ -9,7 +9,7 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
     [TestFixture]
     public class GrammarTests
     {
-        [RowTest]
+        [Test]
         [Row("A0", "x")]
         [Row("A1", "sin atan sin sum x y")]
         [Row("A2", "sum x y")]

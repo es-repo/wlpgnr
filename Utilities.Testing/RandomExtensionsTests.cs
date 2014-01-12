@@ -8,7 +8,7 @@ namespace WallpaperGenerator.Utilities.Testing
     [TestFixture]
     public class RandomExtensionsTests
     {
-        [RowTest]
+        [Test]
         [Row(0.9)]
         [Row(0.1)]
         [Row(1)]
@@ -38,7 +38,7 @@ namespace WallpaperGenerator.Utilities.Testing
             }
         }
 
-        [RowTest]
+        [Test]
         [Row(0.3, 0.3)]
         [Row(0.5, 0.5)]
         [Row(1, 0)]

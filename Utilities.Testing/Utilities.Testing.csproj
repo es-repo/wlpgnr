@@ -39,13 +39,13 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MbUnit.Framework, Version=2.4.2.175, Culture=neutral, PublicKeyToken=5e72ecd30bc408d5">
+    <Reference Include="Gallio, Version=3.4.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\MbUnit\MbUnit.Framework.dll</HintPath>
+      <HintPath>..\Lib\MbUnit\Gallio.dll</HintPath>
     </Reference>
-    <Reference Include="MbUnit.Framework.2.0, Version=2.4.2.175, Culture=neutral, PublicKeyToken=5e72ecd30bc408d5, processorArchitecture=MSIL">
+    <Reference Include="MbUnit, Version=3.4.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\MbUnit\MbUnit.Framework.2.0.dll</HintPath>
+      <HintPath>..\Lib\MbUnit\MbUnit.dll</HintPath>
     </Reference>
     <Reference Include="Moq">
       <HintPath>..\Lib\Moq\Moq.dll</HintPath>

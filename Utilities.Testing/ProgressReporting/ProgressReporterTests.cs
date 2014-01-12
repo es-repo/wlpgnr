@@ -29,7 +29,7 @@ namespace WallpaperGenerator.Utilities.Testing.ProgressReporting
             ProgressAssert.AreEqual(new[] { 0.5, 0.6, 0.7, 1.0 }, progress);
         }
 
-        [RowTest]
+        [Test]
         [Row(5, 1, 2, new[] { 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 })]
         [Row(2, 0.5, 2, new[] { 0.125, 0.25, 0.5, 0.625, 0.75, 1.0 })]
         public void TestNestedScopesWithSteps(int stepsCount, double childScopeSpan, int childScopeStepsCount, double[] expectedProgress)

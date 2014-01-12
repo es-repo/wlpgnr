@@ -10,7 +10,7 @@ namespace WallpaperGenerator.Utilities.Testing.ProgressReporting
         public static void AreEqual(double[] expectedProgress, IEnumerable<double> progress)
         {
             double[] progressNormilized = progress.Distinct().Select(p => Math.Round(p, 3)).ToArray();
-            CollectionAssert.AreEqual(expectedProgress, progressNormilized);
+            Assert.AreElementsEqual(expectedProgress, progressNormilized);
         }
     }
 }

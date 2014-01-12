@@ -21,7 +21,7 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
             IEnumerable<Symbol<string>> to = rule.Produce();
             string[] sequence = to.Select(s => s.Value).ToArray();
             string[] expectedSequence = { "a", "b", "c"};
-            CollectionAssert.AreEqual(expectedSequence, sequence);
+            Assert.AreElementsEqual(expectedSequence, sequence);
         }
 
         [Test]
@@ -33,7 +33,7 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
             IEnumerable<Symbol<int>> to = rule.Produce();
             int[] sequence = to.Select(s => s.Value).ToArray();
             int[] expectedSequence = {0, 2, 4, 6, 8};
-            CollectionAssert.AreEqual(expectedSequence, sequence);
+            Assert.AreElementsEqual(expectedSequence, sequence);
         }
 
         [Test]
