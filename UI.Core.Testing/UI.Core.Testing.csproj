@@ -38,15 +38,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\MbUnit\MbUnit.dll</HintPath>
     </Reference>
-    <Reference Include="MbUnit40, Version=3.4.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\MbUnit\MbUnit40.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
