@@ -68,9 +68,11 @@ Sin Sum Sum x0 x0 Sin x1";
         public void TestRenderFormulaAsync()
         {
             _workflow.GenerateFormulaRenderArguments();
+            Assert.IsFalse(_workflow.IsImageReady);
             FormulaRenderResult formulaRenderResult = _workflow.RenderFormulaAsync(null).Result;
             Assert.IsNotNull(formulaRenderResult.Image);
             Assert.AreNotEqual(TimeSpan.Zero, formulaRenderResult.ElapsedTime);
+            Assert.IsTrue(_workflow.IsImageReady);
         }
     }
 }
