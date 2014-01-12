@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI.Core", "WallpaperGenerat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Android.Utilities", "Android.Utilities\Android.Utilities.csproj", "{5461607B-E975-4592-95D8-781DE36D6E11}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI.Core.Testing", "UI.Core.Testing\UI.Core.Testing.csproj", "{B5DCACFF-2CB1-49C9-9CDA-FD1E1D7FD022}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{5461607B-E975-4592-95D8-781DE36D6E11}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5461607B-E975-4592-95D8-781DE36D6E11}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5461607B-E975-4592-95D8-781DE36D6E11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5DCACFF-2CB1-49C9-9CDA-FD1E1D7FD022}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5DCACFF-2CB1-49C9-9CDA-FD1E1D7FD022}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5DCACFF-2CB1-49C9-9CDA-FD1E1D7FD022}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5DCACFF-2CB1-49C9-9CDA-FD1E1D7FD022}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

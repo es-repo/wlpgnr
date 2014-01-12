@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using WallpaperGenerator.FormulaRendering;
 using WallpaperGenerator.Formulas;
-using WallpaperGenerator.Formulas.Operators;
 using WallpaperGenerator.Utilities;
 using WallpaperGenerator.Utilities.ProgressReporting;
 
@@ -15,6 +14,7 @@ namespace WallpaperGenerator.UI.Core
     {
         private readonly Random _random = new Random();
         private double[] _lastEvaluatedFormulaValues;
+        private readonly FormulaRenderConfiguration _configuration;
 
         public int ImageWidth { get; private set; }
         public int ImageHeight { get; private set; }
@@ -25,10 +25,17 @@ namespace WallpaperGenerator.UI.Core
             get { return _lastEvaluatedFormulaValues != null; }
         }
 
-        public FormulaRenderWorkflow(int imageWidth, int imageHeight)
+        public FormulaRenderWorkflow(FormulaRenderConfiguration configuration, int imageWidth, int imageHeight)
+            : this(configuration, imageWidth, imageHeight, new Random())
         {
+        }
+
+        public FormulaRenderWorkflow(FormulaRenderConfiguration configuration, int imageWidth, int imageHeight, Random random)
+        {
+            _configuration = configuration;
             ImageWidth = imageWidth;
             ImageHeight = imageHeight;
+            _random = random;
 
             FormulaRenderArguments = FormulaRenderArguments.FromString(
 @"720;1280;-5.35,6.11;-21.74,-0.21;2.98,20.68;-0.56,18.97;-2.6,1.76;-7.25,0.25;-5.88,3.87;-4.73,1.87;1;1.28
@@ -38,8 +45,16 @@ Sum Sin Cbrt Sub Tanh Ln Cbrt Sin Sin Atan Ln Atan Ln x7 Atan Ln Sin Atan Ln Tan
 
         public Task<FormulaRenderArguments> GenerateFormulaRenderArgumentsAsync()
         {
+            return Task.Run(() => GenerateFormulaRenderArguments());
+        }
+
+        public FormulaRenderArguments GenerateFormulaRenderArguments()
+        {
             _lastEvaluatedFormulaValues = null;
-            return Task.Run(() => FormulaRenderArguments = GenerateRandomFormulaRenderArguments());
+            FormulaTree formulaTree = CreateRandomFormulaTree();
+            RangesForFormula2DProjection ranges = CreateRandomVariableValuesRangesFor2DProjection(formulaTree.Variables.Length);
+            ColorTransformation colorTransformation = CreateRandomColorTransformation();
+            return FormulaRenderArguments = new FormulaRenderArguments(formulaTree, ranges, colorTransformation);
         }
 
         public FormulaRenderArguments ChangeColors()
@@ -58,40 +73,30 @@ Sum Sin Cbrt Sub Tanh Ln Cbrt Sin Sin Atan Ln Atan Ln x7 Atan Ln Sin Atan Ln Tan
                 FormulaRenderArguments.ColorTransformation);
         }
 
-        private FormulaRenderArguments GenerateRandomFormulaRenderArguments()
-        {
-            FormulaTree formulaTree = CreateRandomFormulaTree();
-            RangesForFormula2DProjection ranges = CreateRandomVariableValuesRangesFor2DProjection(formulaTree.Variables.Length);
-            ColorTransformation colorTransformation = CreateRandomColorTransformation();
-            return new FormulaRenderArguments(formulaTree, ranges, colorTransformation);
-        }
-
         private RangesForFormula2DProjection CreateRandomVariableValuesRangesFor2DProjection(int variablesCount)
         {
-            return RangesForFormula2DProjection.CreateRandom(_random, variablesCount, ImageWidth, ImageHeight, 1, FormulaRenderConfiguration.RangeBounds);
+            return RangesForFormula2DProjection.CreateRandom(_random, variablesCount, ImageWidth, ImageHeight, 1, _configuration.RangeBounds);
         }
 
         private ColorTransformation CreateRandomColorTransformation()
         {
             return ColorTransformation.CreateRandomPolynomialColorTransformation(_random,
-                FormulaRenderConfiguration.ColorChannelPolinomialTransformationCoefficientBounds,
-                FormulaRenderConfiguration.ColorChannelZeroProbabilty);
+                _configuration.ColorChannelPolinomialTransformationCoefficientBounds,
+                _configuration.ColorChannelZeroProbabilty);
         }
 
         private FormulaTree CreateRandomFormulaTree()
         {
-            int dimensionsCount = _random.Next(FormulaRenderConfiguration.DimensionCountBounds);
-            int minimalDepth = _random.Next(FormulaRenderConfiguration.MinimalDepthBounds);
-            double constantProbability = _random.Next(FormulaRenderConfiguration.ConstantProbabilityBounds);
-            double leafProbability = _random.Next(FormulaRenderConfiguration.LeafProbabilityBounds);
+            int dimensionsCount = _random.Next(_configuration.DimensionCountBounds);
+            int minimalDepth = _random.Next(_configuration.MinimalDepthBounds);
+            double constantProbability = _random.Next(_configuration.ConstantProbabilityBounds);
+            double leafProbability = _random.Next(_configuration.LeafProbabilityBounds);
 
-            Operator[] operators = { OperatorsLibrary.Sum, OperatorsLibrary.Sub, OperatorsLibrary.Ln, OperatorsLibrary.Sin, 
-                                       OperatorsLibrary.Max, OperatorsLibrary.Mul, OperatorsLibrary.Cbrt, OperatorsLibrary.Pow3 };
-            IDictionary<Operator, double> operatorAndProbabilityMap = operators.ToDictionary(op => op, op => 0.5);
+            IDictionary<Operator, double> operatorAndProbabilityMap = _configuration.Operators.ToDictionary(op => op, op => 0.5);
 
             Func<double> createConst = () =>
             {
-                double c = _random.Next(FormulaRenderConfiguration.ConstantBounds);
+                double c = Math.Round(_random.Next(_configuration.ConstantBounds), 2);
                 return Math.Abs(c - 0) < 0.01 ? 0.01 : c;
             };
 
@@ -100,6 +105,9 @@ Sum Sin Cbrt Sub Tanh Ln Cbrt Sin Sin Atan Ln Atan Ln x7 Atan Ln Sin Atan Ln Tan
 
         public async Task<FormulaRenderResult> RenderFormulaAsync(ProgressObserver progressObserver)
         {
+            if (FormulaRenderArguments == null)
+                throw new InvalidOperationException("FormulaRenderArguments is null.");
+
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
             double evaluationProgressSpan = 0;

@@ -33,14 +33,16 @@ namespace WallpaperGenerator.Utilities
 
         public static double Next(this Random random, double minValue, double maxValue)
         {
-            return Math.Round(random.NextDouble() * (maxValue - minValue) + minValue, 2);
+            return random.NextDouble() * (maxValue - minValue) + minValue;
         }
 
         public static T Next<T>(this Random random, Bounds<T> bounds) where T : IComparable
         {
             if (typeof (T) == typeof (int))
             {
-                return (T)(object)random.Next((int) (object) bounds.Low, (int) (object) bounds.High + 1);
+                double low = (int) (object) bounds.Low;
+                double high = (int)(object)bounds.High + 1;
+                return (T)(object)(int)random.Next(low, high);
             }
             return (T)(object)random.Next((double)(object)bounds.Low, (double)(object)bounds.High);
         }

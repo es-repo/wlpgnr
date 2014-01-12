@@ -37,7 +37,7 @@ namespace WallpaperGenerator.UI.Android
 
             DisplayMetrics displayMetrics = new DisplayMetrics();
             WindowManager.DefaultDisplay.GetMetrics(displayMetrics);
-            _workflow = new FormulaRenderWorkflow(displayMetrics.WidthPixels, displayMetrics.HeightPixels);
+            _workflow = new FormulaRenderWorkflow(new FormulaRenderConfiguration(), displayMetrics.WidthPixels, displayMetrics.HeightPixels);
 
             if (_workflow.FormulaRenderArguments != null)
                 _formulaTextView.Text = _workflow.FormulaRenderArguments.ToString();
@@ -152,10 +152,10 @@ namespace WallpaperGenerator.UI.Android
         private async Task DrawImageAsync()
         {
             ProgressObserver renderingProgressObserver = new ProgressObserver(
-                p => RunOnUiThread(() => _progressTextView.Text = p.Progress.ToString("P1")), TimeSpan.FromMilliseconds(100),
-                () => RunOnUiThread(() => _progressTextView.Text = 1.0.ToString("P1")));
+                p => RunOnUiThread(() => _progressTextView.Text = p.Progress.ToString("P1")), TimeSpan.FromMilliseconds(100));
 
             FormulaRenderResult formulaRenderResult = await _workflow.RenderFormulaAsync(renderingProgressObserver);
+            _progressTextView.Text = 1.ToString("P1");
             _renderTimeTextView.Text = formulaRenderResult.ElapsedTime.ToString();
             _imageView.SetImageBitmap(formulaRenderResult.Image.ToBitmap());
         }

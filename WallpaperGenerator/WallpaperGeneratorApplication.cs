@@ -23,6 +23,7 @@ namespace WallpaperGenerator.UI.Windows
         private readonly MainWindow _mainWindow;
         private WallpaperImage _wallpaperImage;
         private double[] _lastEvaluatedFormulaValues;
+        private readonly FormulaRenderConfiguration _configuration;
         public const int imageWidth = 720;
         public const int imageHeight = 1280;
          
@@ -44,6 +45,7 @@ namespace WallpaperGenerator.UI.Windows
 
         public WallpaperGeneratorApplication()
         {
+            _configuration = new FormulaRenderConfiguration();
             _mainWindow = new MainWindow { WindowState = WindowState.Maximized };
 
             _mainWindow.ControlPanel.GenerateFormulaButton.Click += (s, a) =>
@@ -117,7 +119,7 @@ namespace WallpaperGenerator.UI.Windows
 
             Func<double> createConst = () => 
             {
-                double d = _random.Next(FormulaRenderConfiguration.ConstantBounds);
+                double d = _random.Next(_configuration.ConstantBounds);
                 return Math.Abs(d - 0) < 0.01 ? 0.01 : d;
             };
 
@@ -137,14 +139,14 @@ namespace WallpaperGenerator.UI.Windows
                 : imageHeight;  
             
             return RangesForFormula2DProjection.CreateRandom(_random, variablesCount,
-                xRangeCount, yRangeCount, 1, FormulaRenderConfiguration.RangeBounds);
+                xRangeCount, yRangeCount, 1, _configuration.RangeBounds);
         }
 
         private ColorTransformation CreateRandomColorTransformation()
         {
             return ColorTransformation.CreateRandomPolynomialColorTransformation(_random,
-                FormulaRenderConfiguration.ColorChannelPolinomialTransformationCoefficientBounds,
-                FormulaRenderConfiguration.ColorChannelZeroProbabilty);
+                _configuration.ColorChannelPolinomialTransformationCoefficientBounds,
+                _configuration.ColorChannelZeroProbabilty);
         }
 
         private bool _isSmoothAnimationStarted;
@@ -176,7 +178,7 @@ namespace WallpaperGenerator.UI.Windows
             int j = 0;
             while (_isSmoothAnimationStarted)
             {
-                if (j > 20)
+                if (j > 200)
                 {
                     j = 0;
                     rangeStartDeltas = getNextRangeDeltas();
