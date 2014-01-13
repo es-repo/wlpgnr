@@ -4,8 +4,10 @@ using WallpaperGenerator.Utilities;
 
 namespace WallpaperGenerator.UI.Core
 {
-    public class FormulaRenderConfiguration
+    public class FormulaRenderArgumentsGenerationParams
     {
+        public int WidthInPixels = 720;
+        public int HeightInPixels = 1280;
         public Bounds<int> DimensionCountBounds = new Bounds<int>(4, 20);
         public Bounds<int> MinimalDepthBounds = new Bounds<int>(8, 14);
         public Bounds ConstantBounds = new Bounds(-10, 10);

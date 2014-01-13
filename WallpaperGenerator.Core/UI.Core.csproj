@@ -48,7 +48,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FormulaRenderConfiguration.cs" />
+    <Compile Include="FormulaRenderArgumentsGenerationParams.cs" />
     <Compile Include="FormulaRenderArguments.cs" />
     <Compile Include="FormulaRenderWorkflow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

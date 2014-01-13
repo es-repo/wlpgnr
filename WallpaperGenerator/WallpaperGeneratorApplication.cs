@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using WallpaperGenerator.FormulaRendering;
 using WallpaperGenerator.Formulas;
 using WallpaperGenerator.UI.Core;
 using WallpaperGenerator.UI.Windows.MainWindowControls.ControlPanelControls;
 using WallpaperGenerator.Utilities;
-using WallpaperGenerator.Utilities.DataStructures.Collections;
 using WallpaperGenerator.Utilities.ProgressReporting;
 
 namespace WallpaperGenerator.UI.Windows
@@ -19,81 +16,94 @@ namespace WallpaperGenerator.UI.Windows
     {        
         #region Fields
 
-        private readonly Random _random = new Random();
+        private readonly FormulaRenderWorkflow _workflow;
         private readonly MainWindow _mainWindow;
         private WallpaperImage _wallpaperImage;
-        private double[] _lastEvaluatedFormulaValues;
-        private readonly FormulaRenderConfiguration _configuration;
-        public const int imageWidth = 720;
-        public const int imageHeight = 1280;
-         
+        
         #endregion
 
-        #region Properties
-
-        public FormulaRenderArguments GetCurrentFormulaRenderArguments()
+        private FormulaRenderArguments UserInputFormulaRenderArguments
         {
-            string formuleString = _mainWindow.FormulaTexBox.Dispatcher.Invoke(() => _mainWindow.FormulaTexBox.Text);
-            return formuleString != ""
-                ? FormulaRenderArguments.FromString(formuleString)
-                : null;
+            get
+            {
+                string formuleString = _mainWindow.FormulaTexBox.Dispatcher.Invoke(() => _mainWindow.FormulaTexBox.Text);
+                return formuleString != ""
+                    ? FormulaRenderArguments.FromString(formuleString)
+                    : null;
+            }
         }
 
-        #endregion
+        private FormulaRenderArgumentsGenerationParams UserInputFormulaRenderArgumentsGenerationParams
+        {
+            get
+            {
+                FormulaRenderArgumentsGenerationParams generationParams = _workflow.GenerationParams;
+                int dimensionsCount = (int)_mainWindow.ControlPanel.DimensionsCountSlider.Value;
+                generationParams.DimensionCountBounds = new Bounds<int>(dimensionsCount, dimensionsCount);
 
+                int minimalDepth = (int) _mainWindow.ControlPanel.MinimalDepthSlider.Value;
+                generationParams.MinimalDepthBounds = new Bounds<int>(minimalDepth, minimalDepth);
+
+                double constantProbability = _mainWindow.ControlPanel.ConstantProbabilitySlider.Value/100;
+                generationParams.ConstantProbabilityBounds = new Bounds(constantProbability, constantProbability);
+                
+                double leafProbability = _mainWindow.ControlPanel.LeafProbabilitySlider.Value / 100;
+                generationParams.LeafProbabilityBounds = new Bounds(leafProbability, leafProbability);
+
+                IEnumerable<OperatorControl> checkedOperatorControls = _mainWindow.ControlPanel.OperatorControls.Where(cb => cb.IsChecked);
+                generationParams.Operators = checkedOperatorControls.Select(c => c.Operator).ToArray();
+                //    IDictionary<Operator, double> operatorAndProbabilityMap =
+                //        new DictionaryExt<Operator, double>(checkedOperatorControls.Select(opc => new KeyValuePair<Operator, double>(opc.Operator, opc.Probability)));
+
+                FormulaRenderArguments renderArguments = UserInputFormulaRenderArguments;
+                if (renderArguments != null)
+                {
+                    generationParams.WidthInPixels = renderArguments.WidthInPixels;
+                    generationParams.HeightInPixels = renderArguments.HeightInPixels;
+                }
+
+                return generationParams;
+            }
+        }
+        
         #region Constructors
 
         public WallpaperGeneratorApplication()
         {
-            _configuration = new FormulaRenderConfiguration();
+            _workflow = new FormulaRenderWorkflow(new FormulaRenderArgumentsGenerationParams());
+
             _mainWindow = new MainWindow { WindowState = WindowState.Maximized };
 
             _mainWindow.ControlPanel.GenerateFormulaButton.Click += (s, a) =>
             {
-                FormulaRenderArguments currentFormulaRenderArguments = GetCurrentFormulaRenderArguments();
-
-                FormulaTree formulaTree = CreateRandomFormulaTree();
-                
-                RangesForFormula2DProjection ranges =
-                    CreateRandomVariableValuesRangesFor2DProjection(formulaTree.Variables.Length, currentFormulaRenderArguments);
-
-                ColorTransformation colorTransformation = CreateRandomColorTransformation();
-                FormulaRenderArguments formulaRenderArguments = new FormulaRenderArguments(formulaTree, ranges, colorTransformation);
-
+                _workflow.GenerationParams = UserInputFormulaRenderArgumentsGenerationParams;
+                FormulaRenderArguments formulaRenderArguments = _workflow.GenerateFormulaRenderArguments();
                 _mainWindow.FormulaTexBox.Text = formulaRenderArguments.ToString();
             };
 
-            _mainWindow.ControlPanel.ChangeRangesButton.Click += async (s, a) =>
+            _mainWindow.ControlPanel.TransformButton.Click += async (s, a) =>
             {
-                FormulaRenderArguments currentFormulaRenderArguments = GetCurrentFormulaRenderArguments();
-                RangesForFormula2DProjection ranges = CreateRandomVariableValuesRangesFor2DProjection(
-                        currentFormulaRenderArguments.FormulaTree.Variables.Length, currentFormulaRenderArguments);
-
-                FormulaRenderArguments formulaRenderArguments = new FormulaRenderArguments(
-                    currentFormulaRenderArguments.FormulaTree,
-                    ranges,
-                    currentFormulaRenderArguments.ColorTransformation);
-
+                _workflow.GenerationParams = UserInputFormulaRenderArgumentsGenerationParams;
+                FormulaRenderArguments formulaRenderArguments = _workflow.TransformRanges();
                 _mainWindow.FormulaTexBox.Text = formulaRenderArguments.ToString();
-                await RenderFormula(GetCurrentFormulaRenderArguments(), true);
+                await DrawImageAsync();
             };
 
             _mainWindow.ControlPanel.ChangeColorButton.Click += async (s, a) =>
             {
-                FormulaRenderArguments currentFormulaRenderArguments = GetCurrentFormulaRenderArguments(); 
-                ColorTransformation colorTransformation = CreateRandomColorTransformation();
-                FormulaRenderArguments formulaRenderArguments = new FormulaRenderArguments(
-                    currentFormulaRenderArguments.FormulaTree, 
-                    currentFormulaRenderArguments.Ranges, 
-                    colorTransformation);
-
+                _workflow.GenerationParams = UserInputFormulaRenderArgumentsGenerationParams;
+                FormulaRenderArguments formulaRenderArguments = _workflow.ChangeColors();
                 _mainWindow.FormulaTexBox.Text = formulaRenderArguments.ToString();
-                await RenderFormula(GetCurrentFormulaRenderArguments(), false);
+                await DrawImageAsync();
             };
 
-            _mainWindow.ControlPanel.RenderFormulaButton.Click += async (s, a) => await RenderFormula(GetCurrentFormulaRenderArguments(), true);
+            _mainWindow.ControlPanel.RenderFormulaButton.Click += async (s, a) =>
+            {
+                _workflow.FormulaRenderArguments = UserInputFormulaRenderArguments;
+                await DrawImageAsync();
+            };
 
-            _mainWindow.ControlPanel.StartStopSmoothAnimationButton.Click += (s, a) => StartStopSmoothAnimation();
+            _mainWindow.ControlPanel.StartStopSmoothAnimationButton.Click += (s, a) => StartStopAnimation();
 
             _mainWindow.ControlPanel.SaveButton.Click += (s, a) => SaveFormulaImage();
         }
@@ -106,63 +116,43 @@ namespace WallpaperGenerator.UI.Windows
             _mainWindow.Show();
         }
 
-        private FormulaTree CreateRandomFormulaTree()
-        {
-            int dimensionsCount = (int)_mainWindow.ControlPanel.DimensionsCountSlider.Value;
-            int minimalDepth = (int) _mainWindow.ControlPanel.MinimalDepthSlider.Value;
-            double constantProbability = _mainWindow.ControlPanel.ConstantProbabilitySlider.Value/100;
-            double leafProbability = _mainWindow.ControlPanel.LeafProbabilitySlider.Value / 100;
+        //private FormulaTree CreateRandomFormulaTree()
+        //{
+        //    int dimensionsCount = (int)_mainWindow.ControlPanel.DimensionsCountSlider.Value;
+        //    int minimalDepth = (int) _mainWindow.ControlPanel.MinimalDepthSlider.Value;
+        //    double constantProbability = _mainWindow.ControlPanel.ConstantProbabilitySlider.Value/100;
+        //    double leafProbability = _mainWindow.ControlPanel.LeafProbabilitySlider.Value / 100;
             
-            IEnumerable<OperatorControl> checkedOperatorControls = _mainWindow.ControlPanel.OperatorControls.Where(cb => cb.IsChecked);
-            IDictionary<Operator, double> operatorAndProbabilityMap =
-                new DictionaryExt<Operator, double>(checkedOperatorControls.Select(opc => new KeyValuePair<Operator, double>(opc.Operator, opc.Probability)));
+        //    IEnumerable<OperatorControl> checkedOperatorControls = _mainWindow.ControlPanel.OperatorControls.Where(cb => cb.IsChecked);
+        //    IDictionary<Operator, double> operatorAndProbabilityMap =
+        //        new DictionaryExt<Operator, double>(checkedOperatorControls.Select(opc => new KeyValuePair<Operator, double>(opc.Operator, opc.Probability)));
 
-            Func<double> createConst = () => 
+        //    Func<double> createConst = () => 
+        //    {
+        //        double d = _random.Next(_configuration.ConstantBounds);
+        //        return Math.Abs(d - 0) < 0.01 ? 0.01 : d;
+        //    };
+
+        //    return FormulaTreeGenerator.Generate(operatorAndProbabilityMap, createConst, dimensionsCount, minimalDepth,
+        //        _random, leafProbability, constantProbability);
+        //}
+
+        private bool _isAnimationStarted;
+
+        private void StartStopAnimation()
+        {
+            _isAnimationStarted = !_isAnimationStarted;
+            if (_isAnimationStarted)
             {
-                double d = _random.Next(_configuration.ConstantBounds);
-                return Math.Abs(d - 0) < 0.01 ? 0.01 : d;
-            };
-
-            return FormulaTreeGenerator.Generate(operatorAndProbabilityMap, createConst, dimensionsCount, minimalDepth,
-                _random, leafProbability, constantProbability);
-        }
-
-        private RangesForFormula2DProjection CreateRandomVariableValuesRangesFor2DProjection(int variablesCount,
-            FormulaRenderArguments currentFormulaRenderArguments)
-        {
-            int xRangeCount = currentFormulaRenderArguments != null
-                    ? currentFormulaRenderArguments.Ranges.XCount
-                    : imageWidth;
-
-            int yRangeCount = currentFormulaRenderArguments != null
-                ? currentFormulaRenderArguments.Ranges.YCount
-                : imageHeight;  
-            
-            return RangesForFormula2DProjection.CreateRandom(_random, variablesCount,
-                xRangeCount, yRangeCount, 1, _configuration.RangeBounds);
-        }
-
-        private ColorTransformation CreateRandomColorTransformation()
-        {
-            return ColorTransformation.CreateRandomPolynomialColorTransformation(_random,
-                _configuration.ColorChannelPolinomialTransformationCoefficientBounds,
-                _configuration.ColorChannelZeroProbabilty);
-        }
-
-        private bool _isSmoothAnimationStarted;
-
-        private void StartStopSmoothAnimation()
-        {
-            _isSmoothAnimationStarted = !_isSmoothAnimationStarted;
-            if (_isSmoothAnimationStarted)
-            {
-                StartSmoothAnimation();
+                StartAnimation();
             }
         }
 
-        private async void StartSmoothAnimation()
+        readonly Random _random = new Random();
+
+        private async void StartAnimation()
         {
-            FormulaRenderArguments formulaRenderArguments = GetCurrentFormulaRenderArguments();
+            FormulaRenderArguments formulaRenderArguments = UserInputFormulaRenderArguments;
             Func<double[]> getNextRangeDeltas = () => EnumerableExtensions.Repeat(() => (-0.5 + _random.NextDouble()) * 0.1, formulaRenderArguments.Ranges.Ranges.Length).ToArray();
             
             double[] rangeStartDeltas = getNextRangeDeltas();
@@ -176,7 +166,7 @@ namespace WallpaperGenerator.UI.Windows
             };
             
             int j = 0;
-            while (_isSmoothAnimationStarted)
+            while (_isAnimationStarted)
             {
                 if (j > 200)
                 {
@@ -193,62 +183,29 @@ namespace WallpaperGenerator.UI.Windows
 
         private async Task DoAnimationStep(Func<FormulaRenderArguments, FormulaRenderArguments> getNextFormulaRenderArguments)
         {
-            FormulaRenderArguments formulaRenderArguments = GetCurrentFormulaRenderArguments();
+            FormulaRenderArguments formulaRenderArguments = UserInputFormulaRenderArguments;
             formulaRenderArguments = getNextFormulaRenderArguments(formulaRenderArguments);
+            _workflow.FormulaRenderArguments = formulaRenderArguments;
             _mainWindow.FormulaTexBox.Dispatcher.Invoke(() => _mainWindow.FormulaTexBox.Text = formulaRenderArguments.ToString());
-            await RenderFormula(formulaRenderArguments, true);
+            await DrawImageAsync();
         }
 
-        private async Task RenderFormula(FormulaRenderArguments formulaRenderArguments, bool reevaluateFormula)
+        private async Task DrawImageAsync()
         {
             _mainWindow.Cursor = Cursors.Wait;
-
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
 
             ProgressObserver renderingProgressObserver = new ProgressObserver(
                 p => _mainWindow.StatusPanel.Dispatcher.Invoke(() => _mainWindow.StatusPanel.RenderingProgress = p.Progress));
 
-            double evaluationProgressSpan = 0;
-            if (reevaluateFormula)
-            {
-                evaluationProgressSpan = 0.98;
-                _lastEvaluatedFormulaValues = await EvaluateFormulaAsync(formulaRenderArguments, evaluationProgressSpan, renderingProgressObserver);
-            }
+            FormulaRenderResult formulaRenderResult = await _workflow.RenderFormulaAsync(renderingProgressObserver);
 
-            RenderedFormulaImage renderedFormulaImage = await RenderFormulaAsync(_lastEvaluatedFormulaValues, formulaRenderArguments.WidthInPixels,
-                formulaRenderArguments.HeightInPixels, formulaRenderArguments.ColorTransformation,
-                1 - evaluationProgressSpan, evaluationProgressSpan, renderingProgressObserver);
-
-            _wallpaperImage = new WallpaperImage(renderedFormulaImage.WidthInPixels, renderedFormulaImage.HeightInPixels);
-            _wallpaperImage.Update(renderedFormulaImage);
+            _wallpaperImage = new WallpaperImage(formulaRenderResult.Image.WidthInPixels, formulaRenderResult.Image.HeightInPixels);
+            _wallpaperImage.Update(formulaRenderResult.Image);
 
             _mainWindow.WallpaperImage.Source = _wallpaperImage.Source;
 
-            stopwatch.Stop();
-            _mainWindow.StatusPanel.RenderedTime = stopwatch.Elapsed;
+            _mainWindow.StatusPanel.RenderedTime = formulaRenderResult.ElapsedTime;
             _mainWindow.Cursor = Cursors.Arrow;
-        }
-
-        private Task<double[]> EvaluateFormulaAsync(FormulaRenderArguments formulaRenderArguments, double progressSpan, ProgressObserver progressObserver)
-        {
-            return Task.Run(() =>
-            {
-                ProgressReporter.Subscribe(progressObserver);
-                using (ProgressReporter.CreateScope(progressSpan))
-                    return FormulaRender.EvaluateFormula(formulaRenderArguments.FormulaTree, formulaRenderArguments.Ranges);
-            });
-        }
-
-        private Task<RenderedFormulaImage> RenderFormulaAsync(double[] evaluatedFormulaValues, int widthInPixels, int heightInPixels, ColorTransformation colorTransformation,
-            double progressSpan, double initProgress, ProgressObserver progressObserver)
-        {
-            return Task.Run(() =>
-            {
-                ProgressReporter.Subscribe(progressObserver);
-                using (ProgressReporter.CreateScope(progressSpan, initProgress))
-                    return FormulaRender.Render(evaluatedFormulaValues, widthInPixels, heightInPixels, colorTransformation);
-            });
         }
 
         private void SaveFormulaImage()

@@ -15,7 +15,7 @@ namespace WallpaperGenerator.UI.Windows.MainWindowControls
 
         public Button ChangeColorButton { get; private set; }
 
-        public Button ChangeRangesButton { get; private set; }
+        public Button TransformButton { get; private set; }
 
         public Button RenderFormulaButton { get; private set; }
 
@@ -56,7 +56,7 @@ namespace WallpaperGenerator.UI.Windows.MainWindowControls
            };
 
             GenerateFormulaButton = CreateButton(panel, "Generate");
-            ChangeRangesButton = CreateButton(panel, "Change ranges");
+            TransformButton = CreateButton(panel, "Transform");
             ChangeColorButton = CreateButton(panel, "Change colors");
             RenderFormulaButton = CreateButton(panel, "Render");
 

@@ -13,28 +13,37 @@ namespace WallpaperGenerator.UI.Core
     public class FormulaRenderWorkflow
     {
         private readonly Random _random = new Random();
+        private FormulaRenderArguments _formulaRenderArguments;
         private double[] _lastEvaluatedFormulaValues;
-        private readonly FormulaRenderConfiguration _configuration;
 
-        public int ImageWidth { get; private set; }
-        public int ImageHeight { get; private set; }
-        public FormulaRenderArguments FormulaRenderArguments { get; private set; }
+        public FormulaRenderArgumentsGenerationParams GenerationParams { get; set; }
+        
+        public FormulaRenderArguments FormulaRenderArguments
+        {
+            get { return _formulaRenderArguments; }
+            set 
+            {
+                if (_formulaRenderArguments == null || _formulaRenderArguments.ToString() != value.ToString())
+                {
+                    _formulaRenderArguments = value;
+                    _lastEvaluatedFormulaValues = null;
+                }
+            }
+        }
 
         public bool IsImageReady
         {
             get { return _lastEvaluatedFormulaValues != null; }
         }
 
-        public FormulaRenderWorkflow(FormulaRenderConfiguration configuration, int imageWidth, int imageHeight)
-            : this(configuration, imageWidth, imageHeight, new Random())
+        public FormulaRenderWorkflow(FormulaRenderArgumentsGenerationParams generationParams)
+            : this(generationParams, new Random())
         {
         }
 
-        public FormulaRenderWorkflow(FormulaRenderConfiguration configuration, int imageWidth, int imageHeight, Random random)
+        public FormulaRenderWorkflow(FormulaRenderArgumentsGenerationParams generationParams, Random random)
         {
-            _configuration = configuration;
-            ImageWidth = imageWidth;
-            ImageHeight = imageHeight;
+            GenerationParams = generationParams;
             _random = random;
 
             FormulaRenderArguments = FormulaRenderArguments.FromString(
@@ -50,7 +59,6 @@ Sum Sin Cbrt Sub Tanh Ln Cbrt Sin Sin Atan Ln Atan Ln x7 Atan Ln Sin Atan Ln Tan
 
         public FormulaRenderArguments GenerateFormulaRenderArguments()
         {
-            _lastEvaluatedFormulaValues = null;
             FormulaTree formulaTree = CreateRandomFormulaTree();
             RangesForFormula2DProjection ranges = CreateRandomVariableValuesRangesFor2DProjection(formulaTree.Variables.Length);
             ColorTransformation colorTransformation = CreateRandomColorTransformation();
@@ -60,12 +68,11 @@ Sum Sin Cbrt Sub Tanh Ln Cbrt Sin Sin Atan Ln Atan Ln x7 Atan Ln Sin Atan Ln Tan
         public FormulaRenderArguments ChangeColors()
         {
             ColorTransformation colorTransformation = CreateRandomColorTransformation();
-            return FormulaRenderArguments = new FormulaRenderArguments(FormulaRenderArguments.FormulaTree, FormulaRenderArguments.Ranges, colorTransformation);
+            return _formulaRenderArguments = new FormulaRenderArguments(FormulaRenderArguments.FormulaTree, FormulaRenderArguments.Ranges, colorTransformation);
         }
 
         public FormulaRenderArguments TransformRanges()
         {
-            _lastEvaluatedFormulaValues = null;
             RangesForFormula2DProjection ranges = CreateRandomVariableValuesRangesFor2DProjection(FormulaRenderArguments.FormulaTree.Variables.Length);
             return FormulaRenderArguments = new FormulaRenderArguments(
                 FormulaRenderArguments.FormulaTree,
@@ -75,28 +82,28 @@ Sum Sin Cbrt Sub Tanh Ln Cbrt Sin Sin Atan Ln Atan Ln x7 Atan Ln Sin Atan Ln Tan
 
         private RangesForFormula2DProjection CreateRandomVariableValuesRangesFor2DProjection(int variablesCount)
         {
-            return RangesForFormula2DProjection.CreateRandom(_random, variablesCount, ImageWidth, ImageHeight, 1, _configuration.RangeBounds);
+            return RangesForFormula2DProjection.CreateRandom(_random, variablesCount, GenerationParams.WidthInPixels, GenerationParams.HeightInPixels, 1, GenerationParams.RangeBounds);
         }
 
         private ColorTransformation CreateRandomColorTransformation()
         {
             return ColorTransformation.CreateRandomPolynomialColorTransformation(_random,
-                _configuration.ColorChannelPolinomialTransformationCoefficientBounds,
-                _configuration.ColorChannelZeroProbabilty);
+                GenerationParams.ColorChannelPolinomialTransformationCoefficientBounds,
+                GenerationParams.ColorChannelZeroProbabilty);
         }
 
         private FormulaTree CreateRandomFormulaTree()
         {
-            int dimensionsCount = _random.Next(_configuration.DimensionCountBounds);
-            int minimalDepth = _random.Next(_configuration.MinimalDepthBounds);
-            double constantProbability = _random.Next(_configuration.ConstantProbabilityBounds);
-            double leafProbability = _random.Next(_configuration.LeafProbabilityBounds);
+            int dimensionsCount = _random.Next(GenerationParams.DimensionCountBounds);
+            int minimalDepth = _random.Next(GenerationParams.MinimalDepthBounds);
+            double constantProbability = _random.Next(GenerationParams.ConstantProbabilityBounds);
+            double leafProbability = _random.Next(GenerationParams.LeafProbabilityBounds);
 
-            IDictionary<Operator, double> operatorAndProbabilityMap = _configuration.Operators.ToDictionary(op => op, op => 0.5);
+            IDictionary<Operator, double> operatorAndProbabilityMap = GenerationParams.Operators.ToDictionary(op => op, op => 0.5);
 
             Func<double> createConst = () =>
             {
-                double c = Math.Round(_random.Next(_configuration.ConstantBounds), 2);
+                double c = Math.Round(_random.Next(GenerationParams.ConstantBounds), 2);
                 return Math.Abs(c - 0) < 0.01 ? 0.01 : c;
             };
 
