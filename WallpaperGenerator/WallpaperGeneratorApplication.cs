@@ -51,10 +51,8 @@ namespace WallpaperGenerator.UI.Windows
                 generationParams.LeafProbabilityBounds = new Bounds(leafProbability, leafProbability);
 
                 IEnumerable<OperatorControl> checkedOperatorControls = _mainWindow.ControlPanel.OperatorControls.Where(cb => cb.IsChecked);
-                generationParams.Operators = checkedOperatorControls.Select(c => c.Operator).ToArray();
-                //    IDictionary<Operator, double> operatorAndProbabilityMap =
-                //        new DictionaryExt<Operator, double>(checkedOperatorControls.Select(opc => new KeyValuePair<Operator, double>(opc.Operator, opc.Probability)));
-
+                generationParams.OperatorAndProbabilityMap = checkedOperatorControls.ToDictionary(c => c.Operator, c => c.Probability);
+                
                 FormulaRenderArguments renderArguments = UserInputFormulaRenderArguments;
                 if (renderArguments != null)
                 {

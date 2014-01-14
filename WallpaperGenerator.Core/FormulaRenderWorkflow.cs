@@ -98,16 +98,15 @@ Sum Sin Cbrt Sub Tanh Ln Cbrt Sin Sin Atan Ln Atan Ln x7 Atan Ln Sin Atan Ln Tan
             int minimalDepth = _random.Next(GenerationParams.MinimalDepthBounds);
             double constantProbability = _random.Next(GenerationParams.ConstantProbabilityBounds);
             double leafProbability = _random.Next(GenerationParams.LeafProbabilityBounds);
-
-            IDictionary<Operator, double> operatorAndProbabilityMap = GenerationParams.Operators.ToDictionary(op => op, op => 0.5);
-
+            IDictionary<Operator, double> operatorAndProbabilityMap = GenerationParams.OperatorAndProbabilityMap.ToDictionary(e => e.Key, e => e.Value);
             Func<double> createConst = () =>
             {
                 double c = Math.Round(_random.Next(GenerationParams.ConstantBounds), 2);
                 return Math.Abs(c - 0) < 0.01 ? 0.01 : c;
             };
 
-            return FormulaTreeGenerator.Generate(operatorAndProbabilityMap, createConst, dimensionsCount, minimalDepth, _random, leafProbability, constantProbability);
+            return FormulaTreeGenerator.Generate(_random, operatorAndProbabilityMap, createConst, dimensionsCount, minimalDepth, 
+                leafProbability, constantProbability);
         }
 
         public async Task<FormulaRenderResult> RenderFormulaAsync(ProgressObserver progressObserver)

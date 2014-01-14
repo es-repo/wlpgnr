@@ -44,7 +44,7 @@ namespace WallpaperGenerator.Formulas.Testing
 
             Random random = RandomMock.Setup(EnumerableExtensions.Repeat(i => i * 0.1, 10));
             IDictionary<Operator, double> operatorAndProbabilityMap = new DictionaryExt<Operator, double>(operators.Select((op, i) => new KeyValuePair<Operator, double>(op, i % 2 + 1)));
-            Grammar<Operator> grammar = FormulaTreeGenerator.CreateGrammar(operatorAndProbabilityMap, () => 0, 1, random, 0.3, 0.3);
+            Grammar<Operator> grammar = FormulaTreeGenerator.CreateGrammar(random, operatorAndProbabilityMap, () => 0, 1, 0.3, 0.3);
             IEnumerable<string> fromSymbols = grammar.Rules.Select(r => r.From.Name).OrderBy(s => s);
             Assert.AreElementsEqual(expectedFromSymbols.ToArray(), fromSymbols.ToArray());
         }
@@ -81,7 +81,7 @@ namespace WallpaperGenerator.Formulas.Testing
         {
             Random random = RandomMock.Setup(EnumerableExtensions.Repeat(i => i * 0.1, 10));
             IDictionary<Operator, double> operatorAndProbabilityMap = new DictionaryExt<Operator, double>(operators.Select((op, i) => new KeyValuePair<Operator, double>(op, i % 2 + 1)));
-            FormulaTree formulaTree = FormulaTreeGenerator.Generate(operatorAndProbabilityMap, createConstant, minimalTreeDepth, random, 0.3, 0.3);
+            FormulaTree formulaTree = FormulaTreeGenerator.Generate(random, operatorAndProbabilityMap, createConstant, minimalTreeDepth, 0.3, 0.3);
             Assert.AreEqual(expectedSerializedTree, FormulaTreeSerializer.Serialize(formulaTree).ToLower());
         }
 

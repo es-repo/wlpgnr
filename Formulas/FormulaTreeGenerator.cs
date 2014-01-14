@@ -17,24 +17,24 @@ namespace WallpaperGenerator.Formulas
 {
     public static class FormulaTreeGenerator
     {
-        public static FormulaTree Generate(IDictionary<Operator, double> operatorAndProbabilityMap, Func<double> createConstant, int dimensionsCount, int minimalDepth,
-            Random random, double leafProbability, double constantProbability)
+        public static FormulaTree Generate(Random random, IDictionary<Operator, double> operatorAndProbabilityMap, Func<double> createConstant, int dimensionsCount, int minimalDepth,
+            double leafProbability, double constantProbability)
         {
             IEnumerable<string> variableNames = EnumerableExtensions.Repeat(i => "x" + i.ToString(CultureInfo.InvariantCulture), dimensionsCount);
             IEnumerable<Operator> variables = variableNames.Select(n => new Variable(n));
             variables.ForEach(v => operatorAndProbabilityMap.Add(v, 1));
-            return Generate(operatorAndProbabilityMap, createConstant, minimalDepth, random, leafProbability, constantProbability);
+            return Generate(random, operatorAndProbabilityMap, createConstant, minimalDepth, leafProbability, constantProbability);
         }
 
-        public static FormulaTree Generate(IDictionary<Operator, double> operatorAndProbabilityMap, Func<double> createConstant, int minimalDepth, Random random,
+        public static FormulaTree Generate(Random random, IDictionary<Operator, double> operatorAndProbabilityMap, Func<double> createConstant, int minimalDepth,
             double leafProbability, double constantProbability)
         {
-            Grammar<Operator> grammar = CreateGrammar(operatorAndProbabilityMap, createConstant, minimalDepth, random, leafProbability, constantProbability); 
+            Grammar<Operator> grammar = CreateGrammar(random, operatorAndProbabilityMap, createConstant, minimalDepth,  leafProbability, constantProbability); 
             TreeNode<Operator> treeRoot = TreeGenerator.Generate(grammar, "OpNode", op => op.Arity);
             return new FormulaTree(treeRoot);
         }
 
-        public static Grammar<Operator> CreateGrammar(IDictionary<Operator, double> operatorAndProbabilityMap, Func<double> createConstant, int minimalDepth, Random random,
+        public static Grammar<Operator> CreateGrammar(Random random, IDictionary<Operator, double> operatorAndProbabilityMap, Func<double> createConstant, int minimalDepth,
             double leafProbability, double constantProbability)
         {
             List<Operator> operatorsWithZeroProbability = operatorAndProbabilityMap.Where(e => e.Value.Equals(0)).Select(e => e.Key).ToList();

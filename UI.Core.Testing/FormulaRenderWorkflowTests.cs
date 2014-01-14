@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using MbUnit.Framework;
 using WallpaperGenerator.Formulas;
 using WallpaperGenerator.Formulas.Operators;
@@ -23,7 +24,7 @@ namespace WallpaperGenerator.UI.Core.Testing
                 HeightInPixels = 3,
                 DimensionCountBounds = new Bounds<int>(2,3),
                 MinimalDepthBounds = new Bounds<int>(4, 4),
-                Operators = new Operator[] { OperatorsLibrary.Sum, OperatorsLibrary.Sin }
+                OperatorAndProbabilityMap = new Dictionary<Operator, double>{ {OperatorsLibrary.Sum, 1}, {OperatorsLibrary.Sin, 1} }
             };
             _workflow = new FormulaRenderWorkflow(generationParams, _random);
         }
