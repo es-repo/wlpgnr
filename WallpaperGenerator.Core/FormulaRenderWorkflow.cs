@@ -99,6 +99,14 @@ Sum Sin Cbrt Sub Tanh Ln Cbrt Sin Sin Atan Ln Atan Ln x7 Atan Ln Sin Atan Ln Tan
             double constantProbability = _random.Next(GenerationParams.ConstantProbabilityBounds);
             double leafProbability = _random.Next(GenerationParams.LeafProbabilityBounds);
             IDictionary<Operator, double> operatorAndProbabilityMap = GenerationParams.OperatorAndMaxProbabilityMap.ToDictionary(e => e.Key, e => e.Value);
+            //List<Operator> operatorsToRemove = new List<Operator>(); 
+            //foreach (var d in operatorAndProbabilityMap)
+            //{
+            //    if (_random.NextDouble() > 0.5)
+            //        operatorsToRemove.Add(d.Key);
+            //}
+            //operatorsToRemove.ForEach(op => operatorAndProbabilityMap.Remove(op));
+            
             Func<double> createConst = () =>
             {
                 double c = Math.Round(_random.Next(GenerationParams.ConstantBounds), 2);
