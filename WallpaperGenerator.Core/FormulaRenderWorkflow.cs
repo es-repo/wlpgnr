@@ -98,7 +98,7 @@ Sum Sin Cbrt Sub Tanh Ln Cbrt Sin Sin Atan Ln Atan Ln x7 Atan Ln Sin Atan Ln Tan
             int minimalDepth = _random.Next(GenerationParams.MinimalDepthBounds);
             double constantProbability = _random.Next(GenerationParams.ConstantProbabilityBounds);
             double leafProbability = _random.Next(GenerationParams.LeafProbabilityBounds);
-            IDictionary<Operator, double> operatorAndProbabilityMap = GenerationParams.OperatorAndProbabilityMap.ToDictionary(e => e.Key, e => e.Value);
+            IDictionary<Operator, double> operatorAndProbabilityMap = GenerationParams.OperatorAndMaxProbabilityMap.ToDictionary(e => e.Key, e => e.Value);
             Func<double> createConst = () =>
             {
                 double c = Math.Round(_random.Next(GenerationParams.ConstantBounds), 2);

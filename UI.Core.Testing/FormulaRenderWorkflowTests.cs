@@ -24,7 +24,7 @@ namespace WallpaperGenerator.UI.Core.Testing
                 HeightInPixels = 3,
                 DimensionCountBounds = new Bounds<int>(2,3),
                 MinimalDepthBounds = new Bounds<int>(4, 4),
-                OperatorAndProbabilityMap = new Dictionary<Operator, double>{ {OperatorsLibrary.Sum, 1}, {OperatorsLibrary.Sin, 1} }
+                OperatorAndMaxProbabilityMap = new Dictionary<Operator, double>{ {OperatorsLibrary.Sum, 1}, {OperatorsLibrary.Sin, 1} }
             };
             _workflow = new FormulaRenderWorkflow(generationParams, _random);
         }

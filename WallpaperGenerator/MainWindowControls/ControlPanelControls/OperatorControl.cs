@@ -19,6 +19,7 @@ namespace WallpaperGenerator.UI.Windows.MainWindowControls.ControlPanelControls
         public double Probability 
         {
             get { return _probabilitySlider.Value / 100; }
+            set { _probabilitySlider.Value = value*100; }
         }
 
         public OperatorControl(Operator @operator)

@@ -3,7 +3,9 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using WallpaperGenerator.Formulas.Operators;
+using WallpaperGenerator.UI.Core;
 using WallpaperGenerator.UI.Windows.MainWindowControls.ControlPanelControls;
+using WallpaperGenerator.Utilities;
 
 namespace WallpaperGenerator.UI.Windows.MainWindowControls
 {
@@ -22,6 +24,8 @@ namespace WallpaperGenerator.UI.Windows.MainWindowControls
         public Button StartStopSmoothAnimationButton { get; private set; }
 
         public Button SaveButton { get; private set; }
+
+        public CheckBox RandomizeCheckBox { get; private set; }
 
         public Slider DimensionsCountSlider { get; private set; }
 
@@ -68,7 +72,10 @@ namespace WallpaperGenerator.UI.Windows.MainWindowControls
                 (s, a) => StartStopSmoothAnimationButton.Content = StartStopSmoothAnimationButton.Content.ToString() == animateSmoothlyText ? stopAnimationText : animateSmoothlyText;
 
             SaveButton = CreateButton(panel, "Save");
-            
+
+            RandomizeCheckBox = new CheckBox { Content = "Randomize", Margin = new Thickness { Top = 10, Bottom = 5} };
+            panel.Children.Add(RandomizeCheckBox);
+
             DimensionsCountSlider = CreateSliderControlsBlock(panel,1, 100, 8, "Dimensions");
 
             MinimalDepthSlider = CreateSliderControlsBlock(panel,1, 100, 14, "Minimal depth");
@@ -145,7 +152,41 @@ namespace WallpaperGenerator.UI.Windows.MainWindowControls
             return OperatorsLibrary.AllByCategories.Select(p =>
                 new KeyValuePair<string, IEnumerable<OperatorControl>>(
                     p.Key,
-                    p.Value.Select(op => new OperatorControl(op) /*{ IsChecked = true }*/)));
+                    p.Value.Select(op => new OperatorControl(op) )));
+        }
+
+        public void LoadState(FormulaRenderArgumentsGenerationParams generationParams)
+        {
+            DimensionsCountSlider.Value = generationParams.DimensionCountBounds.Low;
+            MinimalDepthSlider.Value = generationParams.MinimalDepthBounds.Low;
+            ConstantProbabilitySlider.Value = generationParams.ConstantProbabilityBounds.Low * 100;
+            LeafProbabilitySlider.Value = generationParams.LeafProbabilityBounds.Low*100;
+
+            foreach (OperatorControl opCtrl in OperatorControls)
+            {
+                if (generationParams.OperatorAndMaxProbabilityMap.ContainsKey(opCtrl.Operator))
+                {
+                    opCtrl.Probability = generationParams.OperatorAndMaxProbabilityMap[opCtrl.Operator];
+                    opCtrl.IsChecked = true;
+                }
+            }
+        }
+
+        public void SaveState(FormulaRenderArgumentsGenerationParams generationParams)
+        {
+            int dimensionsCount = (int)DimensionsCountSlider.Value;
+            generationParams.DimensionCountBounds = new Bounds<int>(dimensionsCount, dimensionsCount);
+
+            int minimalDepth = (int)MinimalDepthSlider.Value;
+            generationParams.MinimalDepthBounds = new Bounds<int>(minimalDepth, minimalDepth);
+
+            double constantProbability = ConstantProbabilitySlider.Value / 100;
+            generationParams.ConstantProbabilityBounds = new Bounds(constantProbability, constantProbability);
+
+            double leafProbability = LeafProbabilitySlider.Value / 100;
+            generationParams.LeafProbabilityBounds = new Bounds(leafProbability, leafProbability);
+
+            generationParams.OperatorAndMaxProbabilityMap = OperatorControls.Where(cb => cb.IsChecked).ToDictionary(c => c.Operator, c => c.Probability);
         }
     }
 }

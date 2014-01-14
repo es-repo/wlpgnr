@@ -6,7 +6,6 @@ using System.Windows;
 using System.Windows.Input;
 using WallpaperGenerator.Formulas;
 using WallpaperGenerator.UI.Core;
-using WallpaperGenerator.UI.Windows.MainWindowControls.ControlPanelControls;
 using WallpaperGenerator.Utilities;
 using WallpaperGenerator.Utilities.ProgressReporting;
 
@@ -43,16 +42,9 @@ namespace WallpaperGenerator.UI.Windows
 
                 int minimalDepth = (int) _mainWindow.ControlPanel.MinimalDepthSlider.Value;
                 generationParams.MinimalDepthBounds = new Bounds<int>(minimalDepth, minimalDepth);
-
-                double constantProbability = _mainWindow.ControlPanel.ConstantProbabilitySlider.Value/100;
-                generationParams.ConstantProbabilityBounds = new Bounds(constantProbability, constantProbability);
                 
-                double leafProbability = _mainWindow.ControlPanel.LeafProbabilitySlider.Value / 100;
-                generationParams.LeafProbabilityBounds = new Bounds(leafProbability, leafProbability);
-
-                IEnumerable<OperatorControl> checkedOperatorControls = _mainWindow.ControlPanel.OperatorControls.Where(cb => cb.IsChecked);
-                generationParams.OperatorAndProbabilityMap = checkedOperatorControls.ToDictionary(c => c.Operator, c => c.Probability);
-                
+                _mainWindow.ControlPanel.SaveState(generationParams);
+                 
                 FormulaRenderArguments renderArguments = UserInputFormulaRenderArguments;
                 if (renderArguments != null)
                 {
@@ -69,14 +61,20 @@ namespace WallpaperGenerator.UI.Windows
         public WallpaperGeneratorApplication()
         {
             _workflow = new FormulaRenderWorkflow(new FormulaRenderArgumentsGenerationParams());
-
             _mainWindow = new MainWindow { WindowState = WindowState.Maximized };
+            _mainWindow.ControlPanel.LoadState(_workflow.GenerationParams);
 
-            _mainWindow.ControlPanel.GenerateFormulaButton.Click += (s, a) =>
+            _mainWindow.ControlPanel.GenerateFormulaButton.Click += async (s, a) =>
             {
+                if (_mainWindow.ControlPanel.RandomizeCheckBox.IsChecked.HasValue && _mainWindow.ControlPanel.RandomizeCheckBox.IsChecked.Value)
+                {
+                    FormulaRenderArgumentsGenerationParams randomParams = RandomizeFormulaRenderArgumentsGenerationParams(new FormulaRenderArgumentsGenerationParams());
+                    _mainWindow.ControlPanel.LoadState(randomParams);
+                }
                 _workflow.GenerationParams = UserInputFormulaRenderArgumentsGenerationParams;
                 FormulaRenderArguments formulaRenderArguments = _workflow.GenerateFormulaRenderArguments();
                 _mainWindow.FormulaTexBox.Text = formulaRenderArguments.ToString();
+                await DrawImageAsync();
             };
 
             _mainWindow.ControlPanel.TransformButton.Click += async (s, a) =>
@@ -106,6 +104,27 @@ namespace WallpaperGenerator.UI.Windows
             _mainWindow.ControlPanel.SaveButton.Click += (s, a) => SaveFormulaImage();
         }
 
+        private FormulaRenderArgumentsGenerationParams RandomizeFormulaRenderArgumentsGenerationParams(FormulaRenderArgumentsGenerationParams initParams)
+        {
+            FormulaRenderArgumentsGenerationParams randomParams = new FormulaRenderArgumentsGenerationParams();
+
+            int dimensionsCount = _random.Next(initParams.DimensionCountBounds);
+            randomParams.DimensionCountBounds = new Bounds<int>(dimensionsCount, dimensionsCount);
+
+            int minimalDepth = _random.Next(initParams.MinimalDepthBounds);
+            randomParams.MinimalDepthBounds = new Bounds<int>(minimalDepth, minimalDepth);
+            
+            double leafProbability = _random.Next(initParams.LeafProbabilityBounds);
+            randomParams.LeafProbabilityBounds = new Bounds(leafProbability, leafProbability);
+
+            double constantProbability = _random.Next(initParams.ConstantProbabilityBounds);
+            randomParams.ConstantProbabilityBounds = new Bounds(constantProbability, constantProbability);
+
+            randomParams.OperatorAndMaxProbabilityMap = initParams.OperatorAndMaxProbabilityMap.ToDictionary(e => e.Key, e => _random.Next(0, e.Value));
+            
+            return randomParams;
+        }
+
         #endregion
 
         protected override void OnStartup(StartupEventArgs e)
@@ -113,27 +132,6 @@ namespace WallpaperGenerator.UI.Windows
             base.OnStartup(e);
             _mainWindow.Show();
         }
-
-        //private FormulaTree CreateRandomFormulaTree()
-        //{
-        //    int dimensionsCount = (int)_mainWindow.ControlPanel.DimensionsCountSlider.Value;
-        //    int minimalDepth = (int) _mainWindow.ControlPanel.MinimalDepthSlider.Value;
-        //    double constantProbability = _mainWindow.ControlPanel.ConstantProbabilitySlider.Value/100;
-        //    double leafProbability = _mainWindow.ControlPanel.LeafProbabilitySlider.Value / 100;
-            
-        //    IEnumerable<OperatorControl> checkedOperatorControls = _mainWindow.ControlPanel.OperatorControls.Where(cb => cb.IsChecked);
-        //    IDictionary<Operator, double> operatorAndProbabilityMap =
-        //        new DictionaryExt<Operator, double>(checkedOperatorControls.Select(opc => new KeyValuePair<Operator, double>(opc.Operator, opc.Probability)));
-
-        //    Func<double> createConst = () => 
-        //    {
-        //        double d = _random.Next(_configuration.ConstantBounds);
-        //        return Math.Abs(d - 0) < 0.01 ? 0.01 : d;
-        //    };
-
-        //    return FormulaTreeGenerator.Generate(operatorAndProbabilityMap, createConst, dimensionsCount, minimalDepth,
-        //        _random, leafProbability, constantProbability);
-        //}
 
         private bool _isAnimationStarted;
 
