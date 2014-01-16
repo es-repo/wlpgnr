@@ -35,6 +35,8 @@ namespace WallpaperGenerator.UI.Windows.MainWindowControls
 
         public Slider ConstantProbabilitySlider { get; private set; }
 
+        public Slider UnaryVsBinaryOperatorsProbability { get; private set; }
+
         public IEnumerable<OperatorControl> OperatorControls { get; private set; }
     
         #endregion
@@ -83,6 +85,8 @@ namespace WallpaperGenerator.UI.Windows.MainWindowControls
             LeafProbabilitySlider = CreateSliderControlsBlock(panel, 0, 100, 20, "Leaf probability");
 
             ConstantProbabilitySlider = CreateSliderControlsBlock(panel, 0, 100, 20, "Constant probability");
+
+            UnaryVsBinaryOperatorsProbability = CreateSliderControlsBlock(panel, 0, 100, 50, "Unary vs binary probability");
 
             return panel;
         }
@@ -164,9 +168,9 @@ namespace WallpaperGenerator.UI.Windows.MainWindowControls
 
             foreach (OperatorControl opCtrl in OperatorControls)
             {
-                if (generationParams.OperatorAndMaxProbabilityMap.ContainsKey(opCtrl.Operator))
+                if (generationParams.OperatorAndMaxProbabilityBoundsMap.ContainsKey(opCtrl.Operator))
                 {
-                    opCtrl.Probability = generationParams.OperatorAndMaxProbabilityMap[opCtrl.Operator];
+                    opCtrl.Probability = generationParams.OperatorAndMaxProbabilityBoundsMap[opCtrl.Operator].High;
                     opCtrl.IsChecked = true;
                 }
             }
@@ -186,7 +190,7 @@ namespace WallpaperGenerator.UI.Windows.MainWindowControls
             double leafProbability = LeafProbabilitySlider.Value / 100;
             generationParams.LeafProbabilityBounds = new Bounds(leafProbability, leafProbability);
 
-            generationParams.OperatorAndMaxProbabilityMap = OperatorControls.Where(cb => cb.IsChecked).ToDictionary(c => c.Operator, c => c.Probability);
+            generationParams.OperatorAndMaxProbabilityBoundsMap = OperatorControls.Where(cb => cb.IsChecked).ToDictionary(c => c.Operator, c => new Bounds(0, c.Probability));
         }
     }
 }

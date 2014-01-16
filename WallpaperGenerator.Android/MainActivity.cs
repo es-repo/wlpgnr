@@ -53,6 +53,7 @@ namespace WallpaperGenerator.UI.Android
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
             MenuInflater.Inflate(Resource.Menu.Main, menu);
+            menu.FindItem(Resource.Id.renderMenuItem).SetVisible(false);
             return true;
         }
 
@@ -92,8 +93,10 @@ namespace WallpaperGenerator.UI.Android
 
         private async Task OnGenerateMenuItemSelected()
         {
+            ClearImageView();
             FormulaRenderArguments formulaRenderArguments = await _workflow.GenerateFormulaRenderArgumentsAsync();
             _formulaTextView.Text = formulaRenderArguments.ToString();
+            await DrawImageAsync();
         }
 
         private async Task OnRenderMenuItemSelected()

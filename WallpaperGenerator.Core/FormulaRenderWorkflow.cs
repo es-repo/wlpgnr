@@ -94,27 +94,12 @@ Sum Sin Cbrt Sub Tanh Ln Cbrt Sin Sin Atan Ln Atan Ln x7 Atan Ln Sin Atan Ln Tan
 
         private FormulaTree CreateRandomFormulaTree()
         {
-            int dimensionsCount = _random.Next(GenerationParams.DimensionCountBounds);
-            int minimalDepth = _random.Next(GenerationParams.MinimalDepthBounds);
-            double constantProbability = _random.Next(GenerationParams.ConstantProbabilityBounds);
-            double leafProbability = _random.Next(GenerationParams.LeafProbabilityBounds);
-            IDictionary<Operator, double> operatorAndProbabilityMap = GenerationParams.OperatorAndMaxProbabilityMap.ToDictionary(e => e.Key, e => e.Value);
-            //List<Operator> operatorsToRemove = new List<Operator>(); 
-            //foreach (var d in operatorAndProbabilityMap)
-            //{
-            //    if (_random.NextDouble() > 0.5)
-            //        operatorsToRemove.Add(d.Key);
-            //}
-            //operatorsToRemove.ForEach(op => operatorAndProbabilityMap.Remove(op));
-            
-            Func<double> createConst = () =>
-            {
-                double c = Math.Round(_random.Next(GenerationParams.ConstantBounds), 2);
-                return Math.Abs(c - 0) < 0.01 ? 0.01 : c;
-            };
+            FormulaGenerationArguments args = FormulaGenerationArguments.CreateRandom(_random, GenerationParams.DimensionCountBounds,
+                GenerationParams.MinimalDepthBounds, GenerationParams.LeafProbabilityBounds, GenerationParams.ConstantProbabilityBounds,
+                GenerationParams.ConstantBounds, GenerationParams.OperatorAndMaxProbabilityBoundsMap, GenerationParams.UnaryVsBinaryOperatorsProbabilityBounds);
 
-            return FormulaTreeGenerator.Generate(_random, operatorAndProbabilityMap, createConst, dimensionsCount, minimalDepth, 
-                leafProbability, constantProbability);
+            return FormulaTreeGenerator.Generate(_random, args.OperatorAndProbabilityMap, args.CreateConstant,
+                args.DimensionsCount, args.MinimalDepth, args.LeafProbability, args.ConstantProbability);
         }
 
         public async Task<FormulaRenderResult> RenderFormulaAsync(ProgressObserver progressObserver)

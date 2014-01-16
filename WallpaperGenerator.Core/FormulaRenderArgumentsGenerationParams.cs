@@ -9,7 +9,7 @@ namespace WallpaperGenerator.UI.Core
     {
         public int WidthInPixels = 360;
         public int HeightInPixels = 640;
-        public Bounds<int> DimensionCountBounds = new Bounds<int>(4, 20);
+        public Bounds<int> DimensionCountBounds = new Bounds<int>(4, 15);
         public Bounds<int> MinimalDepthBounds = new Bounds<int>(8, 13);
         public Bounds ConstantBounds = new Bounds(-10, 10);
         public Bounds ConstantProbabilityBounds = new Bounds(0, 0.5);
@@ -17,25 +17,26 @@ namespace WallpaperGenerator.UI.Core
         public Bounds RangeBounds = new Bounds(-40, 40);
         public Bounds ColorChannelPolinomialTransformationCoefficientBounds = new Bounds(-10, 10);
         public double ColorChannelZeroProbabilty = 0.1;
+        public Bounds UnaryVsBinaryOperatorsProbabilityBounds = new Bounds(0.01, 0.01);
 
-        public IDictionary<Operator, double> OperatorAndMaxProbabilityMap = new Dictionary<Operator, double>
+        public IDictionary<Operator, Bounds> OperatorAndMaxProbabilityBoundsMap = new Dictionary<Operator, Bounds>
         {
-            {OperatorsLibrary.Sum, 1},
-            {OperatorsLibrary.Sub, 1},
-            //{OperatorsLibrary.Mul, 0.2},
-            //{OperatorsLibrary.Div, 0.1},
-            //{OperatorsLibrary.Max, 0.2},
+            {OperatorsLibrary.Sum, new Bounds(0, 1)},
+            {OperatorsLibrary.Sub, new Bounds(0, 1)},
+            //{OperatorsLibrary.Mul, 0.25},
+            //{OperatorsLibrary.Div, 0.25},
+            //{OperatorsLibrary.Max, 0.25},
             //{OperatorsLibrary.Pow, 0.2},
 
-            //{OperatorsLibrary.Abs, 0.3},
-            {OperatorsLibrary.Sin, 0.5},
-            {OperatorsLibrary.Cos, 0.5},
-            //{OperatorsLibrary.Atan, 1},
-            {OperatorsLibrary.Ln, 0.5},
-            {OperatorsLibrary.Sqrt,0.2},
-            {OperatorsLibrary.Cbrt,0.2},
-            //{OperatorsLibrary.Pow2, 1},
-            //{OperatorsLibrary.Pow3, 1},
+            //{OperatorsLibrary.Abs, 0.7},
+            {OperatorsLibrary.Sin, new Bounds(0, 1)},
+            {OperatorsLibrary.Cos, new Bounds(0, 1)},
+            //{OperatorsLibrary.Atan, new Bounds(0, 1)},
+            {OperatorsLibrary.Ln, new Bounds(0, 1)},
+            //{OperatorsLibrary.Sqrt,0.25},
+            {OperatorsLibrary.Cbrt,new Bounds(0, 1)},
+            //{OperatorsLibrary.Pow2, 0.2},
+            //{OperatorsLibrary.Pow3, 0.2},
             
         }; 
     }
