@@ -33,7 +33,7 @@ namespace WallpaperGenerator.UI.Core
                 MinimalDepth = random.Next(minimalDepthBounds),
                 LeafProbability = random.Next(leafProbabilityBounds),
                 ConstantProbability = random.Next(constantProbabilityBounds),
-                OperatorAndProbabilityMap = operatorAndMaxProbabilityBoundsMap.ToDictionary(e => e.Key, e => random.Next(e.Value)),
+                OperatorAndProbabilityMap = operatorAndProbabilityMap,
                 CreateConstant = () =>
                 {
                     double c = Math.Round(random.Next(constantBounds), 2);

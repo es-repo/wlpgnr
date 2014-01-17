@@ -119,6 +119,9 @@ namespace WallpaperGenerator.UI.Windows
 
             double constantProbability = _random.Next(initParams.ConstantProbabilityBounds);
             randomParams.ConstantProbabilityBounds = new Bounds(constantProbability, constantProbability);
+
+            double unaryVsBinaryOperatorsProbability = _random.Next(initParams.UnaryVsBinaryOperatorsProbabilityBounds);
+            randomParams.UnaryVsBinaryOperatorsProbabilityBounds = new Bounds(unaryVsBinaryOperatorsProbability, unaryVsBinaryOperatorsProbability);
             
             return randomParams;
         }

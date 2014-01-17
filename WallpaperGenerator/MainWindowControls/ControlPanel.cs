@@ -35,7 +35,7 @@ namespace WallpaperGenerator.UI.Windows.MainWindowControls
 
         public Slider ConstantProbabilitySlider { get; private set; }
 
-        public Slider UnaryVsBinaryOperatorsProbability { get; private set; }
+        public Slider UnaryVsBinaryOperatorsProbabilitySlider { get; private set; }
 
         public IEnumerable<OperatorControl> OperatorControls { get; private set; }
     
@@ -86,7 +86,7 @@ namespace WallpaperGenerator.UI.Windows.MainWindowControls
 
             ConstantProbabilitySlider = CreateSliderControlsBlock(panel, 0, 100, 20, "Constant probability");
 
-            UnaryVsBinaryOperatorsProbability = CreateSliderControlsBlock(panel, 0, 100, 50, "Unary vs binary probability");
+            UnaryVsBinaryOperatorsProbabilitySlider = CreateSliderControlsBlock(panel, 0, 100, 50, "Unary vs binary probability");
 
             return panel;
         }
@@ -165,6 +165,7 @@ namespace WallpaperGenerator.UI.Windows.MainWindowControls
             MinimalDepthSlider.Value = generationParams.MinimalDepthBounds.Low;
             ConstantProbabilitySlider.Value = generationParams.ConstantProbabilityBounds.Low * 100;
             LeafProbabilitySlider.Value = generationParams.LeafProbabilityBounds.Low*100;
+            UnaryVsBinaryOperatorsProbabilitySlider.Value = generationParams.UnaryVsBinaryOperatorsProbabilityBounds.Low * 100;
 
             foreach (OperatorControl opCtrl in OperatorControls)
             {
@@ -189,6 +190,9 @@ namespace WallpaperGenerator.UI.Windows.MainWindowControls
 
             double leafProbability = LeafProbabilitySlider.Value / 100;
             generationParams.LeafProbabilityBounds = new Bounds(leafProbability, leafProbability);
+
+            double unaryVsBinaryOperatorsProbability = UnaryVsBinaryOperatorsProbabilitySlider.Value / 100;
+            generationParams.UnaryVsBinaryOperatorsProbabilityBounds = new Bounds(unaryVsBinaryOperatorsProbability, unaryVsBinaryOperatorsProbability);
 
             generationParams.OperatorAndMaxProbabilityBoundsMap = OperatorControls.Where(cb => cb.IsChecked).ToDictionary(c => c.Operator, c => new Bounds(0, c.Probability));
         }
