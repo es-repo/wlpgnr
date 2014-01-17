@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using WallpaperGenerator.FormulaRendering;
 using WallpaperGenerator.Formulas;
-using WallpaperGenerator.Utilities;
 using WallpaperGenerator.Utilities.ProgressReporting;
 
 namespace WallpaperGenerator.UI.Core
