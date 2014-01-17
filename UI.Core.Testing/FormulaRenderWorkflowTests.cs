@@ -33,10 +33,7 @@ namespace WallpaperGenerator.UI.Core.Testing
         public void TestGenerateFormulaRenderArguments()
         {
             FormulaRenderArguments args = _workflow.GenerateFormulaRenderArguments();
-            const string expectedArgsString =
-@"3;3;-31.5,-2.1;-2.1,3.5;1;1.4
--36,-2.4,-2.4,0.5;22.4,0,-2.8,0.4;12.6,-27,-1.8,0.3
-Sin Sum Sum x0 x0 Sin x1";
+            const string expectedArgsString = "3;3;-2.56,0;1;1.45\r\n1.2,3.2,0,0.2;0.4,1.68,-3.6,0.1;0,0.72,1.92,0\r\nSum Sin Sin x1 x1";
             Assert.AreEqual(expectedArgsString, args.ToString());
             Assert.AreEqual(expectedArgsString, _workflow.FormulaRenderArguments.ToString());
         }
@@ -46,10 +43,7 @@ Sin Sum Sum x0 x0 Sin x1";
         {
             _workflow.GenerateFormulaRenderArguments();
             FormulaRenderArguments args = _workflow.ChangeColors();
-            const string expectedArgsString =
-@"3;3;-31.5,-2.1;-2.1,3.5;1;1.4
-6,16,0,0.2;2,8.4,-18,0.1;0,3.6,9.6,0
-Sin Sum Sum x0 x0 Sin x1";
+            const string expectedArgsString = "3;3;-2.56,0;1;1.45\r\n-0.12,0.2,0.84,0.9;0,0,0,0;-0.12,0.2,0.84,0.9\r\nSum Sin Sin x1 x1";
             Assert.AreEqual(expectedArgsString, args.ToString());
             Assert.AreEqual(expectedArgsString, _workflow.FormulaRenderArguments.ToString());
         }
@@ -59,10 +53,7 @@ Sin Sum Sum x0 x0 Sin x1";
         {
             _workflow.GenerateFormulaRenderArguments();
             FormulaRenderArguments args = _workflow.TransformRanges();
-            const string expectedArgsString =
-@"3;3;4.8,12.8;-1.6,0;1;1.25
--36,-2.4,-2.4,0.5;22.4,0,-2.8,0.4;12.6,-27,-1.8,0.3
-Sin Sum Sum x0 x0 Sin x1";
+            const string expectedArgsString = "3;3;-0.24,0.4;1;1.1\r\n1.2,3.2,0,0.2;0.4,1.68,-3.6,0.1;0,0.72,1.92,0\r\nSum Sin Sin x1 x1";
             Assert.AreEqual(expectedArgsString, args.ToString());
             Assert.AreEqual(expectedArgsString, _workflow.FormulaRenderArguments.ToString());
         }
