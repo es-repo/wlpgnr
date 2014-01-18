@@ -93,7 +93,8 @@ Sum Sin Cbrt Sub Tanh Ln Cbrt Sin Sin Atan Ln Atan Ln x7 Atan Ln Sin Atan Ln Tan
         {
             FormulaGenerationArguments args = FormulaGenerationArguments.CreateRandom(_random, GenerationParams.DimensionCountBounds,
                 GenerationParams.MinimalDepthBounds, GenerationParams.LeafProbabilityBounds, GenerationParams.ConstantProbabilityBounds,
-                GenerationParams.ConstantBounds, GenerationParams.OperatorAndMaxProbabilityBoundsMap, GenerationParams.UnaryVsBinaryOperatorsProbabilityBounds);
+                GenerationParams.ConstantBounds, GenerationParams.OperatorAndMaxProbabilityBoundsMap,
+                GenerationParams.ObligatoryOperators, GenerationParams.UnaryVsBinaryOperatorsProbabilityBounds);
 
             return FormulaTreeGenerator.Generate(_random, args.OperatorAndProbabilityMap, args.CreateConstant,
                 args.DimensionsCount, args.MinimalDepth, args.LeafProbability, args.ConstantProbability);

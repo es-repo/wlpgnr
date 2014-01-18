@@ -26,8 +26,9 @@ namespace WallpaperGenerator.UI.Core.Testing
                 { OperatorsLibrary.Sin, new Bounds(1, 1) },
                 { OperatorsLibrary.Sum, new Bounds(0.1, 0.1) }
             };
-            FormulaGenerationArguments args = FormulaGenerationArguments.CreateRandom(random, dimensionCountBounds, minimalDepthBounds, leafProbabilityBounds, 
-                constantProbabilityBounds, constantsBounds, operatorAndProbabilityBoundsMap, unaryVsBinaryOperatorsProbabilityBounds);
+            Operator[] obligatoryOperators = {OperatorsLibrary.Sin};
+            FormulaGenerationArguments args = FormulaGenerationArguments.CreateRandom(random, dimensionCountBounds, minimalDepthBounds, leafProbabilityBounds,
+                constantProbabilityBounds, constantsBounds, operatorAndProbabilityBoundsMap, obligatoryOperators, unaryVsBinaryOperatorsProbabilityBounds);
 
             Assert.AreEqual(0.1, args.OperatorAndProbabilityMap[OperatorsLibrary.Sum]);
             Assert.AreEqual(0.1, args.OperatorAndProbabilityMap[OperatorsLibrary.Sin]);

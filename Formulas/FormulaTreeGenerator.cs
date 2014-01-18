@@ -75,7 +75,7 @@ namespace WallpaperGenerator.Formulas
             // SubNode -> sub RegOp2Operands
             // MulNode -> mul RegOp2Operands
             // DivNode -> InfGuard div OpNode OpNode
-            // PowNode -> (InfGuard pow RegOp2Operands)|(pow (OpNode InfGuard Op0Node)|(Op0Node InfGuard OpNode))
+            // PowNode -> (InfGuard pow OpOrOp0NodeOperands)|(Op0Node InfGuard OpNode))
             // MaxNode -> max (OpNode OpOrVNode)|(OpOrVNode OpNode)
             // ModNode -> mod (OpNode sum abs OpNode 0.01)|OpOrOp0NodeOperands
             // Op2Node -> DivNode|PowNode|MaxNode|ModNode
@@ -153,17 +153,16 @@ namespace WallpaperGenerator.Formulas
             rules.AddRange(CreateOpNodeRules(operators,
                 op =>
                     new OrRule<Operator>(s[GetOpNodeSymbolName(op)],
-                        new Rule<Operator>(new[] { s["InfGuard"], s[GetOpSymbolName(op)], s["OpNode"], s["OpNode"] })),
+                        new Rule<Operator>(new[] { s["InfGuard"], s[GetOpSymbolName(op)], s[GetOpSymbolName(OperatorsLibrary.Sin)], s["OpNode"], s["OpNode"] })),
                 typeof(Div)));
 
             // PowNode -> (InfGuard pow RegOp2Operands)|(pow (OpNode InfGuard Op0Node)|(Op0Node InfGuard OpNode))
             rules.AddRange(CreateOpNodeRules(operators,
                 op => new OrRule<Operator>(s[GetOpNodeSymbolName(op)],
                     createNonLeafOrLeafRuleSelector,
-                    new Rule<Operator>(new[] { s["InfGuard"], s[GetOpSymbolName(op)], s["RegOp2Operands"] }),
+                    new Rule<Operator>(new[] { s["InfGuard"], s[GetOpSymbolName(op)], s["OpOrOp0NodeOperands"] }),
                     new AndRule<Operator>(new Rule<Operator>(new[]{s[GetOpSymbolName(op)]}),
                         new OrRule<Operator>(rs => new RandomRuleSelector<Operator>(random, rs),
-                            new Rule<Operator>(new[] { s["OpNode"], s["InfGuard"], s["Op0Node"] }),
                             new Rule<Operator>(new[] { s["Op0Node"], s["InfGuard"], s["OpNode"] })))),
                 typeof(Pow)));
 

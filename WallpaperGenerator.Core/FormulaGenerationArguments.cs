@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using WallpaperGenerator.Formulas;
+using WallpaperGenerator.Formulas.Operators.Arithmetic;
+using WallpaperGenerator.Formulas.Operators.Trigonometric;
 using WallpaperGenerator.Utilities;
 
 namespace WallpaperGenerator.UI.Core
@@ -17,19 +19,20 @@ namespace WallpaperGenerator.UI.Core
 
         public static FormulaGenerationArguments CreateRandom(Random random, Bounds<int> dimensionCountBounds, Bounds<int> minimalDepthBounds,
             Bounds leafProbabilityBounds, Bounds constantProbabilityBounds, Bounds constantBounds, IDictionary<Operator, Bounds> operatorAndMaxProbabilityBoundsMap,
-            Bounds unaryVsBinaryOperatorsProbabilityBounds)
+            Operator[] obligatoryOperators, Bounds unaryVsBinaryOperatorsProbabilityBounds)
         {            
             Dictionary<Operator, double> operatorAndProbabilityMap = operatorAndMaxProbabilityBoundsMap.ToDictionary(e => e.Key, e => random.Next(e.Value));
             Operator[] unaryOperators = operatorAndMaxProbabilityBoundsMap.Keys.Where(op => op.Arity == 1).ToArray();
-            //Operator[] binaryOperators = operatorAndMaxProbabilityBoundsMap.Keys.Where(op => op.Arity == 2).ToArray();
-            //int unaryOperatorsCount = random.Next(new Bounds<int>(1, unaryOperators.Length));
-            //int binaryOperatorsCount = random.Next(new Bounds<int>(1, binaryOperators.Length));
-            //unaryOperators = random.TakeDistinct(unaryOperators, unaryOperatorsCount).ToArray();
-            //binaryOperators = random.TakeDistinct(binaryOperators, binaryOperatorsCount).ToArray();
-            //foreach (var op in unaryOperators.Concat(binaryOperators))
-            //{
-                
-            //}
+            Operator[] binaryOperators = operatorAndMaxProbabilityBoundsMap.Keys.Where(op => op.Arity == 2).ToArray();
+            int unaryOperatorsToDeleteCount = random.Next(new Bounds<int>(0, unaryOperators.Length - 1));
+            int binaryOperatorsToDeleteCount = random.Next(new Bounds<int>(0, binaryOperators.Length - 1));
+            var unaryOperatorsToDelete = random.TakeDistinct(unaryOperators, unaryOperatorsToDeleteCount).Where(op => obligatoryOperators.All(o => o != op));
+            var binaryOperatorsToDelete = random.TakeDistinct(binaryOperators, binaryOperatorsToDeleteCount).Where(op => obligatoryOperators.All(o => o != op));
+            var operatorsToDelete = unaryOperatorsToDelete.Concat(binaryOperatorsToDelete);
+            foreach (var op in operatorsToDelete)
+            {
+                operatorAndProbabilityMap.Remove(op);
+            }
 
             double ubp = random.Next(unaryVsBinaryOperatorsProbabilityBounds);
             double ups = operatorAndProbabilityMap.Where(e => e.Key.Arity == 1).Sum(e => e.Value);
