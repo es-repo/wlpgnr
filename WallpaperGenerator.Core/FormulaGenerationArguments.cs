@@ -18,8 +18,19 @@ namespace WallpaperGenerator.UI.Core
         public static FormulaGenerationArguments CreateRandom(Random random, Bounds<int> dimensionCountBounds, Bounds<int> minimalDepthBounds,
             Bounds leafProbabilityBounds, Bounds constantProbabilityBounds, Bounds constantBounds, IDictionary<Operator, Bounds> operatorAndMaxProbabilityBoundsMap,
             Bounds unaryVsBinaryOperatorsProbabilityBounds)
-        {
+        {            
             Dictionary<Operator, double> operatorAndProbabilityMap = operatorAndMaxProbabilityBoundsMap.ToDictionary(e => e.Key, e => random.Next(e.Value));
+            Operator[] unaryOperators = operatorAndMaxProbabilityBoundsMap.Keys.Where(op => op.Arity == 1).ToArray();
+            //Operator[] binaryOperators = operatorAndMaxProbabilityBoundsMap.Keys.Where(op => op.Arity == 2).ToArray();
+            //int unaryOperatorsCount = random.Next(new Bounds<int>(1, unaryOperators.Length));
+            //int binaryOperatorsCount = random.Next(new Bounds<int>(1, binaryOperators.Length));
+            //unaryOperators = random.TakeDistinct(unaryOperators, unaryOperatorsCount).ToArray();
+            //binaryOperators = random.TakeDistinct(binaryOperators, binaryOperatorsCount).ToArray();
+            //foreach (var op in unaryOperators.Concat(binaryOperators))
+            //{
+                
+            //}
+
             double ubp = random.Next(unaryVsBinaryOperatorsProbabilityBounds);
             double ups = operatorAndProbabilityMap.Where(e => e.Key.Arity == 1).Sum(e => e.Value);
             double bps = operatorAndProbabilityMap.Where(e => e.Key.Arity == 2).Sum(e => e.Value);

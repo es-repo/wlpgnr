@@ -72,5 +72,19 @@ namespace WallpaperGenerator.Utilities.Testing
                 Assert.AreEqual(expectedThirdProbability, thirdProbability);
             }
         }
+
+        [Test]
+        [Row(new int[] {}, 0, new int[] {})]
+        [Row(new[] { 1 }, 2, new int[] {}, ExpectedException = typeof (ArgumentException))]
+        [Row(new[] { 1, 2, 3, 4, 5 }, 0, new int[] {})]
+        [Row(new[] { 1, 2, 3, 4, 5 }, 1, new [] { 5 })]
+        [Row(new[] { 1, 2, 3, 4, 5 }, 3, new[] { 5, 1, 4 })]
+        [Row(new[] { 1, 2, 3, 4, 5 }, 5, new[] { 5, 1, 4, 3, 2 })]
+        public void TestTakeDistinctRandom(int[] source, int count, int[] expected)
+        {
+            Random random = RandomMock.Setup(new[] {0.9, 0.1, 0.8});
+            int[] result = random.TakeDistinct(source, count).ToArray();
+            Assert.AreEqual(expected, result);
+        }
     }
 }

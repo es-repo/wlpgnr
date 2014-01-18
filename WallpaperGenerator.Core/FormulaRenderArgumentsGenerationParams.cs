@@ -32,13 +32,11 @@ namespace WallpaperGenerator.UI.Core
             {OperatorsLibrary.Sin, new Bounds(0, 1)},
             {OperatorsLibrary.Cos, new Bounds(0, 1)},
             {OperatorsLibrary.Atan, new Bounds(0, 0.25)},
-            
             {OperatorsLibrary.Ln, new Bounds(0, 1)},
             {OperatorsLibrary.Sqrt, new Bounds(0, 1)},
             {OperatorsLibrary.Cbrt, new Bounds(0, 1)},
             {OperatorsLibrary.Pow2, new Bounds(0, 0.5)},
             {OperatorsLibrary.Pow3, new Bounds(0, 0.5)},
-            
         }; 
     }
 }

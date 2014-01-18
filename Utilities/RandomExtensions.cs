@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace WallpaperGenerator.Utilities
 {
@@ -45,6 +47,24 @@ namespace WallpaperGenerator.Utilities
                 return (T)(object)(int)random.Next(low, high);
             }
             return (T)(object)random.Next((double)(object)bounds.Low, (double)(object)bounds.High);
+        }
+
+        public static IEnumerable<T> TakeDistinct<T>(this Random random, T[] source, int count)
+        {
+            if (count < 0)
+                throw new ArgumentException("Count can't be less then 0.", "count");
+
+            if (source.Length < count)
+                throw new ArgumentException("Count is more then source array length.", "count");
+
+            List<int> indexes = EnumerableExtensions.Repeat(i => i, source.Length).ToList();
+            while (count > 0)
+            {
+                int idx = indexes.TakeRandom(random);
+                yield return source[idx];
+                indexes.Remove(idx);
+                count--;
+            }
         }
     }
 }
