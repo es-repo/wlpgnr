@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using WallpaperGenerator.Formulas;
-using WallpaperGenerator.Formulas.Operators.Arithmetic;
-using WallpaperGenerator.Formulas.Operators.Trigonometric;
 using WallpaperGenerator.Utilities;
 
 namespace WallpaperGenerator.UI.Core

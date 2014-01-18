@@ -153,7 +153,7 @@ namespace WallpaperGenerator.Formulas
             rules.AddRange(CreateOpNodeRules(operators,
                 op =>
                     new OrRule<Operator>(s[GetOpNodeSymbolName(op)],
-                        new Rule<Operator>(new[] { s["InfGuard"], s[GetOpSymbolName(op)], s[GetOpSymbolName(OperatorsLibrary.Sin)], s["OpNode"], s["OpNode"] })),
+                        new Rule<Operator>(new[] { s["InfGuard"], s[GetOpSymbolName(op)], s["OpNode"], s["OpNode"] })),
                 typeof(Div)));
 
             // PowNode -> (InfGuard pow RegOp2Operands)|(pow (OpNode InfGuard Op0Node)|(Op0Node InfGuard OpNode))

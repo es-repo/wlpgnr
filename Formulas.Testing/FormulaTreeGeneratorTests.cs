@@ -66,11 +66,11 @@ namespace WallpaperGenerator.Formulas.Testing
             
             TestGenerate(new Operator[] { new Variable("x"), new Variable("y"), new Variable("z"),
                 OperatorsLibrary.Pow, OperatorsLibrary.IfG }, createConstans, 6,
-                "atan pow pow 1 atan atan pow y z ifg atan pow y y ifg ifg x x x y pow 2 atan x tanh pow z z ifg x x x y pow 3 atan x tanh pow z z");
+                "atan pow pow 1 atan atan pow z z 2");
 
             TestGenerate(new Operator[] { new Variable("x"), new Variable("y"), new Variable("z"),
                 OperatorsLibrary.Div, OperatorsLibrary.Max }, createConstans, 4,
-                    "atan div tanh div z z atan div y y");
+                    "atan div atan div y z max x x");
 
             TestGenerate(new Operator[] { new Variable("x"), new Variable("y"), new Variable("z"),
                 OperatorsLibrary.Mod}, createConstans, 2,

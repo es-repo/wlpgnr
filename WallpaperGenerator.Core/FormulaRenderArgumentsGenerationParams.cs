@@ -29,7 +29,7 @@ namespace WallpaperGenerator.UI.Core
             {OperatorsLibrary.Pow, new Bounds(0, 0.5)},
 
             {OperatorsLibrary.Abs, new Bounds(0, 0.15)},
-            {OperatorsLibrary.Sin, new Bounds(0.5, 1)},
+            {OperatorsLibrary.Sin, new Bounds(0.25, 1)},
             {OperatorsLibrary.Cos, new Bounds(0, 1)},
             {OperatorsLibrary.Atan, new Bounds(0, 0.25)},
             {OperatorsLibrary.Ln, new Bounds(0, 0.5)},

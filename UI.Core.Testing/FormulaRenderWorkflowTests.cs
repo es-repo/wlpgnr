@@ -33,7 +33,7 @@ namespace WallpaperGenerator.UI.Core.Testing
         public void TestGenerateFormulaRenderArguments()
         {
             FormulaRenderArguments args = _workflow.GenerateFormulaRenderArguments();
-            const string expectedArgsString = "3;3;-2.56,0;1;1.45\r\n1.2,3.2,0,0.2;0.4,1.68,-3.6,0.1;0,0.72,1.92,0\r\nSum Sin Sin x1 x1";
+            const string expectedArgsString = "3;3;0,15.36;-1.92,0;1;1.35\r\n4.48,0,-0.56,0.4;2.52,-5.4,-0.36,0.3;1.2,3.2,0,0.2\r\nSum Sin Sin x1 Sum Sin x0 0.01";
             Assert.AreEqual(expectedArgsString, args.ToString());
             Assert.AreEqual(expectedArgsString, _workflow.FormulaRenderArguments.ToString());
         }
@@ -43,7 +43,7 @@ namespace WallpaperGenerator.UI.Core.Testing
         {
             _workflow.GenerateFormulaRenderArguments();
             FormulaRenderArguments args = _workflow.ChangeColors();
-            const string expectedArgsString = "3;3;-2.56,0;1;1.45\r\n-0.12,0.2,0.84,0.9;0,0,0,0;-0.12,0.2,0.84,0.9\r\nSum Sin Sin x1 x1";
+            const string expectedArgsString = "3;3;0,15.36;-1.92,0;1;1.35\r\n0.4,1.68,-3.6,0.1;0,0.72,1.92,0;-0.12,0.2,0.84,0.9\r\nSum Sin Sin x1 Sum Sin x0 0.01";
             Assert.AreEqual(expectedArgsString, args.ToString());
             Assert.AreEqual(expectedArgsString, _workflow.FormulaRenderArguments.ToString());
         }
@@ -53,7 +53,7 @@ namespace WallpaperGenerator.UI.Core.Testing
         {
             _workflow.GenerateFormulaRenderArguments();
             FormulaRenderArguments args = _workflow.TransformRanges();
-            const string expectedArgsString = "3;3;-0.24,0.4;1;1.1\r\n1.2,3.2,0,0.2;0.4,1.68,-3.6,0.1;0,0.72,1.92,0\r\nSum Sin Sin x1 x1";
+            const string expectedArgsString = "3;3;1.2,5.04;-10.8,-0.72;1;1.2\r\n4.48,0,-0.56,0.4;2.52,-5.4,-0.36,0.3;1.2,3.2,0,0.2\r\nSum Sin Sin x1 Sum Sin x0 0.01";
             Assert.AreEqual(expectedArgsString, args.ToString());
             Assert.AreEqual(expectedArgsString, _workflow.FormulaRenderArguments.ToString());
         }
