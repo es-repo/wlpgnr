@@ -42,11 +42,6 @@ namespace WallpaperGenerator.UI.Core
         {
             GenerationParams = generationParams;
             _random = random;
-
-            FormulaRenderArguments = FormulaRenderArguments.FromString(
-@"720;1280;-5.35,6.11;-21.74,-0.21;2.98,20.68;-0.56,18.97;-2.6,1.76;-7.25,0.25;-5.88,3.87;-4.73,1.87;1;1.28
-0,0,0,0;-0.93,0.5,-1.24,0.02;0.04,-0.92,0.47,0.05
-Sum Sin Cbrt Sub Tanh Ln Cbrt Sin Sin Atan Ln Atan Ln x7 Atan Ln Sin Atan Ln Tanh Ln Sin Sum x3 x7 Atan Ln Sum Sum Cbrt Sub x1 Sum Cbrt Tanh Ln Sum Sin x0 Sub x2 x6 Sum Sin Sub x7 Sin Sub x7 x2 x3 Sub Sum Atan Ln Sum Tanh Ln Sum x6 x4 Sin Sin Tanh Ln x0 Tanh Ln Cbrt Cbrt Sum Sum x4 x5 Sum x3 x2 Sin Sin Atan Ln Sub Sub Sub x1 x1 Sum x4 x5 x6 Atan Ln Tanh Ln Atan Ln Sub -7.47 Sin Atan Ln x0");       
         }
 
         public Task<FormulaRenderArguments> GenerateFormulaRenderArgumentsAsync()

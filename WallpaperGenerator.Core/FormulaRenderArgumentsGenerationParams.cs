@@ -23,13 +23,13 @@ namespace WallpaperGenerator.UI.Core
         {
             {OperatorsLibrary.Sum, new Bounds(0.25, 1)},
             {OperatorsLibrary.Sub, new Bounds(0.25, 1)},
-            {OperatorsLibrary.Mul, new Bounds(0, 0.15)},
+            {OperatorsLibrary.Mul, new Bounds(0, 0.25)},
             //{OperatorsLibrary.Div, new Bounds(0, 0.5)},
-            {OperatorsLibrary.Max, new Bounds(0, 0.1)},
+            {OperatorsLibrary.Max, new Bounds(0, 0.15)},
             {OperatorsLibrary.Pow, new Bounds(0, 0.5)},
 
             {OperatorsLibrary.Abs, new Bounds(0, 0.15)},
-            {OperatorsLibrary.Sin, new Bounds(0.25, 1)},
+            {OperatorsLibrary.Sin, new Bounds(0.15, 1)},
             {OperatorsLibrary.Cos, new Bounds(0, 1)},
             {OperatorsLibrary.Atan, new Bounds(0, 0.25)},
             {OperatorsLibrary.Ln, new Bounds(0, 0.5)},

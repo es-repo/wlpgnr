@@ -77,6 +77,7 @@
     <Compile Include="FormalGrammar\RuleSelectors\RandomRuleSelectorTests.cs" />
     <Compile Include="FormalGrammar\RuleTests.cs" />
     <Compile Include="FormalGrammar\GrammarTests.cs" />
+    <Compile Include="FuncUtilitiesTests.cs" />
     <Compile Include="MathUtilitiesTests.cs" />
     <Compile Include="ProgressReporting\ProgressAssert.cs" />
     <Compile Include="ProgressReporting\ProgressReporterTests.cs" />

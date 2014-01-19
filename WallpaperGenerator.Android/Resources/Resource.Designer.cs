@@ -127,17 +127,17 @@ namespace WallpaperGenerator.UI.Android
 			// aapt resource value: 0x7f080007
 			public const int generateMenuItem = 2131230727;
 			
-			// aapt resource value: 0x7f080003
-			public const int imageView = 2131230723;
+			// aapt resource value: 0x7f080005
+			public const int imageView = 2131230725;
 			
-			// aapt resource value: 0x7f080004
-			public const int progressTextView = 2131230724;
+			// aapt resource value: 0x7f080003
+			public const int progressTextView = 2131230723;
 			
 			// aapt resource value: 0x7f080008
 			public const int renderMenuItem = 2131230728;
 			
-			// aapt resource value: 0x7f080005
-			public const int renderTimeTextView = 2131230725;
+			// aapt resource value: 0x7f080004
+			public const int renderTimeTextView = 2131230724;
 			
 			// aapt resource value: 0x7f08000d
 			public const int saveMenuItem = 2131230733;
@@ -249,6 +249,9 @@ namespace WallpaperGenerator.UI.Android
 			
 			// aapt resource value: 0x7f05000a
 			public const int ViewGallery = 2131034122;
+			
+			// aapt resource value: 0x7f05000f
+			public const int WallpaperIsSaved = 2131034127;
 			
 			static String()
 			{

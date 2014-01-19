@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Android.App;
-using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
 using Android.Graphics.Drawables;
@@ -12,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using WallpaperGenerator.UI.Core;
 using WallpaperGenerator.Utilities.ProgressReporting;
+using AndroidEnvironment = Android.OS.Environment;
 
 namespace WallpaperGenerator.UI.Android
 {
@@ -23,6 +23,7 @@ namespace WallpaperGenerator.UI.Android
         private TextView _renderTimeTextView;
         private ImageView _imageView;
         private FormulaRenderWorkflow _workflow;
+        private WallpaperFileManager _wallpaperFileManager;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -46,6 +47,8 @@ namespace WallpaperGenerator.UI.Android
 
             if (_workflow.FormulaRenderArguments != null)
                 _formulaTextView.Text = _workflow.FormulaRenderArguments.ToString();
+
+            _wallpaperFileManager = new WallpaperFileManager(this, Resources.GetString(Resource.String.ApplicationName));
 
             ClearImageView();
         }
@@ -79,8 +82,12 @@ namespace WallpaperGenerator.UI.Android
                     break;
 
                 case Resource.Id.setAsWallpaperMenuItem:
-                    OnSetAsWallpaperMenuItem();
+                    OnSetAsWallpaperMenuItemSelected();
                     return true;
+
+                case Resource.Id.saveMenuItem:
+                    t = OnSaveMenuItemSelected();
+                    break;
 
                 default:
                     return base.OnOptionsItemSelected(item);
@@ -128,7 +135,7 @@ namespace WallpaperGenerator.UI.Android
             await DrawImageAsync();
         }
 
-        private void OnSetAsWallpaperMenuItem()
+        private void OnSetAsWallpaperMenuItemSelected()
         {
             if (!_workflow.IsImageReady)
                 return;
@@ -138,14 +145,20 @@ namespace WallpaperGenerator.UI.Android
             
             // TODO: wrap in try..catch block
             wallpaperManager.SetBitmapWithExactScreenSize(bitmap);
-            GoHome();
+            IntentShortcuts.GoHome(this);
         }
 
-        private void GoHome()
+        private async Task OnSaveMenuItemSelected()
         {
-            Intent startMain = new Intent(Intent.ActionMain);
-            startMain.AddCategory(Intent.CategoryHome);
-            StartActivity(startMain);
+            if (!_workflow.IsImageReady)
+                return;
+
+            // TODO: wrap in try..catch block
+            Bitmap bitmap = ((BitmapDrawable)_imageView.Drawable).Bitmap;
+            string imagePath = await _wallpaperFileManager.SaveAsync(bitmap);
+            if (imagePath == null)
+                throw new InvalidOperationException();
+            Toast.MakeText(this, Resources.GetString(Resource.String.WallpaperIsSaved), ToastLength.Long).Show();
         }
 
         private void ClearImageView()

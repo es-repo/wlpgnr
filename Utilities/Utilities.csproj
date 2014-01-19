@@ -61,6 +61,7 @@
     <Compile Include="FormalGrammar\RuleSelectors\RandomRuleSelector.cs" />
     <Compile Include="FormalGrammar\Symbol.cs" />
     <Compile Include="FormalGrammar\SymbolsSet.cs" />
+    <Compile Include="FuncUtilities.cs" />
     <Compile Include="MathUtilities.cs" />
     <Compile Include="ObjectExtensions.cs" />
     <Compile Include="Observer.cs" />
