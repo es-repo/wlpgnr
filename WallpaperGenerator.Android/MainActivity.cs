@@ -23,7 +23,7 @@ namespace WallpaperGenerator.UI.Android
         private TextView _renderTimeTextView;
         private ImageView _imageView;
         private FormulaRenderWorkflow _workflow;
-        private WallpaperFileManager _wallpaperFileManager;
+        private AndroidWallpaperFileManager _wallpaperFileManager;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -48,7 +48,7 @@ namespace WallpaperGenerator.UI.Android
             if (_workflow.FormulaRenderArguments != null)
                 _formulaTextView.Text = _workflow.FormulaRenderArguments.ToString();
 
-            _wallpaperFileManager = new WallpaperFileManager(this, Resources.GetString(Resource.String.ApplicationName));
+            _wallpaperFileManager = new AndroidWallpaperFileManager(this);
 
             ClearImageView();
         }

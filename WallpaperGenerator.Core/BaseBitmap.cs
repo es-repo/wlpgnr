@@ -2,7 +2,7 @@
 
 namespace WallpaperGenerator.UI.Core
 {
-    public abstract class BitMap
+    public abstract class BaseBitmap
     {
         public abstract void WriteAsPng(Stream stream);
     }

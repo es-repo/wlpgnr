@@ -4,7 +4,7 @@ using System.IO;
 
 namespace WallpaperGenerator.UI.Android
 {
-    public class AndroidBitmap : BitMap
+    public class AndroidBitmap : BaseBitmap
     {
         private readonly Bitmap _bitmap;
 

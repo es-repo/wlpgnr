@@ -1,45 +1,43 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using Android.Content;
-using Android.Graphics;
-using Android.Utilities;
+using WallpaperGenerator.UI.Core;
 using WallpaperGenerator.Utilities;
-using Environment = Android.OS.Environment;
-using Path = System.IO.Path;
 
-namespace WallpaperGenerator.UI.Android
+namespace UI.Shared
 {
     public class WallpaperFileManager
     {
         private const string FileNamePrefix = "wlp";
         private readonly string _path;
-        private readonly Context _context;
-
-        public WallpaperFileManager(Context context, string folderName)
+        
+        public WallpaperFileManager(string path)
         {
-            _path = Path.Combine(Environment.GetExternalStoragePublicDirectory(Environment.DirectoryPictures).AbsolutePath, folderName);
-            _context = context;
+            _path = path;
         }
 
-        public Task<String> SaveAsync(Bitmap bitmap)
+        public virtual Task<String> SaveAsync(BaseBitmap bitmap, bool withDataFile)
         {
             return Task.Run(() => Save(bitmap));
         }
 
-        private string Save(Bitmap bitmap)
+        public virtual string Save(BaseBitmap bitmap)
         {
             if (!Directory.Exists(_path))
                 Directory.CreateDirectory(_path);
 
             string imagePath = GetNextFilePath();
-            using (FileStream stream = new FileStream(imagePath, FileMode.Create))
+            using (FileStream stream = new FileStream(imagePath, FileMode.CreateNew))
             {
-                bitmap.Compress(Bitmap.CompressFormat.Png, 100, stream);
+                bitmap.WriteAsPng(stream);
                 stream.Flush();
             }
-            IntentShortcuts.AddFileToGallery(_context, imagePath);
+            AddFileToGallery(imagePath);
             return imagePath;
+        }
+
+        protected virtual void AddFileToGallery(string path)
+        {
         }
 
         private string GetNextFilePath()

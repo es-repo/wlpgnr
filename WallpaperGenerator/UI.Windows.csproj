@@ -67,6 +67,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Presentation">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -84,6 +85,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\UI.Shared\WallpaperFileManager.cs">
+      <Link>WallpaperFileManager.cs</Link>
+    </Compile>
+    <Compile Include="WindowsBitmap.cs" />
+    <Compile Include="WindowsWallpaperFileManager.cs" />
     <Compile Include="MainWindow.cs" />
     <Compile Include="MainWindowControls\ControlPanel.cs" />
     <Compile Include="MainWindowControls\ControlPanelControls\OperatorControl.cs" />
