@@ -16,7 +16,7 @@ namespace UI.Shared
             _path = path;
         }
 
-        public virtual Task<String> SaveAsync(BaseBitmap bitmap, bool withDataFile)
+        public virtual Task<String> SaveAsync(BaseBitmap bitmap)
         {
             return Task.Run(() => Save(bitmap));
         }
