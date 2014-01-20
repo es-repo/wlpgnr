@@ -25,6 +25,7 @@ namespace Android.Utilities
         {
             Intent intent = new Intent(Intent.ActionView);
             intent.SetType("image/*");
+            intent.SetFlags(ActivityFlags.NewTask);
             context.StartActivity(intent);
         }
     }

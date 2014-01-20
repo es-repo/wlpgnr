@@ -9,10 +9,10 @@
   <string name="SetAsWallpaper">Set as wallpaper</string>
   <string name="Share">Share</string>
   <string name="Save">Save</string>
-  <string name="OpenGallery">Open gallery</string>
+  <string name="OpenGallery">Open Gallery</string>
   <string name="RemoveAds">Remove Ads</string>
   <string name="Settings">Settings</string>
   <string name="RateApp">Rate this app</string>
   <string name="Feedback">Feedback</string>
-  <string name="WallpaperIsSaved">The wallpaper is saved to gallery</string>
+  <string name="WallpaperIsSaved">The wallpaper is saved to Gallery</string>
 </resources>
