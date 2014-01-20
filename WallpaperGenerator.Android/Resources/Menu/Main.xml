@@ -35,10 +35,10 @@
     android:showAsAction="ifRoom|withText"
     android:title="@string/Save"/>
   <item
-    android:id="@+id/viewGalleryMenuItem"
+    android:id="@+id/openGalleryMenuItem"
     android:icon="@android:drawable/ic_menu_view"
     android:showAsAction="ifRoom|withText"
-    android:title="@string/ViewGallery"/>
+    android:title="@string/OpenGallery"/>
   <item
     android:id="@+id/backMenuItem"
     android:icon="@android:drawable/ic_menu_revert"

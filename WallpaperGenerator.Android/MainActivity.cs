@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Android.App;
+using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
 using Android.Graphics.Drawables;
@@ -89,6 +90,10 @@ namespace WallpaperGenerator.UI.Android
                     t = OnSaveMenuItemSelected();
                     break;
 
+                case Resource.Id.openGalleryMenuItem:
+                    OnOpenGalleryMenuItemSelected();
+                    return true;
+
                 default:
                     return base.OnOptionsItemSelected(item);
             }
@@ -159,6 +164,11 @@ namespace WallpaperGenerator.UI.Android
             if (imagePath == null)
                 throw new InvalidOperationException();
             Toast.MakeText(this, Resources.GetString(Resource.String.WallpaperIsSaved), ToastLength.Long).Show();
+        }
+
+        private void OnOpenGalleryMenuItemSelected()
+        {
+            IntentShortcuts.OpenGallery(this);
         }
 
         private void ClearImageView()

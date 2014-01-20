@@ -20,5 +20,12 @@ namespace Android.Utilities
             mediaScanIntent.SetData(contentUri);
             context.SendBroadcast(mediaScanIntent);
         }
+
+        public static void OpenGallery(Context context)
+        {
+            Intent intent = new Intent(Intent.ActionView);
+            intent.SetType("image/*");
+            context.StartActivity(intent);
+        }
     }
 }

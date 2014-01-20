@@ -130,6 +130,9 @@ namespace WallpaperGenerator.UI.Android
 			// aapt resource value: 0x7f080005
 			public const int imageView = 2131230725;
 			
+			// aapt resource value: 0x7f08000e
+			public const int openGalleryMenuItem = 2131230734;
+			
 			// aapt resource value: 0x7f080003
 			public const int progressTextView = 2131230723;
 			
@@ -153,9 +156,6 @@ namespace WallpaperGenerator.UI.Android
 			
 			// aapt resource value: 0x7f08000a
 			public const int transformMenuItem = 2131230730;
-			
-			// aapt resource value: 0x7f08000e
-			public const int viewGalleryMenuItem = 2131230734;
 			
 			static Id()
 			{
@@ -223,6 +223,9 @@ namespace WallpaperGenerator.UI.Android
 			// aapt resource value: 0x7f050002
 			public const int Generate = 2131034114;
 			
+			// aapt resource value: 0x7f05000a
+			public const int OpenGallery = 2131034122;
+			
 			// aapt resource value: 0x7f05000d
 			public const int RateApp = 2131034125;
 			
@@ -246,9 +249,6 @@ namespace WallpaperGenerator.UI.Android
 			
 			// aapt resource value: 0x7f050004
 			public const int Transform = 2131034116;
-			
-			// aapt resource value: 0x7f05000a
-			public const int ViewGallery = 2131034122;
 			
 			// aapt resource value: 0x7f05000f
 			public const int WallpaperIsSaved = 2131034127;
