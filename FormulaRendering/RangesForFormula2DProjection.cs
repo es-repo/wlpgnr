@@ -35,8 +35,8 @@ namespace WallpaperGenerator.FormulaRendering
         {
             string[] countStrings = { XCount.ToInvariantString(), YCount.ToInvariantString() };
             IEnumerable<string> rangeStrings = Ranges.Select(r => r.ToString(true));
-            string[] iterationStrings = { IterationCount.ToInvariantString(), IterationScale.ToInvariantString() };
-            return string.Join(";", countStrings.Concat(rangeStrings).Concat(iterationStrings).ToArray());
+            //string[] iterationStrings = { IterationCount.ToInvariantString(), IterationScale.ToInvariantString() };
+            return string.Join(";", countStrings.Concat(rangeStrings).ToArray());
         }
 
         public static RangesForFormula2DProjection FromString(string value)
@@ -44,13 +44,13 @@ namespace WallpaperGenerator.FormulaRendering
             string[] rangeStrings = value.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
             int xCount = int.Parse(rangeStrings[0]);
             int yCount = int.Parse(rangeStrings[1]);
-            int iterationCount = int.Parse(rangeStrings[rangeStrings.Length - 2]);
-            double iterationScale = double.Parse(rangeStrings[rangeStrings.Length - 1]);
+            //int iterationCount = int.Parse(rangeStrings[rangeStrings.Length - 2]);
+            //double iterationScale = double.Parse(rangeStrings[rangeStrings.Length - 1]);
             const int rangesStartIndex = 2;
-            int rangesEndIndex = rangeStrings.Length - 2;
+            int rangesEndIndex = rangeStrings.Length;
             int rangesCount = rangesEndIndex - rangesStartIndex;
             IEnumerable<Range> ranges = rangeStrings.Skip(rangesStartIndex).Take(rangesCount).Select(Range.FromString);
-            return new RangesForFormula2DProjection(xCount, yCount, ranges, iterationCount, iterationScale);
+            return new RangesForFormula2DProjection(xCount, yCount, ranges, 1, 1);
         }
 
         public static RangesForFormula2DProjection CreateRandom(Random random, int variableCount,
