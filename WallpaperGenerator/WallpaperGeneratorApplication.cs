@@ -8,6 +8,7 @@ using WallpaperGenerator.Formulas;
 using WallpaperGenerator.UI.Core;
 using WallpaperGenerator.Utilities;
 using WallpaperGenerator.Utilities.ProgressReporting;
+using Size = WallpaperGenerator.Utilities.Size;
 
 namespace WallpaperGenerator.UI.Windows
 {
@@ -27,9 +28,14 @@ namespace WallpaperGenerator.UI.Windows
             get
             {
                 string formuleString = _mainWindow.FormulaTexBox.Dispatcher.Invoke(() => _mainWindow.FormulaTexBox.Text);
-                return formuleString != ""
+                FormulaRenderArguments args = formuleString != ""
                     ? FormulaRenderArguments.FromString(formuleString)
                     : null;
+                if (args != null)
+                {
+                    args.ImageSize = _mainWindow.ControlPanel.ImageSizeControl.Size;
+                }
+                return args;
             }
         }
 
@@ -45,13 +51,6 @@ namespace WallpaperGenerator.UI.Windows
                 generationParams.MinimalDepthBounds = new Bounds<int>(minimalDepth, minimalDepth);
                 
                 _mainWindow.ControlPanel.SaveState(generationParams);
-                 
-                FormulaRenderArguments renderArguments = UserInputFormulaRenderArguments;
-                if (renderArguments != null)
-                {
-                    generationParams.WidthInPixels = renderArguments.WidthInPixels;
-                    generationParams.HeightInPixels = renderArguments.HeightInPixels;
-                }
 
                 return generationParams;
             }
@@ -61,10 +60,11 @@ namespace WallpaperGenerator.UI.Windows
 
         public WallpaperGeneratorApplication()
         {
-            _workflow = new FormulaRenderWorkflow(new FormulaRenderArgumentsGenerationParams());
+            _workflow = new FormulaRenderWorkflow(new FormulaRenderArgumentsGenerationParams(), new Size(360, 640));
             _wallpaperFileManager = new WindowsWallpaperFileManager();
             _mainWindow = new MainWindow { WindowState = WindowState.Maximized };
             _mainWindow.ControlPanel.LoadState(_workflow.GenerationParams);
+            _mainWindow.ControlPanel.ImageSizeControl.Size = _workflow.ImageSize;
 
             _mainWindow.ControlPanel.GenerateFormulaButton.Click += async (s, a) =>
             {
@@ -98,6 +98,7 @@ namespace WallpaperGenerator.UI.Windows
             _mainWindow.ControlPanel.RenderFormulaButton.Click += async (s, a) =>
             {
                 _workflow.FormulaRenderArguments = UserInputFormulaRenderArguments;
+                _workflow.ImageSize = _workflow.FormulaRenderArguments.ImageSize;
                 await DrawImageAsync();
             };
 
@@ -198,7 +199,7 @@ namespace WallpaperGenerator.UI.Windows
 
             FormulaRenderResult formulaRenderResult = await _workflow.RenderFormulaAsync(renderingProgressObserver);
 
-            _wallpaperImage = new WallpaperImage(formulaRenderResult.Image.WidthInPixels, formulaRenderResult.Image.HeightInPixels);
+            _wallpaperImage = new WallpaperImage(formulaRenderResult.Image.Size);
             _wallpaperImage.Update(formulaRenderResult.Image);
 
             _mainWindow.WallpaperImage.Source = _wallpaperImage.Bitmap;

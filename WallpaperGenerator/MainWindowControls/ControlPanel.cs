@@ -25,6 +25,8 @@ namespace WallpaperGenerator.UI.Windows.MainWindowControls
 
         public Button SaveButton { get; private set; }
 
+        public SizeControl ImageSizeControl { get; private set; }
+
         public CheckBox RandomizeCheckBox { get; private set; }
 
         public Slider DimensionsCountSlider { get; private set; }
@@ -75,8 +77,15 @@ namespace WallpaperGenerator.UI.Windows.MainWindowControls
 
             SaveButton = CreateButton(panel, "Save");
 
+            StackPanel sizeAndRandomPanel = new StackPanel
+            {
+                Orientation = Orientation.Horizontal
+            };
+            ImageSizeControl = new SizeControl();
+            sizeAndRandomPanel.Children.Add(ImageSizeControl);
             RandomizeCheckBox = new CheckBox { Content = "Randomize", Margin = new Thickness { Top = 10, Bottom = 5} };
-            panel.Children.Add(RandomizeCheckBox);
+            sizeAndRandomPanel.Children.Add(RandomizeCheckBox);
+            panel.Children.Add(sizeAndRandomPanel);
 
             DimensionsCountSlider = CreateSliderControlsBlock(panel,1, 100, 8, "Dimensions");
 

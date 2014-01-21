@@ -1,24 +1,22 @@
 ﻿using System;
+using WallpaperGenerator.Utilities;
 
 namespace WallpaperGenerator.FormulaRendering
 {
     public class RenderedFormulaImage
     {
-        public int WidthInPixels { get; private set; }
-
-        public int HeightInPixels { get; private set; }
-
+        public Size Size { get; private set; }
+        
         public byte[] RedChannel { get; private set; }
         public byte[] GreenChannel { get; private set; }
         public byte[] BlueChannel { get; private set; }
 
-        public RenderedFormulaImage(byte[] redChannel, byte[] greenChannel, byte[] blueChannel, int widthInPixels, int heightInPixels)
+        public RenderedFormulaImage(byte[] redChannel, byte[] greenChannel, byte[] blueChannel, Size size)
         {
-            if (widthInPixels * heightInPixels != redChannel.Length)
+            Size = size;
+            if (Size.Width * Size.Height != redChannel.Length)
                 throw new ArgumentException("Width and height values doesn't correspond to data array.");
             
-            WidthInPixels = widthInPixels;
-            HeightInPixels = heightInPixels;
             RedChannel = redChannel;
             GreenChannel = greenChannel;
             BlueChannel = blueChannel;

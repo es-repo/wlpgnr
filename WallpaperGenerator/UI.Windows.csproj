@@ -88,6 +88,7 @@
     <Compile Include="..\UI.Shared\WallpaperFileManager.cs">
       <Link>WallpaperFileManager.cs</Link>
     </Compile>
+    <Compile Include="MainWindowControls\ControlPanelControls\SizeControl.cs" />
     <Compile Include="WindowsBitmap.cs" />
     <Compile Include="WindowsWallpaperFileManager.cs" />
     <Compile Include="MainWindow.cs" />

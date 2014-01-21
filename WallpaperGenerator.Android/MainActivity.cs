@@ -10,6 +10,7 @@ using Android.Utilities;
 using Android.Views;
 using Android.Widget;
 using WallpaperGenerator.UI.Core;
+using WallpaperGenerator.Utilities;
 using WallpaperGenerator.Utilities.ProgressReporting;
 using AndroidEnvironment = Android.OS.Environment;
 
@@ -38,12 +39,7 @@ namespace WallpaperGenerator.UI.Android
 
             DisplayMetrics displayMetrics = new DisplayMetrics();
             WindowManager.DefaultDisplay.GetMetrics(displayMetrics);
-            _workflow = new FormulaRenderWorkflow(
-                new FormulaRenderArgumentsGenerationParams
-                {
-                    WidthInPixels = displayMetrics.WidthPixels,  
-                    HeightInPixels = displayMetrics.HeightPixels
-                });
+            _workflow = new FormulaRenderWorkflow(new FormulaRenderArgumentsGenerationParams(), new Size(displayMetrics.WidthPixels, displayMetrics.HeightPixels));
 
             if (_workflow.FormulaRenderArguments != null)
                 _formulaTextView.Text = _workflow.FormulaRenderArguments.ToString();
@@ -172,8 +168,8 @@ namespace WallpaperGenerator.UI.Android
 
         private void ClearImageView()
         {
-            int width = _workflow.GenerationParams.WidthInPixels;
-            int height = _workflow.GenerationParams.HeightInPixels;  
+            int width = _workflow.ImageSize.Width;
+            int height = _workflow.ImageSize.Height;  
             int[] pixels = new int[width * height];
             Bitmap blankBitmap = Bitmap.CreateBitmap(pixels, width, height, Bitmap.Config.Argb8888);
             _imageView.SetImageBitmap(blankBitmap);

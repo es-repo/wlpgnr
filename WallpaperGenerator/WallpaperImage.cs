@@ -2,6 +2,7 @@
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using WallpaperGenerator.FormulaRendering;
+using Size = WallpaperGenerator.Utilities.Size;
 
 namespace WallpaperGenerator.UI.Windows
 {
@@ -17,9 +18,7 @@ namespace WallpaperGenerator.UI.Windows
 
         #region Properties
 
-        public int WidthInPixels { get; private set; }
-
-        public int HeightInPixels { get; private set; }
+        public Size Size { get; private set; }
 
         public WriteableBitmap Bitmap
         {
@@ -30,12 +29,10 @@ namespace WallpaperGenerator.UI.Windows
 
         #region Constructors
 
-        public WallpaperImage(int widthInPixels, int heightInPixels)
+        public WallpaperImage(Size size)
         {
-            WidthInPixels = widthInPixels;
-            HeightInPixels = heightInPixels;
-
-            _bitmap = new WriteableBitmap(WidthInPixels, HeightInPixels, 96, 96, PixelFormats.Bgra32, null);
+            Size = size;
+            _bitmap = new WriteableBitmap(Size.Width, Size.Height, 96, 96, PixelFormats.Bgra32, null);
             _rect = new Int32Rect(0, 0, _bitmap.PixelWidth, _bitmap.PixelHeight);
             int bytesPerPixel = (_bitmap.Format.BitsPerPixel + 7) / 8;
             _stride = _bitmap.PixelWidth * bytesPerPixel;

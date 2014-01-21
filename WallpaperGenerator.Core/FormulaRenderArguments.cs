@@ -1,6 +1,7 @@
 ﻿using System;
 using WallpaperGenerator.FormulaRendering;
 using WallpaperGenerator.Formulas;
+using WallpaperGenerator.Utilities;
 
 namespace WallpaperGenerator.UI.Core
 {
@@ -9,16 +10,18 @@ namespace WallpaperGenerator.UI.Core
         public FormulaTree FormulaTree { get; private set; }
         public RangesForFormula2DProjection Ranges { get; private set; }
         public ColorTransformation ColorTransformation { get; private set; }
-        public int WidthInPixels { get; private set; }
-        public int HeightInPixels { get; private set; }
 
+        public Size ImageSize
+        {
+            get { return Ranges.AreaSize; }
+            set { Ranges = Ranges.Clone(value); }
+        }
+        
         public FormulaRenderArguments(FormulaTree formulaTree, RangesForFormula2DProjection ranges, ColorTransformation colorTransformation)
         {
             FormulaTree = formulaTree;
             Ranges = ranges;
             ColorTransformation = colorTransformation;
-            WidthInPixels = ranges.XCount;
-            HeightInPixels = ranges.YCount;
         }
 
         public override string ToString()

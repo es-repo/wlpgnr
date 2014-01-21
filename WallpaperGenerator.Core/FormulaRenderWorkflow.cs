@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using WallpaperGenerator.FormulaRendering;
 using WallpaperGenerator.Formulas;
+using WallpaperGenerator.Utilities;
 using WallpaperGenerator.Utilities.ProgressReporting;
 
 namespace WallpaperGenerator.UI.Core
@@ -10,17 +11,31 @@ namespace WallpaperGenerator.UI.Core
     public class FormulaRenderWorkflow
     {
         private readonly Random _random = new Random();
+        private Size _imageSize;
         private FormulaRenderArguments _formulaRenderArguments;
         private double[] _lastEvaluatedFormulaValues;
 
         public FormulaRenderArgumentsGenerationParams GenerationParams { get; set; }
-        
+
+        public Size ImageSize
+    {
+            get { return _imageSize; }
+            set
+            {
+                _imageSize = value;
+                if (_formulaRenderArguments != null)
+                {
+                    _formulaRenderArguments.ImageSize = value;
+                }
+            }
+        }
+
         public FormulaRenderArguments FormulaRenderArguments
         {
             get { return _formulaRenderArguments; }
             set 
             {
-                if (_formulaRenderArguments == null || _formulaRenderArguments.ToString() != value.ToString())
+                if (_formulaRenderArguments == null || _formulaRenderArguments.ToString() != value.ToString() || _formulaRenderArguments.ImageSize != value.ImageSize)
                 {
                     _formulaRenderArguments = value;
                     _lastEvaluatedFormulaValues = null;
@@ -33,14 +48,15 @@ namespace WallpaperGenerator.UI.Core
             get { return _lastEvaluatedFormulaValues != null; }
         }
 
-        public FormulaRenderWorkflow(FormulaRenderArgumentsGenerationParams generationParams)
-            : this(generationParams, new Random())
+        public FormulaRenderWorkflow(FormulaRenderArgumentsGenerationParams generationParams, Size imageSize)
+            : this(generationParams, imageSize, new Random())
         {
         }
 
-        public FormulaRenderWorkflow(FormulaRenderArgumentsGenerationParams generationParams, Random random)
+        public FormulaRenderWorkflow(FormulaRenderArgumentsGenerationParams generationParams, Size imageSize, Random random)
         {
             GenerationParams = generationParams;
+            ImageSize = imageSize;
             _random = random;
         }
 
@@ -74,7 +90,7 @@ namespace WallpaperGenerator.UI.Core
 
         private RangesForFormula2DProjection CreateRandomVariableValuesRangesFor2DProjection(int variablesCount)
         {
-            return RangesForFormula2DProjection.CreateRandom(_random, variablesCount, GenerationParams.WidthInPixels, GenerationParams.HeightInPixels, 1, GenerationParams.RangeBounds);
+            return RangesForFormula2DProjection.CreateRandom(_random, variablesCount, ImageSize, 1, GenerationParams.RangeBounds);
         }
 
         private ColorTransformation CreateRandomColorTransformation()
@@ -109,8 +125,8 @@ namespace WallpaperGenerator.UI.Core
                 _lastEvaluatedFormulaValues = await EvaluateFormulaAsync(FormulaRenderArguments, evaluationProgressSpan, progressObserver);
             }
 
-            RenderedFormulaImage renderedFormulaImage = await RenderFormulaAsync(_lastEvaluatedFormulaValues, FormulaRenderArguments.WidthInPixels,
-                FormulaRenderArguments.HeightInPixels, FormulaRenderArguments.ColorTransformation,
+            RenderedFormulaImage renderedFormulaImage = await RenderFormulaAsync(_lastEvaluatedFormulaValues, FormulaRenderArguments.ImageSize,
+                FormulaRenderArguments.ColorTransformation,
                 1 - evaluationProgressSpan, evaluationProgressSpan, progressObserver);
 
             stopwatch.Stop();
@@ -128,7 +144,7 @@ namespace WallpaperGenerator.UI.Core
             });
         }
 
-        private static Task<RenderedFormulaImage> RenderFormulaAsync(double[] evaluatedFormulaValues, int widthInPixels, int heightInPixels, ColorTransformation colorTransformation,
+        private static Task<RenderedFormulaImage> RenderFormulaAsync(double[] evaluatedFormulaValues, Size imageSize, ColorTransformation colorTransformation,
             double progressSpan, double initProgress, ProgressObserver progressObserver)
         {
             return Task.Run(() =>
@@ -136,7 +152,7 @@ namespace WallpaperGenerator.UI.Core
                 if (progressObserver != null)
                     ProgressReporter.Subscribe(progressObserver);
                 using (ProgressReporter.CreateScope(progressSpan, initProgress))
-                    return FormulaRender.Render(evaluatedFormulaValues, widthInPixels, heightInPixels, colorTransformation);
+                    return FormulaRender.Render(evaluatedFormulaValues, imageSize, colorTransformation);
             });
         }
     }

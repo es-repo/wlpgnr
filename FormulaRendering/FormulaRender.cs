@@ -14,14 +14,14 @@ namespace WallpaperGenerator.FormulaRendering
             Stopwatch evaluationStopwatch = new Stopwatch();
             evaluationStopwatch.Start();
 
-            double[] evaluatedValues = new double[rangesForFormula2DProjection.XCount * rangesForFormula2DProjection.YCount];
+            double[] evaluatedValues = new double[rangesForFormula2DProjection.AreaSize.Width * rangesForFormula2DProjection.AreaSize.Height];
 
             using (ProgressReporter.CreateScope(rangesForFormula2DProjection.IterationCount))
             {
                 Range[] ranges = rangesForFormula2DProjection.Ranges.ToArray();
                 for (int i = 0; i < rangesForFormula2DProjection.IterationCount; i++)
                 {
-                    double[] values = formulaTree.EvaluateRangesIn2DProjection(ranges, rangesForFormula2DProjection.XCount, rangesForFormula2DProjection.YCount);
+                    double[] values = formulaTree.EvaluateRangesIn2DProjection(ranges, rangesForFormula2DProjection.AreaSize.Width, rangesForFormula2DProjection.AreaSize.Height);
                     for (int j = 0; j < values.Length; j++)
                     {
                         evaluatedValues[j] += values[j];
@@ -63,7 +63,7 @@ namespace WallpaperGenerator.FormulaRendering
             return evaluatedValues;
         }
 
-        public static RenderedFormulaImage Render(double[] formulaEvaluatedValues, int widthInPixels, int heightInPixels, ColorTransformation colorTransformation)
+        public static RenderedFormulaImage Render(double[] formulaEvaluatedValues, Size imageSize, ColorTransformation colorTransformation)
         {
             Stopwatch mapToRgbStopwatch = new Stopwatch();
             mapToRgbStopwatch.Start();
@@ -75,7 +75,7 @@ namespace WallpaperGenerator.FormulaRendering
             byte[] blueChannel = MapToColorChannel(formulaEvaluatedValues, colorTransformation.BlueChannelTransformation);
             ProgressReporter.Complete();
             mapToRgbStopwatch.Stop();
-            return new RenderedFormulaImage(redChannel, greenChannel, blueChannel, widthInPixels, heightInPixels);
+            return new RenderedFormulaImage(redChannel, greenChannel, blueChannel, imageSize);
         }
 
         public static RenderedFormulaImage Render(FormulaTree formulaTree, RangesForFormula2DProjection rangesForFormula2DProjection, ColorTransformation colorTransformation)
@@ -91,7 +91,7 @@ namespace WallpaperGenerator.FormulaRendering
 
                 using (ProgressReporter.CreateScope(1 - evaluationSpan))
                 {
-                    return Render(formulaEvaluatedValues, rangesForFormula2DProjection.XCount, rangesForFormula2DProjection.YCount, colorTransformation);
+                    return Render(formulaEvaluatedValues, rangesForFormula2DProjection.AreaSize, colorTransformation);
                 }
             }
         }
