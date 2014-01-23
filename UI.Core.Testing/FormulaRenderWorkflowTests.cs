@@ -70,23 +70,31 @@ namespace WallpaperGenerator.UI.Core.Testing
         public void TestState()
         {
             Assert.IsFalse(_workflow.IsImageReady);
+            Assert.IsFalse(_workflow.IsImageRendering);
             _workflow.GenerateFormulaRenderArguments();
             Assert.IsFalse(_workflow.IsImageReady);
+            Assert.IsFalse(_workflow.IsImageRendering);
             _workflow.ChangeColors();
             Assert.IsFalse(_workflow.IsImageReady);
+            Assert.IsFalse(_workflow.IsImageRendering);
             _workflow.TransformRanges();
             Assert.IsFalse(_workflow.IsImageReady);
+            Assert.IsFalse(_workflow.IsImageRendering);
             FormulaRenderResult formulaRenderResult = _workflow.RenderFormulaAsync(null).Result;
             Assert.IsNotNull(formulaRenderResult);
+            Assert.IsFalse(_workflow.IsImageRendering);
             Assert.IsTrue(_workflow.IsImageReady);
             _workflow.ChangeColors();
             Assert.IsTrue(_workflow.IsImageReady);
+            Assert.IsFalse(_workflow.IsImageRendering);
             _workflow.TransformRanges();
             Assert.IsFalse(_workflow.IsImageReady);
+            Assert.IsFalse(_workflow.IsImageRendering);
             formulaRenderResult = _workflow.RenderFormulaAsync(null).Result;
             Assert.IsNotNull(formulaRenderResult);
             _workflow.GenerateFormulaRenderArguments();
             Assert.IsFalse(_workflow.IsImageReady);
+            Assert.IsFalse(_workflow.IsImageRendering);
         }
     }
 }

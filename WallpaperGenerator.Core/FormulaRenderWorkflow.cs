@@ -18,7 +18,7 @@ namespace WallpaperGenerator.UI.Core
         public FormulaRenderArgumentsGenerationParams GenerationParams { get; set; }
 
         public Size ImageSize
-    {
+        {
             get { return _imageSize; }
             set
             {
@@ -45,8 +45,10 @@ namespace WallpaperGenerator.UI.Core
 
         public bool IsImageReady
         {
-            get { return _lastEvaluatedFormulaValues != null; }
+            get { return _lastEvaluatedFormulaValues != null && !IsImageRendering; }
         }
+
+        public bool IsImageRendering { get; private set; }
 
         public FormulaRenderWorkflow(FormulaRenderArgumentsGenerationParams generationParams, Size imageSize)
             : this(generationParams, imageSize, new Random())
@@ -116,6 +118,7 @@ namespace WallpaperGenerator.UI.Core
             if (FormulaRenderArguments == null)
                 throw new InvalidOperationException("FormulaRenderArguments is null.");
 
+            IsImageRendering = true;
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
             double evaluationProgressSpan = 0;
@@ -130,6 +133,7 @@ namespace WallpaperGenerator.UI.Core
                 1 - evaluationProgressSpan, evaluationProgressSpan, progressObserver);
 
             stopwatch.Stop();
+            IsImageRendering = false;
             return new FormulaRenderResult(renderedFormulaImage, stopwatch.Elapsed);
         }
 

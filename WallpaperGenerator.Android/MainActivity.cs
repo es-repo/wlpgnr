@@ -5,7 +5,6 @@ using Android.Content.PM;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
-using Android.Util;
 using Android.Utilities;
 using Android.Views;
 using Android.Widget;
@@ -16,7 +15,7 @@ using AndroidEnvironment = Android.OS.Environment;
 
 namespace WallpaperGenerator.UI.Android
 {
-    [Activity(Label = "@string/ApplicationName", MainLauncher = true, Icon = "@drawable/icon", ConfigurationChanges = ConfigChanges.Orientation)]
+    [Activity(Label = "@string/ApplicationName", MainLauncher = true, Icon = "@drawable/icon", ScreenOrientation = ScreenOrientation.Nosensor)]
     public class MainActivity : BaseActivity
     {
         private TextView _formulaTextView;
@@ -37,16 +36,16 @@ namespace WallpaperGenerator.UI.Android
             _renderTimeTextView = FindViewById<TextView>(Resource.Id.renderTimeTextView);
             _imageView = FindViewById<ImageView>(Resource.Id.imageView);
 
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            WindowManager.DefaultDisplay.GetMetrics(displayMetrics);
-            _workflow = new FormulaRenderWorkflow(new FormulaRenderArgumentsGenerationParams(), new Size(displayMetrics.WidthPixels, displayMetrics.HeightPixels));
+            Point displaySize = DisplayExtensions.GetSize(WindowManager.DefaultDisplay);
+
+            _workflow = new FormulaRenderWorkflow(new FormulaRenderArgumentsGenerationParams(), new Size(displaySize.X, displaySize.Y));
 
             if (_workflow.FormulaRenderArguments != null)
                 _formulaTextView.Text = _workflow.FormulaRenderArguments.ToString();
 
             _wallpaperFileManager = new AndroidWallpaperFileManager(this);
 
-            ClearImageView();
+            ClearImage();
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -100,7 +99,10 @@ namespace WallpaperGenerator.UI.Android
 
         private async Task OnGenerateMenuItemSelected()
         {
-            ClearImageView();
+            if (_workflow.IsImageRendering)
+                return;
+            
+            ClearImage();
             FormulaRenderArguments formulaRenderArguments = await _workflow.GenerateFormulaRenderArgumentsAsync();
             _formulaTextView.Text = formulaRenderArguments.ToString();
             await DrawImageAsync();
@@ -108,16 +110,16 @@ namespace WallpaperGenerator.UI.Android
 
         private async Task OnRenderMenuItemSelected()
         {
-            if (_workflow.FormulaRenderArguments == null)
+            if (_workflow.FormulaRenderArguments == null || _workflow.IsImageRendering)
                 return;
 
-            ClearImageView();
+            ClearImage();
             await DrawImageAsync();
         }
 
         private async Task OnChangeColorMenuItemSelected()
         {
-            if (_workflow.FormulaRenderArguments == null)
+            if (_workflow.FormulaRenderArguments == null || _workflow.IsImageRendering)
                 return;
 
             FormulaRenderArguments formulaRenderArguments = _workflow.ChangeColors();
@@ -127,7 +129,7 @@ namespace WallpaperGenerator.UI.Android
 
         private async Task OnTransformMenuItemSelected()
         {
-            if (_workflow.FormulaRenderArguments == null)
+            if (_workflow.FormulaRenderArguments == null || _workflow.IsImageRendering)
                 return;
 
             FormulaRenderArguments formulaRenderArguments = _workflow.TransformRanges();
@@ -166,7 +168,7 @@ namespace WallpaperGenerator.UI.Android
             IntentShortcuts.OpenGallery(this);
         }
 
-        private void ClearImageView()
+        private void ClearImage()
         {
             int width = _workflow.ImageSize.Width;
             int height = _workflow.ImageSize.Height;  
@@ -187,4 +189,3 @@ namespace WallpaperGenerator.UI.Android
         }
     }
 }
-
