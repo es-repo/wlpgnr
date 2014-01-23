@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Net.Mime;
 using System.Threading.Tasks;
 using Android.App;
+using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
+using Android.Provider;
 using Android.Utilities;
 using Android.Views;
 using Android.Widget;
@@ -88,6 +91,10 @@ namespace WallpaperGenerator.UI.Android
                     OnOpenGalleryMenuItemSelected();
                     return true;
 
+                case Resource.Id.shareMenuItem:
+                    OnShareMenuItemSelected();
+                    return true;
+
                 default:
                     return base.OnOptionsItemSelected(item);
             }
@@ -142,11 +149,10 @@ namespace WallpaperGenerator.UI.Android
             if (!_workflow.IsImageReady)
                 return;
 
-            Bitmap bitmap = ((BitmapDrawable)_imageView.Drawable).Bitmap;
             WallpaperManager wallpaperManager = WallpaperManager.GetInstance(this);
             
             // TODO: wrap in try..catch block
-            wallpaperManager.SetBitmapWithExactScreenSize(bitmap);
+            wallpaperManager.SetBitmapWithExactScreenSize(ImageBitmap);
             IntentShortcuts.GoHome(this);
         }
 
@@ -167,6 +173,17 @@ namespace WallpaperGenerator.UI.Android
             IntentShortcuts.OpenGallery(this);
         }
 
+        private void OnShareMenuItemSelected()
+        {
+            if (!_workflow.IsImageReady)
+                return;
+
+            IntentShortcuts.Share(this, ImageBitmap, System.IO.Path.Combine(_wallpaperFileManager.Path, "sharedimage.png"),
+                Resources.GetString(Resource.String.ShareTitle),
+                Resources.GetString(Resource.String.ShareSubject),
+                Resources.GetString(Resource.String.ShareMessage));
+        } 
+
         private void ClearImage()
         {
             int width = _workflow.ImageSize.Width;
@@ -185,6 +202,11 @@ namespace WallpaperGenerator.UI.Android
             _progressTextView.Text = 1.ToString("P1");
             _renderTimeTextView.Text = formulaRenderResult.ElapsedTime.ToString();
             _imageView.SetImageBitmap(formulaRenderResult.Image.ToBitmap());
+        }
+
+        private Bitmap ImageBitmap
+        {
+            get { return ((BitmapDrawable) _imageView.Drawable).Bitmap; }
         }
     }
 }

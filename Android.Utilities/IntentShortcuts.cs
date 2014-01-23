@@ -1,4 +1,6 @@
 using Android.Content;
+using Android.Graphics;
+using Android.Provider;
 using Java.IO;
 
 namespace Android.Utilities
@@ -27,6 +29,20 @@ namespace Android.Utilities
             intent.SetType("image/*");
             intent.SetFlags(ActivityFlags.NewTask);
             context.StartActivity(intent);
+        }
+
+        public static void Share(Context context, Bitmap bitmap, string bitmapSavePath, string title, string subject, string message)
+        {
+            Intent i = new Intent(Intent.ActionSend);
+            i.SetType("image/*");
+            i.PutExtra(Intent.ExtraSubject, subject);
+            i.PutExtra(Intent.ExtraText, message);
+
+            bitmap.SaveToFile(bitmapSavePath);
+            var uri = Net.Uri.Parse(bitmapSavePath);
+            i.PutExtra(Intent.ExtraStream, uri);
+
+            context.StartActivity(Intent.CreateChooser(i, title));
         }
     }
 }

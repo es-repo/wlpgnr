@@ -10,11 +10,12 @@ namespace WallpaperGenerator.UI.Shared
     public class WallpaperFileManager
     {
         private const string FileNamePrefix = "wlp";
-        private readonly string _path;
+
+        public string Path { get; private set; }
 
         public WallpaperFileManager(string path)
         {
-            _path = path;
+            Path = path;
         }
 
         public Task<Tuple<string, string>> SaveAsync(FormulaRenderResult formulaRenderResult, bool withFormulaRenderArguments)
@@ -24,8 +25,8 @@ namespace WallpaperGenerator.UI.Shared
 
         public Tuple<string, string> Save(FormulaRenderResult formulaRenderResult, bool withFormulaRenderArguments)
         {
-            if (!Directory.Exists(_path))
-                Directory.CreateDirectory(_path);
+            if (!Directory.Exists(Path))
+                Directory.CreateDirectory(Path);
 
             string imagePath = GetNextFilePath();
             using (FileStream stream = new FileStream(imagePath, FileMode.CreateNew))
@@ -55,7 +56,7 @@ namespace WallpaperGenerator.UI.Shared
 
         private string GetNextFilePath()
         {
-            return FuncUtilities.Repeat(() => Path.Combine(_path, FileNamePrefix + DateTime.Now.Ticks + ".png"), p => !File.Exists(p), 10);
+            return FuncUtilities.Repeat(() => System.IO.Path.Combine(Path, FileNamePrefix + DateTime.Now.Ticks + ".png"), p => !File.Exists(p), 10);
         }
     }
 }

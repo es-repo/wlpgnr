@@ -247,6 +247,15 @@ namespace WallpaperGenerator.UI.Android
 			// aapt resource value: 0x7f050008
 			public const int Share = 2131034120;
 			
+			// aapt resource value: 0x7f050011
+			public const int ShareMessage = 2131034129;
+			
+			// aapt resource value: 0x7f050010
+			public const int ShareSubject = 2131034128;
+			
+			// aapt resource value: 0x7f050012
+			public const int ShareTitle = 2131034130;
+			
 			// aapt resource value: 0x7f050004
 			public const int Transform = 2131034116;
 			
