@@ -89,14 +89,13 @@
       <Link>WallpaperFileManager.cs</Link>
     </Compile>
     <Compile Include="MainWindowControls\ControlPanelControls\SizeControl.cs" />
-    <Compile Include="WindowsBitmap.cs" />
+    <Compile Include="RenderedFormulaImageExtensions.cs" />
     <Compile Include="WindowsWallpaperFileManager.cs" />
     <Compile Include="MainWindow.cs" />
     <Compile Include="MainWindowControls\ControlPanel.cs" />
     <Compile Include="MainWindowControls\ControlPanelControls\OperatorControl.cs" />
     <Compile Include="MainWindowControls\SliderWithValueText.cs" />
     <Compile Include="MainWindowControls\StatusPanel.cs" />
-    <Compile Include="WallpaperImage.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WallpaperGeneratorApplication.cs" />

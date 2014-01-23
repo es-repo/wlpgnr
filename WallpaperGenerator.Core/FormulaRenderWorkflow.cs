@@ -43,6 +43,8 @@ namespace WallpaperGenerator.UI.Core
             }
         }
 
+        public FormulaRenderResult LastFormulaRenderResult { get; private set; }
+
         public bool IsImageReady
         {
             get { return _lastEvaluatedFormulaValues != null && !IsImageRendering; }
@@ -134,7 +136,7 @@ namespace WallpaperGenerator.UI.Core
 
             stopwatch.Stop();
             IsImageRendering = false;
-            return new FormulaRenderResult(renderedFormulaImage, stopwatch.Elapsed);
+            return LastFormulaRenderResult = new FormulaRenderResult(FormulaRenderArguments, renderedFormulaImage, stopwatch.Elapsed);
         }
 
         private static Task<double[]> EvaluateFormulaAsync(FormulaRenderArguments formulaRenderingArguments, double progressSpan, ProgressObserver progressObserver)

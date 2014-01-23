@@ -19,7 +19,6 @@ namespace WallpaperGenerator.UI.Windows
         private readonly FormulaRenderWorkflow _workflow;
         private readonly WindowsWallpaperFileManager _wallpaperFileManager;
         private readonly MainWindow _mainWindow;
-        private WallpaperImage _wallpaperImage;
         
         #endregion
 
@@ -199,10 +198,7 @@ namespace WallpaperGenerator.UI.Windows
 
             FormulaRenderResult formulaRenderResult = await _workflow.RenderFormulaAsync(renderingProgressObserver);
 
-            _wallpaperImage = new WallpaperImage(formulaRenderResult.Image.Size);
-            _wallpaperImage.Update(formulaRenderResult.Image);
-
-            _mainWindow.WallpaperImage.Source = _wallpaperImage.Bitmap;
+            _mainWindow.WallpaperImage.Source = formulaRenderResult.Image.ToBitmap();
 
             _mainWindow.StatusPanel.RenderedTime = formulaRenderResult.ElapsedTime;
             _mainWindow.Cursor = Cursors.Arrow;
@@ -210,8 +206,10 @@ namespace WallpaperGenerator.UI.Windows
 
         private void SaveFormulaImage()
         {
-            if (_wallpaperImage != null)
-                _wallpaperFileManager.Save(_wallpaperImage.Bitmap);
+            if (!_workflow.IsImageReady)
+                return;
+
+            _wallpaperFileManager.Save(_workflow.LastFormulaRenderResult, true);
         }
     }
 }

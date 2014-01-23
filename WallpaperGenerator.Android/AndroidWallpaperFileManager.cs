@@ -1,9 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.IO;
 using Android.Content;
 using Android.Graphics;
 using Android.Utilities;
 using UI.Shared;
+using WallpaperGenerator.FormulaRendering;
 using Environment = Android.OS.Environment;
 
 namespace WallpaperGenerator.UI.Android
@@ -19,9 +19,10 @@ namespace WallpaperGenerator.UI.Android
             _context = context;
         }
 
-        public virtual Task<String> SaveAsync(Bitmap bitmap)
+        protected override void WriteImageAsPng(RenderedFormulaImage image, Stream stream)
         {
-            return SaveAsync(new AndroidBitmap(bitmap));
+            Bitmap bitmap = image.ToBitmap();
+            bitmap.Compress(Bitmap.CompressFormat.Png, 100, stream);
         }
 
         protected override void AddFileToGallery(string path)
