@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Windows.Media.Imaging;
-using UI.Shared;
 using WallpaperGenerator.FormulaRendering;
+using WallpaperGenerator.UI.Shared;
 
 namespace WallpaperGenerator.UI.Windows
 {

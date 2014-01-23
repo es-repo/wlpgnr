@@ -25,7 +25,7 @@ namespace WallpaperGenerator.UI.Windows.MainWindowControls.ControlPanelControls
             Children.Add(_widthTextBox);
             _heightTextBox = new TextBox { Width = 50, Height = 20 };
             Children.Add(_heightTextBox);
-            Size = new Size(0, 0);
+            Size = new Size();
         }
     }
 }

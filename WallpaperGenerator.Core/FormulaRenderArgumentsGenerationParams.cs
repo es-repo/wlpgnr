@@ -11,7 +11,7 @@ namespace WallpaperGenerator.UI.Core
         public Bounds<int> MinimalDepthBounds = new Bounds<int>(10, 13);
         public Bounds ConstantBounds = new Bounds(-10, 10);
         public Bounds ConstantProbabilityBounds = new Bounds(0, 1);
-        public Bounds LeafProbabilityBounds = new Bounds(0, 0.5);
+        public Bounds LeafProbabilityBounds = new Bounds(0, 0.3);
         public Bounds RangeBounds = new Bounds(-40, 40);
         public Bounds ColorChannelPolinomialTransformationCoefficientBounds = new Bounds(-10, 10);
         public double ColorChannelZeroProbabilty = 0.1;

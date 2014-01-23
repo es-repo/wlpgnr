@@ -2,8 +2,8 @@
 using Android.Content;
 using Android.Graphics;
 using Android.Utilities;
-using UI.Shared;
 using WallpaperGenerator.FormulaRendering;
+using WallpaperGenerator.UI.Shared;
 using Environment = Android.OS.Environment;
 
 namespace WallpaperGenerator.UI.Android

@@ -5,24 +5,24 @@ using WallpaperGenerator.FormulaRendering;
 using WallpaperGenerator.UI.Core;
 using WallpaperGenerator.Utilities;
 
-namespace UI.Shared
+namespace WallpaperGenerator.UI.Shared
 {
-    public abstract class WallpaperFileManager
+    public class WallpaperFileManager
     {
         private const string FileNamePrefix = "wlp";
         private readonly string _path;
 
-        protected WallpaperFileManager(string path)
+        public WallpaperFileManager(string path)
         {
             _path = path;
         }
 
-        public Task<String> SaveAsync(FormulaRenderResult formulaRenderResult, bool withFormulaRenderArguments)
+        public Task<Tuple<string, string>> SaveAsync(FormulaRenderResult formulaRenderResult, bool withFormulaRenderArguments)
         {
             return Task.Run(() => Save(formulaRenderResult, withFormulaRenderArguments));
         }
 
-        public string Save(FormulaRenderResult formulaRenderResult, bool withFormulaRenderArguments)
+        public Tuple<string, string> Save(FormulaRenderResult formulaRenderResult, bool withFormulaRenderArguments)
         {
             if (!Directory.Exists(_path))
                 Directory.CreateDirectory(_path);
@@ -35,16 +35,19 @@ namespace UI.Shared
             }
             AddFileToGallery(imagePath);
 
+            string dataPath = null;
             if (withFormulaRenderArguments)
             {
-                string dataFile = imagePath.Replace(".png", ".txt");
-                File.WriteAllText(dataFile, formulaRenderResult.FormulaRenderArguments.ToString());
+                dataPath = imagePath.Replace(".png", ".txt");
+                File.WriteAllText(dataPath, formulaRenderResult.FormulaRenderArguments.ToString());
             }
 
-            return imagePath;
+            return new Tuple<string, string>(imagePath, dataPath);
         }
 
-        protected abstract void WriteImageAsPng(RenderedFormulaImage image, Stream stream);
+        protected virtual void WriteImageAsPng(RenderedFormulaImage image, Stream stream)
+        {
+        }
 
         protected virtual void AddFileToGallery(string path)
         {

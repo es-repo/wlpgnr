@@ -156,8 +156,8 @@ namespace WallpaperGenerator.UI.Android
                 return;
 
             // TODO: wrap in try..catch block
-            string imagePath = await _wallpaperFileManager.SaveAsync(_workflow.LastFormulaRenderResult, false);
-            if (imagePath == null)
+            var filesPath = await _wallpaperFileManager.SaveAsync(_workflow.LastFormulaRenderResult, false);
+            if (filesPath == null)
                 throw new InvalidOperationException();
             Toast.MakeText(this, Resources.GetString(Resource.String.WallpaperIsSaved), ToastLength.Long).Show();
         }
