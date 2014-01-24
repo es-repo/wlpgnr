@@ -14,7 +14,7 @@ namespace WallpaperGenerator.UI.Core
         public Bounds LeafProbabilityBounds = new Bounds(0, 0.3);
         public Bounds RangeBounds = new Bounds(-40, 40);
         public Bounds ColorChannelPolinomialTransformationCoefficientBounds = new Bounds(-10, 10);
-        public double ColorChannelZeroProbabilty = 0.1;
+        public double ColorChannelZeroProbabilty = 0.2;
         public Bounds UnaryVsBinaryOperatorsProbabilityBounds = new Bounds(0.4, 0.70);
 
         public IDictionary<Operator, Bounds> OperatorAndMaxProbabilityBoundsMap = new Dictionary<Operator, Bounds>
