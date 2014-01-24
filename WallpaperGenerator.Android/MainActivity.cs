@@ -178,7 +178,8 @@ namespace WallpaperGenerator.UI.Android
             if (!_workflow.IsImageReady)
                 return;
 
-            IntentShortcuts.Share(this, ImageBitmap, System.IO.Path.Combine(_wallpaperFileManager.Path, "sharedimage.png"),
+            // TODO: wrap in try..catch block
+            IntentShortcuts.Share(this, ImageBitmap, System.IO.Path.Combine(_wallpaperFileManager.Path, "sharedwallpaper.png"),
                 Resources.GetString(Resource.String.ShareTitle),
                 Resources.GetString(Resource.String.ShareSubject),
                 Resources.GetString(Resource.String.ShareMessage));

@@ -1,7 +1,7 @@
 using Android.Content;
 using Android.Graphics;
-using Android.Provider;
-using Java.IO;
+using Android.Net;
+using File = Java.IO.File;
 
 namespace Android.Utilities
 {
@@ -33,14 +33,14 @@ namespace Android.Utilities
 
         public static void Share(Context context, Bitmap bitmap, string bitmapSavePath, string title, string subject, string message)
         {
+            bitmap.SaveToFile(bitmapSavePath);
+
             Intent i = new Intent(Intent.ActionSend);
-            i.SetType("image/*");
+            i.SetType("image/png");
             i.PutExtra(Intent.ExtraSubject, subject);
             i.PutExtra(Intent.ExtraText, message);
-
-            bitmap.SaveToFile(bitmapSavePath);
-            var uri = Net.Uri.Parse(bitmapSavePath);
-            i.PutExtra(Intent.ExtraStream, uri);
+            File f = new File(bitmapSavePath);
+            i.PutExtra(Intent.ExtraStream, Uri.FromFile(f));
 
             context.StartActivity(Intent.CreateChooser(i, title));
         }
