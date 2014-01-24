@@ -3,39 +3,45 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-    <ScrollView
-        android:id="@+id/scrollView"
+    <FrameLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="vertical"
-        android:fillViewport="true">
-        <LinearLayout
-            android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <ScrollView
+            android:id="@+id/scrollView"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            android:fillViewport="true">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageView" />
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/formulaTextView"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </ScrollView>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
             <TextView
-                android:visibility="gone"
                 android:id="@+id/progressTextView"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
             <TextView
-                android:visibility="gone"
                 android:id="@+id/renderTimeTextView"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
-            <ImageView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageView" />
-            <TextView
-                android:visibility="gone"
-                android:id="@+id/formulaTextView"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
         </LinearLayout>
-    </ScrollView>
+    </FrameLayout>
     <LinearLayout
-        android:id="@+id/footer"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -56,7 +62,7 @@
             android:drawableTop="@android:drawable/ic_menu_crop"
             style="@style/ToolBarButton" />
         <Button
-            android:id="@+id/SetAsWallpaperButton"
+            android:id="@+id/setAsWallpaperButton"
             android:text="@string/SetAsWallpaper"
             android:drawableTop="@android:drawable/ic_menu_gallery"
             style="@style/ToolBarButton" />

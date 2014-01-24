@@ -30,6 +30,7 @@ namespace WallpaperGenerator.UI.Android
             base.OnCreate(bundle);
 
             SetContentView(Resource.Layout.Main);
+            InitButtonBar();
 
             _formulaTextView = FindViewById<TextView>(Resource.Id.formulaTextView);
             _progressTextView = FindViewById<TextView>(Resource.Id.progressTextView);
@@ -48,10 +49,24 @@ namespace WallpaperGenerator.UI.Android
             ClearImage();
         }
 
+        private void InitButtonBar()
+        {
+            Button generateButton = FindViewById<Button>(Resource.Id.generateButton);
+            generateButton.Click += async (s, a) => await OnGenerateClicked();
+
+            Button changeColorsButton = FindViewById<Button>(Resource.Id.changeColorsButton);
+            changeColorsButton.Click += async (s, a) => await OnChangeColorsClicked();
+
+            Button transformButton = FindViewById<Button>(Resource.Id.transformButton);
+            transformButton.Click += async (s, a) => await OnTransformClicked();
+
+            Button setAsWallpaperButton = FindViewById<Button>(Resource.Id.setAsWallpaperButton);
+            setAsWallpaperButton.Click += (s, a) => OnSetAsWallpaperClicked();
+        }
+
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
             MenuInflater.Inflate(Resource.Menu.Main, menu);
-            menu.FindItem(Resource.Id.renderMenuItem).SetVisible(false);
             return true;
         }
 
@@ -60,26 +75,6 @@ namespace WallpaperGenerator.UI.Android
             Task t;
             switch (item.ItemId)
             {
-                case Resource.Id.generateMenuItem:
-                    t = OnGenerateMenuItemSelected();
-                    break;
-
-                case Resource.Id.renderMenuItem:
-                    t = OnRenderMenuItemSelected();
-                    break;
-
-                case Resource.Id.changeColorMenuItem:
-                    t = OnChangeColorMenuItemSelected();
-                    break;
-
-                case Resource.Id.transformMenuItem:
-                    t = OnTransformMenuItemSelected();
-                    break;
-
-                case Resource.Id.setAsWallpaperMenuItem:
-                    OnSetAsWallpaperMenuItemSelected();
-                    return true;
-
                 case Resource.Id.saveMenuItem:
                     t = OnSaveMenuItemSelected();
                     break;
@@ -101,7 +96,7 @@ namespace WallpaperGenerator.UI.Android
             return true;
         }
 
-        private async Task OnGenerateMenuItemSelected()
+        private async Task OnGenerateClicked()
         {
             if (_workflow.IsImageRendering)
                 return;
@@ -112,16 +107,7 @@ namespace WallpaperGenerator.UI.Android
             await DrawImageAsync();
         }
 
-        private async Task OnRenderMenuItemSelected()
-        {
-            if (_workflow.FormulaRenderArguments == null || _workflow.IsImageRendering)
-                return;
-
-            ClearImage();
-            await DrawImageAsync();
-        }
-
-        private async Task OnChangeColorMenuItemSelected()
+        private async Task OnChangeColorsClicked()
         {
             if (_workflow.FormulaRenderArguments == null || _workflow.IsImageRendering)
                 return;
@@ -131,7 +117,7 @@ namespace WallpaperGenerator.UI.Android
             await DrawImageAsync();
         }
 
-        private async Task OnTransformMenuItemSelected()
+        private async Task OnTransformClicked()
         {
             if (_workflow.FormulaRenderArguments == null || _workflow.IsImageRendering)
                 return;
@@ -141,13 +127,14 @@ namespace WallpaperGenerator.UI.Android
             await DrawImageAsync();
         }
 
-        private void OnSetAsWallpaperMenuItemSelected()
+        private void OnSetAsWallpaperClicked()
         {
             if (!_workflow.IsImageReady)
                 return;
 
             WallpaperManager wallpaperManager = WallpaperManager.GetInstance(this);
             
+            // TODO: show modal message bar.
             // TODO: wrap in try..catch block
             wallpaperManager.SetBitmapWithExactScreenSize(ImageBitmap);
             IntentShortcuts.GoHome(this);
