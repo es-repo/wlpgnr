@@ -18,7 +18,7 @@ namespace Android.Utilities
         {
             Intent mediaScanIntent = new Intent(Intent.ActionMediaScannerScanFile);
             File file = new File(filePath);
-            var contentUri = Net.Uri.FromFile(file);
+            var contentUri = Uri.FromFile(file);
             mediaScanIntent.SetData(contentUri);
             context.SendBroadcast(mediaScanIntent);
         }

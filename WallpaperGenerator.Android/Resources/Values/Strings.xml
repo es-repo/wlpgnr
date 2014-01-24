@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="ApplicationName">HD Wallpaper Generator</string>
-  <string name="Generate">Generate</string>
+  <string name="Generate">Generate new</string>
   <string name="Render">Render</string>
-  <string name="Transform">Transform</string>
+  <string name="Transform">Transform image</string>
   <string name="ChangeColors">Change colors</string>
   <string name="Back">Back</string>
   <string name="SetAsWallpaper">Set as wallpaper</string>

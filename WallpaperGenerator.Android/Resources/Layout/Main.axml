@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
@@ -14,10 +14,12 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
             <TextView
+                android:visibility="gone"
                 android:id="@+id/progressTextView"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
             <TextView
+                android:visibility="gone"
                 android:id="@+id/renderTimeTextView"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
@@ -26,9 +28,37 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/imageView" />
             <TextView
+                android:visibility="gone"
                 android:id="@+id/formulaTextView"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/footer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+        <Button
+            android:id="@+id/generateButton"
+            android:text="@string/Generate"
+            android:drawableTop="@android:drawable/ic_menu_more"
+            style="@style/ToolBarButton" />
+        <Button
+            android:id="@+id/changeColorsButton"
+            android:text="@string/ChangeColors"
+            android:drawableTop="@android:drawable/ic_menu_edit"
+            style="@style/ToolBarButton" />
+        <Button
+            android:id="@+id/transformButton"
+            android:text="@string/Transform"
+            android:drawableTop="@android:drawable/ic_menu_crop"
+            style="@style/ToolBarButton" />
+        <Button
+            android:id="@+id/SetAsWallpaperButton"
+            android:text="@string/SetAsWallpaper"
+            android:drawableTop="@android:drawable/ic_menu_gallery"
+            style="@style/ToolBarButton" />
+    </LinearLayout>
+</RelativeLayout>
