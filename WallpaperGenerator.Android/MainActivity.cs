@@ -18,6 +18,10 @@ namespace WallpaperGenerator.UI.Android
     [Activity(Label = "@string/ApplicationName", MainLauncher = true, Icon = "@drawable/icon", ScreenOrientation = ScreenOrientation.Nosensor)]
     public class MainActivity : BaseActivity
     {
+        private Button _generateButton;
+        private Button _changeColorsButton;
+        private Button _transformButton;
+        private Button _setAsWallpaperButton;
         private TextView _formulaTextView;
         private TextView _progressTextView;
         private TextView _renderTimeTextView;
@@ -46,22 +50,30 @@ namespace WallpaperGenerator.UI.Android
 
             _wallpaperFileManager = new AndroidWallpaperFileManager(this);
 
+            AdjustButtons();
             ClearImage();
         }
 
         private void InitButtonBar()
         {
-            Button generateButton = FindViewById<Button>(Resource.Id.generateButton);
-            generateButton.Click += async (s, a) => await OnGenerateClicked();
+            _generateButton = FindViewById<Button>(Resource.Id.generateButton);
+            _generateButton.Click += async (s, a) => await OnGenerateClicked();
 
-            Button changeColorsButton = FindViewById<Button>(Resource.Id.changeColorsButton);
-            changeColorsButton.Click += async (s, a) => await OnChangeColorsClicked();
+            _changeColorsButton = FindViewById<Button>(Resource.Id.changeColorsButton);
+            _changeColorsButton.Click += async (s, a) => await OnChangeColorsClicked();
 
-            Button transformButton = FindViewById<Button>(Resource.Id.transformButton);
-            transformButton.Click += async (s, a) => await OnTransformClicked();
+            _transformButton = FindViewById<Button>(Resource.Id.transformButton);
+            _transformButton.Click += async (s, a) => await OnTransformClicked();
 
-            Button setAsWallpaperButton = FindViewById<Button>(Resource.Id.setAsWallpaperButton);
-            setAsWallpaperButton.Click += (s, a) => OnSetAsWallpaperClicked();
+            _setAsWallpaperButton = FindViewById<Button>(Resource.Id.setAsWallpaperButton);
+            _setAsWallpaperButton.Click += (s, a) => OnSetAsWallpaperClicked();
+        }
+
+        private void AdjustButtons()
+        {
+            _changeColorsButton.Enabled = _workflow.FormulaRenderArguments != null;
+            _transformButton.Enabled = _workflow.FormulaRenderArguments != null;
+            _setAsWallpaperButton.Enabled = _workflow.FormulaRenderArguments != null;
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -105,6 +117,7 @@ namespace WallpaperGenerator.UI.Android
             FormulaRenderArguments formulaRenderArguments = await _workflow.GenerateFormulaRenderArgumentsAsync();
             _formulaTextView.Text = formulaRenderArguments.ToString();
             await DrawImageAsync();
+            AdjustButtons();
         }
 
         private async Task OnChangeColorsClicked()

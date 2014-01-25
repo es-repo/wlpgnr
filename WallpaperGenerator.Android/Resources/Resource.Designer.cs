@@ -139,8 +139,8 @@ namespace WallpaperGenerator.UI.Android
 			// aapt resource value: 0x7f080006
 			public const int renderTimeTextView = 2131230726;
 			
-			// aapt resource value: 0x7f08000c
-			public const int saveMenuItem = 2131230732;
+			// aapt resource value: 0x7f08000b
+			public const int saveMenuItem = 2131230731;
 			
 			// aapt resource value: 0x7f080002
 			public const int scrollView = 2131230722;
@@ -148,8 +148,8 @@ namespace WallpaperGenerator.UI.Android
 			// aapt resource value: 0x7f08000a
 			public const int setAsWallpaperButton = 2131230730;
 			
-			// aapt resource value: 0x7f08000b
-			public const int shareMenuItem = 2131230731;
+			// aapt resource value: 0x7f08000c
+			public const int shareMenuItem = 2131230732;
 			
 			// aapt resource value: 0x7f080009
 			public const int transformButton = 2131230729;
