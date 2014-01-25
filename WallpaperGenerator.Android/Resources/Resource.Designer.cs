@@ -97,21 +97,6 @@ namespace WallpaperGenerator.UI.Android
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f080012
-			public const int FeedbackMenuItem = 2131230738;
-			
-			// aapt resource value: 0x7f080011
-			public const int RateAppMenuItem = 2131230737;
-			
-			// aapt resource value: 0x7f08000f
-			public const int RemoveAdsMenuItem = 2131230735;
-			
-			// aapt resource value: 0x7f080010
-			public const int SettingsMenuItem = 2131230736;
-			
-			// aapt resource value: 0x7f08000e
-			public const int backMenuItem = 2131230734;
-			
 			// aapt resource value: 0x7f080008
 			public const int changeColorsButton = 2131230728;
 			
@@ -120,6 +105,9 @@ namespace WallpaperGenerator.UI.Android
 			
 			// aapt resource value: 0x7f080001
 			public const int errorTextView = 2131230721;
+			
+			// aapt resource value: 0x7f080010
+			public const int feedbackMenuItem = 2131230736;
 			
 			// aapt resource value: 0x7f080004
 			public const int formulaTextView = 2131230724;
@@ -135,6 +123,12 @@ namespace WallpaperGenerator.UI.Android
 			
 			// aapt resource value: 0x7f080005
 			public const int progressTextView = 2131230725;
+			
+			// aapt resource value: 0x7f08000f
+			public const int rateAppMenuItem = 2131230735;
+			
+			// aapt resource value: 0x7f08000e
+			public const int removeAdsMenuItem = 2131230734;
 			
 			// aapt resource value: 0x7f080006
 			public const int renderTimeTextView = 2131230726;
@@ -272,11 +266,17 @@ namespace WallpaperGenerator.UI.Android
 		public partial class Style
 		{
 			
+			// aapt resource value: 0x7f060001
+			public const int ActionBar_Solid_Example = 2131099649;
+			
 			// aapt resource value: 0x7f060000
 			public const int AppBaseTheme = 2131099648;
 			
-			// aapt resource value: 0x7f060001
-			public const int ToolBarButton = 2131099649;
+			// aapt resource value: 0x7f060002
+			public const int MyTheme_ActionBar_TitleTextStyle = 2131099650;
+			
+			// aapt resource value: 0x7f060003
+			public const int ToolBarButton = 2131099651;
 			
 			static Style()
 			{
