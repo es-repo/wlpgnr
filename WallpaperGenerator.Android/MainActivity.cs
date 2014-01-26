@@ -15,7 +15,7 @@ using AndroidEnvironment = Android.OS.Environment;
 
 namespace WallpaperGenerator.UI.Android
 {
-    [Activity(Label = "@string/ApplicationName", MainLauncher = true, Icon = "@drawable/icon", ScreenOrientation = ScreenOrientation.Nosensor)]
+    [Activity(Label = "@string/ApplicationName", MainLauncher = true, ScreenOrientation = ScreenOrientation.Nosensor)]
     public class MainActivity : BaseActivity
     {
         private Button _generateButton;

@@ -75,9 +75,6 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\Drawable\Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Properties\AndroidManifest.xml" />
     <AndroidResource Include="Resources\Values\Styles.xml">
       <SubType>Designer</SubType>
@@ -85,6 +82,11 @@
     <AndroidResource Include="Resources\Menu\Main.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\Drawable-xhdpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\Drawable-xxhdpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\Drawable-xxxhdpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\Drawable-hdpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\Drawable-mdpi\ic_launcher.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\" />
