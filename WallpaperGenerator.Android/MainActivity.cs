@@ -136,17 +136,27 @@ namespace WallpaperGenerator.UI.Android
             await DrawImageAsync(false);
         }
 
-        private void OnSetAsWallpaperClicked()
+        private async void OnSetAsWallpaperClicked()
         {
             if (!_workflow.IsImageReady)
                 return;
-
-            WallpaperManager wallpaperManager = WallpaperManager.GetInstance(this);
             
-            // TODO: show modal message bar.
+            ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.SetMessage(Resources.GetString(Resource.String.SettingWallpaper));
+            progressDialog.SetCanceledOnTouchOutside(false);
+            progressDialog.Show();
             // TODO: wrap in try..catch block
-            wallpaperManager.SetBitmapWithExactScreenSize(ImageBitmap);
+            await SetWallpaperAsync();
             IntentShortcuts.GoHome(this);
+        }
+
+        private Task SetWallpaperAsync()
+        {
+            return Task.Run(() =>
+            {
+                WallpaperManager wallpaperManager = WallpaperManager.GetInstance(this);
+                wallpaperManager.SetBitmapWithExactScreenSize(ImageBitmap);
+            });
         }
 
         private async Task OnSaveMenuItemSelected()
@@ -154,11 +164,15 @@ namespace WallpaperGenerator.UI.Android
             if (!_workflow.IsImageReady)
                 return;
 
+            ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.SetMessage(Resources.GetString(Resource.String.SavingWallpaper));
+            progressDialog.SetCanceledOnTouchOutside(false);
+            progressDialog.Show();
             // TODO: wrap in try..catch block
             var filesPath = await _wallpaperFileManager.SaveAsync(_workflow.LastFormulaRenderResult, false);
             if (filesPath == null)
                 throw new InvalidOperationException();
-            Toast.MakeText(this, Resources.GetString(Resource.String.WallpaperIsSaved), ToastLength.Long).Show();
+            progressDialog.Dismiss();
         }
 
         private void OnOpenGalleryMenuItemSelected()
