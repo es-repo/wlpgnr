@@ -97,6 +97,9 @@ namespace WallpaperGenerator.UI.Android
 		public partial class Id
 		{
 			
+			// aapt resource value: 0x7f08000e
+			public const int benchmarkMenuItem = 2131230734;
+			
 			// aapt resource value: 0x7f080007
 			public const int changeColorsButton = 2131230727;
 			
@@ -106,8 +109,8 @@ namespace WallpaperGenerator.UI.Android
 			// aapt resource value: 0x7f080001
 			public const int errorTextView = 2131230721;
 			
-			// aapt resource value: 0x7f08000f
-			public const int feedbackMenuItem = 2131230735;
+			// aapt resource value: 0x7f080010
+			public const int feedbackMenuItem = 2131230736;
 			
 			// aapt resource value: 0x7f080004
 			public const int formulaTextView = 2131230724;
@@ -121,8 +124,8 @@ namespace WallpaperGenerator.UI.Android
 			// aapt resource value: 0x7f08000c
 			public const int openGalleryMenuItem = 2131230732;
 			
-			// aapt resource value: 0x7f08000e
-			public const int rateAppMenuItem = 2131230734;
+			// aapt resource value: 0x7f08000f
+			public const int rateAppMenuItem = 2131230735;
 			
 			// aapt resource value: 0x7f08000d
 			public const int removeAdsMenuItem = 2131230733;
@@ -198,6 +201,9 @@ namespace WallpaperGenerator.UI.Android
 			
 			// aapt resource value: 0x7f050006
 			public const int Back = 2131034118;
+			
+			// aapt resource value: 0x7f050016
+			public const int Benchmark = 2131034134;
 			
 			// aapt resource value: 0x7f050005
 			public const int ChangeColors = 2131034117;

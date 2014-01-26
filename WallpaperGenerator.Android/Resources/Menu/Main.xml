@@ -18,6 +18,10 @@
     android:showAsAction="withText"
     android:title="@string/RemoveAds"/>
   <item
+    android:id="@+id/benchmarkMenuItem"
+    android:showAsAction="withText"
+    android:title="@string/Benchmark"/>
+  <item
     android:id="@+id/rateAppMenuItem"
     android:showAsAction="withText"
     android:title="@string/RateApp"/>

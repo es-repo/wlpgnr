@@ -21,4 +21,5 @@
   <string name="ShareTitle">Share the wallpaper with friends!</string>
   <string name="Wait">Please wait...</string>
   <string name="WallpaperWillBeReady">"Your wallpaper will be ready soon!"</string>
+  <string name="Benchmark">Benchmark</string>
 </resources>

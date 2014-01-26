@@ -94,6 +94,10 @@ namespace WallpaperGenerator.UI.Android
                     t = OnSaveMenuItemSelected();
                     break;
 
+                case Resource.Id.benchmarkMenuItem:
+                    t = OnBenchmarkMenuItemSelected();
+                    break;
+
                 case Resource.Id.openGalleryMenuItem:
                     OnOpenGalleryMenuItemSelected();
                     return true;
@@ -113,10 +117,20 @@ namespace WallpaperGenerator.UI.Android
 
         private async Task OnGenerateClicked()
         {
+            await OnGenerateOrBenchmarkClicked(false);
+        }
+
+        private async Task OnBenchmarkMenuItemSelected()
+        {
+            await OnGenerateOrBenchmarkClicked(true);
+        }
+
+        private async Task OnGenerateOrBenchmarkClicked(bool benchmark)
+        {
             if (_workflow.IsImageRendering)
                 return;
 
-            await DrawImageAsync(true);
+            await DrawImageAsync(true, benchmark);
             _formulaTextView.Text = _workflow.FormulaRenderArguments.ToString();
             AdjustButtons();
         }
@@ -128,7 +142,7 @@ namespace WallpaperGenerator.UI.Android
 
             FormulaRenderArguments formulaRenderArguments = _workflow.ChangeColors();
             _formulaTextView.Text = formulaRenderArguments.ToString();
-            await DrawImageAsync(false);
+            await DrawImageAsync(false, false);
         }
 
         private async Task OnTransformClicked()
@@ -138,7 +152,7 @@ namespace WallpaperGenerator.UI.Android
 
             FormulaRenderArguments formulaRenderArguments = _workflow.TransformRanges();
             _formulaTextView.Text = formulaRenderArguments.ToString();
-            await DrawImageAsync(false);
+            await DrawImageAsync(false, false);
         }
 
         private async void OnSetAsWallpaperClicked()
@@ -208,9 +222,11 @@ namespace WallpaperGenerator.UI.Android
             _imageView.SetImageBitmap(blankBitmap);
         }
 
-        private async Task DrawImageAsync(bool generateNew)
+        private async Task DrawImageAsync(bool generateNew, bool benchmark)
         {
-            ProgressDialog progressDialog = CreateProgressDialog(Resources.GetString(Resource.String.WallpaperWillBeReady), Resources.GetString(Resource.String.Wait), false);
+            ProgressDialog progressDialog = CreateProgressDialog(
+                benchmark ? Resources.GetString(Resource.String.Benchmark) : Resources.GetString(Resource.String.WallpaperWillBeReady), 
+                benchmark ? "" : Resources.GetString(Resource.String.Wait), false);
             progressDialog.Max = 100;
             progressDialog.Show();
 
@@ -221,11 +237,20 @@ namespace WallpaperGenerator.UI.Android
                 }), TimeSpan.FromMilliseconds(100),
                 () => progressDialog.Progress = progressDialog.Max);
 
-            FormulaRenderResult formulaRenderResult = await _workflow.RenderFormulaAsync(generateNew, renderingProgressObserver);
+            FormulaRenderResult formulaRenderResult = benchmark 
+                ? await _workflow.BenchmarkAsync(renderingProgressObserver) 
+                : await _workflow.RenderFormulaAsync(generateNew, renderingProgressObserver);
+
             _renderTimeTextView.Text = formulaRenderResult.ElapsedTime.ToString();
             _imageView.SetImageBitmap(formulaRenderResult.Image.ToBitmap());
             
             progressDialog.Dismiss();
+
+            if (benchmark)
+            {
+                AlertDialog dialog = CreateAlertDialog(formulaRenderResult.ElapsedTime.ToString("hh':'mm':'ss"));
+                dialog.Show();
+            }
         }
 
         private ProgressDialog CreateProgressDialog(string message, string title = null, bool indeterminate = true)
@@ -236,12 +261,23 @@ namespace WallpaperGenerator.UI.Android
                 progressDialog.SetProgressPercentFormat(new EmptyNumberFormat());
             }
             progressDialog.SetProgressNumberFormat("");
-
+            progressDialog.SetCancelable(false);
             progressDialog.SetCanceledOnTouchOutside(false);
             progressDialog.SetTitle(title);
             progressDialog.SetMessage(message);
             progressDialog.SetProgressStyle(ProgressDialogStyle.Horizontal);
             return progressDialog;
+        }
+
+        private AlertDialog CreateAlertDialog(string message)
+        {
+            TextView dialogMessage = new TextView(this) { Text = message, Gravity = GravityFlags.CenterHorizontal, TextSize = 30};
+            AlertDialog dialog = new AlertDialog.Builder(this)
+                .SetView(dialogMessage)
+                .SetCancelable(true)
+                .Create();
+            dialog.SetCanceledOnTouchOutside(true);
+            return dialog;
         }
     }
 }
