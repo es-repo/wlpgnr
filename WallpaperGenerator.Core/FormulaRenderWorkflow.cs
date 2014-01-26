@@ -125,60 +125,80 @@ namespace WallpaperGenerator.UI.Core
                 args.DimensionsCount, args.MinimalDepth, args.LeafProbability, args.ConstantProbability);
         }
 
-        public async Task<FormulaRenderResult> RenderFormulaAsync(bool generateNew, ProgressObserver progressObserver)
+        public Task<FormulaRenderResult> RenderFormulaAsync(bool generateNew, ProgressObserver progressObserver)
         {
             if (FormulaRenderArguments == null && !generateNew)
                 throw new InvalidOperationException("FormulaRenderArguments is null.");
 
-            IsImageRendering = true;
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
-            double currentProgress = 0;
-
-            const double formulaGenerationrProgressSpan = 0.02;
-            if (generateNew)
-            {
-                FormulaRenderArguments = await GenerateFormulaRenderArgumentsAsync(formulaGenerationrProgressSpan, 0, progressObserver);
-                currentProgress += formulaGenerationrProgressSpan;
-            }
-
-            if (_lastEvaluatedFormulaValues == null)
-            {
-                double evaluationrProgressSpan = 0.95 - (generateNew ? formulaGenerationrProgressSpan : 0);
-                _lastEvaluatedFormulaValues = await EvaluateFormulaAsync(FormulaRenderArguments, evaluationrProgressSpan, currentProgress, progressObserver);
-                currentProgress += evaluationrProgressSpan;
-            }
-
-            RenderedFormulaImage renderedFormulaImage = await RenderFormulaAsync(_lastEvaluatedFormulaValues, FormulaRenderArguments.ImageSize,
-                FormulaRenderArguments.ColorTransformation,
-                1 - currentProgress, currentProgress, progressObserver);
-
-            stopwatch.Stop();
-            IsImageRendering = false;
-            return LastFormulaRenderResult = new FormulaRenderResult(FormulaRenderArguments, renderedFormulaImage, stopwatch.Elapsed);
-        }
-
-        private static Task<double[]> EvaluateFormulaAsync(FormulaRenderArguments formulaRenderingArguments, double progressSpan, double initProgress, ProgressObserver progressObserver)
-        {
             return Task.Run(() =>
             {
                 if (progressObserver != null)
                     ProgressReporter.Subscribe(progressObserver);
-                using (ProgressReporter.CreateScope(progressSpan, initProgress))
-                    return FormulaRender.EvaluateFormula(formulaRenderingArguments.FormulaTree, formulaRenderingArguments.Ranges);
+                return RenderFormula(generateNew);
             });
         }
 
-        private static Task<RenderedFormulaImage> RenderFormulaAsync(double[] evaluatedFormulaValues, Size imageSize, ColorTransformation colorTransformation,
-            double progressSpan, double initProgress, ProgressObserver progressObserver)
+        public FormulaRenderResult RenderFormula(bool generateNew)
         {
-            return Task.Run(() =>
+            if (FormulaRenderArguments == null && !generateNew)
+                throw new InvalidOperationException("FormulaRenderArguments is null.");
+
+            using (ProgressReporter.CreateScope())
             {
-                if (progressObserver != null)
-                    ProgressReporter.Subscribe(progressObserver);
-                using (ProgressReporter.CreateScope(progressSpan, initProgress))
-                    return FormulaRender.Render(evaluatedFormulaValues, imageSize, colorTransformation);
-            });
+                IsImageRendering = true;
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
+            
+                double formulaGenerationrProgressSpan = 0;
+                if (generateNew)
+                {
+                    formulaGenerationrProgressSpan = 0.02;
+                    using (ProgressReporter.CreateScope(formulaGenerationrProgressSpan))
+                        FormulaRenderArguments = GenerateFormulaRenderArguments();
+                }
+
+                double evaluationrProgressSpan = 0;
+                if (_lastEvaluatedFormulaValues == null)
+                {
+                    evaluationrProgressSpan = 0.95 - formulaGenerationrProgressSpan;
+                    using (ProgressReporter.CreateScope(evaluationrProgressSpan))
+                        _lastEvaluatedFormulaValues = FormulaRender.EvaluateFormula(FormulaRenderArguments.FormulaTree, FormulaRenderArguments.Ranges);
+                }
+
+                RenderedFormulaImage renderedFormulaImage;
+                using (ProgressReporter.CreateScope(1 - formulaGenerationrProgressSpan - evaluationrProgressSpan))
+                {
+                    renderedFormulaImage = FormulaRender.Render(_lastEvaluatedFormulaValues,
+                        FormulaRenderArguments.ImageSize, FormulaRenderArguments.ColorTransformation);
+                }
+
+                stopwatch.Stop();
+                IsImageRendering = false;
+                return LastFormulaRenderResult = new FormulaRenderResult(FormulaRenderArguments, renderedFormulaImage, stopwatch.Elapsed);
+            }
         }
+
+        //private static Task<double[]> EvaluateFormulaAsync(FormulaRenderArguments formulaRenderingArguments, double progressSpan, double initProgress, ProgressObserver progressObserver)
+        //{
+            //return Task.Run(() =>
+            //{
+            //    if (progressObserver != null)
+            //        ProgressReporter.Subscribe(progressObserver);
+            //    using (ProgressReporter.CreateScope(progressSpan, initProgress))
+            //        return FormulaRender.EvaluateFormula(formulaRenderingArguments.FormulaTree, formulaRenderingArguments.Ranges);
+            //});
+        //}
+
+        //private static Task<RenderedFormulaImage> RenderFormulaAsync(double[] evaluatedFormulaValues, Size imageSize, ColorTransformation colorTransformation,
+        //    double progressSpan, double initProgress, ProgressObserver progressObserver)
+        //{
+        //    return Task.Run(() =>
+        //    {
+        //        if (progressObserver != null)
+        //            ProgressReporter.Subscribe(progressObserver);
+        //        using (ProgressReporter.CreateScope(progressSpan, initProgress))
+        //            return FormulaRender.Render(evaluatedFormulaValues, imageSize, colorTransformation);
+        //    });
+        //}
     }
 }

@@ -214,12 +214,13 @@ namespace WallpaperGenerator.UI.Android
                 p => RunOnUiThread(() =>
                 {
                     progressDialog.Progress = (int) (p.Progress*progressDialog.Max);
-                }), TimeSpan.FromMilliseconds(100));
+                }), TimeSpan.FromMilliseconds(100),
+                () => progressDialog.Progress = progressDialog.Max);
 
             FormulaRenderResult formulaRenderResult = await _workflow.RenderFormulaAsync(generateNew, renderingProgressObserver);
             _renderTimeTextView.Text = formulaRenderResult.ElapsedTime.ToString();
             _imageView.SetImageBitmap(formulaRenderResult.Image.ToBitmap());
-
+            
             progressDialog.Dismiss();
         }
 
