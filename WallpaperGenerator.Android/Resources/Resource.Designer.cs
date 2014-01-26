@@ -97,8 +97,8 @@ namespace WallpaperGenerator.UI.Android
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f080008
-			public const int changeColorsButton = 2131230728;
+			// aapt resource value: 0x7f080007
+			public const int changeColorsButton = 2131230727;
 			
 			// aapt resource value: 0x7f080000
 			public const int errorScrollView = 2131230720;
@@ -106,47 +106,44 @@ namespace WallpaperGenerator.UI.Android
 			// aapt resource value: 0x7f080001
 			public const int errorTextView = 2131230721;
 			
-			// aapt resource value: 0x7f080010
-			public const int feedbackMenuItem = 2131230736;
+			// aapt resource value: 0x7f08000f
+			public const int feedbackMenuItem = 2131230735;
 			
 			// aapt resource value: 0x7f080004
 			public const int formulaTextView = 2131230724;
 			
-			// aapt resource value: 0x7f080007
-			public const int generateButton = 2131230727;
+			// aapt resource value: 0x7f080006
+			public const int generateButton = 2131230726;
 			
 			// aapt resource value: 0x7f080003
 			public const int imageView = 2131230723;
 			
-			// aapt resource value: 0x7f08000d
-			public const int openGalleryMenuItem = 2131230733;
-			
-			// aapt resource value: 0x7f080005
-			public const int progressTextView = 2131230725;
-			
-			// aapt resource value: 0x7f08000f
-			public const int rateAppMenuItem = 2131230735;
+			// aapt resource value: 0x7f08000c
+			public const int openGalleryMenuItem = 2131230732;
 			
 			// aapt resource value: 0x7f08000e
-			public const int removeAdsMenuItem = 2131230734;
+			public const int rateAppMenuItem = 2131230734;
 			
-			// aapt resource value: 0x7f080006
-			public const int renderTimeTextView = 2131230726;
+			// aapt resource value: 0x7f08000d
+			public const int removeAdsMenuItem = 2131230733;
 			
-			// aapt resource value: 0x7f08000b
-			public const int saveMenuItem = 2131230731;
+			// aapt resource value: 0x7f080005
+			public const int renderTimeTextView = 2131230725;
+			
+			// aapt resource value: 0x7f08000a
+			public const int saveMenuItem = 2131230730;
 			
 			// aapt resource value: 0x7f080002
 			public const int scrollView = 2131230722;
 			
-			// aapt resource value: 0x7f08000a
-			public const int setAsWallpaperButton = 2131230730;
-			
-			// aapt resource value: 0x7f08000c
-			public const int shareMenuItem = 2131230732;
-			
 			// aapt resource value: 0x7f080009
-			public const int transformButton = 2131230729;
+			public const int setAsWallpaperButton = 2131230729;
+			
+			// aapt resource value: 0x7f08000b
+			public const int shareMenuItem = 2131230731;
+			
+			// aapt resource value: 0x7f080008
+			public const int transformButton = 2131230728;
 			
 			static Id()
 			{
@@ -250,8 +247,14 @@ namespace WallpaperGenerator.UI.Android
 			// aapt resource value: 0x7f050004
 			public const int Transform = 2131034116;
 			
+			// aapt resource value: 0x7f050013
+			public const int Wait = 2131034131;
+			
 			// aapt resource value: 0x7f05000f
 			public const int WallpaperIsSaved = 2131034127;
+			
+			// aapt resource value: 0x7f050014
+			public const int WallpaperWillBeReady = 2131034132;
 			
 			static String()
 			{
@@ -266,14 +269,14 @@ namespace WallpaperGenerator.UI.Android
 		public partial class Style
 		{
 			
-			// aapt resource value: 0x7f060001
-			public const int ActionBar_Solid_Example = 2131099649;
-			
 			// aapt resource value: 0x7f060000
 			public const int AppBaseTheme = 2131099648;
 			
+			// aapt resource value: 0x7f060001
+			public const int AppBaseTheme_ActionBar = 2131099649;
+			
 			// aapt resource value: 0x7f060002
-			public const int MyTheme_ActionBar_TitleTextStyle = 2131099650;
+			public const int AppBaseTheme_ActionBar_TitleText = 2131099650;
 			
 			// aapt resource value: 0x7f060003
 			public const int ToolBarButton = 2131099651;

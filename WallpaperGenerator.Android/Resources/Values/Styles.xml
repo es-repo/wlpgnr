@@ -5,7 +5,7 @@
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
   <style name="AppBaseTheme" parent="android:Theme.Holo">
-    <item name="android:actionBarStyle">@style/ActionBar.Solid.Example</item>
+    <item name="android:actionBarStyle">@style/AppBaseTheme.ActionBar</item>
     <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
@@ -13,11 +13,10 @@
         -->
   </style>
 
-  <style name="ActionBar.Solid.Example" parent="@android:style/Widget.Holo.ActionBar.Solid">
-    <item name="android:titleTextStyle">@style/MyTheme.ActionBar.TitleTextStyle</item>
+  <style name="AppBaseTheme.ActionBar" parent="@android:style/Widget.Holo.ActionBar.Solid">
+    <item name="android:titleTextStyle">@style/AppBaseTheme.ActionBar.TitleText</item>
   </style>
-  <style name="MyTheme.ActionBar.TitleTextStyle" parent="@android:style/TextAppearance.Medium">
-    <item name="android:textStyle">bold</item>
+  <style name="AppBaseTheme.ActionBar.TitleText" parent="@android:style/TextAppearance.Medium">
     <item name="android:textSize">17dp</item>
   </style>
 

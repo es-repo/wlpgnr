@@ -23,7 +23,6 @@ namespace WallpaperGenerator.UI.Android
         private Button _transformButton;
         private Button _setAsWallpaperButton;
         private TextView _formulaTextView;
-        private TextView _progressTextView;
         private TextView _renderTimeTextView;
         private ImageView _imageView;
         private FormulaRenderWorkflow _workflow;
@@ -37,7 +36,6 @@ namespace WallpaperGenerator.UI.Android
             InitButtonBar();
 
             _formulaTextView = FindViewById<TextView>(Resource.Id.formulaTextView);
-            _progressTextView = FindViewById<TextView>(Resource.Id.progressTextView);
             _renderTimeTextView = FindViewById<TextView>(Resource.Id.renderTimeTextView);
             _imageView = FindViewById<ImageView>(Resource.Id.imageView);
 
@@ -112,8 +110,7 @@ namespace WallpaperGenerator.UI.Android
         {
             if (_workflow.IsImageRendering)
                 return;
-            
-            ClearImage();
+
             FormulaRenderArguments formulaRenderArguments = await _workflow.GenerateFormulaRenderArgumentsAsync();
             _formulaTextView.Text = formulaRenderArguments.ToString();
             await DrawImageAsync();
@@ -193,13 +190,24 @@ namespace WallpaperGenerator.UI.Android
 
         private async Task DrawImageAsync()
         {
+            ProgressDialog progressDialog = new ProgressDialog(this) {Max = 100};
+            progressDialog.SetCanceledOnTouchOutside(false);
+            progressDialog.SetTitle(Resources.GetString(Resource.String.Wait));
+            progressDialog.SetMessage(Resources.GetString(Resource.String.WallpaperWillBeReady));
+            progressDialog.SetProgressStyle(ProgressDialogStyle.Horizontal);
+            progressDialog.Show();
+
             ProgressObserver renderingProgressObserver = new ProgressObserver(
-                p => RunOnUiThread(() => _progressTextView.Text = p.Progress.ToString("P1")), TimeSpan.FromMilliseconds(100));
+                p => RunOnUiThread(() =>
+                {
+                    progressDialog.Progress = (int) (p.Progress*progressDialog.Max);
+                }), TimeSpan.FromMilliseconds(100));
 
             FormulaRenderResult formulaRenderResult = await _workflow.RenderFormulaAsync(renderingProgressObserver);
-            _progressTextView.Text = 1.ToString("P1");
             _renderTimeTextView.Text = formulaRenderResult.ElapsedTime.ToString();
             _imageView.SetImageBitmap(formulaRenderResult.Image.ToBitmap());
+
+            progressDialog.Dismiss();
         }
 
         private Bitmap ImageBitmap
