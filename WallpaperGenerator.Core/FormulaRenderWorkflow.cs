@@ -177,28 +177,5 @@ namespace WallpaperGenerator.UI.Core
                 return LastFormulaRenderResult = new FormulaRenderResult(FormulaRenderArguments, renderedFormulaImage, stopwatch.Elapsed);
             }
         }
-
-        //private static Task<double[]> EvaluateFormulaAsync(FormulaRenderArguments formulaRenderingArguments, double progressSpan, double initProgress, ProgressObserver progressObserver)
-        //{
-            //return Task.Run(() =>
-            //{
-            //    if (progressObserver != null)
-            //        ProgressReporter.Subscribe(progressObserver);
-            //    using (ProgressReporter.CreateScope(progressSpan, initProgress))
-            //        return FormulaRender.EvaluateFormula(formulaRenderingArguments.FormulaTree, formulaRenderingArguments.Ranges);
-            //});
-        //}
-
-        //private static Task<RenderedFormulaImage> RenderFormulaAsync(double[] evaluatedFormulaValues, Size imageSize, ColorTransformation colorTransformation,
-        //    double progressSpan, double initProgress, ProgressObserver progressObserver)
-        //{
-        //    return Task.Run(() =>
-        //    {
-        //        if (progressObserver != null)
-        //            ProgressReporter.Subscribe(progressObserver);
-        //        using (ProgressReporter.CreateScope(progressSpan, initProgress))
-        //            return FormulaRender.Render(evaluatedFormulaValues, imageSize, colorTransformation);
-        //    });
-        //}
     }
 }

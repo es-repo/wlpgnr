@@ -28,6 +28,11 @@ namespace WallpaperGenerator.UI.Android
         private FormulaRenderWorkflow _workflow;
         private AndroidWallpaperFileManager _wallpaperFileManager;
 
+        private Bitmap ImageBitmap
+        {
+            get { return ((BitmapDrawable)_imageView.Drawable).Bitmap; }
+        }
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -140,10 +145,8 @@ namespace WallpaperGenerator.UI.Android
         {
             if (!_workflow.IsImageReady)
                 return;
-            
-            ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.SetMessage(Resources.GetString(Resource.String.SettingWallpaper));
-            progressDialog.SetCanceledOnTouchOutside(false);
+
+            ProgressDialog progressDialog = CreateProgressDialog(Resources.GetString(Resource.String.SettingWallpaper));
             progressDialog.Show();
             // TODO: wrap in try..catch block
             await SetWallpaperAsync();
@@ -164,9 +167,7 @@ namespace WallpaperGenerator.UI.Android
             if (!_workflow.IsImageReady)
                 return;
 
-            ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.SetMessage(Resources.GetString(Resource.String.SavingWallpaper));
-            progressDialog.SetCanceledOnTouchOutside(false);
+            ProgressDialog progressDialog = CreateProgressDialog(Resources.GetString(Resource.String.SavingWallpaper));
             progressDialog.Show();
             // TODO: wrap in try..catch block
             var filesPath = await _wallpaperFileManager.SaveAsync(_workflow.LastFormulaRenderResult, false);
@@ -203,11 +204,8 @@ namespace WallpaperGenerator.UI.Android
 
         private async Task DrawImageAsync(bool generateNew)
         {
-            ProgressDialog progressDialog = new ProgressDialog(this) {Max = 100};
-            progressDialog.SetCanceledOnTouchOutside(false);
-            progressDialog.SetTitle(Resources.GetString(Resource.String.Wait));
-            progressDialog.SetMessage(Resources.GetString(Resource.String.WallpaperWillBeReady));
-            progressDialog.SetProgressStyle(ProgressDialogStyle.Horizontal);
+            ProgressDialog progressDialog = CreateProgressDialog(Resources.GetString(Resource.String.WallpaperWillBeReady), Resources.GetString(Resource.String.Wait), false);
+            progressDialog.Max = 100;
             progressDialog.Show();
 
             ProgressObserver renderingProgressObserver = new ProgressObserver(
@@ -224,9 +222,20 @@ namespace WallpaperGenerator.UI.Android
             progressDialog.Dismiss();
         }
 
-        private Bitmap ImageBitmap
+        private ProgressDialog CreateProgressDialog(string message, string title = null, bool indeterminate = true)
         {
-            get { return ((BitmapDrawable) _imageView.Drawable).Bitmap; }
+            ProgressDialog progressDialog = new ProgressDialog(this) {Indeterminate = indeterminate};
+            if (indeterminate)
+            {
+                progressDialog.SetProgressPercentFormat(new EmptyNumberFormat());
+            }
+            progressDialog.SetProgressNumberFormat("");
+
+            progressDialog.SetCanceledOnTouchOutside(false);
+            progressDialog.SetTitle(title);
+            progressDialog.SetMessage(message);
+            progressDialog.SetProgressStyle(ProgressDialogStyle.Horizontal);
+            return progressDialog;
         }
     }
 }

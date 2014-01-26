@@ -48,6 +48,7 @@
     <Compile Include="CrashReportActivity.cs" />
     <Compile Include="Device.cs" />
     <Compile Include="DisplayExtensions.cs" />
+    <Compile Include="EmptyNumberFormat.cs" />
     <Compile Include="IntentShortcuts.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -57,10 +57,10 @@ namespace WallpaperGenerator.UI.Core.Testing
         }
 
         [Test]
-        public void TestRenderFormulaAsync()
+        public void TestRenderFormula()
         {
             Assert.IsFalse(_workflow.IsImageReady);
-            FormulaRenderResult formulaRenderResult = _workflow.RenderFormulaAsync(true, null).Result;
+            FormulaRenderResult formulaRenderResult = _workflow.RenderFormula(true);
             Assert.IsNotNull(_workflow.FormulaRenderArguments);
             Assert.IsNotNull(formulaRenderResult.Image);
             Assert.AreNotEqual(TimeSpan.Zero, formulaRenderResult.ElapsedTime);
@@ -80,7 +80,7 @@ namespace WallpaperGenerator.UI.Core.Testing
             _workflow.TransformRanges();
             Assert.IsFalse(_workflow.IsImageReady);
             Assert.IsFalse(_workflow.IsImageRendering);
-            FormulaRenderResult formulaRenderResult = _workflow.RenderFormulaAsync(false, null).Result;
+            FormulaRenderResult formulaRenderResult = _workflow.RenderFormula(false);
             Assert.IsNotNull(formulaRenderResult);
             Assert.IsFalse(_workflow.IsImageRendering);
             Assert.IsTrue(_workflow.IsImageReady);
@@ -90,7 +90,7 @@ namespace WallpaperGenerator.UI.Core.Testing
             _workflow.TransformRanges();
             Assert.IsFalse(_workflow.IsImageReady);
             Assert.IsFalse(_workflow.IsImageRendering);
-            formulaRenderResult = _workflow.RenderFormulaAsync(false, null).Result;
+            formulaRenderResult = _workflow.RenderFormula(false);
             Assert.IsNotNull(formulaRenderResult);
             _workflow.GenerateFormulaRenderArguments();
             Assert.IsFalse(_workflow.IsImageReady);
