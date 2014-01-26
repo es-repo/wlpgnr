@@ -198,6 +198,12 @@ namespace WallpaperGenerator.UI.Android
             int width = _workflow.ImageSize.Width;
             int height = _workflow.ImageSize.Height;  
             int[] pixels = new int[width * height];
+            for (int i = 0; i < pixels.Length; i++)
+            {
+                int c = i%5 == 0? 70 : 0;
+                pixels[i] = Color.Argb(255, c, c, c);
+            }
+
             Bitmap blankBitmap = Bitmap.CreateBitmap(pixels, width, height, Bitmap.Config.Argb8888);
             _imageView.SetImageBitmap(blankBitmap);
         }
