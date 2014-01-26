@@ -196,7 +196,7 @@ namespace WallpaperGenerator.UI.Windows
             ProgressObserver renderingProgressObserver = new ProgressObserver(
                 p => _mainWindow.StatusPanel.Dispatcher.Invoke(() => _mainWindow.StatusPanel.RenderingProgress = p.Progress));
 
-            FormulaRenderResult formulaRenderResult = await _workflow.RenderFormulaAsync(renderingProgressObserver);
+            FormulaRenderResult formulaRenderResult = await _workflow.RenderFormulaAsync(false, renderingProgressObserver);
 
             _mainWindow.WallpaperImage.Source = formulaRenderResult.Image.ToBitmap();
 

@@ -41,7 +41,7 @@ namespace WallpaperGenerator.UI.Core.Testing
         {
             _workflow.GenerateFormulaRenderArguments();
             FormulaRenderArguments args = _workflow.ChangeColors();
-            const string expectedArgsString = "0,15.36;-1.92,0\r\n0.4,1.68,-3.6,0.1;0,0.72,1.92,0;-0.12,0.2,0.84,0.9\r\nSum Sin Sin x1 Sum Sin x0 0.01";
+            const string expectedArgsString = "0,15.36;-1.92,0\r\n0.4,1.68,-3.6,0.1;0,0.72,1.92,0;0,0,0,0\r\nSum Sin Sin x1 Sum Sin x0 0.01";
             Assert.AreEqual(expectedArgsString, args.ToString());
             Assert.AreEqual(expectedArgsString, _workflow.FormulaRenderArguments.ToString());
         }
@@ -59,9 +59,9 @@ namespace WallpaperGenerator.UI.Core.Testing
         [Test]
         public void TestRenderFormulaAsync()
         {
-            _workflow.GenerateFormulaRenderArguments();
             Assert.IsFalse(_workflow.IsImageReady);
-            FormulaRenderResult formulaRenderResult = _workflow.RenderFormulaAsync(null).Result;
+            FormulaRenderResult formulaRenderResult = _workflow.RenderFormulaAsync(true, null).Result;
+            Assert.IsNotNull(_workflow.FormulaRenderArguments);
             Assert.IsNotNull(formulaRenderResult.Image);
             Assert.AreNotEqual(TimeSpan.Zero, formulaRenderResult.ElapsedTime);
         }
@@ -80,7 +80,7 @@ namespace WallpaperGenerator.UI.Core.Testing
             _workflow.TransformRanges();
             Assert.IsFalse(_workflow.IsImageReady);
             Assert.IsFalse(_workflow.IsImageRendering);
-            FormulaRenderResult formulaRenderResult = _workflow.RenderFormulaAsync(null).Result;
+            FormulaRenderResult formulaRenderResult = _workflow.RenderFormulaAsync(false, null).Result;
             Assert.IsNotNull(formulaRenderResult);
             Assert.IsFalse(_workflow.IsImageRendering);
             Assert.IsTrue(_workflow.IsImageReady);
@@ -90,7 +90,7 @@ namespace WallpaperGenerator.UI.Core.Testing
             _workflow.TransformRanges();
             Assert.IsFalse(_workflow.IsImageReady);
             Assert.IsFalse(_workflow.IsImageRendering);
-            formulaRenderResult = _workflow.RenderFormulaAsync(null).Result;
+            formulaRenderResult = _workflow.RenderFormulaAsync(false, null).Result;
             Assert.IsNotNull(formulaRenderResult);
             _workflow.GenerateFormulaRenderArguments();
             Assert.IsFalse(_workflow.IsImageReady);

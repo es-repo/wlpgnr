@@ -111,9 +111,8 @@ namespace WallpaperGenerator.UI.Android
             if (_workflow.IsImageRendering)
                 return;
 
-            FormulaRenderArguments formulaRenderArguments = await _workflow.GenerateFormulaRenderArgumentsAsync();
-            _formulaTextView.Text = formulaRenderArguments.ToString();
-            await DrawImageAsync();
+            await DrawImageAsync(true);
+            _formulaTextView.Text = _workflow.FormulaRenderArguments.ToString();
             AdjustButtons();
         }
 
@@ -124,7 +123,7 @@ namespace WallpaperGenerator.UI.Android
 
             FormulaRenderArguments formulaRenderArguments = _workflow.ChangeColors();
             _formulaTextView.Text = formulaRenderArguments.ToString();
-            await DrawImageAsync();
+            await DrawImageAsync(false);
         }
 
         private async Task OnTransformClicked()
@@ -134,7 +133,7 @@ namespace WallpaperGenerator.UI.Android
 
             FormulaRenderArguments formulaRenderArguments = _workflow.TransformRanges();
             _formulaTextView.Text = formulaRenderArguments.ToString();
-            await DrawImageAsync();
+            await DrawImageAsync(false);
         }
 
         private void OnSetAsWallpaperClicked()
@@ -188,7 +187,7 @@ namespace WallpaperGenerator.UI.Android
             _imageView.SetImageBitmap(blankBitmap);
         }
 
-        private async Task DrawImageAsync()
+        private async Task DrawImageAsync(bool generateNew)
         {
             ProgressDialog progressDialog = new ProgressDialog(this) {Max = 100};
             progressDialog.SetCanceledOnTouchOutside(false);
@@ -203,7 +202,7 @@ namespace WallpaperGenerator.UI.Android
                     progressDialog.Progress = (int) (p.Progress*progressDialog.Max);
                 }), TimeSpan.FromMilliseconds(100));
 
-            FormulaRenderResult formulaRenderResult = await _workflow.RenderFormulaAsync(renderingProgressObserver);
+            FormulaRenderResult formulaRenderResult = await _workflow.RenderFormulaAsync(generateNew, renderingProgressObserver);
             _renderTimeTextView.Text = formulaRenderResult.ElapsedTime.ToString();
             _imageView.SetImageBitmap(formulaRenderResult.Image.ToBitmap());
 
