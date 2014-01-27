@@ -145,7 +145,7 @@
       <Project>{7D4A8B31-9E0B-4C8A-914B-E469D622F21C}</Project>
       <Name>Utilities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WallpaperGenerator.Core\UI.Core.csproj">
+    <ProjectReference Include="..\UI.Core\UI.Core.csproj">
       <Project>{abb75337-fcc9-4569-9b7e-ad338134726e}</Project>
       <Name>UI.Core</Name>
     </ProjectReference>

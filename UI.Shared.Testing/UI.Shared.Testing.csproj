@@ -59,7 +59,7 @@
       <Project>{35E8B1AD-1304-47C9-9A9D-4AB7ECE5F21D}</Project>
       <Name>UI.Shared</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WallpaperGenerator.Core\UI.Core.csproj">
+    <ProjectReference Include="..\UI.Core\UI.Core.csproj">
       <Project>{ABB75337-FCC9-4569-9B7E-AD338134726E}</Project>
       <Name>UI.Core</Name>
     </ProjectReference>
