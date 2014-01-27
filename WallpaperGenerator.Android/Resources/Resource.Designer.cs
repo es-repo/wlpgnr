@@ -285,7 +285,10 @@ namespace WallpaperGenerator.UI.Android
 			public const int AppBaseTheme_ActionBar = 2131099649;
 			
 			// aapt resource value: 0x7f060002
-			public const int ToolBarButton = 2131099650;
+			public const int AppBaseTheme_ActionBar_TitleText = 2131099650;
+			
+			// aapt resource value: 0x7f060003
+			public const int ToolBarButton = 2131099651;
 			
 			static Style()
 			{

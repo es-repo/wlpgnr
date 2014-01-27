@@ -15,7 +15,10 @@
   </style>
 
   <style name="AppBaseTheme.ActionBar" parent="@android:style/Widget.Holo.ActionBar.Solid">
-    <item name="android:icon">@android:color/transparent</item>
+    <item name="android:titleTextStyle">@style/AppBaseTheme.ActionBar.TitleText</item>
+  </style>
+  <style name="AppBaseTheme.ActionBar.TitleText" parent="@android:style/TextAppearance.Medium">
+    <item name="android:textSize">17dp</item>
   </style>
 
   <style name="ToolBarButton">
