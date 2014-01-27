@@ -1,3 +1,0 @@
-sum sin
-sum sqrt cbrt sin (ln)
-sub sqrt cbrt sin 

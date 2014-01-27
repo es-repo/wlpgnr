@@ -11,6 +11,7 @@ namespace WallpaperGenerator.UI.Core
     public class FormulaRenderWorkflow
     {
         private readonly Random _random = new Random();
+        private readonly FormulaGoodnessAnalyzer _formulaGoodnessAnalyzer;
         private Size _imageSize;
         private FormulaRenderArguments _formulaRenderArguments;
         private double[] _lastEvaluatedFormulaValues;
@@ -53,14 +54,15 @@ namespace WallpaperGenerator.UI.Core
         public bool IsImageRendering { get; private set; }
 
         public FormulaRenderWorkflow(FormulaRenderArgumentsGenerationParams generationParams, Size imageSize)
-            : this(generationParams, imageSize, new Random())
+            : this(generationParams, imageSize, new FormulaGoodnessAnalyzer(generationParams.DimensionCountBounds.Low),  new Random())
         {
         }
 
-        public FormulaRenderWorkflow(FormulaRenderArgumentsGenerationParams generationParams, Size imageSize, Random random)
+        public FormulaRenderWorkflow(FormulaRenderArgumentsGenerationParams generationParams, Size imageSize, FormulaGoodnessAnalyzer formulaGoodnessAnalyzer, Random random)
         {
             GenerationParams = generationParams;
             ImageSize = imageSize;
+            _formulaGoodnessAnalyzer = formulaGoodnessAnalyzer;
             _random = random;
         }
 
@@ -77,9 +79,17 @@ namespace WallpaperGenerator.UI.Core
 
         public FormulaRenderArguments GenerateFormulaRenderArguments()
         {
-            using (ProgressReporter.CreateScope(1))
+            const int attemptCount = 10;
+            using (ProgressReporter.CreateScope(attemptCount))
             {
-                FormulaTree formulaTree = CreateRandomFormulaTree();
+                FormulaTree formulaTree = FuncUtilities.Repeat(() =>
+                {
+                    FormulaTree f = CreateRandomFormulaTree();
+                    ProgressReporter.Increase();
+                    return f;
+                },
+                f =>_formulaGoodnessAnalyzer.Analyze(f), attemptCount);
+
                 RangesForFormula2DProjection ranges =
                     CreateRandomVariableValuesRangesFor2DProjection(formulaTree.Variables.Length);
                 ColorTransformation colorTransformation = CreateRandomColorTransformation();
@@ -164,7 +174,7 @@ Sub Sqrt Sqrt Cos Sub Sub Sub Sum Cos Atan Ln Cos Sub x5 x0 Cos Atan Pow3 Cbrt S
                 double formulaGenerationrProgressSpan = 0;
                 if (generateNew)
                 {
-                    formulaGenerationrProgressSpan = 0.02;
+                    formulaGenerationrProgressSpan = 0.01;
                     using (ProgressReporter.CreateScope(formulaGenerationrProgressSpan))
                         FormulaRenderArguments = GenerateFormulaRenderArguments();
                 }
@@ -172,7 +182,7 @@ Sub Sqrt Sqrt Cos Sub Sub Sub Sum Cos Atan Ln Cos Sub x5 x0 Cos Atan Pow3 Cbrt S
                 double evaluationrProgressSpan = 0;
                 if (_lastEvaluatedFormulaValues == null)
                 {
-                    evaluationrProgressSpan = 0.95 - formulaGenerationrProgressSpan;
+                    evaluationrProgressSpan = 0.93 - formulaGenerationrProgressSpan;
                     using (ProgressReporter.CreateScope(evaluationrProgressSpan))
                         _lastEvaluatedFormulaValues = FormulaRender.EvaluateFormula(FormulaRenderArguments.FormulaTree, FormulaRenderArguments.Ranges);
                 }

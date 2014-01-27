@@ -38,6 +38,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\MbUnit\MbUnit.dll</HintPath>
     </Reference>
+    <Reference Include="Moq, Version=4.0.10827.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\Moq\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -59,6 +63,10 @@
       <Project>{190058E2-F017-4D78-B076-CB6AC313246D}</Project>
       <Name>Formulas</Name>
     </ProjectReference>
+    <ProjectReference Include="..\UI.Core\UI.Core.csproj">
+      <Project>{abb75337-fcc9-4569-9b7e-ad338134726e}</Project>
+      <Name>UI.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utilities.Testing\Utilities.Testing.csproj">
       <Project>{ABFA2488-166A-43C2-B2D7-96CCC954F1E8}</Project>
       <Name>Utilities.Testing</Name>
@@ -66,10 +74,6 @@
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{7D4A8B31-9E0B-4C8A-914B-E469D622F21C}</Project>
       <Name>Utilities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\UI.Core\UI.Core.csproj">
-      <Project>{ABB75337-FCC9-4569-9B7E-AD338134726E}</Project>
-      <Name>UI.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
