@@ -121,14 +121,14 @@ namespace WallpaperGenerator.UI.Android
 			// aapt resource value: 0x7f080003
 			public const int imageView = 2131230723;
 			
-			// aapt resource value: 0x7f08000c
-			public const int openGalleryMenuItem = 2131230732;
+			// aapt resource value: 0x7f08000d
+			public const int openGalleryMenuItem = 2131230733;
 			
 			// aapt resource value: 0x7f08000f
 			public const int rateAppMenuItem = 2131230735;
 			
-			// aapt resource value: 0x7f08000d
-			public const int removeAdsMenuItem = 2131230733;
+			// aapt resource value: 0x7f08000c
+			public const int removeAdsMenuItem = 2131230732;
 			
 			// aapt resource value: 0x7f080005
 			public const int renderTimeTextView = 2131230725;
