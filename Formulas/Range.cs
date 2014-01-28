@@ -59,7 +59,7 @@ namespace WallpaperGenerator.Formulas
             return new Range(start, end, step);
         }
 
-        public static Range CreateRandom(Random random, int rangeCount, double rangeLowBound, double rangeHighBound)
+        public static Range CreateRandom(Random random, int rangeCount, double rangeLowBound, double rangeHighBound, double minDist)
         {
             double start = Math.Round(random.NextDouble() * random.Next(rangeLowBound, rangeHighBound), 2);
             double end = Math.Round(random.NextDouble() * random.Next(rangeLowBound, rangeHighBound), 2);
@@ -74,7 +74,10 @@ namespace WallpaperGenerator.Formulas
                 start = rangeLowBound;
                 end = rangeHighBound;
             }
-           
+
+            if (end - start < minDist)
+                end = start + minDist;
+
             return new Range(start, end, rangeCount);
         }
     }

@@ -44,9 +44,9 @@ namespace WallpaperGenerator.FormulaRendering
         public static RangesForFormula2DProjection CreateRandom(Random random, int variableCount,
             Size areaSize, int iterationsCount, Bounds rangeBounds)
         {
-            rangeBounds = random.RandomlyShrinkBounds(rangeBounds, 1);
+            rangeBounds = random.RandomlyShrinkBounds(rangeBounds, 3);
             IEnumerable<Range> ranges = EnumerableExtensions.Repeat(
-                i => Range.CreateRandom(random, i % 2 == 0 ? areaSize.Width : areaSize.Height, rangeBounds.Low, rangeBounds.High), variableCount);
+                i => Range.CreateRandom(random, i % 2 == 0 ? areaSize.Width : areaSize.Height, rangeBounds.Low, rangeBounds.High, 1), variableCount);
             double scale = Math.Round(1 + random.NextDouble() * 0.5, 2);
             return new RangesForFormula2DProjection(areaSize, ranges, iterationsCount, scale);
         }

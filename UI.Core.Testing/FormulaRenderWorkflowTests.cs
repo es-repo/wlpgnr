@@ -23,7 +23,8 @@ namespace WallpaperGenerator.UI.Core.Testing
             {
                 DimensionCountBounds = new Bounds<int>(2,3),
                 MinimalDepthBounds = new Bounds<int>(4, 4),
-                OperatorAndMaxProbabilityBoundsMap = new Dictionary<Operator, Bounds>{ {OperatorsLibrary.Sum, new Bounds(1, 1)}, {OperatorsLibrary.Sin, new Bounds(1, 1)} }
+                OperatorAndMaxProbabilityBoundsMap = new Dictionary<Operator, Bounds>{ {OperatorsLibrary.Sum, new Bounds(1, 1)}, {OperatorsLibrary.Sin, new Bounds(1, 1)} },
+                PredefinedFormulaRenderingArgumentsCount = 0
             };
 
             Mock<FormulaGoodnessAnalyzer> formulaGoodnessAnalyzerMock = new Mock<FormulaGoodnessAnalyzer>(0, 0);
@@ -56,7 +57,7 @@ namespace WallpaperGenerator.UI.Core.Testing
         {
             _workflow.GenerateFormulaRenderArguments();
             FormulaRenderArguments args = _workflow.TransformRanges();
-            const string expectedArgsString = "-0.24,0.4;-3.6,1.68\r\n0,0,0,0;0,0,0,0;0,0.72,1.92,0\r\nSum Sum Sin x0 Sum x1 x1 Sum Sin x0 Sum x1 x1";
+            const string expectedArgsString = "-0.24,0.76;-3.6,1.68\r\n0,0,0,0;0,0,0,0;0,0.72,1.92,0\r\nSum Sum Sin x0 Sum x1 x1 Sum Sin x0 Sum x1 x1";
             Assert.AreEqual(expectedArgsString, args.ToString());
             Assert.AreEqual(expectedArgsString, _workflow.FormulaRenderArguments.ToString());
         }
@@ -100,6 +101,22 @@ namespace WallpaperGenerator.UI.Core.Testing
             _workflow.GenerateFormulaRenderArguments();
             Assert.IsFalse(_workflow.IsImageReady);
             Assert.IsFalse(_workflow.IsImageRendering);
+        }
+
+        [Test]
+        public void TestGenerateFormulaRenderArgumentsWithPredefinedFormulas()
+        {
+            _workflow.GenerationParams.PredefinedFormulaRenderingArgumentsCount = 1;
+            _workflow.GenerationParams.PredefinedFormulaRenderingFormulaRenderArgumentStrings = new[] {
+@"0,10;0,10
+0,0,0,0;0,0,0,0;1,1,1,0
+Sum Cos x Sin y"};
+
+            FormulaRenderArguments args = _workflow.GenerateFormulaRenderArguments();
+            Assert.AreEqual("-0.24,0.76;-3.6,1.68\r\n0,0,0,0;0,0,0,0;1,1,1,0\r\nSum Cos x Sin y", args.ToString());
+
+            args = _workflow.GenerateFormulaRenderArguments();
+            Assert.AreEqual("-18,8.4;-20,20\r\n2.52,-5.4,-0.36,0.09;1.2,3.2,0,0.06;0.4,1.68,-3.6,0.03\r\nSum Sum Sin x0 Sum x1 x1 Sin Sin x0", args.ToString());
         }
     }
 }

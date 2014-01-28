@@ -52,7 +52,7 @@ namespace WallpaperGenerator.FormulaRendering
                 a = b = c = (coefficientBounds.High - coefficientBounds.Low) / 2.0;
             }
 
-            double dispersionCoefficient = Math.Round(random.NextDouble(), 2);
+            double dispersionCoefficient = Math.Round(random.NextDouble() * 0.3, 2);
             return new ColorChannelTransformation(a, b, c, dispersionCoefficient);
         }
 

@@ -15,6 +15,7 @@ namespace WallpaperGenerator.UI.Core
         private Size _imageSize;
         private FormulaRenderArguments _formulaRenderArguments;
         private double[] _lastEvaluatedFormulaValues;
+        private int _generatedFormulasCount;
 
         public FormulaRenderArgumentsGenerationParams GenerationParams { get; set; }
 
@@ -79,22 +80,36 @@ namespace WallpaperGenerator.UI.Core
 
         public FormulaRenderArguments GenerateFormulaRenderArguments()
         {
-            const int attemptCount = 10;
-            using (ProgressReporter.CreateScope(attemptCount))
+            FormulaRenderArguments args;
+            
+            if (_generatedFormulasCount < GenerationParams.PredefinedFormulaRenderingArgumentsCount)
             {
-                FormulaTree formulaTree = FuncUtilities.Repeat(() =>
-                {
-                    FormulaTree f = CreateRandomFormulaTree();
-                    ProgressReporter.Increase();
-                    return f;
-                },
-                f =>_formulaGoodnessAnalyzer.Analyze(f), attemptCount);
-
-                RangesForFormula2DProjection ranges =
-                    CreateRandomVariableValuesRangesFor2DProjection(formulaTree.Variables.Length);
-                ColorTransformation colorTransformation = CreateRandomColorTransformation();
-                return FormulaRenderArguments = new FormulaRenderArguments(formulaTree, ranges, colorTransformation);
+                string s = GenerationParams.PredefinedFormulaRenderingFormulaRenderArgumentStrings.TakeRandom(_random);
+                args = FormulaRenderArguments.FromString(s);
+                args = TransformRanges(args);
             }
+            else
+            {
+                const int attemptCount = 10;
+                using (ProgressReporter.CreateScope(attemptCount))
+                {
+                    FormulaTree formulaTree = FuncUtilities.Repeat(() =>
+                    {
+                        FormulaTree f = CreateRandomFormulaTree();
+                        ProgressReporter.Increase();
+                        return f;
+                    },
+                        f => _formulaGoodnessAnalyzer.Analyze(f), attemptCount);
+
+                    RangesForFormula2DProjection ranges =
+                        CreateRandomVariableValuesRangesFor2DProjection(formulaTree.Variables.Length);
+                    ColorTransformation colorTransformation = CreateRandomColorTransformation();
+                    args = new FormulaRenderArguments(formulaTree, ranges, colorTransformation);
+                }
+            }
+
+            _generatedFormulasCount++;
+            return FormulaRenderArguments = args;
         }
 
         public FormulaRenderArguments ChangeColors()
@@ -105,11 +120,16 @@ namespace WallpaperGenerator.UI.Core
 
         public FormulaRenderArguments TransformRanges()
         {
-            RangesForFormula2DProjection ranges = CreateRandomVariableValuesRangesFor2DProjection(FormulaRenderArguments.FormulaTree.Variables.Length);
-            return FormulaRenderArguments = new FormulaRenderArguments(
-                FormulaRenderArguments.FormulaTree,
+            return FormulaRenderArguments = TransformRanges(FormulaRenderArguments);
+        }
+
+        private FormulaRenderArguments TransformRanges(FormulaRenderArguments args)
+        {
+            RangesForFormula2DProjection ranges = CreateRandomVariableValuesRangesFor2DProjection(args.FormulaTree.Variables.Length);
+            return new FormulaRenderArguments(
+                args.FormulaTree,
                 ranges,
-                FormulaRenderArguments.ColorTransformation);
+                args.ColorTransformation);
         }
 
         private RangesForFormula2DProjection CreateRandomVariableValuesRangesFor2DProjection(int variablesCount)
