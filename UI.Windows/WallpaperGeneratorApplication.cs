@@ -59,7 +59,7 @@ namespace WallpaperGenerator.UI.Windows
 
         public WallpaperGeneratorApplication()
         {
-            _workflow = new FormulaRenderWorkflow(new FormulaRenderArgumentsGenerationParams(), new Size(360, 640));
+            _workflow = new FormulaRenderWorkflow(new FormulaRenderArgumentsGenerationParams { PredefinedFormulaRenderingArgumentsEnabled = false }, new Size(360, 640));
             _wallpaperFileManager = new WindowsWallpaperFileManager();
             _mainWindow = new MainWindow { WindowState = WindowState.Maximized };
             _mainWindow.ControlPanel.LoadState(_workflow.GenerationParams);

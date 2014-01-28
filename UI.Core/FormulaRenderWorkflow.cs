@@ -80,15 +80,9 @@ namespace WallpaperGenerator.UI.Core
 
         public FormulaRenderArguments GenerateFormulaRenderArguments()
         {
-            FormulaRenderArguments args;
+            FormulaRenderArguments args = GenerationParams.PredefinedFormulaRenderingArgumentsEnabled ? GetPredefinedFormulaRenderArguments() : null;
             
-            if (_generatedFormulasCount < GenerationParams.PredefinedFormulaRenderingArgumentsCount)
-            {
-                string s = GenerationParams.PredefinedFormulaRenderingFormulaRenderArgumentStrings.TakeRandom(_random);
-                args = FormulaRenderArguments.FromString(s);
-                args = TransformRanges(args);
-            }
-            else
+            if (args == null)
             {
                 const int attemptCount = 10;
                 using (ProgressReporter.CreateScope(attemptCount))
@@ -99,7 +93,7 @@ namespace WallpaperGenerator.UI.Core
                         ProgressReporter.Increase();
                         return f;
                     },
-                        f => _formulaGoodnessAnalyzer.Analyze(f), attemptCount);
+                    f => _formulaGoodnessAnalyzer.Analyze(f), attemptCount);
 
                     RangesForFormula2DProjection ranges =
                         CreateRandomVariableValuesRangesFor2DProjection(formulaTree.Variables.Length);
@@ -112,10 +106,36 @@ namespace WallpaperGenerator.UI.Core
             return FormulaRenderArguments = args;
         }
 
+        private FormulaRenderArguments GetPredefinedFormulaRenderArguments()
+        {
+            if (_generatedFormulasCount < GenerationParams.FirstPredefinedFormulaRenderingArgumentsCount)
+            {
+                string s = GenerationParams.PredefinedFormulaRenderingFormulaRenderArgumentStrings.TakeRandom(_random);
+                FormulaRenderArguments args = FormulaRenderArguments.FromString(s);
+                return TransformRanges(args);
+            }
+
+            if ((_generatedFormulasCount - GenerationParams.FirstPredefinedFormulaRenderingArgumentsCount + 1) %
+                     GenerationParams.RepeatPredefinedFormulaRenderingArgumentsAfterEvery == 0)
+            {
+                string s = GenerationParams.PredefinedFormulaRenderingFormulaRenderArgumentStrings.TakeRandom(_random);
+                FormulaRenderArguments args = FormulaRenderArguments.FromString(s);
+                args = TransformRanges(args);
+                return ChangeColors(args);
+            }
+
+            return null;
+        }
+
         public FormulaRenderArguments ChangeColors()
         {
+            return _formulaRenderArguments = ChangeColors(FormulaRenderArguments);
+        }
+
+        private FormulaRenderArguments ChangeColors(FormulaRenderArguments args)
+        {
             ColorTransformation colorTransformation = CreateRandomColorTransformation();
-            return _formulaRenderArguments = new FormulaRenderArguments(FormulaRenderArguments.FormulaTree, FormulaRenderArguments.Ranges, colorTransformation);
+            return new FormulaRenderArguments(args.FormulaTree, args.Ranges, colorTransformation);
         }
 
         public FormulaRenderArguments TransformRanges()
