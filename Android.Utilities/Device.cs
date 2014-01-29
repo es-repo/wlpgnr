@@ -17,6 +17,7 @@ namespace Android.Utilities
                 info.AppendFormat("Product: {0}\n", Build.Product);
                 info.AppendFormat("CpuAbi: {0}\n", Build.CpuAbi);
                 info.AppendFormat("CpuAbi2: {0}\n", Build.CpuAbi2);
+                info.AppendFormat("Display: {0}\n", Build.Display);
                 info.AppendFormat("SDK: {0}\n", Build.VERSION.Sdk);
                 info.AppendFormat("Release: {0}\n", Build.VERSION.Release);
                 info.AppendFormat("Incremental: {0}\n", Build.VERSION.Incremental);

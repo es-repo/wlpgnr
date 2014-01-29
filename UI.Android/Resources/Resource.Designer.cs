@@ -214,6 +214,9 @@ namespace WallpaperGenerator.UI.Android
 			// aapt resource value: 0x7f050000
 			public const int CrashReport = 2131034112;
 			
+			// aapt resource value: 0x7f050019
+			public const int CrushReportEmail = 2131034137;
+			
 			// aapt resource value: 0x7f05000f
 			public const int Feedback = 2131034127;
 			

@@ -36,6 +36,8 @@ namespace WallpaperGenerator.UI.Android
 
         protected override void OnCreate(Bundle bundle)
         {
+            CrushReportEmail = Resources.GetString(Resource.String.CrushReportEmail);
+
             base.OnCreate(bundle);
 
             SetContentView(Resource.Layout.Main);
@@ -138,7 +140,7 @@ namespace WallpaperGenerator.UI.Android
         {
             if (_workflow.IsImageRendering)
                 return;
-
+            
             await DrawImageAsync(true, benchmark);
             _formulaTextView.Text = _workflow.FormulaRenderArguments.ToString();
             AdjustButtons();

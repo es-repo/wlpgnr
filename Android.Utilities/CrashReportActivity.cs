@@ -13,9 +13,14 @@ namespace Android.Utilities
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.CrashReport);
             TextView errorTextView = FindViewById<TextView>(Resource.Id.errorTextView);
-            String error = Intent.GetStringExtra("error");
-            if (error != null)
+            string error = Intent.GetStringExtra("error");
+            if (!string.IsNullOrEmpty(error))
+            {
                 errorTextView.Text = error;
+                string crushReportEmail = Intent.GetStringExtra("crushReportEmail");
+                if (!string.IsNullOrEmpty(crushReportEmail))
+                    IntentShortcuts.Email(this, "wallpapergenerator@gmail.com", "Crush Report", error);
+            }
         }
     }
 }
