@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Android.App;
+using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
 using Android.Graphics.Drawables;
@@ -110,6 +111,10 @@ namespace WallpaperGenerator.UI.Android
                     OnFeedbackMenuItemSelected();
                     return true;
 
+                case Resource.Id.rateAppMenuItem:
+                    OnRateAppMenuItemSelected();
+                    return true;
+
                 default:
                     return base.OnOptionsItemSelected(item);
             }
@@ -204,11 +209,20 @@ namespace WallpaperGenerator.UI.Android
             if (!_workflow.IsImageReady)
                 return;
 
+            string message = Resources.GetString(Resource.String.ShareMessage);
+            string packageName = ApplicationContext.PackageName;
+            message = message.Replace("{packageName}", packageName);
             // TODO: wrap in try..catch block
             IntentShortcuts.Share(this, ImageBitmap, System.IO.Path.Combine(_wallpaperFileManager.Path, "sharedwallpaper.png"),
                 Resources.GetString(Resource.String.ShareTitle),
                 Resources.GetString(Resource.String.ShareSubject),
-                Resources.GetString(Resource.String.ShareMessage));
+                message);
+        }
+
+        private void OnRateAppMenuItemSelected()
+        {
+            string packageName = ApplicationContext.PackageName;
+            StartActivity(new Intent(Intent.ActionView, global::Android.Net.Uri.Parse("market://details?id=" + packageName)));
         }
 
         private void OnFeedbackMenuItemSelected()

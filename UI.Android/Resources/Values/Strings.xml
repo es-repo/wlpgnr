@@ -17,7 +17,7 @@
   <string name="Feedback">Feedback</string>
   <string name="SavingWallpaper">Saving the wallpaper to Gallery...</string>
   <string name="ShareSubject">Check this cool wallpaper!</string>
-  <string name="ShareMessage">Check this cool wallpaper created by HD Wallpaper Generator https://play.google.com/store/apps/details?id=org.a1.wallpapergenerator </string>
+  <string name="ShareMessage">Check this cool wallpaper created by HD Wallpaper Generator https://play.google.com/store/apps/details?id={packageName} </string>
   <string name="ShareTitle">Share the wallpaper with friends!</string>
   <string name="Wait">Please wait...</string>
   <string name="WallpaperWillBeReady">"Your wallpaper will be ready soon!"</string>
