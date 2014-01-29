@@ -106,6 +106,10 @@ namespace WallpaperGenerator.UI.Android
                     OnShareMenuItemSelected();
                     return true;
 
+                case Resource.Id.feedbackMenuItem:
+                    OnFeedbackMenuItemSelected();
+                    return true;
+
                 default:
                     return base.OnOptionsItemSelected(item);
             }
@@ -205,7 +209,16 @@ namespace WallpaperGenerator.UI.Android
                 Resources.GetString(Resource.String.ShareTitle),
                 Resources.GetString(Resource.String.ShareSubject),
                 Resources.GetString(Resource.String.ShareMessage));
-        } 
+        }
+
+        private void OnFeedbackMenuItemSelected()
+        {
+            string subject = Resources.GetString(Resource.String.FeedbackSubject);
+            string appVersion = PackageManager.GetPackageInfo(PackageName, 0).VersionName;
+            string deviceInfo = string.Format("{0} {1} {2}", Build.Brand, Build.Model, Build.VERSION.Sdk);
+            subject = subject.Replace("{appVersion}", appVersion).Replace("{deviceInfo}", deviceInfo);
+            IntentShortcuts.Email(this, Resources.GetString(Resource.String.ContactEmail), subject);
+        }
 
         private void ClearImage()
         {

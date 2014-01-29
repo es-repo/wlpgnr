@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using Android.Content;
+using Android.Content.PM;
 using Android.Graphics;
 using Android.Net;
 using File = Java.IO.File;
@@ -43,6 +45,20 @@ namespace Android.Utilities
             i.PutExtra(Intent.ExtraStream, Uri.FromFile(f));
 
             context.StartActivity(Intent.CreateChooser(i, title));
+        }
+
+        public static void Email(Context context, string to, string subject)
+        {
+            Email(context, to ,subject, "");
+        }
+
+        public static void Email(Context context, string to, string subject, string message)
+        {
+            Intent i = new Intent(Intent.ActionView);
+            string uri = "mailto:" + to +  "?subject=" + subject + "&body=" + message;
+            i.SetData(Uri.Parse(uri));
+            i.PutExtra(Intent.ExtraEmail, new[] { to });
+            context.StartActivity(i);
         }
     }
 }

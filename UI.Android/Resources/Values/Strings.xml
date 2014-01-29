@@ -22,4 +22,6 @@
   <string name="Wait">Please wait...</string>
   <string name="WallpaperWillBeReady">"Your wallpaper will be ready soon!"</string>
   <string name="Benchmark">Benchmark</string>
+  <string name="ContactEmail">wallpapergenerator@gmail.com</string>
+  <string name="FeedbackSubject">Android {appVersion} {deviceInfo}: Feedback</string>
 </resources>
