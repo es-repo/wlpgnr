@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="CrashReport">Crash Report</string>
+  <string name="CrashReport">Crash Report</string>
 </resources>

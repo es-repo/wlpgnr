@@ -7,9 +7,16 @@ using WallpaperGenerator.Utilities;
 
 namespace Android.Utilities
 {
-    public class BaseActivity : Activity
+    public abstract class BaseActivity : Activity
     {
         protected string CrushReportEmail;
+
+        protected ExceptionHandler ExceptionHandler { get; private set; }
+
+        protected BaseActivity()
+        {
+            ExceptionHandler = new ExceptionHandler(this);
+        }
 
         protected override void OnCreate(Bundle bundle)
         {

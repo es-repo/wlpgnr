@@ -25,4 +25,5 @@
   <string name="ContactEmail">wallpapergenerator@gmail.com</string>
   <string name="FeedbackSubject">Android {appVersion} {deviceInfo}: Feedback</string>
   <string name="CrushReportEmail">wallpapergenerator@gmail.com</string>
+  <string name="CommonErrorMessage">Something wrong happened! Please try again later...</string>
 </resources>

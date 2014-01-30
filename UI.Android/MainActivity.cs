@@ -37,6 +37,7 @@ namespace WallpaperGenerator.UI.Android
         protected override void OnCreate(Bundle bundle)
         {
             CrushReportEmail = Resources.GetString(Resource.String.CrushReportEmail);
+            ExceptionHandler.CommonErrorMessage = Resources.GetString(Resource.String.CommonErrorMessage);
 
             base.OnCreate(bundle);
 
@@ -173,9 +174,19 @@ namespace WallpaperGenerator.UI.Android
 
             ProgressDialog progressDialog = CreateProgressDialog(Resources.GetString(Resource.String.SettingWallpaper));
             progressDialog.Show();
-            // TODO: wrap in try..catch block
-            await SetWallpaperAsync();
-            IntentShortcuts.GoHome(this);
+            try
+            {
+                await SetWallpaperAsync();
+                IntentShortcuts.GoHome(this);
+            }
+            catch (Exception e)
+            {
+                ExceptionHandler.HandleExpected(e);
+            }
+            finally
+            {
+                progressDialog.Dismiss();
+            }
         }
 
         private Task SetWallpaperAsync()
@@ -194,11 +205,20 @@ namespace WallpaperGenerator.UI.Android
 
             ProgressDialog progressDialog = CreateProgressDialog(Resources.GetString(Resource.String.SavingWallpaper));
             progressDialog.Show();
-            // TODO: wrap in try..catch block
-            var filesPath = await _wallpaperFileManager.SaveAsync(_workflow.LastFormulaRenderResult, false);
-            if (filesPath == null)
-                throw new InvalidOperationException();
-            progressDialog.Dismiss();
+            try
+            {
+                var filesPath = await _wallpaperFileManager.SaveAsync(_workflow.LastFormulaRenderResult, false);
+                if (filesPath == null)
+                    throw new InvalidOperationException();
+            }
+            catch (Exception e)
+            {
+                ExceptionHandler.HandleExpected(e);
+            }
+            finally
+            {
+                progressDialog.Dismiss();
+            }
         }
 
         private void OnOpenGalleryMenuItemSelected()
@@ -214,11 +234,17 @@ namespace WallpaperGenerator.UI.Android
             string message = Resources.GetString(Resource.String.ShareMessage);
             string packageName = ApplicationContext.PackageName;
             message = message.Replace("{packageName}", packageName);
-            // TODO: wrap in try..catch block
-            IntentShortcuts.Share(this, ImageBitmap, System.IO.Path.Combine(_wallpaperFileManager.Path, "sharedwallpaper.png"),
-                Resources.GetString(Resource.String.ShareTitle),
-                Resources.GetString(Resource.String.ShareSubject),
-                message);
+            try
+            {
+                IntentShortcuts.Share(this, ImageBitmap, System.IO.Path.Combine(_wallpaperFileManager.Path, "sharedwallpaper.png"),
+                    Resources.GetString(Resource.String.ShareTitle),
+                    Resources.GetString(Resource.String.ShareSubject),
+                    message);
+            }
+            catch (Exception e)
+            {
+                ExceptionHandler.HandleExpected(e);
+            }
         }
 
         private void OnRateAppMenuItemSelected()

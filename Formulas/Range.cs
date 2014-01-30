@@ -53,9 +53,9 @@ namespace WallpaperGenerator.Formulas
         public static Range FromString(string value)
         {
             string[] rangeElements = value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-            double start = double.Parse(rangeElements[0]);
-            double end = double.Parse(rangeElements[1]);
-            double step = rangeElements.Length > 2 ? double.Parse(rangeElements[2]) : 1.0;
+            double start = DoubleUtilities.ParseInvariant(rangeElements[0]);
+            double end = DoubleUtilities.ParseInvariant(rangeElements[1]);
+            double step = rangeElements.Length > 2 ? DoubleUtilities.ParseInvariant(rangeElements[2]) : 1.0;
             return new Range(start, end, step);
         }
 

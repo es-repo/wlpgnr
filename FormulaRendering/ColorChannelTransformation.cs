@@ -65,10 +65,10 @@ namespace WallpaperGenerator.FormulaRendering
         public static ColorChannelTransformation FromString(string value)
         {
             string[] coeffficients = value.Split(new []{','}, StringSplitOptions.RemoveEmptyEntries);
-            double a = double.Parse(coeffficients[0]);
-            double b = double.Parse(coeffficients[1]);
-            double c = double.Parse(coeffficients[2]);
-            double d = double.Parse(coeffficients[3]);
+            double a = DoubleUtilities.ParseInvariant(coeffficients[0]);
+            double b = DoubleUtilities.ParseInvariant(coeffficients[1]);
+            double c = DoubleUtilities.ParseInvariant(coeffficients[2]);
+            double d = DoubleUtilities.ParseInvariant(coeffficients[3]);
             return new ColorChannelTransformation(a, b, c, d);
         }
     }

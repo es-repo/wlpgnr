@@ -13,7 +13,6 @@ namespace Android.Utilities
             {
                 bitmap = CreateOverlayedBitmap(bitmap, wallpaperManager.DesiredMinimumWidth, bitmap.Height);
             }
-            
             wallpaperManager.SetBitmap(bitmap);
         }
 

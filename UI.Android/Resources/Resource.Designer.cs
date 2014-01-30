@@ -208,6 +208,9 @@ namespace WallpaperGenerator.UI.Android
 			// aapt resource value: 0x7f050005
 			public const int ChangeColors = 2131034117;
 			
+			// aapt resource value: 0x7f05001a
+			public const int CommonErrorMessage = 2131034138;
+			
 			// aapt resource value: 0x7f050017
 			public const int ContactEmail = 2131034135;
 			

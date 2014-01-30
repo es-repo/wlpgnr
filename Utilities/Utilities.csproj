@@ -48,6 +48,7 @@
     <Compile Include="DataStructures\Trees\TreeNode.cs" />
     <Compile Include="DataStructures\Trees\TreeSerializer.cs" />
     <Compile Include="Disposable.cs" />
+    <Compile Include="DoubleUtilities.cs" />
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="DataStructures\Trees\TreeGenerating\TreeGeneratingRuleSelector.cs" />
     <Compile Include="EnumerableNext.cs" />
