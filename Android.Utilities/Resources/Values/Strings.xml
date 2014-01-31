@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="CrashReport">Crash Report</string>
+  <string name="CommonErrorMessage">Something wrong happened! Please try again later...</string>
 </resources>

@@ -38,8 +38,7 @@ namespace WallpaperGenerator.UI.Android
         protected override void OnCreate(Bundle bundle)
         {
             CrushReportEmail = Resources.GetString(Resource.String.CrushReportEmail);
-            ExceptionHandler.CommonErrorMessage = Resources.GetString(Resource.String.CommonErrorMessage);
-
+            
             base.OnCreate(bundle);
 
             SetContentView(Resource.Layout.Main);

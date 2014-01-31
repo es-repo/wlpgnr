@@ -103,6 +103,9 @@ namespace Android.Utilities
 		public partial class String
 		{
 			
+			// aapt resource value: 0x7f040001
+			public static int CommonErrorMessage = 2130968577;
+			
 			// aapt resource value: 0x7f040000
 			public static int CrashReport = 2130968576;
 			

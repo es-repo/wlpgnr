@@ -9,8 +9,6 @@ namespace Android.Utilities
     {
         private readonly Context _context;
 
-        public string CommonErrorMessage { get; set; }
-
         public ExceptionHandler(Context context)
         {
             _context = context;
@@ -19,7 +17,8 @@ namespace Android.Utilities
         public void HandleExpected(Exception ex)
         {
             Log.Error(_context.GetType().Name, ex.Message);
-            AlertDialog dialog = new AlertDialog.Builder(_context).SetMessage(CommonErrorMessage).Create();
+            string errorMessage = _context.Resources.GetString(Resource.String.CommonErrorMessage);
+            AlertDialog dialog = new AlertDialog.Builder(_context).SetMessage(errorMessage).Create();
             dialog.SetCanceledOnTouchOutside(true);
             dialog.Show();
         }
