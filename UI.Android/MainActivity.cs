@@ -25,6 +25,7 @@ namespace WallpaperGenerator.UI.Android
         private Button _setAsWallpaperButton;
         private TextView _formulaTextView;
         private TextView _renderTimeTextView;
+        private HorizontalScrollView _horizontalScrollView;
         private ImageView _imageView;
         private FormulaRenderWorkflow _workflow;
         private AndroidWallpaperFileManager _wallpaperFileManager;
@@ -44,13 +45,15 @@ namespace WallpaperGenerator.UI.Android
             SetContentView(Resource.Layout.Main);
             InitButtonBar();
 
+            _horizontalScrollView = FindViewById<HorizontalScrollView>(Resource.Id.horizontalScrollView);
             _formulaTextView = FindViewById<TextView>(Resource.Id.formulaTextView);
             _renderTimeTextView = FindViewById<TextView>(Resource.Id.renderTimeTextView);
             _imageView = FindViewById<ImageView>(Resource.Id.imageView);
 
-            Point displaySize = DisplayExtensions.GetSize(WindowManager.DefaultDisplay);
-
-            _workflow = new FormulaRenderWorkflow(new FormulaRenderArgumentsGenerationParams(), new Size(displaySize.X, displaySize.Y));
+            WallpaperManager wallpaperManager = WallpaperManager.GetInstance(this);
+            Point wallpaperSize = wallpaperManager.GetDesiredSize(WindowManager.DefaultDisplay, Resources.Configuration);
+            Size imageSize = new Size(wallpaperSize.X, wallpaperSize.Y);
+            _workflow = new FormulaRenderWorkflow(new FormulaRenderArgumentsGenerationParams(), imageSize);
 
             if (_workflow.FormulaRenderArguments != null)
                 _formulaTextView.Text = _workflow.FormulaRenderArguments.ToString();
@@ -264,21 +267,26 @@ namespace WallpaperGenerator.UI.Android
 
         private void ClearImage()
         {
-            int width = _workflow.ImageSize.Width;
-            int height = _workflow.ImageSize.Height;  
-            int[] pixels = new int[width * height];
-            for (int i = 0; i < pixels.Length; i++)
-            {
-                int c = i%5 == 0? 70 : 0;
-                pixels[i] = Color.Argb(255, c, c, c);
-            }
+            //int width = _workflow.ImageSize.Width;
+            //int height = _workflow.ImageSize.Height;  
+            //int[] pixels = new int[width * height];
+            //for (int i = 0; i < pixels.Length; i++)
+            //{
+            //    int c = 0;//i%5 == 0? 70 : 0;
+            //    pixels[i] = Color.Argb(255, c, c, c);
+            //}
 
-            Bitmap blankBitmap = Bitmap.CreateBitmap(pixels, width, height, Bitmap.Config.Argb8888);
-            _imageView.SetImageBitmap(blankBitmap);
+            //Bitmap blankBitmap = Bitmap.CreateBitmap(pixels, width, height, Bitmap.Config.Argb8888);
+            //_imageView.SetImageBitmap(blankBitmap);
+
+            _imageView.LayoutParameters.Width = _workflow.ImageSize.Width;
+            _imageView.LayoutParameters.Height = _workflow.ImageSize.Height;
+            _imageView.SetBackgroundColor(Color.Black);
         }
 
         private async Task DrawImageAsync(bool generateNew, bool benchmark)
         {
+            GC.Collect();
             ProgressDialog progressDialog = CreateProgressDialog(
                 benchmark ? Resources.GetString(Resource.String.Benchmark) : Resources.GetString(Resource.String.WallpaperWillBeReady), 
                 benchmark ? "" : Resources.GetString(Resource.String.Wait), false);
@@ -298,6 +306,7 @@ namespace WallpaperGenerator.UI.Android
 
             _renderTimeTextView.Text = formulaRenderResult.ElapsedTime.ToString();
             _imageView.SetImageBitmap(formulaRenderResult.Image.ToBitmap());
+           // _horizontalScrollView.ScrollTo(_horizontalScrollView.Width / 2, 0);
             
             progressDialog.Dismiss();
 

@@ -1,18 +1,42 @@
 using Android.App;
+using Android.Content.Res;
 using Android.Graphics;
+using Android.Views;
 
 namespace Android.Utilities
 {
     public static class WallpaperManagerExtensions
     {
+        public static Point GetDesiredSize(this WallpaperManager wallpaperManager, Display display, Configuration configuration)
+        {
+            int width = wallpaperManager.DesiredMinimumWidth;
+            int height = wallpaperManager.DesiredMinimumHeight;
+            bool noWidth = width < 1;
+            bool noHeight = height < 1;
+            if (noWidth || noHeight)
+            {
+                Point displaySize = DisplayExtensions.GetNaturalSize(display, configuration);
+                if (noWidth)
+                {
+                    width = displaySize.X;
+                }
+                if (noHeight)
+                {
+                    height = displaySize.Y;
+                }
+            }
+
+            return new Point(width, height);
+        }
+
         public static void SetBitmapWithExactScreenSize(this WallpaperManager wallpaperManager, Bitmap bitmap)
         {
             // On TouchWiz (Samsung Galaxy S3,4 and etc) desired min width is equal to height but not to real screen width.
             // To proper set bitmap on these phones need to create blank bitmap and put specified one into center of the blank.
-            if (bitmap.Width < wallpaperManager.DesiredMinimumWidth)
-            {
-                bitmap = CreateOverlayedBitmap(bitmap, wallpaperManager.DesiredMinimumWidth, bitmap.Height);
-            }
+            //if (bitmap.Width < wallpaperManager.DesiredMinimumWidth)
+            //{
+            //    bitmap = CreateOverlayedBitmap(bitmap, wallpaperManager.DesiredMinimumWidth, bitmap.Height);
+            //}
             wallpaperManager.SetBitmap(bitmap);
         }
 

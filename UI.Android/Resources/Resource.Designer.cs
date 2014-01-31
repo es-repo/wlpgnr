@@ -97,11 +97,11 @@ namespace WallpaperGenerator.UI.Android
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f08000e
-			public const int benchmarkMenuItem = 2131230734;
+			// aapt resource value: 0x7f08000f
+			public const int benchmarkMenuItem = 2131230735;
 			
-			// aapt resource value: 0x7f080007
-			public const int changeColorsButton = 2131230727;
+			// aapt resource value: 0x7f080008
+			public const int changeColorsButton = 2131230728;
 			
 			// aapt resource value: 0x7f080000
 			public const int errorScrollView = 2131230720;
@@ -109,44 +109,47 @@ namespace WallpaperGenerator.UI.Android
 			// aapt resource value: 0x7f080001
 			public const int errorTextView = 2131230721;
 			
-			// aapt resource value: 0x7f080010
-			public const int feedbackMenuItem = 2131230736;
-			
-			// aapt resource value: 0x7f080004
-			public const int formulaTextView = 2131230724;
-			
-			// aapt resource value: 0x7f080006
-			public const int generateButton = 2131230726;
-			
-			// aapt resource value: 0x7f080003
-			public const int imageView = 2131230723;
-			
-			// aapt resource value: 0x7f08000d
-			public const int openGalleryMenuItem = 2131230733;
-			
-			// aapt resource value: 0x7f08000f
-			public const int rateAppMenuItem = 2131230735;
-			
-			// aapt resource value: 0x7f08000c
-			public const int removeAdsMenuItem = 2131230732;
+			// aapt resource value: 0x7f080011
+			public const int feedbackMenuItem = 2131230737;
 			
 			// aapt resource value: 0x7f080005
-			public const int renderTimeTextView = 2131230725;
+			public const int formulaTextView = 2131230725;
 			
-			// aapt resource value: 0x7f08000a
-			public const int saveMenuItem = 2131230730;
+			// aapt resource value: 0x7f080007
+			public const int generateButton = 2131230727;
+			
+			// aapt resource value: 0x7f080003
+			public const int horizontalScrollView = 2131230723;
+			
+			// aapt resource value: 0x7f080004
+			public const int imageView = 2131230724;
+			
+			// aapt resource value: 0x7f08000e
+			public const int openGalleryMenuItem = 2131230734;
+			
+			// aapt resource value: 0x7f080010
+			public const int rateAppMenuItem = 2131230736;
+			
+			// aapt resource value: 0x7f08000d
+			public const int removeAdsMenuItem = 2131230733;
+			
+			// aapt resource value: 0x7f080006
+			public const int renderTimeTextView = 2131230726;
+			
+			// aapt resource value: 0x7f08000b
+			public const int saveMenuItem = 2131230731;
 			
 			// aapt resource value: 0x7f080002
 			public const int scrollView = 2131230722;
 			
+			// aapt resource value: 0x7f08000a
+			public const int setAsWallpaperButton = 2131230730;
+			
+			// aapt resource value: 0x7f08000c
+			public const int shareMenuItem = 2131230732;
+			
 			// aapt resource value: 0x7f080009
-			public const int setAsWallpaperButton = 2131230729;
-			
-			// aapt resource value: 0x7f08000b
-			public const int shareMenuItem = 2131230731;
-			
-			// aapt resource value: 0x7f080008
-			public const int transformButton = 2131230728;
+			public const int transformButton = 2131230729;
 			
 			static Id()
 			{
