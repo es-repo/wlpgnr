@@ -63,8 +63,8 @@
     <Compile Include="..\UI.Shared\WallpaperFileManager.cs">
       <Link>WallpaperFileManager.cs</Link>
     </Compile>
+    <Compile Include="AndroidFormulaBitmap.cs" />
     <Compile Include="MainActivity.cs" />
-    <Compile Include="RenderedFormulaImageExtensions.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AndroidWallpaperFileManager.cs" />

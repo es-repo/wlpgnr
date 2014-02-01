@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using WallpaperGenerator.FormulaRendering;
 using WallpaperGenerator.UI.Core;
 using WallpaperGenerator.Utilities;
 
@@ -31,7 +30,7 @@ namespace WallpaperGenerator.UI.Shared
             string imagePath = GetNextFilePath();
             using (FileStream stream = new FileStream(imagePath, FileMode.CreateNew))
             {
-                WriteImageAsPng(workflowRenderResult.FormulaRenderResult, stream);
+                workflowRenderResult.Bitmap.WriteAsPng(stream);
                 stream.Flush();
             }
             AddFileToGallery(imagePath);
@@ -44,10 +43,6 @@ namespace WallpaperGenerator.UI.Shared
             }
 
             return new Tuple<string, string>(imagePath, dataPath);
-        }
-
-        protected virtual void WriteImageAsPng(FormulaRenderResult image, Stream stream)
-        {
         }
 
         protected virtual void AddFileToGallery(string path)

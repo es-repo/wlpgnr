@@ -29,7 +29,7 @@ namespace WallpaperGenerator.UI.Android
         private ImageView _imageView;
         private FormulaRenderWorkflow _workflow;
         private AndroidWallpaperFileManager _wallpaperFileManager;
-
+        
         private Bitmap ImageBitmap
         {
             get { return ((BitmapDrawable)_imageView.Drawable).Bitmap; }
@@ -52,8 +52,8 @@ namespace WallpaperGenerator.UI.Android
             WallpaperManager wallpaperManager = WallpaperManager.GetInstance(this);
             Point wallpaperSize = wallpaperManager.GetDesiredSize(WindowManager.DefaultDisplay, Resources.Configuration);
             Size imageSize = new Size(wallpaperSize.X, wallpaperSize.Y);
-            _workflow = new FormulaRenderWorkflow(new FormulaRenderArgumentsGenerationParams(), imageSize);
-
+            _workflow = new FormulaRenderWorkflow(new FormulaRenderArgumentsGenerationParams(), imageSize, s => new AndroidFormulaBitmap(s));
+            
             if (_workflow.FormulaRenderArguments != null)
                 _formulaTextView.Text = _workflow.FormulaRenderArguments.ToString();
 
@@ -209,7 +209,7 @@ namespace WallpaperGenerator.UI.Android
             progressDialog.Show();
             try
             {
-                var filesPath = await _wallpaperFileManager.SaveAsync(_workflow.LastFormulaRenderResult, false);
+                var filesPath = await _wallpaperFileManager.SaveAsync(_workflow.LastWorkflowRenderResult, false);
                 if (filesPath == null)
                     throw new InvalidOperationException();
             }
@@ -266,18 +266,6 @@ namespace WallpaperGenerator.UI.Android
 
         private void ClearImage()
         {
-            //int width = _workflow.ImageSize.Width;
-            //int height = _workflow.ImageSize.Height;  
-            //int[] pixels = new int[width * height];
-            //for (int i = 0; i < pixels.Length; i++)
-            //{
-            //    int c = 0;//i%5 == 0? 70 : 0;
-            //    pixels[i] = Color.Argb(255, c, c, c);
-            //}
-
-            //Bitmap blankBitmap = Bitmap.CreateBitmap(pixels, width, height, Bitmap.Config.Argb8888);
-            //_imageView.SetImageBitmap(blankBitmap);
-
             _imageView.LayoutParameters.Width = _workflow.ImageSize.Width;
             _imageView.LayoutParameters.Height = _workflow.ImageSize.Height;
             _imageView.SetBackgroundColor(Color.Black);
@@ -285,7 +273,6 @@ namespace WallpaperGenerator.UI.Android
 
         private async Task DrawImageAsync(bool generateNew, bool benchmark)
         {
-            GC.Collect();
             ProgressDialog progressDialog = CreateProgressDialog(
                 benchmark ? Resources.GetString(Resource.String.Benchmark) : Resources.GetString(Resource.String.WallpaperWillBeReady), 
                 benchmark ? "" : Resources.GetString(Resource.String.Wait), false);
@@ -299,19 +286,19 @@ namespace WallpaperGenerator.UI.Android
                 }), TimeSpan.FromMilliseconds(100),
                 () => progressDialog.Progress = progressDialog.Max);
 
-            FormulaRenderResult formulaRenderResult = benchmark 
+            WorkflowRenderResult workflowRenderResult = benchmark 
                 ? await _workflow.BenchmarkAsync(renderingProgressObserver) 
                 : await _workflow.RenderFormulaAsync(generateNew, renderingProgressObserver);
 
-            _renderTimeTextView.Text = formulaRenderResult.ElapsedTime.ToString();
-            _imageView.SetImageBitmap(formulaRenderResult.Image.ToBitmap());
-           // _horizontalScrollView.ScrollTo(_horizontalScrollView.Width / 2, 0);
+            _renderTimeTextView.Text = workflowRenderResult.ElapsedTime.ToString();
+            _imageView.SetImageBitmap((Bitmap)workflowRenderResult.Bitmap.PlatformBitmap);
+            _horizontalScrollView.ScrollTo(_horizontalScrollView.Width / 2, 0);
             
             progressDialog.Dismiss();
 
             if (benchmark)
             {
-                AlertDialog dialog = CreateAlertDialog(formulaRenderResult.ElapsedTime.ToString("hh':'mm':'ss"));
+                AlertDialog dialog = CreateAlertDialog(workflowRenderResult.ElapsedTime.ToString("hh':'mm':'ss"));
                 dialog.Show();
             }
         }

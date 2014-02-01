@@ -15,6 +15,8 @@ namespace WallpaperGenerator.UI.Core
         private Size _imageSize;
         private FormulaRenderArguments _formulaRenderArguments;
         private FormulaRenderResult _formulaRenderResult;
+        private FormulaBitmap _bitmap;
+        private readonly Func<Size, FormulaBitmap> _createFormulaBitmap; 
         private bool _reevaluateValues;
         private int _generatedFormulasCount;
 
@@ -30,6 +32,7 @@ namespace WallpaperGenerator.UI.Core
 
                 _imageSize = value;
                 _formulaRenderResult = new FormulaRenderResult(value);
+                _bitmap = _createFormulaBitmap(_imageSize);
                 if (_formulaRenderArguments != null)
                 {
                     _formulaRenderArguments.ImageSize = value;
@@ -59,18 +62,20 @@ namespace WallpaperGenerator.UI.Core
 
         public bool IsImageRendering { get; private set; }
 
-        public FormulaRenderWorkflow(FormulaRenderArgumentsGenerationParams generationParams, Size imageSize)
-            : this(generationParams, imageSize, new FormulaGoodnessAnalyzer(generationParams.DimensionCountBounds.Low),  new Random())
+        public FormulaRenderWorkflow(FormulaRenderArgumentsGenerationParams generationParams, Size imageSize, Func<Size, FormulaBitmap> createFormulaBitmap)
+            : this(generationParams, imageSize, new FormulaGoodnessAnalyzer(generationParams.DimensionCountBounds.Low), createFormulaBitmap, new Random())
         {
         }
 
-        public FormulaRenderWorkflow(FormulaRenderArgumentsGenerationParams generationParams, Size imageSize, FormulaGoodnessAnalyzer formulaGoodnessAnalyzer, Random random)
+        public FormulaRenderWorkflow(FormulaRenderArgumentsGenerationParams generationParams, Size imageSize, FormulaGoodnessAnalyzer formulaGoodnessAnalyzer, 
+            Func<Size, FormulaBitmap> createFormulaBitmap, Random random)
         {
             GenerationParams = generationParams;
-            ImageSize = imageSize;
             _formulaGoodnessAnalyzer = formulaGoodnessAnalyzer;
+            _createFormulaBitmap = createFormulaBitmap;
             _random = random;
             _reevaluateValues = true;
+            ImageSize = imageSize;
         }
 
         public Task<FormulaRenderArguments> GenerateFormulaRenderArgumentsAsync(double progressSpan, double initProgress, ProgressObserver progressObserver)
@@ -101,8 +106,7 @@ namespace WallpaperGenerator.UI.Core
                     },
                     f => _formulaGoodnessAnalyzer.Analyze(f), attemptCount);
 
-                    RangesForFormula2DProjection ranges =
-                        CreateRandomVariableValuesRangesFor2DProjection(formulaTree.Variables.Length);
+                    RangesForFormula2DProjection ranges = CreateRandomVariableValuesRangesFor2DProjection(formulaTree.Variables.Length);
                     ColorTransformation colorTransformation = CreateRandomColorTransformation();
                     args = new FormulaRenderArguments(formulaTree, ranges, colorTransformation);
                 }
@@ -231,9 +235,14 @@ Sub Sqrt Sqrt Cos Sub Sub Sub Sum Cos Atan Ln Cos Sub x5 x0 Cos Atan Pow3 Cbrt S
                     _reevaluateValues = false;
                 }
 
+                //using (ProgressReporter.CreateScope(1 - renderProgressSpan - formulaGenerationrProgressSpan))
+                //{
+                    _bitmap.Update(_formulaRenderResult);
+                //}
+
                 stopwatch.Stop();
                 IsImageRendering = false;
-                return LastWorkflowRenderResult = new WorkflowRenderResult(FormulaRenderArguments, _formulaRenderResult, stopwatch.Elapsed);
+                return LastWorkflowRenderResult = new WorkflowRenderResult(FormulaRenderArguments, _formulaRenderResult, _bitmap, stopwatch.Elapsed);
             }
         }
     }

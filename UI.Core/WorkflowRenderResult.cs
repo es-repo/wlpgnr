@@ -7,12 +7,14 @@ namespace WallpaperGenerator.UI.Core
     {
         public FormulaRenderArguments FormulaRenderArguments { get; private set; }
         public FormulaRenderResult FormulaRenderResult { get; private set; }
+        public FormulaBitmap Bitmap { get; private set; }
         public TimeSpan ElapsedTime { get; private set; }
 
-        public WorkflowRenderResult(FormulaRenderArguments formulaRenderArguments, FormulaRenderResult formulaRenderResult, TimeSpan elapsedTime)
+        public WorkflowRenderResult(FormulaRenderArguments formulaRenderArguments, FormulaRenderResult formulaRenderResult, FormulaBitmap bitmap, TimeSpan elapsedTime)
         {
             FormulaRenderArguments = formulaRenderArguments;
             FormulaRenderResult = formulaRenderResult;
+            Bitmap = bitmap;
             ElapsedTime = elapsedTime;
         }
     }

@@ -4,11 +4,13 @@
     {
         public int Width { get; private set; }
         public int Height { get; private set; }
+        public int Square { get; private set; }
 
         public Size(int width = 0, int height = 0)
         {
             Width = width;
             Height = height;
+            Square = width*height;
         }
 
         public static bool operator ==(Size a, Size b)

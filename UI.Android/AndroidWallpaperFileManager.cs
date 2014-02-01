@@ -1,8 +1,5 @@
-﻿using System.IO;
-using Android.Content;
-using Android.Graphics;
+﻿using Android.Content;
 using Android.Utilities;
-using WallpaperGenerator.FormulaRendering;
 using WallpaperGenerator.UI.Shared;
 using Environment = Android.OS.Environment;
 
@@ -17,12 +14,6 @@ namespace WallpaperGenerator.UI.Android
                 context.Resources.GetString(Resource.String.ApplicationName)))
         {
             _context = context;
-        }
-
-        protected override void WriteImageAsPng(RenderedFormulaImage image, Stream stream)
-        {
-            Bitmap bitmap = image.ToBitmap();
-            bitmap.Compress(Bitmap.CompressFormat.Png, 100, stream);
         }
 
         protected override void AddFileToGallery(string path)

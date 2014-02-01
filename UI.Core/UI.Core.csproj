@@ -48,6 +48,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormulaBitmap.cs" />
     <Compile Include="FormulaGenerationArguments.cs" />
     <Compile Include="FormulaGoodnessAnalyzer.cs" />
     <Compile Include="FormulaRenderArgumentsGenerationParams.cs" />
