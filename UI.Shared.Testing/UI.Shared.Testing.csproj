@@ -55,6 +55,10 @@
       <Project>{C4DD7AAC-ACFB-45CA-B1B3-7BEF7714DEB0}</Project>
       <Name>FormulaRendering</Name>
     </ProjectReference>
+    <ProjectReference Include="..\UI.Core.Testing\UI.Core.Testing.csproj">
+      <Project>{B5DCACFF-2CB1-49C9-9CDA-FD1E1D7FD022}</Project>
+      <Name>UI.Core.Testing</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UI.Shared\UI.Shared.csproj">
       <Project>{35E8B1AD-1304-47C9-9A9D-4AB7ECE5F21D}</Project>
       <Name>UI.Shared</Name>
@@ -62,6 +66,10 @@
     <ProjectReference Include="..\UI.Core\UI.Core.csproj">
       <Project>{ABB75337-FCC9-4569-9B7E-AD338134726E}</Project>
       <Name>UI.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities\Utilities.csproj">
+      <Project>{7D4A8B31-9E0B-4C8A-914B-E469D622F21C}</Project>
+      <Name>Utilities</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
