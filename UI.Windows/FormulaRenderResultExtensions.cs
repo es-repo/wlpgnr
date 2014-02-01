@@ -5,9 +5,9 @@ using WallpaperGenerator.FormulaRendering;
 
 namespace WallpaperGenerator.UI.Windows
 {
-    public static class RenderedFormulaImageExtensions
+    public static class FormulaRenderResultExtensions
     {
-        public static WriteableBitmap ToBitmap(this RenderedFormulaImage image)
+        public static WriteableBitmap ToBitmap(this FormulaRenderResult image)
         {
             WriteableBitmap bitmap = new WriteableBitmap(image.Size.Width, image.Size.Height, 96, 96, PixelFormats.Bgra32, null);
             Int32Rect rect = new Int32Rect(0, 0, bitmap.PixelWidth, bitmap.PixelHeight);

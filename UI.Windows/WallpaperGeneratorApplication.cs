@@ -59,7 +59,7 @@ namespace WallpaperGenerator.UI.Windows
 
         public WallpaperGeneratorApplication()
         {
-            _workflow = new FormulaRenderWorkflow(new FormulaRenderArgumentsGenerationParams { PredefinedFormulaRenderingArgumentsEnabled = false }, new Size(360, 640));
+            _workflow = new FormulaRenderWorkflow(new FormulaRenderArgumentsGenerationParams { PredefinedFormulaRenderingArgumentsEnabled = false }, new Size(3600, 3600));
             _wallpaperFileManager = new WindowsWallpaperFileManager();
             _mainWindow = new MainWindow { WindowState = WindowState.Maximized };
             _mainWindow.ControlPanel.LoadState(_workflow.GenerationParams);
@@ -196,11 +196,11 @@ namespace WallpaperGenerator.UI.Windows
             ProgressObserver renderingProgressObserver = new ProgressObserver(
                 p => _mainWindow.StatusPanel.Dispatcher.Invoke(() => _mainWindow.StatusPanel.RenderingProgress = p.Progress));
 
-            FormulaRenderResult formulaRenderResult = await _workflow.RenderFormulaAsync(false, renderingProgressObserver);
+            WorkflowRenderResult workflowRenderResult = await _workflow.RenderFormulaAsync(false, renderingProgressObserver);
 
-            _mainWindow.WallpaperImage.Source = formulaRenderResult.Image.ToBitmap();
+            _mainWindow.WallpaperImage.Source = workflowRenderResult.FormulaRenderResult.ToBitmap();
 
-            _mainWindow.StatusPanel.RenderedTime = formulaRenderResult.ElapsedTime;
+            _mainWindow.StatusPanel.RenderedTime = workflowRenderResult.ElapsedTime;
             _mainWindow.Cursor = Cursors.Arrow;
         }
 
@@ -209,7 +209,7 @@ namespace WallpaperGenerator.UI.Windows
             if (!_workflow.IsImageReady)
                 return;
 
-            _wallpaperFileManager.Save(_workflow.LastFormulaRenderResult, true);
+            _wallpaperFileManager.Save(_workflow.LastWorkflowRenderResult, true);
         }
     }
 }

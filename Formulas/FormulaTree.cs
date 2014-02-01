@@ -57,10 +57,11 @@ namespace WallpaperGenerator.Formulas
                        .Distinct();
         }
 
-        public double[] EvaluateRangesIn2DProjection(Range[] ranges, int xCount, int yCount)
+        public void EvaluateRangesIn2DProjection(Range[] ranges, int xCount, int yCount, double[] resultBuffer)
         {
-            double[] results = new double[xCount * yCount];
-            
+            if (resultBuffer.Length != xCount * yCount)
+                throw new ArgumentException("Result buffer size doesn't have appropriate size.", "resultBuffer");
+           
             for (int i = 0; i < Variables.Length; i += 2)
             {
                 Variables[i].Value = ranges[i].Start;
@@ -77,7 +78,7 @@ namespace WallpaperGenerator.Formulas
 
                 for (int x = 0; x < xCount; x++)
                 {
-                    results[r++] = Evaluate();
+                    resultBuffer[r++] = Evaluate();
 
                     for (int i = 1; i < Variables.Length; i += 2)
                     {
@@ -91,8 +92,6 @@ namespace WallpaperGenerator.Formulas
                 }
                 ProgressReporter.Increase();
             }
-
-            return results; 
         }
 
         public double Evaluate()

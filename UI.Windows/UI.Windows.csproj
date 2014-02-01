@@ -89,7 +89,7 @@
       <Link>WallpaperFileManager.cs</Link>
     </Compile>
     <Compile Include="MainWindowControls\ControlPanelControls\SizeControl.cs" />
-    <Compile Include="RenderedFormulaImageExtensions.cs" />
+    <Compile Include="FormulaRenderResultExtensions.cs" />
     <Compile Include="WindowsWallpaperFileManager.cs" />
     <Compile Include="MainWindow.cs" />
     <Compile Include="MainWindowControls\ControlPanel.cs" />

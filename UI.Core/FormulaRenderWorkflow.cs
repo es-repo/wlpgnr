@@ -14,7 +14,8 @@ namespace WallpaperGenerator.UI.Core
         private readonly FormulaGoodnessAnalyzer _formulaGoodnessAnalyzer;
         private Size _imageSize;
         private FormulaRenderArguments _formulaRenderArguments;
-        private double[] _lastEvaluatedFormulaValues;
+        private FormulaRenderResult _formulaRenderResult;
+        private bool _reevaluateValues;
         private int _generatedFormulasCount;
 
         public FormulaRenderArgumentsGenerationParams GenerationParams { get; set; }
@@ -24,7 +25,11 @@ namespace WallpaperGenerator.UI.Core
             get { return _imageSize; }
             set
             {
+                if (_imageSize == value)
+                    return;
+
                 _imageSize = value;
+                _formulaRenderResult = new FormulaRenderResult(value);
                 if (_formulaRenderArguments != null)
                 {
                     _formulaRenderArguments.ImageSize = value;
@@ -40,16 +45,16 @@ namespace WallpaperGenerator.UI.Core
                 if (_formulaRenderArguments == null || _formulaRenderArguments.ToString() != value.ToString() || _formulaRenderArguments.ImageSize != value.ImageSize)
                 {
                     _formulaRenderArguments = value;
-                    _lastEvaluatedFormulaValues = null;
+                    _reevaluateValues = true;
                 }
             }
         }
 
-        public FormulaRenderResult LastFormulaRenderResult { get; private set; }
+        public WorkflowRenderResult LastWorkflowRenderResult { get; private set; }
 
         public bool IsImageReady
         {
-            get { return _lastEvaluatedFormulaValues != null && !IsImageRendering; }
+            get { return !_reevaluateValues && !IsImageRendering; }
         }
 
         public bool IsImageRendering { get; private set; }
@@ -65,6 +70,7 @@ namespace WallpaperGenerator.UI.Core
             ImageSize = imageSize;
             _formulaGoodnessAnalyzer = formulaGoodnessAnalyzer;
             _random = random;
+            _reevaluateValues = true;
         }
 
         public Task<FormulaRenderArguments> GenerateFormulaRenderArgumentsAsync(double progressSpan, double initProgress, ProgressObserver progressObserver)
@@ -175,7 +181,7 @@ namespace WallpaperGenerator.UI.Core
                 args.DimensionsCount, args.MinimalDepth, args.LeafProbability, args.ConstantProbability);
         }
 
-        public Task<FormulaRenderResult> BenchmarkAsync(ProgressObserver progressObserver)
+        public Task<WorkflowRenderResult> BenchmarkAsync(ProgressObserver progressObserver)
         {
             FormulaRenderArguments = FormulaRenderArguments.FromString(
                 @"-8.52,0.9;0.65,10.42;-7.37,-0.31;-0.89,2.79;0.31,1.9;0.52,6.01;2.29,8.68
@@ -187,7 +193,7 @@ Sub Sqrt Sqrt Cos Sub Sub Sub Sum Cos Atan Ln Cos Sub x5 x0 Cos Atan Pow3 Cbrt S
             return RenderFormulaAsync(false, progressObserver);
         }
 
-        public Task<FormulaRenderResult> RenderFormulaAsync(bool generateNew, ProgressObserver progressObserver)
+        public Task<WorkflowRenderResult> RenderFormulaAsync(bool generateNew, ProgressObserver progressObserver)
         {
             if (FormulaRenderArguments == null && !generateNew)
                 throw new InvalidOperationException("FormulaRenderArguments is null.");
@@ -200,7 +206,7 @@ Sub Sqrt Sqrt Cos Sub Sub Sub Sum Cos Atan Ln Cos Sub x5 x0 Cos Atan Pow3 Cbrt S
             });
         }
 
-        public FormulaRenderResult RenderFormula(bool generateNew)
+        public WorkflowRenderResult RenderFormula(bool generateNew)
         {
             if (FormulaRenderArguments == null && !generateNew)
                 throw new InvalidOperationException("FormulaRenderArguments is null.");
@@ -219,24 +225,15 @@ Sub Sqrt Sqrt Cos Sub Sub Sub Sum Cos Atan Ln Cos Sub x5 x0 Cos Atan Pow3 Cbrt S
                         FormulaRenderArguments = GenerateFormulaRenderArguments();
                 }
 
-                double evaluationrProgressSpan = 0;
-                if (_lastEvaluatedFormulaValues == null)
+                using (ProgressReporter.CreateScope(1 - formulaGenerationrProgressSpan))
                 {
-                    evaluationrProgressSpan = 0.93 - formulaGenerationrProgressSpan;
-                    using (ProgressReporter.CreateScope(evaluationrProgressSpan))
-                        _lastEvaluatedFormulaValues = FormulaRender.EvaluateFormula(FormulaRenderArguments.FormulaTree, FormulaRenderArguments.Ranges);
-                }
-
-                RenderedFormulaImage renderedFormulaImage;
-                using (ProgressReporter.CreateScope(1 - formulaGenerationrProgressSpan - evaluationrProgressSpan))
-                {
-                    renderedFormulaImage = FormulaRender.Render(_lastEvaluatedFormulaValues,
-                        FormulaRenderArguments.ImageSize, FormulaRenderArguments.ColorTransformation);
+                    FormulaRender.Render(FormulaRenderArguments.FormulaTree, FormulaRenderArguments.Ranges, FormulaRenderArguments.ColorTransformation, _reevaluateValues, _formulaRenderResult);
+                    _reevaluateValues = false;
                 }
 
                 stopwatch.Stop();
                 IsImageRendering = false;
-                return LastFormulaRenderResult = new FormulaRenderResult(FormulaRenderArguments, renderedFormulaImage, stopwatch.Elapsed);
+                return LastWorkflowRenderResult = new WorkflowRenderResult(FormulaRenderArguments, _formulaRenderResult, stopwatch.Elapsed);
             }
         }
     }

@@ -18,12 +18,12 @@ namespace WallpaperGenerator.UI.Shared
             Path = path;
         }
 
-        public Task<Tuple<string, string>> SaveAsync(FormulaRenderResult formulaRenderResult, bool withFormulaRenderArguments)
+        public Task<Tuple<string, string>> SaveAsync(WorkflowRenderResult workflowRenderResult, bool withFormulaRenderArguments)
         {
-            return Task.Run(() => Save(formulaRenderResult, withFormulaRenderArguments));
+            return Task.Run(() => Save(workflowRenderResult, withFormulaRenderArguments));
         }
 
-        public Tuple<string, string> Save(FormulaRenderResult formulaRenderResult, bool withFormulaRenderArguments)
+        public Tuple<string, string> Save(WorkflowRenderResult workflowRenderResult, bool withFormulaRenderArguments)
         {
             if (!Directory.Exists(Path))
                 Directory.CreateDirectory(Path);
@@ -31,7 +31,7 @@ namespace WallpaperGenerator.UI.Shared
             string imagePath = GetNextFilePath();
             using (FileStream stream = new FileStream(imagePath, FileMode.CreateNew))
             {
-                WriteImageAsPng(formulaRenderResult.Image, stream);
+                WriteImageAsPng(workflowRenderResult.FormulaRenderResult, stream);
                 stream.Flush();
             }
             AddFileToGallery(imagePath);
@@ -40,13 +40,13 @@ namespace WallpaperGenerator.UI.Shared
             if (withFormulaRenderArguments)
             {
                 dataPath = imagePath.Replace(".png", ".txt");
-                File.WriteAllText(dataPath, formulaRenderResult.FormulaRenderArguments.ToString());
+                File.WriteAllText(dataPath, workflowRenderResult.FormulaRenderArguments.ToString());
             }
 
             return new Tuple<string, string>(imagePath, dataPath);
         }
 
-        protected virtual void WriteImageAsPng(RenderedFormulaImage image, Stream stream)
+        protected virtual void WriteImageAsPng(FormulaRenderResult image, Stream stream)
         {
         }
 
