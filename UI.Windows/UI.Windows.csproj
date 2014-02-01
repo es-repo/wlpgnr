@@ -89,7 +89,6 @@
       <Link>WallpaperFileManager.cs</Link>
     </Compile>
     <Compile Include="MainWindowControls\ControlPanelControls\SizeControl.cs" />
-    <Compile Include="FormulaRenderResultExtensions.cs" />
     <Compile Include="WindowsFormulaBitmap.cs" />
     <Compile Include="WindowsWallpaperFileManager.cs" />
     <Compile Include="MainWindow.cs" />
