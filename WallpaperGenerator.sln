@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI.Windows", "UI.Windows\UI.Windows.csproj", "{CF380998-DBE7-410E-867D-DA09FD9E221F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Windows", "App.Windows\App.Windows.csproj", "{CF380998-DBE7-410E-867D-DA09FD9E221F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Formulas", "Formulas\Formulas.csproj", "{190058E2-F017-4D78-B076-CB6AC313246D}"
 EndProject
@@ -15,17 +15,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormulaRendering", "Formula
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormulaRendering.Testing", "FormulaRendering.Testing\FormulaRendering.Testing.csproj", "{0AF9C28E-CEF2-4C86-8CFD-0E509B339B3B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI.Android", "UI.Android\UI.Android.csproj", "{B0BDA0D4-093E-48D7-9E5D-C2D0C14951F9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Android", "App.Android\App.Android.csproj", "{B0BDA0D4-093E-48D7-9E5D-C2D0C14951F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI.Core", "UI.Core\UI.Core.csproj", "{ABB75337-FCC9-4569-9B7E-AD338134726E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Core", "App.Core\App.Core.csproj", "{ABB75337-FCC9-4569-9B7E-AD338134726E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Android.Utilities", "Android.Utilities\Android.Utilities.csproj", "{5461607B-E975-4592-95D8-781DE36D6E11}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI.Core.Testing", "UI.Core.Testing\UI.Core.Testing.csproj", "{B5DCACFF-2CB1-49C9-9CDA-FD1E1D7FD022}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Core.Testing", "App.Core.Testing\App.Core.Testing.csproj", "{B5DCACFF-2CB1-49C9-9CDA-FD1E1D7FD022}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI.Shared", "UI.Shared\UI.Shared.csproj", "{35E8B1AD-1304-47C9-9A9D-4AB7ECE5F21D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Shared", "App.Shared\App.Shared.csproj", "{35E8B1AD-1304-47C9-9A9D-4AB7ECE5F21D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI.Shared.Testing", "UI.Shared.Testing\UI.Shared.Testing.csproj", "{FF63B32B-BF74-441F-AFB8-30FEEF2471F9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Shared.Testing", "App.Shared.Testing\App.Shared.Testing.csproj", "{FF63B32B-BF74-441F-AFB8-30FEEF2471F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

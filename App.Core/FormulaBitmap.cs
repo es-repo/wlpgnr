@@ -2,7 +2,7 @@
 using WallpaperGenerator.FormulaRendering;
 using WallpaperGenerator.Utilities;
 
-namespace WallpaperGenerator.UI.Core
+namespace WallpaperGenerator.App.Core
 {
     public abstract class FormulaBitmap
     {

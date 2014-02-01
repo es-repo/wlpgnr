@@ -9,12 +9,11 @@ using Android.OS;
 using Android.Utilities;
 using Android.Views;
 using Android.Widget;
-using WallpaperGenerator.UI.Core;
+using WallpaperGenerator.App.Core;
 using WallpaperGenerator.Utilities;
 using WallpaperGenerator.Utilities.ProgressReporting;
-using AndroidEnvironment = Android.OS.Environment;
 
-namespace WallpaperGenerator.UI.Android
+namespace WallpaperGenerator.App.Android
 {
     [Activity(Label = "@string/ApplicationName", MainLauncher = true, ScreenOrientation = ScreenOrientation.Nosensor)]
     public class MainActivity : BaseActivity

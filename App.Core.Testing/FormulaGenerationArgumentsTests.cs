@@ -6,7 +6,7 @@ using WallpaperGenerator.Formulas.Operators;
 using WallpaperGenerator.Utilities;
 using WallpaperGenerator.Utilities.Testing;
 
-namespace WallpaperGenerator.UI.Core.Testing
+namespace WallpaperGenerator.App.Core.Testing
 {
     [TestFixture]
     public class FormulaGenerationArgumentsTests

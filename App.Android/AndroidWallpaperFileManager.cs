@@ -1,9 +1,9 @@
 ﻿using Android.Content;
+using Android.OS;
 using Android.Utilities;
-using WallpaperGenerator.UI.Shared;
-using Environment = Android.OS.Environment;
+using WallpaperGenerator.App.Shared;
 
-namespace WallpaperGenerator.UI.Android
+namespace WallpaperGenerator.App.Android
 {
     public class AndroidWallpaperFileManager : WallpaperFileManager
     {

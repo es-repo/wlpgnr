@@ -6,7 +6,7 @@ using WallpaperGenerator.Formulas;
 using WallpaperGenerator.Utilities;
 using WallpaperGenerator.Utilities.ProgressReporting;
 
-namespace WallpaperGenerator.UI.Core
+namespace WallpaperGenerator.App.Core
 {
     public class FormulaRenderWorkflow
     {

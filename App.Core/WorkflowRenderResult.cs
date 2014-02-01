@@ -1,7 +1,7 @@
 ﻿using System;
 using WallpaperGenerator.FormulaRendering;
 
-namespace WallpaperGenerator.UI.Core
+namespace WallpaperGenerator.App.Core
 {
     public class WorkflowRenderResult
     {

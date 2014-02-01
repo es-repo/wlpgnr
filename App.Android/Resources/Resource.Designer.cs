@@ -9,9 +9,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: global::Android.Runtime.ResourceDesignerAttribute("WallpaperGenerator.UI.Android.Resource", IsApplication=true)]
+[assembly: global::Android.Runtime.ResourceDesignerAttribute("WallpaperGenerator.App.Android.Resource", IsApplication=true)]
 
-namespace WallpaperGenerator.UI.Android
+namespace WallpaperGenerator.App.Android
 {
 	
 	
@@ -26,16 +26,16 @@ namespace WallpaperGenerator.UI.Android
 		
 		public static void UpdateIdValues()
 		{
-			global::Android.Utilities.Resource.Dimension.activity_horizontal_margin = global::WallpaperGenerator.UI.Android.Resource.Dimension.activity_horizontal_margin;
-			global::Android.Utilities.Resource.Dimension.activity_vertical_margin = global::WallpaperGenerator.UI.Android.Resource.Dimension.activity_vertical_margin;
-			global::Android.Utilities.Resource.Dimension.default_text_size = global::WallpaperGenerator.UI.Android.Resource.Dimension.default_text_size;
-			global::Android.Utilities.Resource.Dimension.small_text_size = global::WallpaperGenerator.UI.Android.Resource.Dimension.small_text_size;
-			global::Android.Utilities.Resource.Dimension.very_small_text_size = global::WallpaperGenerator.UI.Android.Resource.Dimension.very_small_text_size;
-			global::Android.Utilities.Resource.Id.errorScrollView = global::WallpaperGenerator.UI.Android.Resource.Id.errorScrollView;
-			global::Android.Utilities.Resource.Id.errorTextView = global::WallpaperGenerator.UI.Android.Resource.Id.errorTextView;
-			global::Android.Utilities.Resource.Layout.CrashReport = global::WallpaperGenerator.UI.Android.Resource.Layout.CrashReport;
-			global::Android.Utilities.Resource.String.CommonErrorMessage = global::WallpaperGenerator.UI.Android.Resource.String.CommonErrorMessage;
-			global::Android.Utilities.Resource.String.CrashReport = global::WallpaperGenerator.UI.Android.Resource.String.CrashReport;
+			global::Android.Utilities.Resource.Dimension.activity_horizontal_margin = global::WallpaperGenerator.App.Android.Resource.Dimension.activity_horizontal_margin;
+			global::Android.Utilities.Resource.Dimension.activity_vertical_margin = global::WallpaperGenerator.App.Android.Resource.Dimension.activity_vertical_margin;
+			global::Android.Utilities.Resource.Dimension.default_text_size = global::WallpaperGenerator.App.Android.Resource.Dimension.default_text_size;
+			global::Android.Utilities.Resource.Dimension.small_text_size = global::WallpaperGenerator.App.Android.Resource.Dimension.small_text_size;
+			global::Android.Utilities.Resource.Dimension.very_small_text_size = global::WallpaperGenerator.App.Android.Resource.Dimension.very_small_text_size;
+			global::Android.Utilities.Resource.Id.errorScrollView = global::WallpaperGenerator.App.Android.Resource.Id.errorScrollView;
+			global::Android.Utilities.Resource.Id.errorTextView = global::WallpaperGenerator.App.Android.Resource.Id.errorTextView;
+			global::Android.Utilities.Resource.Layout.CrashReport = global::WallpaperGenerator.App.Android.Resource.Layout.CrashReport;
+			global::Android.Utilities.Resource.String.CommonErrorMessage = global::WallpaperGenerator.App.Android.Resource.String.CommonErrorMessage;
+			global::Android.Utilities.Resource.String.CrashReport = global::WallpaperGenerator.App.Android.Resource.String.CrashReport;
 		}
 		
 		public partial class Attribute

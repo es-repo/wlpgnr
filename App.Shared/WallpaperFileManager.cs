@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using WallpaperGenerator.UI.Core;
+using WallpaperGenerator.App.Core;
 using WallpaperGenerator.Utilities;
 
-namespace WallpaperGenerator.UI.Shared
+namespace WallpaperGenerator.App.Shared
 {
     public class WallpaperFileManager
     {

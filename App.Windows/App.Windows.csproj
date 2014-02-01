@@ -8,8 +8,8 @@
     <ProjectGuid>{CF380998-DBE7-410E-867D-DA09FD9E221F}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WallpaperGenerator.UI.Windows</RootNamespace>
-    <AssemblyName>WallpaperGenerator.UI.Windows</AssemblyName>
+    <RootNamespace>WallpaperGenerator.App.Windows</RootNamespace>
+    <AssemblyName>WallpaperGenerator.App.Windows</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <StartupObject>
@@ -85,7 +85,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\UI.Shared\WallpaperFileManager.cs">
+    <Compile Include="..\App.Shared\WallpaperFileManager.cs">
       <Link>WallpaperFileManager.cs</Link>
     </Compile>
     <Compile Include="MainWindowControls\ControlPanelControls\SizeControl.cs" />
@@ -145,9 +145,9 @@
       <Project>{7D4A8B31-9E0B-4C8A-914B-E469D622F21C}</Project>
       <Name>Utilities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\UI.Core\UI.Core.csproj">
+    <ProjectReference Include="..\App.Core\App.Core.csproj">
       <Project>{abb75337-fcc9-4569-9b7e-ad338134726e}</Project>
-      <Name>UI.Core</Name>
+      <Name>App.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -1,7 +1,7 @@
 ﻿using System.Windows.Controls;
 using WallpaperGenerator.Formulas;
 
-namespace WallpaperGenerator.UI.Windows.MainWindowControls.ControlPanelControls
+namespace WallpaperGenerator.App.Windows.MainWindowControls.ControlPanelControls
 {
     public class OperatorControl : StackPanel
     {

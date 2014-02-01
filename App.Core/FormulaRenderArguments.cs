@@ -3,7 +3,7 @@ using WallpaperGenerator.FormulaRendering;
 using WallpaperGenerator.Formulas;
 using WallpaperGenerator.Utilities;
 
-namespace WallpaperGenerator.UI.Core
+namespace WallpaperGenerator.App.Core
 {
     public class FormulaRenderArguments
     {

@@ -1,6 +1,6 @@
 ﻿using WallpaperGenerator.Formulas;
 
-namespace WallpaperGenerator.UI.Core
+namespace WallpaperGenerator.App.Core
 {
     public class FormulaGoodnessAnalyzer
     {

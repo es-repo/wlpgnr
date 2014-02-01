@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace WallpaperGenerator.UI.Windows.MainWindowControls
+namespace WallpaperGenerator.App.Windows.MainWindowControls
 {
     public class StatusPanel : StackPanel
     {

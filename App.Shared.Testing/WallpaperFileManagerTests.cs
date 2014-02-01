@@ -1,11 +1,11 @@
 ﻿using System;
 using System.IO;
 using MbUnit.Framework;
-using WallpaperGenerator.UI.Core;
-using WallpaperGenerator.UI.Core.Testing;
+using WallpaperGenerator.App.Core;
+using WallpaperGenerator.App.Core.Testing;
 using WallpaperGenerator.Utilities;
 
-namespace WallpaperGenerator.UI.Shared.Testing
+namespace WallpaperGenerator.App.Shared.Testing
 {
     [TestFixture]
     public class WallpaperFileManagerTests

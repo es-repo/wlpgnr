@@ -1,10 +1,10 @@
 using System.IO;
-using WallpaperGenerator.FormulaRendering;
-using WallpaperGenerator.UI.Core;
-using WallpaperGenerator.Utilities;
 using Android.Graphics;
+using WallpaperGenerator.App.Core;
+using WallpaperGenerator.FormulaRendering;
+using WallpaperGenerator.Utilities;
 
-namespace WallpaperGenerator.UI.Android
+namespace WallpaperGenerator.App.Android
 {
     public class AndroidFormulaBitmap : FormulaBitmap
     {

@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using WallpaperGenerator.App.Core;
 using WallpaperGenerator.Formulas;
-using WallpaperGenerator.UI.Core;
 using WallpaperGenerator.Utilities;
 using WallpaperGenerator.Utilities.ProgressReporting;
 using Size = WallpaperGenerator.Utilities.Size;
 
-namespace WallpaperGenerator.UI.Windows
+namespace WallpaperGenerator.App.Windows
 {
     public class WallpaperGeneratorApplication : Application
     {        
@@ -61,7 +61,7 @@ namespace WallpaperGenerator.UI.Windows
         public WallpaperGeneratorApplication()
         {
             _workflow = new FormulaRenderWorkflow(new FormulaRenderArgumentsGenerationParams { PredefinedFormulaRenderingArgumentsEnabled = false },
-                new Size(3600, 3600), s => new WindowsFormulaBitmap(s));
+                new Size(400, 400), s => new WindowsFormulaBitmap(s));
             _wallpaperFileManager = new WindowsWallpaperFileManager();
             _mainWindow = new MainWindow { WindowState = WindowState.Maximized };
             _mainWindow.ControlPanel.LoadState(_workflow.GenerationParams);

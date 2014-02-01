@@ -2,11 +2,11 @@
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using WallpaperGenerator.App.Core;
 using WallpaperGenerator.FormulaRendering;
-using WallpaperGenerator.UI.Core;
 using Size = WallpaperGenerator.Utilities.Size;
 
-namespace WallpaperGenerator.UI.Windows
+namespace WallpaperGenerator.App.Windows
 {
     public class WindowsFormulaBitmap : FormulaBitmap
     {

@@ -1,6 +1,6 @@
 ﻿using WallpaperGenerator.Utilities;
 
-namespace WallpaperGenerator.UI.Core.Testing
+namespace WallpaperGenerator.App.Core.Testing
 {
     public class FormulaBitmapMock : FormulaBitmap
     {

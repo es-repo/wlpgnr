@@ -2,12 +2,12 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using WallpaperGenerator.App.Core;
+using WallpaperGenerator.App.Windows.MainWindowControls.ControlPanelControls;
 using WallpaperGenerator.Formulas.Operators;
-using WallpaperGenerator.UI.Core;
-using WallpaperGenerator.UI.Windows.MainWindowControls.ControlPanelControls;
 using WallpaperGenerator.Utilities;
 
-namespace WallpaperGenerator.UI.Windows.MainWindowControls
+namespace WallpaperGenerator.App.Windows.MainWindowControls
 {
     public class ControlPanel : StackPanel
     {

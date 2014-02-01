@@ -2,15 +2,18 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
+    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FF63B32B-BF74-441F-AFB8-30FEEF2471F9}</ProjectGuid>
+    <ProjectGuid>{ABB75337-FCC9-4569-9B7E-AD338134726E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WallpaperGenerator.UI.Shared.Testing</RootNamespace>
-    <AssemblyName>WallpaperGenerator.UI.Shared.Testing</AssemblyName>
+    <RootNamespace>WallpaperGenerator.App.Core</RootNamespace>
+    <AssemblyName>WallpaperGenerator.App.Core</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile78</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,49 +33,31 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Gallio, Version=3.4.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\MbUnit\Gallio.dll</HintPath>
-    </Reference>
-    <Reference Include="MbUnit, Version=3.4.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\MbUnit\MbUnit.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WallpaperFileManagerTests.cs" />
-  </ItemGroup>
-  <ItemGroup>
+    <!-- A reference to the entire .NET Framework is automatically included -->
     <ProjectReference Include="..\FormulaRendering\FormulaRendering.csproj">
       <Project>{C4DD7AAC-ACFB-45CA-B1B3-7BEF7714DEB0}</Project>
       <Name>FormulaRendering</Name>
     </ProjectReference>
-    <ProjectReference Include="..\UI.Core.Testing\UI.Core.Testing.csproj">
-      <Project>{B5DCACFF-2CB1-49C9-9CDA-FD1E1D7FD022}</Project>
-      <Name>UI.Core.Testing</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\UI.Shared\UI.Shared.csproj">
-      <Project>{35E8B1AD-1304-47C9-9A9D-4AB7ECE5F21D}</Project>
-      <Name>UI.Shared</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\UI.Core\UI.Core.csproj">
-      <Project>{ABB75337-FCC9-4569-9B7E-AD338134726E}</Project>
-      <Name>UI.Core</Name>
+    <ProjectReference Include="..\Formulas\Formulas.csproj">
+      <Project>{190058E2-F017-4D78-B076-CB6AC313246D}</Project>
+      <Name>Formulas</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{7D4A8B31-9E0B-4C8A-914B-E469D622F21C}</Project>
       <Name>Utilities</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="FormulaBitmap.cs" />
+    <Compile Include="FormulaGenerationArguments.cs" />
+    <Compile Include="FormulaGoodnessAnalyzer.cs" />
+    <Compile Include="FormulaRenderArgumentsGenerationParams.cs" />
+    <Compile Include="FormulaRenderArguments.cs" />
+    <Compile Include="FormulaRenderWorkflow.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WorkflowRenderResult.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

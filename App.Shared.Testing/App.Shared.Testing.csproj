@@ -2,18 +2,15 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{ABB75337-FCC9-4569-9B7E-AD338134726E}</ProjectGuid>
+    <ProjectGuid>{FF63B32B-BF74-441F-AFB8-30FEEF2471F9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WallpaperGenerator.UI.Core</RootNamespace>
-    <AssemblyName>WallpaperGenerator.UI.Core</AssemblyName>
+    <RootNamespace>WallpaperGenerator.App.Shared.Testing</RootNamespace>
+    <AssemblyName>WallpaperGenerator.App.Shared.Testing</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Profile78</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,31 +30,49 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .NET Framework is automatically included -->
+    <Reference Include="Gallio, Version=3.4.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\MbUnit\Gallio.dll</HintPath>
+    </Reference>
+    <Reference Include="MbUnit, Version=3.4.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\MbUnit\MbUnit.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WallpaperFileManagerTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\FormulaRendering\FormulaRendering.csproj">
       <Project>{C4DD7AAC-ACFB-45CA-B1B3-7BEF7714DEB0}</Project>
       <Name>FormulaRendering</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Formulas\Formulas.csproj">
-      <Project>{190058E2-F017-4D78-B076-CB6AC313246D}</Project>
-      <Name>Formulas</Name>
+    <ProjectReference Include="..\App.Core.Testing\App.Core.Testing.csproj">
+      <Project>{B5DCACFF-2CB1-49C9-9CDA-FD1E1D7FD022}</Project>
+      <Name>App.Core.Testing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\App.Shared\App.Shared.csproj">
+      <Project>{35E8B1AD-1304-47C9-9A9D-4AB7ECE5F21D}</Project>
+      <Name>App.Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\App.Core\App.Core.csproj">
+      <Project>{ABB75337-FCC9-4569-9B7E-AD338134726E}</Project>
+      <Name>App.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{7D4A8B31-9E0B-4C8A-914B-E469D622F21C}</Project>
       <Name>Utilities</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="FormulaBitmap.cs" />
-    <Compile Include="FormulaGenerationArguments.cs" />
-    <Compile Include="FormulaGoodnessAnalyzer.cs" />
-    <Compile Include="FormulaRenderArgumentsGenerationParams.cs" />
-    <Compile Include="FormulaRenderArguments.cs" />
-    <Compile Include="FormulaRenderWorkflow.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WorkflowRenderResult.cs" />
-  </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

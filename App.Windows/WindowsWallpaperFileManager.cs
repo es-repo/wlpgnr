@@ -1,6 +1,6 @@
-﻿using WallpaperGenerator.UI.Shared;
+﻿using WallpaperGenerator.App.Shared;
 
-namespace WallpaperGenerator.UI.Windows
+namespace WallpaperGenerator.App.Windows
 {
     public class WindowsWallpaperFileManager : WallpaperFileManager
     {

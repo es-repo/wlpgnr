@@ -1,8 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using WallpaperGenerator.UI.Windows.MainWindowControls;
+using WallpaperGenerator.App.Windows.MainWindowControls;
 
-namespace WallpaperGenerator.UI.Windows
+namespace WallpaperGenerator.App.Windows
 {
     public class MainWindow : Window
     {
