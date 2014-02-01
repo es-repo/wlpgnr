@@ -8,7 +8,7 @@ namespace WallpaperGenerator.FormulaRendering
 {
     public static class FormulaRender
     {
-        private static void EvaluateFormula(FormulaTree formulaTree, RangesForFormula2DProjection rangesForFormula2DProjection, double[] evaluatedValuesBuffer)
+        private static void EvaluateFormula(FormulaTree formulaTree, RangesForFormula2DProjection rangesForFormula2DProjection, float[] evaluatedValuesBuffer)
         {
             Stopwatch evaluationStopwatch = new Stopwatch();
             evaluationStopwatch.Start();
@@ -82,7 +82,7 @@ namespace WallpaperGenerator.FormulaRendering
             }
         }
 
-        private static void MapToColorChannel(ColorChannelTransformation colorChannelTransformation, double[] values, double[] channelValuesBuffer, byte[] channelBuffer)
+        private static void MapToColorChannel(ColorChannelTransformation colorChannelTransformation, float[] values, float[] channelValuesBuffer, byte[] channelBuffer)
         {
             using (ProgressReporter.CreateScope())
             {
@@ -126,9 +126,9 @@ namespace WallpaperGenerator.FormulaRendering
                 for (int i = 0; i < channelBuffer.Length; i++)
                 {
                     if (channelValuesBuffer[i] < rangeStart)
-                        channelValuesBuffer[i] = rangeStart;
+                        channelValuesBuffer[i] = (float)rangeStart;
                     else if (channelValuesBuffer[i] > rangeEnd)
-                        channelValuesBuffer[i] = rangeEnd;
+                        channelValuesBuffer[i] = (float)rangeEnd;
 
                     channelBuffer[i] = (byte)((channelValuesBuffer[i] - rangeStart) * scale);
                 }
@@ -136,31 +136,32 @@ namespace WallpaperGenerator.FormulaRendering
             }
         }
 
-        private static void TransformChannelValues(double[] values, Func<double, double> channelTransformingFunction, double[] transformedValuesBuffer)
+        private static void TransformChannelValues(float[] values, Func<double, double> channelTransformingFunction, float[] transformedValuesBuffer)
         {
             if (transformedValuesBuffer.Length != values.Length)
                 throw new ArgumentException("Transformed values buffer size isn't equal to values array syze.", "transformedValuesBuffer");
 
             for (int i = 0; i < values.Length; i++)
             {
-                transformedValuesBuffer[i] = channelTransformingFunction(values[i]);
+                transformedValuesBuffer[i] = (float)channelTransformingFunction(values[i]);
             }
         }
 
-        private static void LimitValue(double[] values, double lowBound, double highBound)
+        private static void LimitValue(float[] values, double lowBound, double highBound)
         {
             for (int i = 0; i < values.Length; i++)
             {
                 if (values[i] > lowBound && values[i] < highBound)
                     continue;
 
-                values[i] = values[i] < lowBound
+                double v = values[i] < lowBound
                     ? lowBound
                     : values[i] > highBound
                         ? highBound
                         : double.IsNaN(values[i])
                             ? 0
                             : values[i];
+                values[i] = (float)v;
             }
         }
     }

@@ -6,35 +6,35 @@ namespace WallpaperGenerator.Utilities.Testing
     public class MathUtilitiesTests
     {
         [Test]
-        [Row(new double[] { 1 }, 1)]
-        [Row(new double[] { 1, 2, 3, 4, 5, 6 }, 3.5)]
-        [Row(new double[] { -1, 0, 1 }, 0)]
-        [Row(new double[] { 1, 2, 4, 5, 6 }, 3.6)]
-        public void TestMathExpectation(double[] values, double expectedMathExpectation)
+        [Row(new float[] { 1 }, 1)]
+        [Row(new float[] { 1, 2, 3, 4, 5, 6 }, 3.5)]
+        [Row(new float[] { -1, 0, 1 }, 0)]
+        [Row(new float[] { 1, 2, 4, 5, 6 }, 3.6)]
+        public void TestMathExpectation(float[] values, double expectedMathExpectation)
         {
             double mathExpectation = MathUtilities.MathExpectation(values);
             Assert.AreEqual(expectedMathExpectation, mathExpectation);
         }
 
         [Test]
-        [Row(new double[] { }, double.NaN)]
-        [Row(new double[] { 1 }, 0)]
-        [Row(new double[] { 1, 2, 3, 4, 5, 6 }, 3.5)]
-        [Row(new double[] { -1, 0, 1 }, 1)]
-        [Row(new double[] { 1, 2, 4, 5, 6 }, 4.3)]
-        public void TestVariance(double[] values, double expectedVariance)
+        [Row(new float[] { }, double.NaN)]
+        [Row(new float[] { 1 }, 0)]
+        [Row(new float[] { 1, 2, 3, 4, 5, 6 }, 3.5)]
+        [Row(new float[] { -1, 0, 1 }, 1)]
+        [Row(new float[] { 1, 2, 4, 5, 6 }, 4.3)]
+        public void TestVariance(float[] values, double expectedVariance)
         {
             double variance = MathUtilities.Variance(values);
             Assert.AreApproximatelyEqual(expectedVariance, variance, 0.00000001);
         }
 
         [Test]
-        [Row(new double[] { }, double.NaN)]
-        [Row(new double[] { 1 }, 0)]
-        [Row(new double[] { 1, 2, 3, 4, 5, 6 }, 1.870828693386971)]
-        [Row(new double[] { -1, 0, 1 }, 1)]
-        [Row(new double[] { 1, 2, 4, 5, 6 }, 2.073644135332772)]
-        public void TestStandardDeviation(double[] values, double expectedStandardDeviation)
+        [Row(new float[] { }, double.NaN)]
+        [Row(new float[] { 1 }, 0)]
+        [Row(new float[] { 1, 2, 3, 4, 5, 6 }, 1.870828693386971)]
+        [Row(new float[] { -1, 0, 1 }, 1)]
+        [Row(new float[] { 1, 2, 4, 5, 6 }, 2.073644135332772)]
+        public void TestStandardDeviation(float[] values, double expectedStandardDeviation)
         {
             double standardDeviation = MathUtilities.StandardDeviation(values);
             Assert.AreApproximatelyEqual(expectedStandardDeviation, standardDeviation, 0.00000001);

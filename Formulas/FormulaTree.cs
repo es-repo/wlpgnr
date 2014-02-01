@@ -57,7 +57,7 @@ namespace WallpaperGenerator.Formulas
                        .Distinct();
         }
 
-        public void EvaluateRangesIn2DProjection(Range[] ranges, int xCount, int yCount, double[] resultBuffer)
+        public void EvaluateRangesIn2DProjection(Range[] ranges, int xCount, int yCount, float[] resultBuffer)
         {
             if (resultBuffer.Length != xCount * yCount)
                 throw new ArgumentException("Result buffer size doesn't have appropriate size.", "resultBuffer");
@@ -78,7 +78,7 @@ namespace WallpaperGenerator.Formulas
 
                 for (int x = 0; x < xCount; x++)
                 {
-                    resultBuffer[r++] = Evaluate();
+                    resultBuffer[r++] = (float)Evaluate();
 
                     for (int i = 1; i < Variables.Length; i += 2)
                     {

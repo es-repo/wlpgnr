@@ -8,7 +8,7 @@ namespace WallpaperGenerator.UI.Core
     public class FormulaRenderArgumentsGenerationParams
     {
         public Bounds<int> DimensionCountBounds = new Bounds<int>(4, 15);
-        public Bounds<int> MinimalDepthBounds = new Bounds<int>(2, 2);
+        public Bounds<int> MinimalDepthBounds = new Bounds<int>(10, 13);
         public Bounds ConstantBounds = new Bounds(-10, 10);
         public Bounds ConstantProbabilityBounds = new Bounds(0, 1);
         public Bounds LeafProbabilityBounds = new Bounds(0, 0.3);

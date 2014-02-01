@@ -60,7 +60,7 @@ namespace WallpaperGenerator.Formulas.Testing
         public void TestEvaluateRangesIn2DProjection(string formula, double rangeXStart, double rangeXEnd,
             double rangeYStart, double rangeYEnd,
             double rangeZStart, double rangeZEnd,
-            int xCount, int yCount, double[] expectedResults)
+            int xCount, int yCount, float[] expectedResults)
         {
             FormulaTree formulaTree = FormulaTreeSerializer.Deserialize(formula);
             List<Range> ranges = new List<Range>();
@@ -73,7 +73,8 @@ namespace WallpaperGenerator.Formulas.Testing
             if (!rangeZStart.Equals(-1))
                 ranges.Add(new Range(rangeZStart, rangeZEnd));
 
-            double[] results = formulaTree.EvaluateRangesIn2DProjection(ranges.ToArray(), xCount, yCount).ToArray();
+            float[] results = new float[xCount * yCount];
+            formulaTree.EvaluateRangesIn2DProjection(ranges.ToArray(), xCount, yCount, results);
             Assert.AreElementsEqual(expectedResults, results);
         }
     }
