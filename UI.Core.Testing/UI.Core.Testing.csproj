@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormulaBitmapMock.cs" />
     <Compile Include="FormulaGenerationArgumentsTests.cs" />
     <Compile Include="FormulaRenderWorkflowTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

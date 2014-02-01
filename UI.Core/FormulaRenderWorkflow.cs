@@ -235,11 +235,6 @@ Sub Sqrt Sqrt Cos Sub Sub Sub Sum Cos Atan Ln Cos Sub x5 x0 Cos Atan Pow3 Cbrt S
                     _reevaluateValues = false;
                 }
 
-                //using (ProgressReporter.CreateScope(1 - renderProgressSpan - formulaGenerationrProgressSpan))
-                //{
-                    _bitmap.Update(_formulaRenderResult);
-                //}
-
                 stopwatch.Stop();
                 IsImageRendering = false;
                 return LastWorkflowRenderResult = new WorkflowRenderResult(FormulaRenderArguments, _formulaRenderResult, _bitmap, stopwatch.Elapsed);
