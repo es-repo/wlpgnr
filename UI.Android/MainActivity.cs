@@ -286,19 +286,20 @@ namespace WallpaperGenerator.UI.Android
                 }), TimeSpan.FromMilliseconds(100),
                 () => progressDialog.Progress = progressDialog.Max);
 
-            WorkflowRenderResult workflowRenderResult = benchmark 
+            WorkflowRenderResult result = benchmark 
                 ? await _workflow.BenchmarkAsync(renderingProgressObserver) 
                 : await _workflow.RenderFormulaAsync(generateNew, renderingProgressObserver);
 
-            _renderTimeTextView.Text = workflowRenderResult.ElapsedTime.ToString();
-            _imageView.SetImageBitmap((Bitmap)workflowRenderResult.Bitmap.PlatformBitmap);
+            result.Bitmap.Update(result.FormulaRenderResult);
+            _renderTimeTextView.Text = result.ElapsedTime.ToString();
+            _imageView.SetImageBitmap((Bitmap)result.Bitmap.PlatformBitmap);
             _horizontalScrollView.ScrollTo(_horizontalScrollView.Width / 2, 0);
             
             progressDialog.Dismiss();
 
             if (benchmark)
             {
-                AlertDialog dialog = CreateAlertDialog(workflowRenderResult.ElapsedTime.ToString("hh':'mm':'ss"));
+                AlertDialog dialog = CreateAlertDialog(result.ElapsedTime.ToString("hh':'mm':'ss"));
                 dialog.Show();
             }
         }
