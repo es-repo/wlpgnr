@@ -66,10 +66,10 @@ namespace WallpaperGenerator.UI.Core.Testing
         public void TestRenderFormula()
         {
             Assert.IsFalse(_workflow.IsImageReady);
-            FormulaRenderResult formulaRenderResult = _workflow.RenderFormula(true);
+            WorkflowRenderResult result = _workflow.RenderFormula(true);
             Assert.IsNotNull(_workflow.FormulaRenderArguments);
-            Assert.IsNotNull(formulaRenderResult.Image);
-            Assert.AreNotEqual(TimeSpan.Zero, formulaRenderResult.ElapsedTime);
+            Assert.IsNotNull(result.FormulaRenderResult);
+            Assert.AreNotEqual(TimeSpan.Zero, result.ElapsedTime);
         }
 
         [Test]

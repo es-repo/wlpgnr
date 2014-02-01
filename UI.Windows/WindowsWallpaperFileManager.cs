@@ -14,10 +14,10 @@ namespace WallpaperGenerator.UI.Windows
 
         protected override void WriteImageAsPng(FormulaRenderResult image, Stream stream)
         {
-            WriteableBitmap bitmap = image.ToBitmap();
-            PngBitmapEncoder encoder = new PngBitmapEncoder();
-            encoder.Frames.Add(BitmapFrame.Create(bitmap));
-            encoder.Save(stream);
+            //WriteableBitmap bitmap = image.ToBitmap();
+            //PngBitmapEncoder encoder = new PngBitmapEncoder();
+            //encoder.Frames.Add(BitmapFrame.Create(bitmap));
+            //encoder.Save(stream);
         }
     }
 }

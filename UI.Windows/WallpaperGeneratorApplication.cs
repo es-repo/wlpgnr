@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using WallpaperGenerator.Formulas;
 using WallpaperGenerator.UI.Core;
 using WallpaperGenerator.Utilities;
@@ -19,6 +21,8 @@ namespace WallpaperGenerator.UI.Windows
         private readonly FormulaRenderWorkflow _workflow;
         private readonly WindowsWallpaperFileManager _wallpaperFileManager;
         private readonly MainWindow _mainWindow;
+        private WriteableBitmap _bitmap;
+        private byte[] _pixelsBuffer;
         
         #endregion
 
@@ -33,6 +37,8 @@ namespace WallpaperGenerator.UI.Windows
                 if (args != null)
                 {
                     args.ImageSize = _mainWindow.ControlPanel.ImageSizeControl.Size;
+                    _bitmap = CreateBitmap(args.ImageSize);
+                    _pixelsBuffer = new byte[args.ImageSize.Width * args.ImageSize.Height * 4];
                 }
                 return args;
             }
@@ -59,11 +65,13 @@ namespace WallpaperGenerator.UI.Windows
 
         public WallpaperGeneratorApplication()
         {
-            _workflow = new FormulaRenderWorkflow(new FormulaRenderArgumentsGenerationParams { PredefinedFormulaRenderingArgumentsEnabled = false }, new Size(360, 360));
+            _workflow = new FormulaRenderWorkflow(new FormulaRenderArgumentsGenerationParams { PredefinedFormulaRenderingArgumentsEnabled = false }, new Size(3600, 3600));
             _wallpaperFileManager = new WindowsWallpaperFileManager();
             _mainWindow = new MainWindow { WindowState = WindowState.Maximized };
             _mainWindow.ControlPanel.LoadState(_workflow.GenerationParams);
             _mainWindow.ControlPanel.ImageSizeControl.Size = _workflow.ImageSize;
+            _bitmap = CreateBitmap(_workflow.ImageSize);
+            _pixelsBuffer = new byte[_workflow.ImageSize.Width * _workflow.ImageSize.Height * 4];
 
             _mainWindow.ControlPanel.GenerateFormulaButton.Click += async (s, a) =>
             {
@@ -104,6 +112,11 @@ namespace WallpaperGenerator.UI.Windows
             _mainWindow.ControlPanel.StartStopSmoothAnimationButton.Click += (s, a) => StartStopAnimation();
 
             _mainWindow.ControlPanel.SaveButton.Click += (s, a) => SaveFormulaImage();
+        }
+
+        private static WriteableBitmap CreateBitmap(Size size)
+        {
+            return new WriteableBitmap(size.Width, size.Height, 96, 96, PixelFormats.Bgra32, null);
         }
 
         private FormulaRenderArgumentsGenerationParams RandomizeFormulaRenderArgumentsGenerationParams(FormulaRenderArgumentsGenerationParams initParams)
@@ -198,7 +211,7 @@ namespace WallpaperGenerator.UI.Windows
 
             WorkflowRenderResult workflowRenderResult = await _workflow.RenderFormulaAsync(false, renderingProgressObserver);
 
-            _mainWindow.WallpaperImage.Source = workflowRenderResult.FormulaRenderResult.ToBitmap();
+            _mainWindow.WallpaperImage.Source = workflowRenderResult.FormulaRenderResult.WriteToBitmap(_bitmap, _pixelsBuffer);
 
             _mainWindow.StatusPanel.RenderedTime = workflowRenderResult.ElapsedTime;
             _mainWindow.Cursor = Cursors.Arrow;
