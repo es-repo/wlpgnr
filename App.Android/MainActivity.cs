@@ -9,7 +9,6 @@ using Android.OS;
 using Android.Utilities;
 using Android.Views;
 using Android.Widget;
-using Java.Interop;
 using WallpaperGenerator.App.Core;
 using WallpaperGenerator.Utilities;
 using WallpaperGenerator.Utilities.ProgressReporting;
@@ -48,11 +47,13 @@ namespace WallpaperGenerator.App.Android
             _formulaTextView = FindViewById<TextView>(Resource.Id.formulaTextView);
             _renderTimeTextView = FindViewById<TextView>(Resource.Id.renderTimeTextView);
             _imageView = FindViewById<ImageView>(Resource.Id.imageView);
+            TextView coresCountTextView = FindViewById<TextView>(Resource.Id.coresCountTextView);
 
             WallpaperManager wallpaperManager = WallpaperManager.GetInstance(this);
             Point wallpaperSize = wallpaperManager.GetDesiredSize(WindowManager.DefaultDisplay, Resources.Configuration);
             Size imageSize = new Size(wallpaperSize.X, wallpaperSize.Y);
             int coresCount = Java.Lang.Runtime.GetRuntime().AvailableProcessors();
+            coresCountTextView.Text = "cores: " + coresCount.ToInvariantString();
             _workflow = new FormulaRenderWorkflow(new FormulaRenderArgumentsGenerationParams(), imageSize, s => new AndroidFormulaBitmap(s), coresCount);
             
             if (_workflow.FormulaRenderArguments != null)

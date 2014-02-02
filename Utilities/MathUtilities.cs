@@ -45,5 +45,7 @@ namespace WallpaperGenerator.Utilities
             double sum = numbers.Sum();
             return numbers.Select(n => n/sum);
         }
+
+        //public static double Sum(double[] values, )
     }
 }

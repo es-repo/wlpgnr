@@ -38,6 +38,10 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
+                android:id="@+id/coresCountTextView"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+            <TextView
                 android:id="@+id/renderTimeTextView"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />

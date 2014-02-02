@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using WallpaperGenerator.Formulas;
 using WallpaperGenerator.Utilities;
@@ -22,21 +23,46 @@ namespace WallpaperGenerator.FormulaRendering
 
             if (threadsCount < 1)
                 threadsCount = 1;
-             
-            using (ProgressReporter.CreateScope(1))
+
+            const int progressSteps = 100;
+            using (ProgressReporter.CreateScope(progressSteps))
             {
+                int steps = 0;
+                double lastProgress = 0;
+                double progress = 0;
+                ProgressObserver progressObserver = new ProgressObserver(p => progress = p.Progress);
+                
                 Task[] tasks = new Task[threadsCount];
                 int yStepCount = yCount/threadsCount;
                 for (int i = 0; i < threadsCount; i++)
                 {
-                    FormulaTree ft = i == 0 ? formulaTree : FormulaTreeSerializer.Deserialize(FormulaTreeSerializer.Serialize(formulaTree));
-                    int yStart = i*yStepCount;
-
-                    tasks[i] = Task.Run(() => ft.EvaluateRangesIn2DProjection(rangesForFormula2DProjection.Ranges, xCount, yStart, yStepCount,
-                        evaluatedValuesBuffer));
+                    int li = i;
+                    tasks[i] = Task.Run(() =>
+                    {
+                        FormulaTree ft = li == 0 ? formulaTree : FormulaTreeSerializer.Deserialize(FormulaTreeSerializer.Serialize(formulaTree));
+                        int yStart = li * yStepCount;
+                        ProgressReporter.Subscribe(progressObserver);
+                        ft.EvaluateRangesIn2DProjection(rangesForFormula2DProjection.Ranges, xCount, yStart, yStepCount,
+                            evaluatedValuesBuffer);
+                    });
                 }
 
-                Task.WaitAll(tasks);
+                while (tasks.Any(t => t.Status != TaskStatus.RanToCompletion && t.Status != TaskStatus.Faulted && t.Status != TaskStatus.Canceled))
+                {
+                    Task.WaitAny(tasks, 100);
+                    double progressCopy = progress;
+                    int inc = (int)((progressCopy - lastProgress) * progressSteps);
+                    if (inc > 0)
+                    {
+                        for (int i = 0; i < inc && steps < progressSteps; i++)
+                        {
+                            ProgressReporter.Increase();
+                            steps++;
+                        }
+                        lastProgress = progress;
+                    }
+                }
+                Task.WaitAll();
             }
 
             //double x = 1;
