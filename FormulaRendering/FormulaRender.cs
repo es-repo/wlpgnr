@@ -9,7 +9,7 @@ namespace WallpaperGenerator.FormulaRendering
 {
     public static class FormulaRender
     {
-        private static void EvaluateFormula(FormulaTree formulaTree, RangesForFormula2DProjection rangesForFormula2DProjection, int numberOfThreads, float[] evaluatedValuesBuffer)
+        private static void EvaluateFormula(FormulaTree formulaTree, RangesForFormula2DProjection rangesForFormula2DProjection, int threadsCount, float[] evaluatedValuesBuffer)
         {
             Stopwatch evaluationStopwatch = new Stopwatch();
             evaluationStopwatch.Start();
@@ -20,25 +20,23 @@ namespace WallpaperGenerator.FormulaRendering
             int xCount = rangesForFormula2DProjection.AreaSize.Width;
             int yCount = rangesForFormula2DProjection.AreaSize.Height;
 
-            if (numberOfThreads < 1)
-                numberOfThreads = 1;
-
-            Task[] tasks = new Task[numberOfThreads];
-            int yStepCount = yCount/numberOfThreads;
-            for (int i = 0; i < numberOfThreads; i++)
+            if (threadsCount < 1)
+                threadsCount = 1;
+             
+            using (ProgressReporter.CreateScope(1))
             {
-                FormulaTree ft = i == 0 ? formulaTree : FormulaTreeSerializer.Deserialize(FormulaTreeSerializer.Serialize(formulaTree));
-                int yStart = i*yStepCount;
-                tasks[i] = Task.Run(() => ft.EvaluateRangesIn2DProjection(rangesForFormula2DProjection.Ranges, xCount, yStart, yStepCount, evaluatedValuesBuffer));
-            }
-
-            using (ProgressReporter.CreateScope(numberOfThreads))
-            {
-                foreach (var t in tasks)
+                Task[] tasks = new Task[threadsCount];
+                int yStepCount = yCount/threadsCount;
+                for (int i = 0; i < threadsCount; i++)
                 {
-                    t.GetAwaiter().GetResult();
-                    ProgressReporter.Increase();
+                    FormulaTree ft = i == 0 ? formulaTree : FormulaTreeSerializer.Deserialize(FormulaTreeSerializer.Serialize(formulaTree));
+                    int yStart = i*yStepCount;
+
+                    tasks[i] = Task.Run(() => ft.EvaluateRangesIn2DProjection(rangesForFormula2DProjection.Ranges, xCount, yStart, yStepCount,
+                        evaluatedValuesBuffer));
                 }
+
+                Task.WaitAll(tasks);
             }
 
             //double x = 1;
@@ -84,7 +82,7 @@ namespace WallpaperGenerator.FormulaRendering
         }
 
         public static void Render(FormulaTree formulaTree, RangesForFormula2DProjection rangesForFormula2DProjection, ColorTransformation colorTransformation,
-            bool reevaluateValues, int numberOfThreads, FormulaRenderResult formulaRenderResult)
+            bool reevaluateValues, int threadsCount, FormulaRenderResult formulaRenderResult)
         {
             using (ProgressReporter.CreateScope())
             {
@@ -94,7 +92,7 @@ namespace WallpaperGenerator.FormulaRendering
                     evaluationSpan = 0.93;
                     using (ProgressReporter.CreateScope(evaluationSpan))
                     {
-                        EvaluateFormula(formulaTree, rangesForFormula2DProjection, numberOfThreads, formulaRenderResult.EvaluatedValuesBuffer);
+                        EvaluateFormula(formulaTree, rangesForFormula2DProjection, threadsCount, formulaRenderResult.EvaluatedValuesBuffer);
                     }
                 }
 

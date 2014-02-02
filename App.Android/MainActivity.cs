@@ -52,7 +52,8 @@ namespace WallpaperGenerator.App.Android
             WallpaperManager wallpaperManager = WallpaperManager.GetInstance(this);
             Point wallpaperSize = wallpaperManager.GetDesiredSize(WindowManager.DefaultDisplay, Resources.Configuration);
             Size imageSize = new Size(wallpaperSize.X, wallpaperSize.Y);
-            _workflow = new FormulaRenderWorkflow(new FormulaRenderArgumentsGenerationParams(), imageSize, s => new AndroidFormulaBitmap(s), Java.Lang.Runtime.GetRuntime().AvailableProcessors());
+            int coresCount = Java.Lang.Runtime.GetRuntime().AvailableProcessors();
+            _workflow = new FormulaRenderWorkflow(new FormulaRenderArgumentsGenerationParams(), imageSize, s => new AndroidFormulaBitmap(s), coresCount);
             
             if (_workflow.FormulaRenderArguments != null)
                 _formulaTextView.Text = _workflow.FormulaRenderArguments.ToString();

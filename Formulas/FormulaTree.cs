@@ -65,7 +65,7 @@ namespace WallpaperGenerator.Formulas
             }
 
             int r = xCount * yStart;
-            //using (ProgressReporter.CreateScope(yCount))
+            using (ProgressReporter.CreateScope(yCount))
             for (int y = yStart; y < yCount + yStart; y++)
             {
                 for (int i = 1; i < Variables.Length; i += 2)
@@ -87,7 +87,7 @@ namespace WallpaperGenerator.Formulas
                 {
                     Variables[i].Value += ranges[i].Step;
                 }
-                //ProgressReporter.Increase();
+                ProgressReporter.Increase();
             }
         }
 
