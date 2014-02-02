@@ -6,13 +6,31 @@ namespace WallpaperGenerator.Utilities.Testing
     public class MathUtilitiesTests
     {
         [Test]
+        [Row(new float[] { }, 0, 0, 0)]
+        [Row(new float[] { }, 2, 0, 0)]
+        [Row(new float[] { 2 }, 0, 2, 4)]
+        [Row(new float[] { 2 }, 2, 2, 4)]
+        [Row(new float[] { 1, 2 }, 2, 3, 5)]
+        [Row(new float[] { 1, 2, 3 }, 2, 6, 14)]
+        [Row(new float[] { 1, 2, 3, 4 }, 2, 10, 30)]
+        [Row(new float[] { 1, 2, 3, 4 }, 3, 10, 30)]
+        public void TestSum(float[] values, int threadsCount, double expectedSum, double expectedSumOfSquares)
+        {
+            float sum = MathUtilities.Sum(values, null, threadsCount);
+            Assert.AreEqual(expectedSum, sum);
+
+            float sumOfSquares = MathUtilities.Sum(values, v => v * v, threadsCount);
+            Assert.AreEqual(expectedSumOfSquares, sumOfSquares);
+        }
+
+        [Test]
         [Row(new float[] { 1 }, 1)]
         [Row(new float[] { 1, 2, 3, 4, 5, 6 }, 3.5)]
         [Row(new float[] { -1, 0, 1 }, 0)]
         [Row(new float[] { 1, 2, 4, 5, 6 }, 3.6)]
         public void TestMathExpectation(float[] values, double expectedMathExpectation)
         {
-            double mathExpectation = MathUtilities.MathExpectation(values);
+            double mathExpectation = MathUtilities.MathExpectation(values, 1);
             Assert.AreEqual(expectedMathExpectation, mathExpectation);
         }
 
@@ -24,7 +42,7 @@ namespace WallpaperGenerator.Utilities.Testing
         [Row(new float[] { 1, 2, 4, 5, 6 }, 4.3)]
         public void TestVariance(float[] values, double expectedVariance)
         {
-            double variance = MathUtilities.Variance(values);
+            double variance = MathUtilities.Variance(values, 1);
             Assert.AreApproximatelyEqual(expectedVariance, variance, 0.00000001);
         }
 
@@ -36,7 +54,7 @@ namespace WallpaperGenerator.Utilities.Testing
         [Row(new float[] { 1, 2, 4, 5, 6 }, 2.073644135332772)]
         public void TestStandardDeviation(float[] values, double expectedStandardDeviation)
         {
-            double standardDeviation = MathUtilities.StandardDeviation(values);
+            double standardDeviation = MathUtilities.StandardDeviation(values, 1);
             Assert.AreApproximatelyEqual(expectedStandardDeviation, standardDeviation, 0.00000001);
         }
 

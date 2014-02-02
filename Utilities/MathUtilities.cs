@@ -1,31 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace WallpaperGenerator.Utilities
 {
     public static class MathUtilities
     {
-        public static double MathExpectation(float[] values) 
+        public static double MathExpectation(float[] values, int threadsCount) 
         {
-            double sum = values.Sum();
+            double sum = Sum(values, null, threadsCount);
             return sum / values.Length;
         }
 
-        public static double Variance(float[] values)
+        public static double Variance(float[] values, int threadsCount)
         {
             if (values.Length == 1)
                 return 0;
 
-            double sum = values.Sum();
+            double sum = Sum(values, null, threadsCount); 
             double sumOfSquares = values.Sum(t => t * t);
 
             return (sumOfSquares - sum * sum / values.Length) / (values.Length - 1);
         }
 
-        public static double StandardDeviation(float[] values)
+        public static double StandardDeviation(float[] values, int threadsCount)
         {
-            double varianse = Variance(values);
+            double varianse = Variance(values, threadsCount);
             return Math.Sqrt(varianse);
         }
 
@@ -46,6 +47,40 @@ namespace WallpaperGenerator.Utilities
             return numbers.Select(n => n/sum);
         }
 
-        //public static double Sum(double[] values, )
+        public static float Sum(float[] values, Func<float, float> selector, int threadsCount)
+        {
+            if (threadsCount < 2 || values.Length <= threadsCount)
+                return selector == null ? values.Sum() : values.Sum(selector);
+
+            Task<float>[] tasks = new Task<float>[threadsCount];
+            int chunk = (int)Math.Ceiling((double)values.Length/threadsCount);
+            for (int i = 0; i < threadsCount; i++)
+            {
+                int start = i*chunk;
+                int end = Math.Min(start + chunk, values.Length);
+                tasks[i] = Task.Run(() => Sum(values, selector, start, end));
+            }
+
+            return tasks.Sum(t => t.Result);
+        }
+
+        private static float Sum(float[] values, Func<float, float> selector, int start, int end)
+        {
+            if (selector == null)
+                return Sum(values, start, end);
+
+            float s = 0;
+            for (int i = start; i < end; i++)
+                s += selector(values[i]);
+            return s;
+        }
+
+        private static float Sum(float[] values, int start, int end)
+        {
+            float s = 0;
+            for (int i = start; i < end; i++)
+                s += values[i];
+            return s;
+        }
     }
 }

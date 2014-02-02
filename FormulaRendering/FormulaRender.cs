@@ -93,16 +93,16 @@ namespace WallpaperGenerator.FormulaRendering
             evaluationStopwatch.Stop();
         }
 
-        private static void Render(ColorTransformation colorTransformation, FormulaRenderResult formulaRenderResult)
+        private static void Render(ColorTransformation colorTransformation, FormulaRenderResult formulaRenderResult, int threadsCount)
         {
             Stopwatch mapToRgbStopwatch = new Stopwatch();
             mapToRgbStopwatch.Start();
             ProgressReporter.CreateScope(3);
-            MapToColorChannel(colorTransformation.RedChannelTransformation, formulaRenderResult.EvaluatedValuesBuffer, formulaRenderResult.ColorTranformedValuesBuffer, formulaRenderResult.RedChannel);
+            MapToColorChannel(colorTransformation.RedChannelTransformation, formulaRenderResult.EvaluatedValuesBuffer, threadsCount, formulaRenderResult.ColorTranformedValuesBuffer, formulaRenderResult.RedChannel);
             ProgressReporter.Increase();
-            MapToColorChannel(colorTransformation.GreenChannelTransformation, formulaRenderResult.EvaluatedValuesBuffer, formulaRenderResult.ColorTranformedValuesBuffer, formulaRenderResult.GreenChannel);
+            MapToColorChannel(colorTransformation.GreenChannelTransformation, formulaRenderResult.EvaluatedValuesBuffer, threadsCount, formulaRenderResult.ColorTranformedValuesBuffer, formulaRenderResult.GreenChannel);
             ProgressReporter.Increase();
-            MapToColorChannel(colorTransformation.BlueChannelTransformation, formulaRenderResult.EvaluatedValuesBuffer, formulaRenderResult.ColorTranformedValuesBuffer, formulaRenderResult.BlueChannel);
+            MapToColorChannel(colorTransformation.BlueChannelTransformation, formulaRenderResult.EvaluatedValuesBuffer, threadsCount, formulaRenderResult.ColorTranformedValuesBuffer, formulaRenderResult.BlueChannel);
             ProgressReporter.Complete();
             mapToRgbStopwatch.Stop();
         }
@@ -124,12 +124,12 @@ namespace WallpaperGenerator.FormulaRendering
 
                 using (ProgressReporter.CreateScope(1 - evaluationSpan))
                 {
-                    Render(colorTransformation, formulaRenderResult);
+                    Render(colorTransformation, formulaRenderResult, threadsCount);
                 }
             }
         }
 
-        private static void MapToColorChannel(ColorChannelTransformation colorChannelTransformation, float[] values, float[] channelValuesBuffer, byte[] channelBuffer)
+        private static void MapToColorChannel(ColorChannelTransformation colorChannelTransformation, float[] values, int threadsCount, float[] channelValuesBuffer, byte[] channelBuffer)
         {
             using (ProgressReporter.CreateScope())
             {
@@ -145,11 +145,11 @@ namespace WallpaperGenerator.FormulaRendering
                 ProgressReporter.Complete();
 
                 ProgressReporter.CreateScope(0.21);
-                double mathExpectation = MathUtilities.MathExpectation(channelValuesBuffer);
+                double mathExpectation = MathUtilities.MathExpectation(channelValuesBuffer, threadsCount);
                 ProgressReporter.Complete();
 
                 ProgressReporter.CreateScope(0.48);
-                double standardDeviation = MathUtilities.StandardDeviation(channelValuesBuffer);
+                double standardDeviation = MathUtilities.StandardDeviation(channelValuesBuffer, threadsCount);
                 ProgressReporter.Complete();
 
                 ProgressReporter.CreateScope(0.09);
