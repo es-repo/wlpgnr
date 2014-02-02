@@ -51,22 +51,22 @@
         <Button
             android:id="@+id/generateButton"
             android:text="@string/Generate"
-            android:drawableTop="@android:drawable/ic_menu_more"
+            android:drawableTop="@drawable/ic_action_generate"
             style="@style/ToolBarButton" />
         <Button
             android:id="@+id/changeColorsButton"
             android:text="@string/ChangeColors"
-            android:drawableTop="@android:drawable/ic_menu_edit"
+            android:drawableTop="@drawable/ic_action_brush"
             style="@style/ToolBarButton" />
         <Button
             android:id="@+id/transformButton"
             android:text="@string/Transform"
-            android:drawableTop="@android:drawable/ic_menu_crop"
+            android:drawableTop="@drawable/ic_action_transform"
             style="@style/ToolBarButton" />
         <Button
             android:id="@+id/setAsWallpaperButton"
             android:text="@string/SetAsWallpaper"
-            android:drawableTop="@android:drawable/ic_menu_gallery"
+            android:drawableTop="@drawable/ic_action_wallpaper"
             style="@style/ToolBarButton" />
     </LinearLayout>
 </RelativeLayout>

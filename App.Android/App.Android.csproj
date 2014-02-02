@@ -46,7 +46,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
-    <AndroidLinkMode>Full</AndroidLinkMode>
+    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
     <AndroidLinkSkip />
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
     <BundleAssemblies>False</BundleAssemblies>
@@ -90,6 +90,22 @@
     <AndroidResource Include="Resources\Drawable-xxxhdpi\ic_launcher.png" />
     <AndroidResource Include="Resources\Drawable-hdpi\ic_launcher.png" />
     <AndroidResource Include="Resources\Drawable-mdpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\Drawable-hdpi\ic_action_generate.png" />
+    <AndroidResource Include="Resources\Drawable-mdpi\ic_action_generate.png" />
+    <AndroidResource Include="Resources\Drawable-xhdpi\ic_action_generate.png" />
+    <AndroidResource Include="Resources\Drawable-xxhdpi\ic_action_generate.png" />
+    <AndroidResource Include="Resources\Drawable-hdpi\ic_action_brush.png" />
+    <AndroidResource Include="Resources\Drawable-mdpi\ic_action_brush.png" />
+    <AndroidResource Include="Resources\Drawable-xhdpi\ic_action_brush.png" />
+    <AndroidResource Include="Resources\Drawable-xxhdpi\ic_action_brush.png" />
+    <AndroidResource Include="Resources\Drawable-hdpi\ic_action_transform.png" />
+    <AndroidResource Include="Resources\Drawable-mdpi\ic_action_transform.png" />
+    <AndroidResource Include="Resources\Drawable-xhdpi\ic_action_transform.png" />
+    <AndroidResource Include="Resources\Drawable-xxhdpi\ic_action_transform.png" />
+    <AndroidResource Include="Resources\Drawable-hdpi\ic_action_wallpaper.png" />
+    <AndroidResource Include="Resources\Drawable-mdpi\ic_action_wallpaper.png" />
+    <AndroidResource Include="Resources\Drawable-xhdpi\ic_action_wallpaper.png" />
+    <AndroidResource Include="Resources\Drawable-xxhdpi\ic_action_wallpaper.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\" />
