@@ -11,6 +11,7 @@ namespace WallpaperGenerator.App.Core
     public class FormulaRenderWorkflow
     {
         private readonly Random _random = new Random();
+        private readonly int _numberOfCores;
         private readonly FormulaGoodnessAnalyzer _formulaGoodnessAnalyzer;
         private Size _imageSize;
         private FormulaRenderArguments _formulaRenderArguments;
@@ -62,18 +63,19 @@ namespace WallpaperGenerator.App.Core
 
         public bool IsImageRendering { get; private set; }
 
-        public FormulaRenderWorkflow(FormulaRenderArgumentsGenerationParams generationParams, Size imageSize, Func<Size, FormulaBitmap> createFormulaBitmap)
-            : this(generationParams, imageSize, new FormulaGoodnessAnalyzer(generationParams.DimensionCountBounds.Low), createFormulaBitmap, new Random())
+        public FormulaRenderWorkflow(FormulaRenderArgumentsGenerationParams generationParams, Size imageSize, Func<Size, FormulaBitmap> createFormulaBitmap, int numberOfCores)
+            : this(generationParams, imageSize, new FormulaGoodnessAnalyzer(generationParams.DimensionCountBounds.Low), createFormulaBitmap, numberOfCores, new Random())
         {
         }
 
-        public FormulaRenderWorkflow(FormulaRenderArgumentsGenerationParams generationParams, Size imageSize, FormulaGoodnessAnalyzer formulaGoodnessAnalyzer, 
-            Func<Size, FormulaBitmap> createFormulaBitmap, Random random)
+        public FormulaRenderWorkflow(FormulaRenderArgumentsGenerationParams generationParams, Size imageSize, FormulaGoodnessAnalyzer formulaGoodnessAnalyzer,
+            Func<Size, FormulaBitmap> createFormulaBitmap, int numberOfCores, Random random)
         {
             GenerationParams = generationParams;
             _formulaGoodnessAnalyzer = formulaGoodnessAnalyzer;
             _createFormulaBitmap = createFormulaBitmap;
             _random = random;
+            _numberOfCores = numberOfCores;
             _reevaluateValues = true;
             ImageSize = imageSize;
         }
@@ -231,7 +233,7 @@ Sub Sqrt Sqrt Cos Sub Sub Sub Sum Cos Atan Ln Cos Sub x5 x0 Cos Atan Pow3 Cbrt S
 
                 using (ProgressReporter.CreateScope(1 - formulaGenerationrProgressSpan))
                 {
-                    FormulaRender.Render(FormulaRenderArguments.FormulaTree, FormulaRenderArguments.Ranges, FormulaRenderArguments.ColorTransformation, _reevaluateValues, _formulaRenderResult);
+                    FormulaRender.Render(FormulaRenderArguments.FormulaTree, FormulaRenderArguments.Ranges, FormulaRenderArguments.ColorTransformation, _reevaluateValues, _numberOfCores, _formulaRenderResult);
                     _reevaluateValues = false;
                 }
 

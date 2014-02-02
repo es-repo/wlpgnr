@@ -74,7 +74,7 @@ namespace WallpaperGenerator.Formulas.Testing
                 ranges.Add(new Range(rangeZStart, rangeZEnd));
 
             float[] results = new float[xCount * yCount];
-            formulaTree.EvaluateRangesIn2DProjection(ranges.ToArray(), xCount, yCount, results);
+            formulaTree.EvaluateRangesIn2DProjection(ranges.ToArray(), xCount, 0, yCount, results);
             Assert.AreElementsEqual(expectedResults, results);
         }
     }
