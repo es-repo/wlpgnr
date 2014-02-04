@@ -33,8 +33,8 @@ namespace WallpaperGenerator.App.Core
             {OperatorsLibrary.Ln, new Bounds(0, 0.5)},
             {OperatorsLibrary.Sqrt, new Bounds(0, 1)},
             {OperatorsLibrary.Cbrt, new Bounds(0, 1)},
-            //{OperatorsLibrary.Pow2, new Bounds(0, 0.1)},
-            //{OperatorsLibrary.Pow3, new Bounds(0, 0.1)},
+            {OperatorsLibrary.Pow2, new Bounds(0, 0.3)},
+            {OperatorsLibrary.Pow3, new Bounds(0, 0.3)},
         };
 
         public Operator[] ObligatoryOperators = {OperatorsLibrary.Sin, OperatorsLibrary.Sum};
