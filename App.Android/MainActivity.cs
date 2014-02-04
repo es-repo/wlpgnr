@@ -22,6 +22,7 @@ namespace WallpaperGenerator.App.Android
         private Button _changeColorsButton;
         private Button _transformButton;
         private Button _setAsWallpaperButton;
+        private LinearLayout _technicalInfoLayout;
         private TextView _formulaTextView;
         private TextView _renderTimeTextView;
         private HorizontalScrollView _horizontalScrollView;
@@ -49,13 +50,14 @@ namespace WallpaperGenerator.App.Android
             _imageView = FindViewById<ImageView>(Resource.Id.imageView);
             TextView coresCountTextView = FindViewById<TextView>(Resource.Id.coresCountTextView);
             TextView sizeTextView = FindViewById<TextView>(Resource.Id.sizeTextView);
+            _technicalInfoLayout = FindViewById<LinearLayout>(Resource.Id.technicalInfoLayout);
 
             WallpaperManager wallpaperManager = WallpaperManager.GetInstance(this);
             Point wallpaperSize = wallpaperManager.GetDesiredSize(WindowManager.DefaultDisplay, Resources.Configuration);
             Size imageSize = new Size(wallpaperSize.X, wallpaperSize.Y);
             int coresCount = Java.Lang.Runtime.GetRuntime().AvailableProcessors();
-            coresCountTextView.Text = "cores: " + coresCount.ToInvariantString();
-            sizeTextView.Text = "size: " + imageSize.Width + "x" + imageSize.Height;
+            coresCountTextView.Text = "available cores: " + coresCount.ToInvariantString();
+            sizeTextView.Text = "image size: " + imageSize.Width + "x" + imageSize.Height;
             _workflow = new FormulaRenderWorkflow(new FormulaRenderArgumentsGenerationParams(), imageSize, s => new AndroidFormulaBitmap(s), coresCount);
             
             if (_workflow.FormulaRenderArguments != null)
@@ -122,6 +124,10 @@ namespace WallpaperGenerator.App.Android
 
                 case Resource.Id.rateAppMenuItem:
                     OnRateAppMenuItemSelected();
+                    return true;
+
+                case Resource.Id.displayTechnicalInfoMenuItem:
+                    _technicalInfoLayout.Visibility = _technicalInfoLayout.Visibility == ViewStates.Gone ? ViewStates.Visible : ViewStates.Gone;
                     return true;
 
                 default:
@@ -295,7 +301,7 @@ namespace WallpaperGenerator.App.Android
                 : await _workflow.RenderFormulaAsync(generateNew, renderingProgressObserver);
 
             result.Bitmap.Update(result.FormulaRenderResult);
-            _renderTimeTextView.Text = result.ElapsedTime.ToString();
+            _renderTimeTextView.Text = "rendering time: " + result.ElapsedTime;
             _imageView.SetImageBitmap((Bitmap)result.Bitmap.PlatformBitmap);
             _horizontalScrollView.ScrollTo(_horizontalScrollView.Width / 2, 0);
             

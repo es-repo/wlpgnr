@@ -98,14 +98,14 @@
     <AndroidResource Include="Resources\Drawable-mdpi\ic_action_brush.png" />
     <AndroidResource Include="Resources\Drawable-xhdpi\ic_action_brush.png" />
     <AndroidResource Include="Resources\Drawable-xxhdpi\ic_action_brush.png" />
-    <AndroidResource Include="Resources\Drawable-hdpi\ic_action_transform.png" />
-    <AndroidResource Include="Resources\Drawable-mdpi\ic_action_transform.png" />
-    <AndroidResource Include="Resources\Drawable-xhdpi\ic_action_transform.png" />
-    <AndroidResource Include="Resources\Drawable-xxhdpi\ic_action_transform.png" />
     <AndroidResource Include="Resources\Drawable-hdpi\ic_action_wallpaper.png" />
     <AndroidResource Include="Resources\Drawable-mdpi\ic_action_wallpaper.png" />
     <AndroidResource Include="Resources\Drawable-xhdpi\ic_action_wallpaper.png" />
     <AndroidResource Include="Resources\Drawable-xxhdpi\ic_action_wallpaper.png" />
+    <AndroidResource Include="Resources\Drawable-hdpi\ic_action_transform.png" />
+    <AndroidResource Include="Resources\Drawable-mdpi\ic_action_transform.png" />
+    <AndroidResource Include="Resources\Drawable-xhdpi\ic_action_transform.png" />
+    <AndroidResource Include="Resources\Drawable-xxhdpi\ic_action_transform.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\" />

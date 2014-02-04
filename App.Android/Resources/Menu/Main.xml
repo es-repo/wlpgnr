@@ -23,6 +23,10 @@
     android:showAsAction="withText"
     android:title="@string/Benchmark"/>
   <item
+    android:id="@+id/displayTechnicalInfoMenuItem"
+    android:showAsAction="withText"
+    android:title="@string/DisplayTechnicalInfo"/>
+  <item
     android:id="@+id/rateAppMenuItem"
     android:showAsAction="withText"
     android:title="@string/RateApp"/>

@@ -34,9 +34,11 @@
             </HorizontalScrollView>
         </ScrollView>
         <LinearLayout
+            android:id="@+id/technicalInfoLayout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
             <TextView
                 android:id="@+id/coresCountTextView"
                 android:layout_width="fill_parent"

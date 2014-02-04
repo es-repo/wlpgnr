@@ -110,14 +110,17 @@ namespace WallpaperGenerator.App.Android
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f080011
-			public const int benchmarkMenuItem = 2131230737;
+			// aapt resource value: 0x7f080012
+			public const int benchmarkMenuItem = 2131230738;
 			
-			// aapt resource value: 0x7f08000a
-			public const int changeColorsButton = 2131230730;
+			// aapt resource value: 0x7f08000b
+			public const int changeColorsButton = 2131230731;
 			
-			// aapt resource value: 0x7f080006
-			public const int coresCountTextView = 2131230726;
+			// aapt resource value: 0x7f080007
+			public const int coresCountTextView = 2131230727;
+			
+			// aapt resource value: 0x7f080013
+			public const int displayTechnicalInfoMenuItem = 2131230739;
 			
 			// aapt resource value: 0x7f080000
 			public const int errorScrollView = 2131230720;
@@ -125,14 +128,14 @@ namespace WallpaperGenerator.App.Android
 			// aapt resource value: 0x7f080001
 			public const int errorTextView = 2131230721;
 			
-			// aapt resource value: 0x7f080013
-			public const int feedbackMenuItem = 2131230739;
+			// aapt resource value: 0x7f080015
+			public const int feedbackMenuItem = 2131230741;
 			
 			// aapt resource value: 0x7f080005
 			public const int formulaTextView = 2131230725;
 			
-			// aapt resource value: 0x7f080009
-			public const int generateButton = 2131230729;
+			// aapt resource value: 0x7f08000a
+			public const int generateButton = 2131230730;
 			
 			// aapt resource value: 0x7f080003
 			public const int horizontalScrollView = 2131230723;
@@ -140,35 +143,38 @@ namespace WallpaperGenerator.App.Android
 			// aapt resource value: 0x7f080004
 			public const int imageView = 2131230724;
 			
+			// aapt resource value: 0x7f080011
+			public const int openGalleryMenuItem = 2131230737;
+			
+			// aapt resource value: 0x7f080014
+			public const int rateAppMenuItem = 2131230740;
+			
 			// aapt resource value: 0x7f080010
-			public const int openGalleryMenuItem = 2131230736;
+			public const int removeAdsMenuItem = 2131230736;
 			
-			// aapt resource value: 0x7f080012
-			public const int rateAppMenuItem = 2131230738;
+			// aapt resource value: 0x7f080009
+			public const int renderTimeTextView = 2131230729;
 			
-			// aapt resource value: 0x7f08000f
-			public const int removeAdsMenuItem = 2131230735;
-			
-			// aapt resource value: 0x7f080008
-			public const int renderTimeTextView = 2131230728;
-			
-			// aapt resource value: 0x7f08000d
-			public const int saveMenuItem = 2131230733;
+			// aapt resource value: 0x7f08000e
+			public const int saveMenuItem = 2131230734;
 			
 			// aapt resource value: 0x7f080002
 			public const int scrollView = 2131230722;
 			
+			// aapt resource value: 0x7f08000d
+			public const int setAsWallpaperButton = 2131230733;
+			
+			// aapt resource value: 0x7f08000f
+			public const int shareMenuItem = 2131230735;
+			
+			// aapt resource value: 0x7f080008
+			public const int sizeTextView = 2131230728;
+			
+			// aapt resource value: 0x7f080006
+			public const int technicalInfoLayout = 2131230726;
+			
 			// aapt resource value: 0x7f08000c
-			public const int setAsWallpaperButton = 2131230732;
-			
-			// aapt resource value: 0x7f08000e
-			public const int shareMenuItem = 2131230734;
-			
-			// aapt resource value: 0x7f080007
-			public const int sizeTextView = 2131230727;
-			
-			// aapt resource value: 0x7f08000b
-			public const int transformButton = 2131230731;
+			public const int transformButton = 2131230732;
 			
 			static Id()
 			{
@@ -224,8 +230,8 @@ namespace WallpaperGenerator.App.Android
 			// aapt resource value: 0x7f050007
 			public const int Back = 2131034119;
 			
-			// aapt resource value: 0x7f050017
-			public const int Benchmark = 2131034135;
+			// aapt resource value: 0x7f050018
+			public const int Benchmark = 2131034136;
 			
 			// aapt resource value: 0x7f050006
 			public const int ChangeColors = 2131034118;
@@ -233,20 +239,23 @@ namespace WallpaperGenerator.App.Android
 			// aapt resource value: 0x7f050001
 			public const int CommonErrorMessage = 2131034113;
 			
-			// aapt resource value: 0x7f050018
-			public const int ContactEmail = 2131034136;
+			// aapt resource value: 0x7f050019
+			public const int ContactEmail = 2131034137;
 			
 			// aapt resource value: 0x7f050000
 			public const int CrashReport = 2131034112;
 			
+			// aapt resource value: 0x7f05001b
+			public const int CrushReportEmail = 2131034139;
+			
+			// aapt resource value: 0x7f05000f
+			public const int DisplayTechnicalInfo = 2131034127;
+			
+			// aapt resource value: 0x7f050011
+			public const int Feedback = 2131034129;
+			
 			// aapt resource value: 0x7f05001a
-			public const int CrushReportEmail = 2131034138;
-			
-			// aapt resource value: 0x7f050010
-			public const int Feedback = 2131034128;
-			
-			// aapt resource value: 0x7f050019
-			public const int FeedbackSubject = 2131034137;
+			public const int FeedbackSubject = 2131034138;
 			
 			// aapt resource value: 0x7f050003
 			public const int Generate = 2131034115;
@@ -254,8 +263,8 @@ namespace WallpaperGenerator.App.Android
 			// aapt resource value: 0x7f05000c
 			public const int OpenGallery = 2131034124;
 			
-			// aapt resource value: 0x7f05000f
-			public const int RateApp = 2131034127;
+			// aapt resource value: 0x7f050010
+			public const int RateApp = 2131034128;
 			
 			// aapt resource value: 0x7f05000d
 			public const int RemoveAds = 2131034125;
@@ -266,8 +275,8 @@ namespace WallpaperGenerator.App.Android
 			// aapt resource value: 0x7f05000b
 			public const int Save = 2131034123;
 			
-			// aapt resource value: 0x7f050011
-			public const int SavingWallpaper = 2131034129;
+			// aapt resource value: 0x7f050012
+			public const int SavingWallpaper = 2131034130;
 			
 			// aapt resource value: 0x7f050008
 			public const int SetAsWallpaper = 2131034120;
@@ -281,23 +290,23 @@ namespace WallpaperGenerator.App.Android
 			// aapt resource value: 0x7f05000a
 			public const int Share = 2131034122;
 			
-			// aapt resource value: 0x7f050013
-			public const int ShareMessage = 2131034131;
-			
-			// aapt resource value: 0x7f050012
-			public const int ShareSubject = 2131034130;
-			
 			// aapt resource value: 0x7f050014
-			public const int ShareTitle = 2131034132;
+			public const int ShareMessage = 2131034132;
+			
+			// aapt resource value: 0x7f050013
+			public const int ShareSubject = 2131034131;
+			
+			// aapt resource value: 0x7f050015
+			public const int ShareTitle = 2131034133;
 			
 			// aapt resource value: 0x7f050005
 			public const int Transform = 2131034117;
 			
-			// aapt resource value: 0x7f050015
-			public const int Wait = 2131034133;
-			
 			// aapt resource value: 0x7f050016
-			public const int WallpaperWillBeReady = 2131034134;
+			public const int Wait = 2131034134;
+			
+			// aapt resource value: 0x7f050017
+			public const int WallpaperWillBeReady = 2131034135;
 			
 			static String()
 			{
