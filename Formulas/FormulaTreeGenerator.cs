@@ -127,7 +127,7 @@ namespace WallpaperGenerator.Formulas
                     new Rule<Operator>(new[]{s["OpOrOp0NodeOperands"]})), 
                 
                 new OrRule<Operator>(s["OpNode"], 
-                    rs => new TreeGeneratingRuleSelector<Operator>(minimalDepth, rs, rls => new RandomRuleSelector<Operator>(random, rls, opNodesProbabilities)),
+                    rs => new TreeGeneratingRuleSelector<Operator>(minimalDepth, rs),//, rls => new RandomRuleSelector<Operator>(random, rls, opNodesProbabilities)),
                     new []{ s["V"] }.Concat(opArityNodeSymbols.Skip(1))), 
             };
 
