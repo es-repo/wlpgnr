@@ -8,11 +8,11 @@ namespace WallpaperGenerator.App.Core
     public class FormulaRenderArgumentsGenerationParams
     {
         public Bounds<int> DimensionCountBounds = new Bounds<int>(4, 15);
-        public Bounds<int> MinimalDepthBounds = new Bounds<int>(11, 14);
+        public Bounds<int> MinimalDepthBounds = new Bounds<int>(11, 15);
         public Bounds ConstantBounds = new Bounds(-10, 10);
         public Bounds ConstantProbabilityBounds = new Bounds(0, 1);
         public Bounds LeafProbabilityBounds = new Bounds(0, 0.5);
-        public Bounds RangeBounds = new Bounds(-40, 40);
+        public Bounds RangeBounds = new Bounds(-30, 30);
         public Bounds ColorChannelPolinomialTransformationCoefficientBounds = new Bounds(-5, 5);
         public double ColorChannelZeroProbabilty = 0.15;
         public Bounds UnaryVsBinaryOperatorsProbabilityBounds = new Bounds(0.5, 0.5);
@@ -21,8 +21,8 @@ namespace WallpaperGenerator.App.Core
         {
             {OperatorsLibrary.Sum, new Bounds(0, 1)},
             {OperatorsLibrary.Sub, new Bounds(0, 1)},
-            {OperatorsLibrary.Mul, new Bounds(0, 0.8)},
-            {OperatorsLibrary.Div, new Bounds(0, 0.4)},
+            {OperatorsLibrary.Mul, new Bounds(0, 0.6)},
+            //{OperatorsLibrary.Div, new Bounds(0, 0.1)},
             {OperatorsLibrary.Max, new Bounds(0, 0.3)},
             {OperatorsLibrary.Pow, new Bounds(0, 0.3)},
 
