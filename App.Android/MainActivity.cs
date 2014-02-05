@@ -56,7 +56,7 @@ namespace WallpaperGenerator.App.Android
             Point wallpaperSize = wallpaperManager.GetDesiredSize(WindowManager.DefaultDisplay, Resources.Configuration);
             Size imageSize = new Size(wallpaperSize.X, wallpaperSize.Y);
             int coresCount = Java.Lang.Runtime.GetRuntime().AvailableProcessors();
-            coresCountTextView.Text = "available cores: " + coresCount.ToInvariantString();
+            coresCountTextView.Text = "available cpu cores: " + coresCount.ToInvariantString();
             sizeTextView.Text = "image size: " + imageSize.Width + "x" + imageSize.Height;
             _workflow = new FormulaRenderWorkflow(new FormulaRenderArgumentsGenerationParams(), imageSize, s => new AndroidFormulaBitmap(s), coresCount);
             

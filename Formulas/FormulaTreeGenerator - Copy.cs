@@ -18,24 +18,24 @@ namespace WallpaperGenerator.Formulas
     public static class FormulaTreeGenerator
     {
         public static FormulaTree Generate(Random random, IDictionary<Operator, double> operatorAndProbabilityMap, Func<double> createConstant, int dimensionsCount, int minimalDepth,
-            bool isUnBinOpBalancedTree, double leafProbability, double constantProbability)
+            double unBinOpBalancedTreeProbability, double leafProbability, double constantProbability)
         {
             IEnumerable<string> variableNames = EnumerableExtensions.Repeat(i => "x" + i.ToString(CultureInfo.InvariantCulture), dimensionsCount);
             IEnumerable<Operator> variables = variableNames.Select(n => new Variable(n));
             variables.ForEach(v => operatorAndProbabilityMap.Add(v, 1));
-            return Generate(random, operatorAndProbabilityMap, createConstant, minimalDepth, isUnBinOpBalancedTree, leafProbability, constantProbability);
+            return Generate(random, operatorAndProbabilityMap, createConstant, minimalDepth, unBinOpBalancedTreeProbability, leafProbability, constantProbability);
         }
 
         public static FormulaTree Generate(Random random, IDictionary<Operator, double> operatorAndProbabilityMap, Func<double> createConstant, int minimalDepth,
-            bool isUnBinOpBalancedTree, double leafProbability, double constantProbability)
+            double unBinOpBalancedTreeProbability, double leafProbability, double constantProbability)
         {
-            Grammar<Operator> grammar = CreateGrammar(random, operatorAndProbabilityMap, createConstant, minimalDepth, isUnBinOpBalancedTree, leafProbability, constantProbability); 
+            Grammar<Operator> grammar = CreateGrammar(random, operatorAndProbabilityMap, createConstant, minimalDepth, unBinOpBalancedTreeProbability, leafProbability, constantProbability); 
             TreeNode<Operator> treeRoot = TreeGenerator.Generate(grammar, "OpNode", op => op.Arity);
             return new FormulaTree(treeRoot);
         }
 
         public static Grammar<Operator> CreateGrammar(Random random, IDictionary<Operator, double> operatorAndProbabilityMap, Func<double> createConstant, int minimalDepth,
-            bool isUnBinOpBalancedTree, double leafProbability, double constantProbability)
+            double unBinOpBalancedTreeProbability, double leafProbability, double constantProbability)
         {
             List<Operator> operatorsWithZeroProbability = operatorAndProbabilityMap.Where(e => e.Value.Equals(0)).Select(e => e.Key).ToList();
             foreach (Operator op in operatorsWithZeroProbability)
@@ -86,6 +86,9 @@ namespace WallpaperGenerator.Formulas
             // OpNode -> V|Op1Node|Op2Node|Op3Node|Op4Node
 
             SymbolsSet<Operator> s = CreateSymbols(operators);
+
+            bool isUnBinOpBalancedTree = false;// random.NextDouble() <= unBinOpBalancedTreeProbability;
+
             IEnumerable<Symbol<Operator>> opArityNodeSymbols = GetOpArityNodeSymbolNames(operators).Select(n => s[n]).ToArray();
             double[] opNodesProbabilities = GetOpNodeProbabilities(operatorAndProbabilityMap);
             Func<IEnumerable<Rule<Operator>>, RuleSelector<Operator>> createNonLeafOrLeafRuleSelector = 
@@ -124,10 +127,11 @@ namespace WallpaperGenerator.Formulas
                     createNonLeafOrLeafRuleSelector,
                     new Rule<Operator>(new[]{s["OpNode"], s["OpNode"]}), 
                     new Rule<Operator>(new[]{s["OpOrOp0NodeOperands"]})), 
-                
+
                 new OrRule<Operator>(s["OpNode"], 
-                    rs => new TreeGeneratingRuleSelector<Operator>(minimalDepth, rs, isUnBinOpBalancedTree ? (Func<IEnumerable<Rule<Operator>>, RuleSelector<Operator>>)null : rls => new RandomRuleSelector<Operator>(random, rls, opNodesProbabilities)),
+                    rs => new TreeGeneratingRuleSelector<Operator>(minimalDepth, rs, isUnBinOpBalancedTree ? rls => new RandomRuleSelector<Operator>(random, rls, opNodesProbabilities) : (Func<IEnumerable<Rule<Operator>>, RuleSelector<Operator>>)null),
                     new []{ s["V"] }.Concat(opArityNodeSymbols.Skip(1))),
+               
             };
 
             // AbsNode -> abs OpNode, 

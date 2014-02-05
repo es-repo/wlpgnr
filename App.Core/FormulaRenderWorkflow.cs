@@ -178,13 +178,16 @@ namespace WallpaperGenerator.App.Core
 
         private FormulaTree CreateRandomFormulaTree()
         {
+            bool isUnBinOpBalancedTree = _random.NextDouble() < GenerationParams.UnBinOpBalancedTreeProbability;
             FormulaGenerationArguments args = FormulaGenerationArguments.CreateRandom(_random, GenerationParams.DimensionCountBounds,
-                GenerationParams.MinimalDepthBounds, GenerationParams.LeafProbabilityBounds, GenerationParams.ConstantProbabilityBounds,
+                isUnBinOpBalancedTree ? GenerationParams.MinimalDepthBoundsForUnBinOpBalancedTree : GenerationParams.MinimalDepthBounds, 
+                GenerationParams.LeafProbabilityBounds, GenerationParams.ConstantProbabilityBounds,
                 GenerationParams.ConstantBounds, GenerationParams.OperatorAndMaxProbabilityBoundsMap,
-                GenerationParams.ObligatoryOperators, GenerationParams.UnaryVsBinaryOperatorsProbabilityBounds);
+                GenerationParams.ObligatoryOperators,
+                GenerationParams.UnaryVsBinaryOperatorsProbabilityBounds);
 
             return FormulaTreeGenerator.Generate(_random, args.OperatorAndProbabilityMap, args.CreateConstant,
-                args.DimensionsCount, args.MinimalDepth, args.LeafProbability, args.ConstantProbability);
+                args.DimensionsCount, args.MinimalDepth, isUnBinOpBalancedTree, args.LeafProbability, args.ConstantProbability);
         }
 
         public Task<WorkflowRenderResult> BenchmarkAsync(ProgressObserver progressObserver)

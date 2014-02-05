@@ -44,7 +44,7 @@ namespace WallpaperGenerator.Formulas.Testing
 
             Random random = RandomMock.Setup(EnumerableExtensions.Repeat(i => i * 0.1, 10));
             IDictionary<Operator, double> operatorAndProbabilityMap = new DictionaryExt<Operator, double>(operators.Select((op, i) => new KeyValuePair<Operator, double>(op, i % 2 + 1)));
-            Grammar<Operator> grammar = FormulaTreeGenerator.CreateGrammar(random, operatorAndProbabilityMap, () => 0, 1, 0.3, 0.3);
+            Grammar<Operator> grammar = FormulaTreeGenerator.CreateGrammar(random, operatorAndProbabilityMap, () => 0, 1, false, 0.3, 0.3);
             IEnumerable<string> fromSymbols = grammar.Rules.Select(r => r.From.Name).OrderBy(s => s);
             Assert.AreElementsEqual(expectedFromSymbols.ToArray(), fromSymbols.ToArray());
         }
@@ -77,11 +77,21 @@ namespace WallpaperGenerator.Formulas.Testing
                     "mod x sum abs y 0.01");
         }
 
-        private static void TestGenerate(IEnumerable<Operator> operators, Func<double> createConstant,  int minimalTreeDepth, string expectedSerializedTree)
+        [Test]
+        public void TestGenerateUnBinOpBalancedTree()
+        {
+            Func<double> createConstans = new EnumerableNext<double>(new double[] { 1, 2, 3 }.Repeat()).Next;
+
+            TestGenerate(new Operator[] { new Variable("x"), new Variable("y"), 
+                OperatorsLibrary.Sum, OperatorsLibrary.Mul, OperatorsLibrary.Sin, OperatorsLibrary.Abs }, createConstans, 5,
+                "sin sum sin mul y y abs mul x x", true);
+        }
+
+        private static void TestGenerate(IEnumerable<Operator> operators, Func<double> createConstant, int minimalTreeDepth, string expectedSerializedTree, bool isUnBinOpBalancedTree = false)
         {
             Random random = RandomMock.Setup(EnumerableExtensions.Repeat(i => i * 0.1, 10));
             IDictionary<Operator, double> operatorAndProbabilityMap = new DictionaryExt<Operator, double>(operators.Select((op, i) => new KeyValuePair<Operator, double>(op, i % 2 + 1)));
-            FormulaTree formulaTree = FormulaTreeGenerator.Generate(random, operatorAndProbabilityMap, createConstant, minimalTreeDepth, 0.3, 0.3);
+            FormulaTree formulaTree = FormulaTreeGenerator.Generate(random, operatorAndProbabilityMap, createConstant, minimalTreeDepth, isUnBinOpBalancedTree, 0.3, 0.3);
             Assert.AreEqual(expectedSerializedTree, FormulaTreeSerializer.Serialize(formulaTree).ToLower());
         }
 
