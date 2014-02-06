@@ -10,20 +10,21 @@ namespace WallpaperGenerator.FormulaRendering
 {
     public static class FormulaRender
     {
-        private static void EvaluateFormula(FormulaTree formulaTree, RangesForFormula2DProjection rangesForFormula2DProjection, int threadsCount, float[] evaluatedValuesBuffer)
+        private static void EvaluateFormula(FormulaTree formulaTree, Range[] ranges, Size areaSize, int threadsCount, float[] evaluatedValuesBuffer)
         {
             Stopwatch evaluationStopwatch = new Stopwatch();
             evaluationStopwatch.Start();
 
-            if (evaluatedValuesBuffer.Length != rangesForFormula2DProjection.AreaSize.Width * rangesForFormula2DProjection.AreaSize.Height)
+            if (evaluatedValuesBuffer.Length != areaSize.Square)
                 throw new ArgumentException("Result buffer size isn't equal to ranges area size.", "evaluatedValuesBuffer");
 
-            int xCount = rangesForFormula2DProjection.AreaSize.Width;
-            int yCount = rangesForFormula2DProjection.AreaSize.Height;
+            int xCount = areaSize.Width;
+            int yCount = areaSize.Height;
 
             if (threadsCount < 1)
                 threadsCount = 1;
 
+            ranges = ranges.Select((r, i) => new Range(r.Start, r.End, i % 2 == 0 ? areaSize.Width : areaSize.Height)).ToArray();
             const int progressSteps = 100;
             using (ProgressReporter.CreateScope(progressSteps))
             {
@@ -42,7 +43,7 @@ namespace WallpaperGenerator.FormulaRendering
                         FormulaTree ft = li == 0 ? formulaTree : FormulaTreeSerializer.Deserialize(FormulaTreeSerializer.Serialize(formulaTree));
                         int yStart = li * yStepCount;
                         ProgressReporter.Subscribe(progressObserver);
-                        ft.EvaluateRangesIn2DProjection(rangesForFormula2DProjection.Ranges, xCount, yStart, yStepCount,
+                        ft.EvaluateRangesIn2DProjection(ranges, xCount, yStart, yStepCount,
                             evaluatedValuesBuffer);
                     });
                 }
@@ -107,7 +108,7 @@ namespace WallpaperGenerator.FormulaRendering
             mapToRgbStopwatch.Stop();
         }
 
-        public static void Render(FormulaTree formulaTree, RangesForFormula2DProjection rangesForFormula2DProjection, ColorTransformation colorTransformation,
+        public static void Render(FormulaTree formulaTree, Range[] ranges, Size imageSize, ColorTransformation colorTransformation,
             bool reevaluateValues, int threadsCount, FormulaRenderResult formulaRenderResult)
         {
             using (ProgressReporter.CreateScope())
@@ -118,7 +119,7 @@ namespace WallpaperGenerator.FormulaRendering
                     evaluationSpan = 0.93;
                     using (ProgressReporter.CreateScope(evaluationSpan))
                     {
-                        EvaluateFormula(formulaTree, rangesForFormula2DProjection, threadsCount, formulaRenderResult.EvaluatedValuesBuffer);
+                        EvaluateFormula(formulaTree, ranges, imageSize, threadsCount, formulaRenderResult.EvaluatedValuesBuffer);
                     }
                 }
 

@@ -31,10 +31,6 @@ namespace WallpaperGenerator.App.Windows
                 FormulaRenderArguments args = formuleString != ""
                     ? FormulaRenderArguments.FromString(formuleString)
                     : null;
-                if (args != null)
-                {
-                    args.ImageSize = _mainWindow.ControlPanel.ImageSizeControl.Size;
-                }
                 return args;
             }
         }
@@ -60,8 +56,8 @@ namespace WallpaperGenerator.App.Windows
 
         public WallpaperGeneratorApplication()
         {
-            _workflow = new FormulaRenderWorkflow(new FormulaRenderArgumentsGenerationParams { PredefinedFormulaRenderingArgumentsEnabled = true },
-                new Size(600, 600), s => new WindowsFormulaBitmap(s), Environment.ProcessorCount);
+            _workflow = new FormulaRenderWorkflow(new FormulaRenderArgumentsGenerationParams { PredefinedFormulaRenderingArgumentsEnabled = false },
+                new Size(700, 700), s => new WindowsFormulaBitmap(s), Environment.ProcessorCount);
             _wallpaperFileManager = new WindowsWallpaperFileManager();
             _mainWindow = new MainWindow { WindowState = WindowState.Maximized };
             _mainWindow.ControlPanel.LoadState(_workflow.GenerationParams);
@@ -99,7 +95,7 @@ namespace WallpaperGenerator.App.Windows
             _mainWindow.ControlPanel.RenderFormulaButton.Click += async (s, a) =>
             {
                 _workflow.FormulaRenderArguments = UserInputFormulaRenderArguments;
-                _workflow.ImageSize = _workflow.FormulaRenderArguments.ImageSize;
+                _workflow.ImageSize = _mainWindow.ControlPanel.ImageSizeControl.Size;
                 await DrawImageAsync();
             };
 
@@ -154,15 +150,15 @@ namespace WallpaperGenerator.App.Windows
         private async void StartAnimation()
         {
             FormulaRenderArguments formulaRenderArguments = UserInputFormulaRenderArguments;
-            Func<double[]> getNextRangeDeltas = () => EnumerableExtensions.Repeat(() => (-0.5 + _random.NextDouble()) * 0.1, formulaRenderArguments.Ranges.Ranges.Length).ToArray();
+            Func<double[]> getNextRangeDeltas = () => EnumerableExtensions.Repeat(() => (-0.5 + _random.NextDouble()) * 0.1, formulaRenderArguments.Ranges.Length).ToArray();
             
             double[] rangeStartDeltas = getNextRangeDeltas();
             double[] rangeEndDeltas = getNextRangeDeltas();
 
             Func<FormulaRenderArguments, FormulaRenderArguments> getNextFormulaRenderArguments = args =>
             {
-                IEnumerable<Range> ranges = args.Ranges.Ranges.Select((r, i) => new Range(r.Start + rangeStartDeltas[i], r.End + rangeEndDeltas[i], r.Count));
-                args.Ranges.Ranges = ranges.ToArray();
+                IEnumerable<Range> ranges = args.Ranges.Select((r, i) => new Range(r.Start + rangeStartDeltas[i], r.End + rangeEndDeltas[i], r.Count));
+                args.Ranges = ranges.ToArray();
                 return args;
             };
             
