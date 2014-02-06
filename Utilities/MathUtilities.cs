@@ -19,9 +19,8 @@ namespace WallpaperGenerator.Utilities
                 return 0;
 
             double sum = Sum(values, null, threadsCount); 
-            double sumOfSquares = values.Sum(t => t * t);
-
-            return (sumOfSquares - sum * sum / values.Length) / (values.Length - 1);
+            double mean = sum/values.Length;
+            return Sum(values, v => (float) ((v - mean)*(v - mean)), threadsCount)/values.Length;
         }
 
         public static double StandardDeviation(float[] values, int threadsCount)

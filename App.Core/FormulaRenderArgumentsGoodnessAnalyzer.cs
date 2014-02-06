@@ -6,11 +6,15 @@ namespace WallpaperGenerator.App.Core
 {
     public class FormulaRenderArgumentsGoodnessAnalyzer
     {
-        public int MinVariablesCount { get; private set; }
+        private readonly FormulaRenderResult _formulaRenderResult;
+
+         public int MinVariablesCount { get; private set; }
 
         public FormulaRenderArgumentsGoodnessAnalyzer(int minVariablesCount)
         {
             MinVariablesCount = minVariablesCount;
+            Size emptynessCheckImageSize = new Size(8, 8);
+           _formulaRenderResult = new FormulaRenderResult(emptynessCheckImageSize);
         }
 
         public virtual bool Analyze(FormulaRenderArguments formulaRenderArguments)
@@ -25,12 +29,10 @@ namespace WallpaperGenerator.App.Core
 
         public bool IsRenderedImageNotEmpty(FormulaRenderArguments formulaRenderArguments)
         {
-            Size imageSize = new Size(10, 10);
-            FormulaRenderResult formulaRenderResult = new FormulaRenderResult(imageSize);
-            FormulaRender.Render(formulaRenderArguments.FormulaTree, formulaRenderArguments.Ranges, imageSize, formulaRenderArguments.ColorTransformation, true, 1, formulaRenderResult);
-            return formulaRenderResult.BlueChannel.All(b => b == formulaRenderResult.BlueChannel[0]) &&
-                formulaRenderResult.RedChannel.All(b => b == formulaRenderResult.RedChannel[0]) &&
-                formulaRenderResult.GreenChannel.All(b => b == formulaRenderResult.GreenChannel[0]);
+            FormulaRender.Render(formulaRenderArguments.FormulaTree, formulaRenderArguments.Ranges, _formulaRenderResult.Size, formulaRenderArguments.ColorTransformation, true, 1, _formulaRenderResult);
+            return _formulaRenderResult.BlueChannel.Any(b => b != _formulaRenderResult.BlueChannel[0]) &&
+                _formulaRenderResult.RedChannel.Any(b => b != _formulaRenderResult.RedChannel[0]) &&
+                _formulaRenderResult.GreenChannel.Any(b => b != _formulaRenderResult.GreenChannel[0]);
         }
     }
 }

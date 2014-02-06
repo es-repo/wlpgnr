@@ -37,25 +37,25 @@ namespace WallpaperGenerator.Utilities.Testing
         [Test]
         [Row(new float[] { }, double.NaN)]
         [Row(new float[] { 1 }, 0)]
-        [Row(new float[] { 1, 2, 3, 4, 5, 6 }, 3.5)]
-        [Row(new float[] { -1, 0, 1 }, 1)]
-        [Row(new float[] { 1, 2, 4, 5, 6 }, 4.3)]
+        [Row(new float[] { 1, 2, 3, 4, 5, 6 }, 2.92)]
+        [Row(new float[] { -1, 0, 1 }, 0.67)]
+        [Row(new float[] { 1, 2, 4, 5, 6 }, 3.44)]
         public void TestVariance(float[] values, double expectedVariance)
         {
             double variance = MathUtilities.Variance(values, 1);
-            Assert.AreApproximatelyEqual(expectedVariance, variance, 0.00000001);
+            Assert.AreApproximatelyEqual(expectedVariance, variance, 0.01);
         }
 
         [Test]
         [Row(new float[] { }, double.NaN)]
         [Row(new float[] { 1 }, 0)]
-        [Row(new float[] { 1, 2, 3, 4, 5, 6 }, 1.870828693386971)]
-        [Row(new float[] { -1, 0, 1 }, 1)]
-        [Row(new float[] { 1, 2, 4, 5, 6 }, 2.073644135332772)]
+        [Row(new float[] { 1, 2, 3, 4, 5, 6 }, 1.71)]
+        [Row(new float[] { -1, 0, 1 }, 0.82)]
+        [Row(new float[] { 1, 2, 4, 5, 6 }, 1.85)]
         public void TestStandardDeviation(float[] values, double expectedStandardDeviation)
         {
             double standardDeviation = MathUtilities.StandardDeviation(values, 1);
-            Assert.AreApproximatelyEqual(expectedStandardDeviation, standardDeviation, 0.00000001);
+            Assert.AreApproximatelyEqual(expectedStandardDeviation, standardDeviation, 0.01);
         }
 
         [Test]

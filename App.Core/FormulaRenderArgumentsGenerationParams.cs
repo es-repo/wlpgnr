@@ -14,7 +14,7 @@ namespace WallpaperGenerator.App.Core
         public Bounds ConstantProbabilityBounds = new Bounds(0, 0.5);
         public Bounds LeafProbabilityBounds = new Bounds(0, 0.5);
         public Bounds RangeBounds = new Bounds(-30, 30);
-        public Bounds ColorChannelPolinomialTransformationCoefficientBounds = new Bounds(-5, 5);
+        public Bounds ColorChannelPolinomialTransformationCoefficientBounds = new Bounds(-10, 10);
         public double ColorChannelZeroProbabilty = 0.17;
         public double UnBinOpBalancedTreeProbability = 0.65;
         public Bounds UnaryVsBinaryOperatorsProbabilityBounds = new Bounds(0.5, 0.6);
