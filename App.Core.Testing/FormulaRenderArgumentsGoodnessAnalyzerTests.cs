@@ -27,11 +27,6 @@ Sum Cbrt Atan Pow Cbrt Cbrt Cbrt Cbrt Cbrt x3 x2 Cbrt Abs Cbrt Sum Cbrt Sin Pow 
         [Test]
 
         [Row(
-@"-12.51,-0.49;-3.9,-1.05;-1.79,8.09;-6.39,-0.09
-0.05,0.13,-1.73,0.15;0.2,-0.13,1.11,0.04;0.66,0.14,-1.22,0.23
-Cos Pow -0.92 Atan Atan Pow -1.3 Atan Pow Sum Atan Ln Pow 4.95 Atan Sin x7 Sum Sum Sqrt Sum Cos x0 Atan Ln x6 -6.28 Atan Ln Pow -0.45 Atan x8 x8", false)]
-
-        [Row(
 @"-0.29,1.71;0.02,2.47;0.49,1.49;-1.61,1.78
 -0.24,-3.07,-0.27,0.11;3.29,-0.01,0.91,0.3;0,0,0,0
 Cbrt Atan Pow Sqrt Pow x4 Atan Sqrt Sub Cbrt Sub x0 x8 Cbrt Sub x0 x8 x3", false)]

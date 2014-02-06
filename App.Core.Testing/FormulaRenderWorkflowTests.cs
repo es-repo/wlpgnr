@@ -39,7 +39,7 @@ namespace WallpaperGenerator.App.Core.Testing
         public void TestGenerateFormulaRenderArguments()
         {
             FormulaRenderArguments args = _workflow.GenerateFormulaRenderArguments();
-            const string expectedArgsString = "-21.6,-1.44\r\n0.2,0.84,-1.8,0.03;0,0.36,0.96,0;0,0,0,0\r\nSin Sin Sin x2";
+            const string expectedArgsString = "-21.6,-1.44\r\n0.4,1.68,-3.6,0.03;0,0.72,1.92,0;0,0,0,0\r\nSin Sin Sin x2";
             Assert.AreEqual(expectedArgsString, args.ToString());
             Assert.AreEqual(expectedArgsString, _workflow.FormulaRenderArguments.ToString());
         }
@@ -49,7 +49,7 @@ namespace WallpaperGenerator.App.Core.Testing
         {
             _workflow.GenerateFormulaRenderArguments();
             FormulaRenderArguments args = _workflow.ChangeColors();
-            const string expectedArgsString = "-21.6,-1.44\r\n0,0.36,0.96,0;0,0,0,0;0,0.36,0.96,0\r\nSin Sin Sin x2";
+            const string expectedArgsString = "-21.6,-1.44\r\n0,0.72,1.92,0;0,0,0,0;0,0.72,1.92,0\r\nSin Sin Sin x2";
             Assert.AreEqual(expectedArgsString, args.ToString());
             Assert.AreEqual(expectedArgsString, _workflow.FormulaRenderArguments.ToString());
         }
@@ -59,7 +59,7 @@ namespace WallpaperGenerator.App.Core.Testing
         {
             _workflow.GenerateFormulaRenderArguments();
             FormulaRenderArguments args = _workflow.TransformRanges();
-            const string expectedArgsString = "-0.36,0.64\r\n0.2,0.84,-1.8,0.03;0,0.36,0.96,0;0,0,0,0\r\nSin Sin Sin x2";
+            const string expectedArgsString = "-0.36,0.64\r\n0.4,1.68,-3.6,0.03;0,0.72,1.92,0;0,0,0,0\r\nSin Sin Sin x2";
             Assert.AreEqual(expectedArgsString, args.ToString());
             Assert.AreEqual(expectedArgsString, _workflow.FormulaRenderArguments.ToString());
         }
@@ -120,13 +120,13 @@ Sum Cos x Sin y"};
             Assert.AreEqual("-0.24,0.76;0.72,1.92\r\n0,0,0,0;0,0,0,0;1,1,1,0\r\nSum Cos x Sin y", args.ToString());
 
             args = _workflow.GenerateFormulaRenderArguments();
-            Assert.AreEqual("-21.6,-1.44\r\n0.2,0.84,-1.8,0.03;0,0.36,0.96,0;0,0,0,0\r\nSin Sin Sin x2", args.ToString());
+            Assert.AreEqual("-21.6,-1.44\r\n0.4,1.68,-3.6,0.03;0,0.72,1.92,0;0,0,0,0\r\nSin Sin Sin x2", args.ToString());
 
             args = _workflow.GenerateFormulaRenderArguments();
-            Assert.AreEqual("0,2.16;0,5.76\r\n0,0.36,0.96,0;0,0,0,0;0,0.36,0.96,0\r\nSum Cos x Sin y", args.ToString());
+            Assert.AreEqual("0,2.16;0,5.76\r\n0,0.72,1.92,0;0,0,0,0;0,0.72,1.92,0\r\nSum Cos x Sin y", args.ToString());
 
             args = _workflow.GenerateFormulaRenderArguments();
-            Assert.AreEqual("-0.24,0.76;0.72,1.92\r\n0,0,0,0;0,0,0,0;0,0.36,0.96,0\r\nSin Sin Sum x2 x0", args.ToString());
+            Assert.AreEqual("-0.24,0.76;0.72,1.92\r\n0,0,0,0;0,0,0,0;0,0.72,1.92,0\r\nSin Sin Sum x2 x0", args.ToString());
         }
     }
 }
