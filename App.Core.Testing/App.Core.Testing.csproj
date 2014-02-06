@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="FormulaBitmapMock.cs" />
     <Compile Include="FormulaGenerationArgumentsTests.cs" />
+    <Compile Include="FormulaRenderArgumentsGoodnessAnalyzerTests.cs" />
     <Compile Include="FormulaRenderWorkflowTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

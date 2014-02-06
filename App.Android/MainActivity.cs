@@ -46,6 +46,7 @@ namespace WallpaperGenerator.App.Android
 
             _horizontalScrollView = FindViewById<HorizontalScrollView>(Resource.Id.horizontalScrollView);
             _formulaTextView = FindViewById<TextView>(Resource.Id.formulaTextView);
+            _formulaTextView.Visibility = ViewStates.Visible;
             _renderTimeTextView = FindViewById<TextView>(Resource.Id.renderTimeTextView);
             _imageView = FindViewById<ImageView>(Resource.Id.imageView);
             TextView coresCountTextView = FindViewById<TextView>(Resource.Id.coresCountTextView);

@@ -50,7 +50,7 @@
   <ItemGroup>
     <Compile Include="FormulaBitmap.cs" />
     <Compile Include="FormulaGenerationArguments.cs" />
-    <Compile Include="FormulaGoodnessAnalyzer.cs" />
+    <Compile Include="FormulaRenderArgumentsGoodnessAnalyzer.cs" />
     <Compile Include="FormulaRenderArgumentsGenerationParams.cs" />
     <Compile Include="FormulaRenderArguments.cs" />
     <Compile Include="FormulaRenderWorkflow.cs" />

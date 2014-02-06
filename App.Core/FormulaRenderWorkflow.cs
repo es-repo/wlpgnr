@@ -12,7 +12,7 @@ namespace WallpaperGenerator.App.Core
     {
         private readonly Random _random = new Random();
         private readonly int _coresCount;
-        private readonly FormulaGoodnessAnalyzer _formulaGoodnessAnalyzer;
+        private readonly FormulaRenderArgumentsGoodnessAnalyzer _formulaRenderArgumentsGoodnessAnalyzer;
         private Size _imageSize;
         private FormulaRenderArguments _formulaRenderArguments;
         private FormulaRenderResult _formulaRenderResult;
@@ -64,15 +64,15 @@ namespace WallpaperGenerator.App.Core
         public bool IsImageRendering { get; private set; }
 
         public FormulaRenderWorkflow(FormulaRenderArgumentsGenerationParams generationParams, Size imageSize, Func<Size, FormulaBitmap> createFormulaBitmap, int numberOfCores)
-            : this(generationParams, imageSize, new FormulaGoodnessAnalyzer(generationParams.DimensionCountBounds.Low), createFormulaBitmap, numberOfCores, new Random())
+            : this(generationParams, imageSize, new FormulaRenderArgumentsGoodnessAnalyzer(generationParams.DimensionCountBounds.Low), createFormulaBitmap, numberOfCores, new Random())
         {
         }
 
-        public FormulaRenderWorkflow(FormulaRenderArgumentsGenerationParams generationParams, Size imageSize, FormulaGoodnessAnalyzer formulaGoodnessAnalyzer,
+        public FormulaRenderWorkflow(FormulaRenderArgumentsGenerationParams generationParams, Size imageSize, FormulaRenderArgumentsGoodnessAnalyzer formulaRenderArgumentsGoodnessAnalyzer,
             Func<Size, FormulaBitmap> createFormulaBitmap, int coresCount, Random random)
         {
             GenerationParams = generationParams;
-            _formulaGoodnessAnalyzer = formulaGoodnessAnalyzer;
+            _formulaRenderArgumentsGoodnessAnalyzer = formulaRenderArgumentsGoodnessAnalyzer;
             _createFormulaBitmap = createFormulaBitmap;
             _random = random;
             _coresCount = coresCount;
@@ -100,17 +100,16 @@ namespace WallpaperGenerator.App.Core
                 const int attemptCount = 10;
                 using (ProgressReporter.CreateScope(attemptCount))
                 {
-                    FormulaTree formulaTree = FuncUtilities.Repeat(() =>
+                    args = FuncUtilities.Repeat(() =>
                     {
                         FormulaTree f = CreateRandomFormulaTree();
+                        RangesForFormula2DProjection ranges = CreateRandomVariableValuesRangesFor2DProjection(f.Variables.Length);
+                        ColorTransformation colorTransformation = CreateRandomColorTransformation();
+                        args = new FormulaRenderArguments(f, ranges, colorTransformation);
                         ProgressReporter.Increase();
-                        return f;
+                        return args;
                     },
-                    f => _formulaGoodnessAnalyzer.Analyze(f), attemptCount);
-
-                    RangesForFormula2DProjection ranges = CreateRandomVariableValuesRangesFor2DProjection(formulaTree.Variables.Length);
-                    ColorTransformation colorTransformation = CreateRandomColorTransformation();
-                    args = new FormulaRenderArguments(formulaTree, ranges, colorTransformation);
+                    f => _formulaRenderArgumentsGoodnessAnalyzer.Analyze(args), attemptCount);
                 }
             }
 
