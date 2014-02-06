@@ -32,7 +32,7 @@ namespace WallpaperGenerator.App.Core.Testing
             Mock<FormulaRenderArgumentsGoodnessAnalyzer> formulaGoodnessAnalyzerMock = new Mock<FormulaRenderArgumentsGoodnessAnalyzer>(0, 0);
             formulaGoodnessAnalyzerMock.Setup(fa => fa.Analyze(It.IsAny<FormulaRenderArguments>())).Returns(false);
 
-            _workflow = new FormulaRenderWorkflow(generationParams, new Size(3, 3), formulaGoodnessAnalyzerMock.Object, s => new FormulaBitmapMock(s),  1, _random);
+            _workflow = new FormulaRenderWorkflow(generationParams, new Size(3, 3), formulaGoodnessAnalyzerMock.Object, s => new FormulaBitmapMock(s), _random);
         }
 
         [Test]

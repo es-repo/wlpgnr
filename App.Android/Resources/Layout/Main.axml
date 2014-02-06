@@ -40,11 +40,11 @@
             android:orientation="vertical"
             android:visibility="gone">
             <TextView
-                android:id="@+id/coresCountTextView"
+                android:id="@+id/sizeTextView"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
             <TextView
-                android:id="@+id/sizeTextView"
+                android:id="@+id/coresCountTextView"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
             <TextView

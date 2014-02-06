@@ -57,7 +57,7 @@ namespace WallpaperGenerator.App.Windows
         public WallpaperGeneratorApplication()
         {
             _workflow = new FormulaRenderWorkflow(new FormulaRenderArgumentsGenerationParams { PredefinedFormulaRenderingArgumentsEnabled = false },
-                new Size(700, 700), s => new WindowsFormulaBitmap(s), Environment.ProcessorCount);
+                new Size(700, 700), s => new WindowsFormulaBitmap(s));
             _wallpaperFileManager = new WindowsWallpaperFileManager();
             _mainWindow = new MainWindow { WindowState = WindowState.Maximized };
             _mainWindow.ControlPanel.LoadState(_workflow.GenerationParams);
@@ -194,7 +194,7 @@ namespace WallpaperGenerator.App.Windows
             ProgressObserver renderingProgressObserver = new ProgressObserver(
                 p => _mainWindow.StatusPanel.Dispatcher.Invoke(() => _mainWindow.StatusPanel.RenderingProgress = p.Progress));
 
-            WorkflowRenderResult result = await _workflow.RenderFormulaAsync(false, renderingProgressObserver);
+            WorkflowRenderResult result = await _workflow.RenderFormulaAsync(false, Environment.ProcessorCount, renderingProgressObserver);
             result.Bitmap.Update(result.FormulaRenderResult);
             _mainWindow.WallpaperImage.Source = (ImageSource)result.Bitmap.PlatformBitmap;
 

@@ -116,8 +116,8 @@ namespace WallpaperGenerator.App.Android
 			// aapt resource value: 0x7f08000b
 			public const int changeColorsButton = 2131230731;
 			
-			// aapt resource value: 0x7f080007
-			public const int coresCountTextView = 2131230727;
+			// aapt resource value: 0x7f080008
+			public const int coresCountTextView = 2131230728;
 			
 			// aapt resource value: 0x7f080013
 			public const int displayTechnicalInfoMenuItem = 2131230739;
@@ -167,8 +167,8 @@ namespace WallpaperGenerator.App.Android
 			// aapt resource value: 0x7f08000f
 			public const int shareMenuItem = 2131230735;
 			
-			// aapt resource value: 0x7f080008
-			public const int sizeTextView = 2131230728;
+			// aapt resource value: 0x7f080007
+			public const int sizeTextView = 2131230727;
 			
 			// aapt resource value: 0x7f080006
 			public const int technicalInfoLayout = 2131230726;

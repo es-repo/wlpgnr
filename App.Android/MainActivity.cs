@@ -25,6 +25,7 @@ namespace WallpaperGenerator.App.Android
         private LinearLayout _technicalInfoLayout;
         private TextView _formulaTextView;
         private TextView _renderTimeTextView;
+        private TextView _coresCountTextView;
         private HorizontalScrollView _horizontalScrollView;
         private ImageView _imageView;
         private FormulaRenderWorkflow _workflow;
@@ -49,17 +50,15 @@ namespace WallpaperGenerator.App.Android
             _formulaTextView.Visibility = ViewStates.Visible;
             _renderTimeTextView = FindViewById<TextView>(Resource.Id.renderTimeTextView);
             _imageView = FindViewById<ImageView>(Resource.Id.imageView);
-            TextView coresCountTextView = FindViewById<TextView>(Resource.Id.coresCountTextView);
+            _coresCountTextView = FindViewById<TextView>(Resource.Id.coresCountTextView);
             TextView sizeTextView = FindViewById<TextView>(Resource.Id.sizeTextView);
             _technicalInfoLayout = FindViewById<LinearLayout>(Resource.Id.technicalInfoLayout);
 
             WallpaperManager wallpaperManager = WallpaperManager.GetInstance(this);
             Point wallpaperSize = wallpaperManager.GetDesiredSize(WindowManager.DefaultDisplay, Resources.Configuration);
             Size imageSize = new Size(wallpaperSize.X, wallpaperSize.Y);
-            int coresCount = Java.Lang.Runtime.GetRuntime().AvailableProcessors();
-            coresCountTextView.Text = "available cpu cores: " + coresCount.ToInvariantString();
             sizeTextView.Text = "image size: " + imageSize.Width + "x" + imageSize.Height;
-            _workflow = new FormulaRenderWorkflow(new FormulaRenderArgumentsGenerationParams(), imageSize, s => new AndroidFormulaBitmap(s), coresCount);
+            _workflow = new FormulaRenderWorkflow(new FormulaRenderArgumentsGenerationParams(), imageSize, s => new AndroidFormulaBitmap(s));
             
             if (_workflow.FormulaRenderArguments != null)
                 _formulaTextView.Text = _workflow.FormulaRenderArguments.ToString();
@@ -284,6 +283,9 @@ namespace WallpaperGenerator.App.Android
 
         private async Task DrawImageAsync(bool generateNew, bool benchmark)
         {
+            int coresCount = Java.Lang.Runtime.GetRuntime().AvailableProcessors();
+            _coresCountTextView.Text = "available cpu cores: " + coresCount.ToInvariantString();
+
             ProgressDialog progressDialog = CreateProgressDialog(
                 benchmark ? Resources.GetString(Resource.String.Benchmark) : Resources.GetString(Resource.String.WallpaperWillBeReady), 
                 benchmark ? "" : Resources.GetString(Resource.String.Wait), false);
@@ -297,9 +299,9 @@ namespace WallpaperGenerator.App.Android
                 }), TimeSpan.FromMilliseconds(100),
                 () => progressDialog.Progress = progressDialog.Max);
 
-            WorkflowRenderResult result = benchmark 
-                ? await _workflow.BenchmarkAsync(renderingProgressObserver) 
-                : await _workflow.RenderFormulaAsync(generateNew, renderingProgressObserver);
+            WorkflowRenderResult result = benchmark
+                ? await _workflow.BenchmarkAsync(coresCount, renderingProgressObserver) 
+                : await _workflow.RenderFormulaAsync(generateNew, coresCount, renderingProgressObserver);
 
             result.Bitmap.Update(result.FormulaRenderResult);
             _renderTimeTextView.Text = "rendering time: " + result.ElapsedTime;

@@ -42,7 +42,7 @@ namespace WallpaperGenerator.App.Core
         public Operator[] ObligatoryOperators = {OperatorsLibrary.Sin, OperatorsLibrary.Sum};
 
         public bool PredefinedFormulaRenderingArgumentsEnabled = true;
-        public int FirstPredefinedFormulaRenderingArgumentsCount = 3;
+        public int FirstPredefinedFormulaRenderingArgumentsCount = 1;
         public int RepeatPredefinedFormulaRenderingArgumentsAfterEvery = 5;
         public string[] PredefinedFormulaRenderingFormulaRenderArgumentStrings =
         {
