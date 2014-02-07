@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Shared", "App.Shared\Ap
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Shared.Testing", "App.Shared.Testing\App.Shared.Testing.csproj", "{FF63B32B-BF74-441F-AFB8-30FEEF2471F9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdMob.Android", "AdMob.Android\AdMob.Android.csproj", "{52A9F2B4-F523-4C0C-AE41-30040C05ED94}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{FF63B32B-BF74-441F-AFB8-30FEEF2471F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF63B32B-BF74-441F-AFB8-30FEEF2471F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF63B32B-BF74-441F-AFB8-30FEEF2471F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52A9F2B4-F523-4C0C-AE41-30040C05ED94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52A9F2B4-F523-4C0C-AE41-30040C05ED94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52A9F2B4-F523-4C0C-AE41-30040C05ED94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52A9F2B4-F523-4C0C-AE41-30040C05ED94}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

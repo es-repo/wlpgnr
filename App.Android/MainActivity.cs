@@ -6,9 +6,11 @@ using Android.Content.PM;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
+using Android.Provider;
 using Android.Utilities;
 using Android.Views;
 using Android.Widget;
+using Com.Google.Ads;
 using WallpaperGenerator.App.Core;
 using WallpaperGenerator.Utilities;
 using WallpaperGenerator.Utilities.ProgressReporting;
@@ -18,6 +20,7 @@ namespace WallpaperGenerator.App.Android
     [Activity(Label = "@string/ApplicationName", MainLauncher = true, ScreenOrientation = ScreenOrientation.Nosensor)]
     public class MainActivity : BaseActivity
     {
+        private AdView _adView;
         private Button _generateButton;
         private Button _changeColorsButton;
         private Button _transformButton;
@@ -45,6 +48,9 @@ namespace WallpaperGenerator.App.Android
             SetContentView(Resource.Layout.Main);
             InitButtonBar();
 
+            _adView = FindViewById<AdView>(Resource.Id.adView);
+            InitAdView();
+
             _horizontalScrollView = FindViewById<HorizontalScrollView>(Resource.Id.horizontalScrollView);
             _formulaTextView = FindViewById<TextView>(Resource.Id.formulaTextView);
             _formulaTextView.Visibility = ViewStates.Visible;
@@ -67,6 +73,16 @@ namespace WallpaperGenerator.App.Android
 
             AdjustButtons();
             ClearImage();
+        }
+
+        private void InitAdView()
+        {
+            // TODO: remove test mode.
+            AdRequest adRequest = new AdRequest();
+            adRequest.SetTesting(true);
+            string androidId = Settings.Secure.GetString(ContentResolver, Settings.Secure.AndroidId);
+            adRequest.AddTestDevice(androidId);
+            _adView.LoadAd(adRequest);
         }
 
         private void InitButtonBar()
@@ -342,6 +358,12 @@ namespace WallpaperGenerator.App.Android
                 .Create();
             dialog.SetCanceledOnTouchOutside(true);
             return dialog;
+        }
+
+        protected override void OnDestroy()
+        {
+            _adView. Destroy();
+            base.OnDestroy();
         }
     }
 }

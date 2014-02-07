@@ -111,6 +111,10 @@
     <Folder Include="Assets\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AdMob.Android\AdMob.Android.csproj">
+      <Project>{52a9f2b4-f523-4c0c-ae41-30040c05ed94}</Project>
+      <Name>AdMob.Android</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Android.Utilities\Android.Utilities.csproj">
       <Project>{5461607B-E975-4592-95D8-781DE36D6E11}</Project>
       <Name>Android.Utilities</Name>
