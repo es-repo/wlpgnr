@@ -20,7 +20,7 @@ namespace WallpaperGenerator.App.Core
         public override string ToString()
         {            
             string formulaString = FormulaTreeSerializer.Serialize(FormulaTree);
-            string variableRangesString = RangesForFormula2DProjection.ToString(Ranges);
+            string variableRangesString = RangeUtilities.ToString(Ranges);
             string colorTransformationString = ColorTransformation.ToString();
             string[] lines = { variableRangesString, colorTransformationString, formulaString };
             return string.Join("\r\n", lines);
@@ -29,7 +29,7 @@ namespace WallpaperGenerator.App.Core
         public static FormulaRenderArguments FromString(string value)
         {
             string[] lines = value.Split(new[] { "\r\n" }, 3, StringSplitOptions.RemoveEmptyEntries);
-            Range[] ranges = RangesForFormula2DProjection.FromString(lines[0]);
+            Range[] ranges = RangeUtilities.FromString(lines[0]);
             ColorTransformation colorTransformation = ColorTransformation.FromString(lines[1]);
             FormulaTree formulaTree = FormulaTreeSerializer.Deserialize(lines[2]);
             return new FormulaRenderArguments(formulaTree, ranges, colorTransformation);

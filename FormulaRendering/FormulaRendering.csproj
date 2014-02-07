@@ -43,7 +43,7 @@
     <Compile Include="FormulaRenderResult.cs" />
     <Compile Include="FormulaRender.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RangesForFormula2DProjection.cs" />
+    <Compile Include="RangeUtilities.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Formulas\Formulas.csproj">

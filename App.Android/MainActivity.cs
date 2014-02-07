@@ -58,8 +58,10 @@ namespace WallpaperGenerator.App.Android
             _imageView = FindViewById<ImageView>(Resource.Id.imageView);
             _coresCountTextView = FindViewById<TextView>(Resource.Id.coresCountTextView);
             TextView sizeTextView = FindViewById<TextView>(Resource.Id.sizeTextView);
+            TextView launcherTextView = FindViewById<TextView>(Resource.Id.launcherTextView);
             _technicalInfoLayout = FindViewById<LinearLayout>(Resource.Id.technicalInfoLayout);
 
+            launcherTextView.Text = "launcher: " + IntentShortcuts.GetLauncherPackageName(this);
             WallpaperManager wallpaperManager = WallpaperManager.GetInstance(this);
             Point wallpaperSize = wallpaperManager.GetDesiredSize(WindowManager.DefaultDisplay, Resources.Configuration);
             Size imageSize = new Size(wallpaperSize.X, wallpaperSize.Y);

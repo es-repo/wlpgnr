@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
@@ -59,6 +58,14 @@ namespace Android.Utilities
             i.SetData(Uri.Parse(uri));
             i.PutExtra(Intent.ExtraEmail, new[] { to });
             context.StartActivity(i);
+        }
+
+        public static string GetLauncherPackageName(Context context)
+        {
+            Intent intent = new Intent(Intent.ActionMain);
+            intent.AddCategory(Intent.CategoryHome);
+            ResolveInfo resolveInfo = context.PackageManager.ResolveActivity(intent, PackageInfoFlags.MatchDefaultOnly);
+            return resolveInfo.ActivityInfo.PackageName;
         }
     }
 }

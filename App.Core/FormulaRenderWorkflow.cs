@@ -164,7 +164,7 @@ namespace WallpaperGenerator.App.Core
 
         private Range[] CreateRandomRanges(int variablesCount)
         {
-            return RangesForFormula2DProjection.CreateRandom(_random, variablesCount, 1, GenerationParams.RangeBounds);
+            return RangeUtilities.CreateRandom(_random, variablesCount, 1, GenerationParams.RangeBounds);
         }
 
         private ColorTransformation CreateRandomColorTransformation()

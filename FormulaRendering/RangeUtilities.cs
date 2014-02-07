@@ -6,7 +6,7 @@ using WallpaperGenerator.Utilities;
 
 namespace WallpaperGenerator.FormulaRendering
 {
-    public static class RangesForFormula2DProjection
+    public static class RangeUtilities
     {
         public static string ToString(Range[] ranges)
         {
