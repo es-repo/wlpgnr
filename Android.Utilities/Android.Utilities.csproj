@@ -65,6 +65,10 @@
     <AndroidResource Include="Resources\Values\Dimens.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Crittercism.Android\Crittercism.Android.csproj">
+      <Project>{7b2d0d67-286d-40c5-acae-f57f43e607aa}</Project>
+      <Name>Crittercism.Android</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{7d4a8b31-9e0b-4c8a-914b-e469d622f21c}</Project>
       <Name>Utilities</Name>

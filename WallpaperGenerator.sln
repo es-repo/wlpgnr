@@ -29,6 +29,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Shared.Testing", "App.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdMob.Android", "AdMob.Android\AdMob.Android.csproj", "{52A9F2B4-F523-4C0C-AE41-30040C05ED94}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlurryAnalytics.Android", "FlurryAnalytics.Android\FlurryAnalytics.Android.csproj", "{81070E12-69FC-43E6-ADAA-57A0D16A5243}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crittercism.Android", "Crittercism.Android\Crittercism.Android.csproj", "{7B2D0D67-286D-40C5-ACAE-F57F43E607AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleAnalytics.Android", "GoogleAnalytics.Android\GoogleAnalytics.Android.csproj", "{6E1E3F51-01DE-400A-8DB5-067CDD6047C4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,6 +99,18 @@ Global
 		{52A9F2B4-F523-4C0C-AE41-30040C05ED94}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52A9F2B4-F523-4C0C-AE41-30040C05ED94}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52A9F2B4-F523-4C0C-AE41-30040C05ED94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81070E12-69FC-43E6-ADAA-57A0D16A5243}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81070E12-69FC-43E6-ADAA-57A0D16A5243}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81070E12-69FC-43E6-ADAA-57A0D16A5243}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81070E12-69FC-43E6-ADAA-57A0D16A5243}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B2D0D67-286D-40C5-ACAE-F57F43E607AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B2D0D67-286D-40C5-ACAE-F57F43E607AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B2D0D67-286D-40C5-ACAE-F57F43E607AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B2D0D67-286D-40C5-ACAE-F57F43E607AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E1E3F51-01DE-400A-8DB5-067CDD6047C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E1E3F51-01DE-400A-8DB5-067CDD6047C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E1E3F51-01DE-400A-8DB5-067CDD6047C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E1E3F51-01DE-400A-8DB5-067CDD6047C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

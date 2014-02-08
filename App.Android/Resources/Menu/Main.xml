@@ -10,12 +10,6 @@
     android:showAsAction="ifRoom|withText"
     android:title="@string/Share"/>
   <item
-  android:id="@+id/removeAdsMenuItem"
-  android:showAsAction="withText"
-  android:title="@string/RemoveAds"
-  android:visible="gone"/>
-
-  <item
     android:id="@+id/openGalleryMenuItem"
     android:showAsAction="withText"
     android:title="@string/OpenGallery"/>

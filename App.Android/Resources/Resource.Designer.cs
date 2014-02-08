@@ -113,8 +113,8 @@ namespace WallpaperGenerator.App.Android
 			// aapt resource value: 0x7f08000b
 			public const int adView = 2131230731;
 			
-			// aapt resource value: 0x7f080014
-			public const int benchmarkMenuItem = 2131230740;
+			// aapt resource value: 0x7f080013
+			public const int benchmarkMenuItem = 2131230739;
 			
 			// aapt resource value: 0x7f08000d
 			public const int changeColorsButton = 2131230733;
@@ -122,8 +122,8 @@ namespace WallpaperGenerator.App.Android
 			// aapt resource value: 0x7f080009
 			public const int coresCountTextView = 2131230729;
 			
-			// aapt resource value: 0x7f080015
-			public const int displayTechnicalInfoMenuItem = 2131230741;
+			// aapt resource value: 0x7f080014
+			public const int displayTechnicalInfoMenuItem = 2131230740;
 			
 			// aapt resource value: 0x7f080000
 			public const int errorScrollView = 2131230720;
@@ -131,8 +131,8 @@ namespace WallpaperGenerator.App.Android
 			// aapt resource value: 0x7f080001
 			public const int errorTextView = 2131230721;
 			
-			// aapt resource value: 0x7f080017
-			public const int feedbackMenuItem = 2131230743;
+			// aapt resource value: 0x7f080016
+			public const int feedbackMenuItem = 2131230742;
 			
 			// aapt resource value: 0x7f080005
 			public const int formulaTextView = 2131230725;
@@ -149,14 +149,11 @@ namespace WallpaperGenerator.App.Android
 			// aapt resource value: 0x7f080007
 			public const int launcherTextView = 2131230727;
 			
-			// aapt resource value: 0x7f080013
-			public const int openGalleryMenuItem = 2131230739;
-			
-			// aapt resource value: 0x7f080016
-			public const int rateAppMenuItem = 2131230742;
-			
 			// aapt resource value: 0x7f080012
-			public const int removeAdsMenuItem = 2131230738;
+			public const int openGalleryMenuItem = 2131230738;
+			
+			// aapt resource value: 0x7f080015
+			public const int rateAppMenuItem = 2131230741;
 			
 			// aapt resource value: 0x7f08000a
 			public const int renderTimeTextView = 2131230730;

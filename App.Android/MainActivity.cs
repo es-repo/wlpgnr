@@ -10,6 +10,8 @@ using Android.Utilities;
 using Android.Views;
 using Android.Widget;
 using Com.Google.Ads;
+using Com.Flurry.Android;
+using Com.Google.Analytics.Tracking.Android;
 using WallpaperGenerator.App.Core;
 using WallpaperGenerator.Utilities;
 using WallpaperGenerator.Utilities.ProgressReporting;
@@ -38,10 +40,13 @@ namespace WallpaperGenerator.App.Android
             get { return ((BitmapDrawable)_imageView.Drawable).Bitmap; }
         }
 
+        public MainActivity() : base("52f6954f4002050bd1000004")
+        {
+        }
+
         protected override void OnCreate(Bundle bundle)
         {
             CrushReportEmail = Resources.GetString(Resource.String.CrushReportEmail);
-            
             base.OnCreate(bundle);
 
             SetContentView(Resource.Layout.Main);
@@ -153,12 +158,16 @@ namespace WallpaperGenerator.App.Android
 
         private async Task OnGenerateClicked()
         {
+            FlurryAgent.LogEvent(AnalyticsEvents.GenerateNew, true);
             await OnGenerateOrBenchmarkClicked(false);
+            FlurryAgent.EndTimedEvent(AnalyticsEvents.GenerateNew);
         }
 
         private async Task OnBenchmarkMenuItemSelected()
         {
+            FlurryAgent.LogEvent(AnalyticsEvents.Benchmark, true);
             await OnGenerateOrBenchmarkClicked(true);
+            FlurryAgent.EndTimedEvent(AnalyticsEvents.Benchmark);
         }
 
         private async Task OnGenerateOrBenchmarkClicked(bool benchmark)
@@ -176,9 +185,11 @@ namespace WallpaperGenerator.App.Android
             if (_workflow.FormulaRenderArguments == null || _workflow.IsImageRendering)
                 return;
 
+            FlurryAgent.LogEvent(AnalyticsEvents.ChangeColors, true);
             FormulaRenderArguments formulaRenderArguments = _workflow.ChangeColors();
             _formulaTextView.Text = formulaRenderArguments.ToString();
             await DrawImageAsync(false, false);
+            FlurryAgent.EndTimedEvent(AnalyticsEvents.ChangeColors);
         }
 
         private async Task OnTransformClicked()
@@ -186,9 +197,11 @@ namespace WallpaperGenerator.App.Android
             if (_workflow.FormulaRenderArguments == null || _workflow.IsImageRendering)
                 return;
 
+            FlurryAgent.LogEvent(AnalyticsEvents.TranformImage, true);
             FormulaRenderArguments formulaRenderArguments = _workflow.TransformRanges();
             _formulaTextView.Text = formulaRenderArguments.ToString();
             await DrawImageAsync(false, false);
+            FlurryAgent.EndTimedEvent(AnalyticsEvents.TranformImage);
         }
 
         private async void OnSetAsWallpaperClicked()
@@ -196,6 +209,7 @@ namespace WallpaperGenerator.App.Android
             if (!_workflow.IsImageReady)
                 return;
 
+            FlurryAgent.LogEvent(AnalyticsEvents.SetAsWallpaper, true);
             ProgressDialog progressDialog = CreateProgressDialog(Resources.GetString(Resource.String.SettingWallpaper));
             progressDialog.Show();
             try
@@ -210,6 +224,7 @@ namespace WallpaperGenerator.App.Android
             finally
             {
                 progressDialog.Dismiss();
+                FlurryAgent.EndTimedEvent(AnalyticsEvents.SetAsWallpaper);
             }
         }
 
@@ -227,6 +242,7 @@ namespace WallpaperGenerator.App.Android
             if (!_workflow.IsImageReady)
                 return;
 
+            FlurryAgent.LogEvent(AnalyticsEvents.Save, true);
             ProgressDialog progressDialog = CreateProgressDialog(Resources.GetString(Resource.String.SavingWallpaper));
             progressDialog.Show();
             try
@@ -242,11 +258,13 @@ namespace WallpaperGenerator.App.Android
             finally
             {
                 progressDialog.Dismiss();
+                FlurryAgent.EndTimedEvent(AnalyticsEvents.Save);
             }
         }
 
         private void OnOpenGalleryMenuItemSelected()
         {
+            FlurryAgent.LogEvent(AnalyticsEvents.OpenGallery);
             IntentShortcuts.OpenGallery(this);
         }
 
@@ -255,6 +273,7 @@ namespace WallpaperGenerator.App.Android
             if (!_workflow.IsImageReady)
                 return;
 
+            FlurryAgent.LogEvent(AnalyticsEvents.Share, true);
             string message = Resources.GetString(Resource.String.ShareMessage);
             string packageName = ApplicationContext.PackageName;
             message = message.Replace("{packageName}", packageName);
@@ -268,17 +287,20 @@ namespace WallpaperGenerator.App.Android
             catch (Exception e)
             {
                 ExceptionHandler.HandleExpected(e);
+                FlurryAgent.EndTimedEvent(AnalyticsEvents.Share);
             }
         }
 
         private void OnRateAppMenuItemSelected()
         {
+            FlurryAgent.LogEvent(AnalyticsEvents.RateTheApp);
             string packageName = ApplicationContext.PackageName;
             StartActivity(new Intent(Intent.ActionView, global::Android.Net.Uri.Parse("market://details?id=" + packageName)));
         }
 
         private void OnFeedbackMenuItemSelected()
         {
+            FlurryAgent.LogEvent(AnalyticsEvents.Feedback);
             string subject = Resources.GetString(Resource.String.FeedbackSubject);
             string appVersion = PackageManager.GetPackageInfo(PackageName, 0).VersionName;
             string deviceInfo = string.Format("{0} {1} {2}", Build.Brand, Build.Model, Build.VERSION.Sdk);
@@ -354,6 +376,20 @@ namespace WallpaperGenerator.App.Android
                 .Create();
             dialog.SetCanceledOnTouchOutside(true);
             return dialog;
+        }
+
+        protected override void OnStart()
+        {
+            base.OnStart();
+            EasyTracker.Instance.ActivityStart(this); 
+            FlurryAgent.OnStartSession(this, "DQ96NFZ9S64YT2NXJV9F");
+        }
+
+        protected override void OnStop()
+        {
+            base.OnStop();
+            EasyTracker.Instance.ActivityStop(this); 
+            FlurryAgent.OnEndSession(this);
         }
 
         protected override void OnDestroy()

@@ -64,6 +64,7 @@
     <Compile Include="..\App.Shared\WallpaperFileManager.cs">
       <Link>WallpaperFileManager.cs</Link>
     </Compile>
+    <Compile Include="AnalyticsEvents.cs" />
     <Compile Include="AndroidFormulaBitmap.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
@@ -107,6 +108,7 @@
     <AndroidResource Include="Resources\Drawable-mdpi\ic_action_transform.png" />
     <AndroidResource Include="Resources\Drawable-xhdpi\ic_action_transform.png" />
     <AndroidResource Include="Resources\Drawable-xxhdpi\ic_action_transform.png" />
+    <TransformFile Include="Resources\Values\analytics.xml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\" />
@@ -120,6 +122,14 @@
       <Project>{5461607B-E975-4592-95D8-781DE36D6E11}</Project>
       <Name>Android.Utilities</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Crittercism.Android\Crittercism.Android.csproj">
+      <Project>{7b2d0d67-286d-40c5-acae-f57f43e607aa}</Project>
+      <Name>Crittercism.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FlurryAnalytics.Android\FlurryAnalytics.Android.csproj">
+      <Project>{81070e12-69fc-43e6-adaa-57a0d16a5243}</Project>
+      <Name>FlurryAnalytics.Android</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FormulaRendering\FormulaRendering.csproj">
       <Project>{c4dd7aac-acfb-45ca-b1b3-7bef7714deb0}</Project>
       <Name>FormulaRendering</Name>
@@ -127,6 +137,10 @@
     <ProjectReference Include="..\Formulas\Formulas.csproj">
       <Project>{190058e2-f017-4d78-b076-cb6ac313246d}</Project>
       <Name>Formulas</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GoogleAnalytics.Android\GoogleAnalytics.Android.csproj">
+      <Project>{6E1E3F51-01DE-400A-8DB5-067CDD6047C4}</Project>
+      <Name>GoogleAnalytics.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{7D4A8B31-9E0B-4C8A-914B-E469D622F21C}</Project>

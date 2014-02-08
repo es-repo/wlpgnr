@@ -1,7 +1,9 @@
-using System;
 using Android.App;
 using Android.Content;
 using Android.Util;
+using Com.Crittercism.App;
+using Java.Lang;
+using Exception = System.Exception;
 
 namespace Android.Utilities
 {
