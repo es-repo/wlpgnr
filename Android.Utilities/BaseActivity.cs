@@ -2,6 +2,8 @@ using Android.App;
 using Android.OS;
 using Android.Runtime;
 using Com.Crittercism.App;
+using Com.Flurry.Android;
+using Com.Google.Analytics.Tracking.Android;
 using Java.Lang;
 
 namespace Android.Utilities
@@ -26,8 +28,11 @@ namespace Android.Utilities
 
             AndroidEnvironment.UnhandledExceptionRaiser += (s, a) =>
             {
-                a.Handled = false;
-                Crittercism.LogHandledException(Throwable.FromException(a.Exception));
+                a.Handled = true;
+                System.Exception ex = a.Exception;
+                EasyTracker.Tracker.SendException(ex.Message, Throwable.FromException(ex), true);
+                FlurryAgent.OnError(ex.GetType().Name, ex.Message, Throwable.FromException(ex));
+                Crittercism.LogHandledException(Throwable.FromException(ex));
                 //StringBuilder errorReport = new StringBuilder();
                 //errorReport.Append("Error\n===============\n");
                 //errorReport.Append(a.Exception.ToDetailString());

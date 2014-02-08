@@ -158,6 +158,7 @@ namespace WallpaperGenerator.App.Android
 
         private async Task OnGenerateClicked()
         {
+            SendGAEvent(AnalyticsEvents.GenerateNew);
             FlurryAgent.LogEvent(AnalyticsEvents.GenerateNew, true);
             await OnGenerateOrBenchmarkClicked(false);
             FlurryAgent.EndTimedEvent(AnalyticsEvents.GenerateNew);
@@ -165,6 +166,7 @@ namespace WallpaperGenerator.App.Android
 
         private async Task OnBenchmarkMenuItemSelected()
         {
+            SendGAEvent(AnalyticsEvents.Benchmark);
             FlurryAgent.LogEvent(AnalyticsEvents.Benchmark, true);
             await OnGenerateOrBenchmarkClicked(true);
             FlurryAgent.EndTimedEvent(AnalyticsEvents.Benchmark);
@@ -185,6 +187,7 @@ namespace WallpaperGenerator.App.Android
             if (_workflow.FormulaRenderArguments == null || _workflow.IsImageRendering)
                 return;
 
+            SendGAEvent(AnalyticsEvents.ChangeColors);
             FlurryAgent.LogEvent(AnalyticsEvents.ChangeColors, true);
             FormulaRenderArguments formulaRenderArguments = _workflow.ChangeColors();
             _formulaTextView.Text = formulaRenderArguments.ToString();
@@ -197,6 +200,7 @@ namespace WallpaperGenerator.App.Android
             if (_workflow.FormulaRenderArguments == null || _workflow.IsImageRendering)
                 return;
 
+            SendGAEvent(AnalyticsEvents.TranformImage);
             FlurryAgent.LogEvent(AnalyticsEvents.TranformImage, true);
             FormulaRenderArguments formulaRenderArguments = _workflow.TransformRanges();
             _formulaTextView.Text = formulaRenderArguments.ToString();
@@ -209,6 +213,7 @@ namespace WallpaperGenerator.App.Android
             if (!_workflow.IsImageReady)
                 return;
 
+            SendGAEvent(AnalyticsEvents.SetAsWallpaper);
             FlurryAgent.LogEvent(AnalyticsEvents.SetAsWallpaper, true);
             ProgressDialog progressDialog = CreateProgressDialog(Resources.GetString(Resource.String.SettingWallpaper));
             progressDialog.Show();
@@ -242,6 +247,7 @@ namespace WallpaperGenerator.App.Android
             if (!_workflow.IsImageReady)
                 return;
 
+            SendGAEvent(AnalyticsEvents.Save);
             FlurryAgent.LogEvent(AnalyticsEvents.Save, true);
             ProgressDialog progressDialog = CreateProgressDialog(Resources.GetString(Resource.String.SavingWallpaper));
             progressDialog.Show();
@@ -264,6 +270,7 @@ namespace WallpaperGenerator.App.Android
 
         private void OnOpenGalleryMenuItemSelected()
         {
+            SendGAEvent(AnalyticsEvents.OpenGallery);
             FlurryAgent.LogEvent(AnalyticsEvents.OpenGallery);
             IntentShortcuts.OpenGallery(this);
         }
@@ -273,6 +280,7 @@ namespace WallpaperGenerator.App.Android
             if (!_workflow.IsImageReady)
                 return;
 
+            SendGAEvent(AnalyticsEvents.Share);
             FlurryAgent.LogEvent(AnalyticsEvents.Share, true);
             string message = Resources.GetString(Resource.String.ShareMessage);
             string packageName = ApplicationContext.PackageName;
@@ -293,6 +301,7 @@ namespace WallpaperGenerator.App.Android
 
         private void OnRateAppMenuItemSelected()
         {
+            SendGAEvent(AnalyticsEvents.RateTheApp);
             FlurryAgent.LogEvent(AnalyticsEvents.RateTheApp);
             string packageName = ApplicationContext.PackageName;
             StartActivity(new Intent(Intent.ActionView, global::Android.Net.Uri.Parse("market://details?id=" + packageName)));
@@ -300,6 +309,7 @@ namespace WallpaperGenerator.App.Android
 
         private void OnFeedbackMenuItemSelected()
         {
+            SendGAEvent(AnalyticsEvents.Feedback);
             FlurryAgent.LogEvent(AnalyticsEvents.Feedback);
             string subject = Resources.GetString(Resource.String.FeedbackSubject);
             string appVersion = PackageManager.GetPackageInfo(PackageName, 0).VersionName;
@@ -396,6 +406,11 @@ namespace WallpaperGenerator.App.Android
         {
             _adView. Destroy();
             base.OnDestroy();
+        }
+
+        private void SendGAEvent(string eventName)
+        {
+            EasyTracker.Tracker.SendEvent(GetType().Name, eventName, "", new Java.Lang.Long(0));
         }
     }
 }

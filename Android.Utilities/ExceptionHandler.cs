@@ -1,9 +1,11 @@
 using Android.App;
 using Android.Content;
-using Android.Util;
 using Com.Crittercism.App;
+using Com.Flurry.Android;
+using Com.Google.Analytics.Tracking.Android;
 using Java.Lang;
 using Exception = System.Exception;
+using Log = Android.Util.Log;
 
 namespace Android.Utilities
 {
@@ -18,6 +20,9 @@ namespace Android.Utilities
 
         public void HandleExpected(Exception ex)
         {
+            EasyTracker.Tracker.SendException(ex.Message, Throwable.FromException(ex), false);
+            FlurryAgent.OnError(ex.GetType().Name, ex.Message, Throwable.FromException(ex));
+            Crittercism.LogHandledException(Throwable.FromException(ex));
             Log.Error(_context.GetType().Name, ex.Message);
             string errorMessage = _context.Resources.GetString(Resource.String.CommonErrorMessage);
             AlertDialog dialog = new AlertDialog.Builder(_context).SetMessage(errorMessage).Create();
