@@ -6,7 +6,6 @@ using Android.Content.PM;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
-using Android.Provider;
 using Android.Utilities;
 using Android.Views;
 using Android.Widget;
@@ -53,7 +52,6 @@ namespace WallpaperGenerator.App.Android
 
             _horizontalScrollView = FindViewById<HorizontalScrollView>(Resource.Id.horizontalScrollView);
             _formulaTextView = FindViewById<TextView>(Resource.Id.formulaTextView);
-            _formulaTextView.Visibility = ViewStates.Visible;
             _renderTimeTextView = FindViewById<TextView>(Resource.Id.renderTimeTextView);
             _imageView = FindViewById<ImageView>(Resource.Id.imageView);
             _coresCountTextView = FindViewById<TextView>(Resource.Id.coresCountTextView);
@@ -79,11 +77,7 @@ namespace WallpaperGenerator.App.Android
 
         private void InitAdView()
         {
-            // TODO: remove test mode.
             AdRequest adRequest = new AdRequest();
-            adRequest.SetTesting(true);
-            string androidId = Settings.Secure.GetString(ContentResolver, Settings.Secure.AndroidId);
-            adRequest.AddTestDevice(androidId);
             _adView.LoadAd(adRequest);
         }
 

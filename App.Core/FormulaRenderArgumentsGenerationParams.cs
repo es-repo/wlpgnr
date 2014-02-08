@@ -42,7 +42,7 @@ namespace WallpaperGenerator.App.Core
         public Operator[] ObligatoryOperators = {OperatorsLibrary.Sin, OperatorsLibrary.Sum};
 
         public bool PredefinedFormulaRenderingArgumentsEnabled = true;
-        public int FirstPredefinedFormulaRenderingArgumentsCount = 1;
+        public int FirstPredefinedFormulaRenderingArgumentsCount = 3;
         public int RepeatPredefinedFormulaRenderingArgumentsAfterEvery = 5;
         public string[] PredefinedFormulaRenderingFormulaRenderArgumentStrings =
         {
@@ -347,7 +347,69 @@ Sum Sum Sum Sin Sum Sum Cos Sin Cos Atan Cbrt x2 Sum Sum Cos Sum Cos x6 Sum x1 x
 
 @"-16.38,-0.52;-17.98,1.89;-10.18,4.29;-0.04,3.81;0.44,2.43
 -1.24,-0.09,0.71,0.12;1.09,-0.27,-1.28,0.11;-0.7,-1.55,0.06,0.16
-Sin Sin Sin Sqrt Sin Sum Sqrt Sum Sum Sin Sin Sqrt x4 Sqrt Sqrt Sin x1 Sqrt Sum Sqrt Sqrt x2 Sum Sin x3 Sqrt x1 Sqrt Sin Sum Sin Sum Sin x2 Sin x0 Sin Sin Sqrt x2"
+Sin Sin Sin Sqrt Sin Sum Sqrt Sum Sum Sin Sin Sqrt x4 Sqrt Sqrt Sin x1 Sqrt Sum Sqrt Sqrt x2 Sum Sin x3 Sqrt x1 Sqrt Sin Sum Sin Sum Sin x2 Sin x0 Sin Sin Sqrt x2",
+
+@"-0.25,6.23;-10.63,2.57;-1.12,0.99;-7.45,1.06;-2.24,0.37;-0.64,0.77;-10.74,11.42;0.02,4.27;-0.88,0.12;-8.68,-7.68;-6.25,-5.25
+0.16,1.48,-0.87,0.01;4.49,-4.91,-0.77,0.15;-1.44,-0.3,-1.47,0.17
+Sqrt Sub Sin Max Sin Atan Pow -3.67 Sqrt Atan Pow Sqrt x12 x3 Sub Sqrt Max Sqrt Sum Sin Sum x2 x9 Sqrt Sub x0 x1 Sin Pow 4.32 Atan Sqrt x2 Sub Sin Pow 0.02 Atan Sqrt Sum x5 x11 Sin Sum Sin Sub Sin x7 Sum x6 x9 Sin Sub Sin x5 Sub x12 x9 Sin Atan Pow Sin Atan Pow Sqrt Sub Sqrt x4 1.98 -1.96 -0.83",
+
+@"0.02,1.89;-1.32,4.82;-3.95,2.58;2.51,5.13
+-0.15,-0.53,-1.32,0.01;-2.33,0.02,-2.32,0.12;-2.13,-0.11,0.35,0.19
+Cbrt Sum Cbrt Sub Cos Sub Cos Sub Cos x2 Sum x3 x1 Atan Pow3 Sub x2 0.89 Sin Sum Sin Mul Cbrt x2 Sub x1 x0 Sin Sub Cos x3 Sum 3.14 x3 Sin Sub -9.52 Cbrt Max Atan Pow3 Sub x3 x3 Cos Sum Cos x3 Sub x2 x1",
+
+@"-1.41,3.34;-1.02,6.65;-2.64,2.77;-2.71,-0.9;-0.88,0.12;0.88,2.54;-1.18,2.59;-6.93,-0.43;3.15,4.15;-6.84,-0.2;-0.83,0.17
+2.07,2.57,-2.14,0.3;-0.21,1.67,0.94,0.01;0.36,0.76,0,0.11
+Sin Sub Atan Ln Sum Sin Sum Atan Pow2 Sub Sqrt x10 Sum x2 x1 Sin Sum Cos Sub x9 x8 Sin Sum x7 x0 Sqrt Sum Atan Pow2 Sub Atan Pow3 x2 Sum x1 x1 Cbrt Sum Atan Ln x0 Sub Atan Ln x8 Sub x12 x2 Abs Sum Atan Ln Sum Cos Sum Atan Ln x12 Sub Sqrt x11 Sub x3 x3 Atan Ln Sum Sqrt x2 Sum x7 x3 Sqrt Sub Sin Sub Cbrt Sum Atan x6 Sum 7.4 x3 Sqrt Sum Abs x2 Sum x6 x2 Cos Sum Atan Pow3 Sum x3 x2 Sin Sub Sqrt x3 Sum x8 x3",
+
+@"-11.97,9.81;0.19,8.55;-1.29,3.11;-18.22,-8.37;-0.86,2.67;-1.16,6.68;-0.8,10.38;-0.63,0.6;-0.9,2.13;-4.77,-0.12;-0.48,0.52
+0.54,-0.45,-0.06,0.08;-0.35,1.27,-0.98,0.11;2.17,-0.97,-0.26,0.2
+Cbrt Mul Cos Mul Cos Mul Cos Sum Atan Ln Mul Cos x5 9.52 Sum Cbrt Mul Atan Ln x7 Sum x0 x10 x1 Cos Mul Cbrt Sum Cbrt Sum x9 x4 Cos Sum x4 x5 Sin Sum Cos Atan Div x1 x10 Atan Ln x8 Sum Cos Sum Sin Sum Cos Sum Cos x3 Sum x5 x0 Cos Mul Cos x7 5.03 Mul Sin Sum Cos Mul x10 x9 Cos Atan Div x9 x2 Cos Mul Atan Ln x10 Mul Sin x9 Sum x5 x7 Cos Sum Cos Sum Cbrt Sum Cos x6 x1 Sum Sin Sum x5 x2 Atan Ln x5 Mul Cos Atan Div Sin x2 Mul x8 x0 Sin Sum Sin Sum x8 x9 Cbrt Mul x10 x1 Cos Mul Cos Sum x0 Sin Mul Cos Sum Cos Sum x0 x0 Atan Ln x6 Sum x1 Sin Sum Cos x5 x2 Mul Sin Sum Cos Sum Sin Mul Atan Ln x0 Mul x3 x7 Sin Mul Atan Ln x3 Mul x2 x4 Sin Mul Cbrt Atan Div x6 x9 Cos Mul Sin x8 Mul x4 x9 Sin Mul Sin Sum Atan Ln Sum x2 x7 Cbrt Mul Sin x9 Sum x2 x8 Cos Atan Div Sin Mul x0 x3 Sin Mul x1 x5",
+
+@"-3.96,1.11;-0.67,1.62;-4.85,-1.42;-3.87,5.6;-1.46,10.67;3.9,4.9
+0.02,0.02,0.01,0.09;0.22,1.11,-1.11,0.12;-0.81,2.55,-1.63,0.22
+Sqrt Sum Cos Sub 3.89 Sin Sum Sqrt Atan Div Sin x0 Sub x1 x2 x3 Sin Mul Sin Sum x2 Cos Sum Sin Mul x5 x4 Sin Sum x4 x4 Sqrt Sum Sin Mul Cos Mul x2 x4 Sin Sum x5 x4 Cos Sum Sin Mul x3 x4 Sin Mul x0 x0",
+
+@"-3.64,-0.68;-2.76,-1.76;-2.69,7.83;1.1,6.35;-10.36,9.45;-3.06,-1.38;1.03,5.99;-3.6,-1.86;-0.97,0.89;-6.23,3.52;0.53,1.53;-0.67,0.33
+0.62,0.04,0.58,0.3;3.07,-1.71,0.33,0.19;-2.44,2.41,2.75,0.09
+Sin Sub Cbrt Mul x5 Cos Mul Sin Sum Cbrt Sub Sqrt Sub Atan Ln x6 Atan Div x0 x12 Atan Ln Sum x8 x4 x2 Cos Sub Cos Mul Sin Atan Pow x9 x3 Cos Mul Cbrt x0 Sum x8 x9 Cos Mul Sqrt Sum Cbrt x0 Mul x0 x3 Cbrt Sub Cos x1 Mul x3 x6 Cos Mul Cbrt Sum Cos Sub Sin Mul Sin Sum Cbrt x4 Mul x1 x3 Cbrt Sum Sqrt x9 Sub x5 x12 Cbrt Sum Cbrt Sum Cbrt x11 Pow x5 Atan x4 Sqrt Sub Cos x7 Mul x9 x1 Cbrt Sub Sin Sum Cbrt Sub Atan Ln x11 x11 Sum Sin Mul 0.62 x4 x2 Cos Mul Cbrt Sub Sqrt x8 Sub x9 x12 x0 Cbrt Atan Div Cbrt Sub x5 Cbrt Sub Cos Sum x0 x0 Cbrt Mul x2 x2 Sqrt Mul Cbrt Mul Sin Pow 5.55 Atan x6 Cos Sum x11 x1 Cos Mul Cos Sub x6 2.33 Atan Ln x6",
+
+@"-1.78,-0.35;2.71,14.78;4.61,9.6;-5.92,0.34;5.23,7.78;15.74,19.13;-2.97,2.8;0.34,4.89
+1.47,-0.26,-3,0.15;-0.9,1.81,-2.11,0.22;-0.15,-0.4,-2.31,0.17
+Sin Sum Sin Sub Sin Sum Sin Max Cbrt Sum x7 Sin Mul x1 x7 Sin Sum Abs Pow x2 Atan x3 Sin Sum x2 x4 x2 Sin Sum x5 Sin Sum Sin Sum Sin Sum x3 x1 Sin Sum x0 x7 x0 Cbrt Mul Sin Sub Abs Sum Cbrt Sub Sin Sum x5 x3 Sin Sum x2 x4 x6 Sin Sum Cbrt Sum Sin Sub x3 x2 Abs Atan Pow x5 x7 x3 Cbrt Sub Sin Pow x1 Atan Cbrt Sum Cbrt x1 x0 x0",
+
+@"-4,0.24;0.51,8.59;-7.6,8.09;-7.58,5.98;-12.28,1.37;-8.97,-5.98;-5.05,3.77;-6.81,11.22;-1.61,-0.61;-5.23,-0.71;-13.54,3;6.41,10.35;-10.65,7.21
+0.16,1.09,0.01,0.02;-0.02,0.69,-0.39,0.02;0.21,0.23,0.41,0.03
+Sin Sum Cbrt Sub Cbrt Sum Cbrt Sub Sqrt Sum x4 x6 Sin Sum x13 x4 Cos Sub Sqrt Sum x14 x9 Sin Sum x1 x3 Sqrt Sub Sqrt Pow -4.51 Atan Sqrt x12 Sub x8 Sin Sum Cos x0 Sum x4 x4 Cos Sub Cos Sum Sqrt Sum Cos Mul x13 x8 Cos Sub x14 x6 Sqrt Sum x2 Cbrt Sum x5 x14 Sqrt Sum x0 Sqrt Sub x7 Sin Sum x7 x8",
+
+@"-1.14,-0.14;-0.47,1.53;0.1,1.1;-1.16,2.07;0.03,1.03;-0.38,2.39
+-1.56,-1.55,-0.65,0.02;0.23,-0.32,0,0.27;0.27,0.07,-0.55,0.25
+Cbrt Sum Cbrt Sum 1.8 Cbrt Mul Sin Mul Atan Ln x5 Sub Cbrt x0 -6.49 Pow x1 Atan Atan Ln x5 Sub Sin Sum Sin Sub Sqrt Sub Atan Ln x2 Sub x5 x5 Atan Ln Sub -6.62 x2 Cos Sum Atan Ln Sum x4 x1 Cbrt Mul Sqrt x0 Sum x1 x2 Cos Sub Sin Atan Pow Abs Sum x3 x5 -7.31 Cbrt Sub Cbrt Sub Cbrt x2 Atan Pow 8.17 x2 Cbrt Sum Atan Ln x2 Sum x0 x1",
+
+@"-1.67,7.55;2.59,6.09;-7.6,-2.84;1.13,2.13
+0.26,2.11,-2.69,0.04;3.09,-0.27,-2.06,0.01;0,0,0,0
+Sqrt Mul Atan Ln Sum Cbrt Sum Cos Mul Sqrt Sum Sqrt Mul x2 x2 Sqrt Mul x3 x2 Abs Sum x1 Cbrt Sum x1 -7.46 7.07 Sin Sum Sqrt Mul -3.06 Cos Sum x2 Cbrt Sum x0 x0 x0 Sin Mul Cos Mul Cos Sum Sin Sum 4.45 Sqrt Sum Sqrt x2 -7.02 x2 Mul Sqrt Mul Abs Sum Cbrt Mul x2 8.6 x0 x2 Cos Sum Cos Sum Sin Sum x3 x0 Sin Sum x0 -1.26 Sqrt Max x1 Sqrt Sum x3 x3 x3",
+
+@"-2.75,2.49;1.03,2.03;-2.24,0.6;-0.32,2.83;2.66,3.66;0.12,2.69
+1.14,-2.01,0.63,0.15;-0.07,-0.31,-1.58,0.15;0.02,0.8,-2.7,0.21
+Sin Cbrt Sum Cbrt Cbrt Sum Atan Ln Sin Atan Ln Sum x4 x0 Sin Cbrt Atan Ln Sin Sum x4 x5 Sum Sum Sum x4 Sin Sum Sin Sin Sin Atan Ln x2 Sin Atan Ln Atan Ln x2 Sin Sin Sin Atan Ln Cbrt Atan Ln x5 Sum Sum Sum Atan Ln Sin Sum Atan Ln x0 Sin x5 Sin Atan Ln Sum Sin x1 Sin x4 Sum Sin Sum Sum Atan Ln x3 Sum Sum x4 x2 x5 Sum Sin Cbrt x0 Sum Sum x4 x5 Atan Ln x5 Sum Sin Atan Ln Sin x4 Sin Sum Sin Sum x1 x3 Sum Sum x1 x2 x5 Atan Ln Sum Cbrt Sum Sin Sum x1 x5 Sin Atan Ln x1 Sin Sum Sum Atan Ln x1 Sin x1 Sum Cbrt x4 Atan Ln x2",
+
+@"-22.11,-2.04;-16.43,-1.55;-1.13,0.44;3.99,7.34;0.2,1.34;-1.54,7.54
+0,0,0,0;-0.37,-0.19,-0.04,0.06;0,0,0,0
+Cbrt Sub Cos Sub Cbrt Sub Cbrt Sub Cbrt Sub Atan Ln x1 Atan Pow 1.7 x4 Sqrt Mul Sin x0 Sub x1 x1 Cos Sub Sin Mul Sin x0 Atan Pow x3 x3 Cbrt Sum Cbrt x1 Atan Pow x0 x1 Atan Ln Sum Cbrt Sum Sin Sub x1 x0 Cbrt Sum x3 x4 Sin Sum Cbrt Sum x5 x2 -6.06 Cbrt Sum Atan Ln Sub Sqrt Sub Cbrt Sum -2.28 x1 Cbrt Sum x3 x1 Sin Sub Cbrt Mul x5 x0 Cos Mul x5 x2 Sin Atan Pow -3.43 Sin Sub Sin Atan Pow -0.28 x0 Cos Sub x0 x2",
+
+@"-0.88,0.12;-0.51,0.49;-0.74,0.26;-0.18,0.82;-0.04,1.22;-0.29,0.71
+0,0.41,-0.33,0.17;1.95,-1.92,-0.02,0.16;-0.4,0.08,-0.82,0.18
+Cbrt Mul Sin Mul Atan Ln Atan Pow x0 x5 Cbrt Sum Sin Mul x8 x7 Cbrt Pow x8 Atan x9 Sin Max x3 Sin Atan Pow Sin x8 x5",
+
+@"-3.62,9.96;-7.03,2.98;-9.36,-3.16;-3.23,14.72;-0.21,4.73;-12.14,0.13;-0.66,0.53;-1.93,4.61;-2.48,8.24;-7.05,-4.12;-18.34,-1.39
+0.06,-0.54,0.98,0.02;-0.45,1.04,1.92,0.16;0,0,0,0
+Atan Ln Sum Sin Mul Sin Sum Sin Mul Sin Sum x0 x13 Sin Sum x8 x0 Sin Sum Sin Sum x6 x9 Sin Sum x8 x9 Atan Ln Sum Sin Sum x12 Sin x13 Sum Sin Sum x8 x2 Sin Mul x6 9.87 Sin Sum Sin Sum Sin Sum Sin Mul x8 x4 Sin Sum x6 x4 Sin Mul Sin Sum x13 x7 Sin Mul x12 x8 Atan Ln Sum Sin Sum Sin x0 Sum x3 x13 Sin Mul Sin x5 Sum x6 x2",
+
+@"-4.16,-0.26;-12.65,0.66;1.68,11.92;-1.52,16.62;-5.63,10.64;-7.04,-0.03;0.07,10.86;6.46,13.96;-3.82,0.86;5.6,6.6
+0.02,0.34,-0.08,0.05;0.71,0,-0.3,0.2;-0.58,-0.03,-0.39,0.2
+Cos Sum Cos Sum Cos Sum Cbrt Atan Pow Cbrt Max Cbrt x1 Max x1 x0 4.34 Cbrt Sum Cbrt Max Cbrt Pow x3 Atan x6 Cos Max x0 x0 Cos Sum Atan Ln x0 Sum Sqrt x5 Max x3 x4 Cbrt Sum Sin Atan Pow Cos Max Sin x1 Sum x8 x6 x5 x6 Cbrt Max Cbrt Max Cbrt Max Cos Atan Pow Cbrt x4 x5 Sum Cos Sum Sin x0 Sum x7 x0 Sqrt Max Cbrt x3 Sum x4 x6 Sqrt Sum x4 Sqrt Sum Cbrt Atan Pow x6 2.08 Cos Max x1 x4 Cos Max Cos Max Cbrt Sum Sin Sum x9 x4 x2 x3 x3"
+
+
         };
     }
 }
