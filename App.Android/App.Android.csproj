@@ -108,7 +108,7 @@
     <AndroidResource Include="Resources\Drawable-mdpi\ic_action_transform.png" />
     <AndroidResource Include="Resources\Drawable-xhdpi\ic_action_transform.png" />
     <AndroidResource Include="Resources\Drawable-xxhdpi\ic_action_transform.png" />
-    <TransformFile Include="Resources\Values\analytics.xml" />
+    <AndroidResource Include="Resources\Values\analytics.xml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\" />
