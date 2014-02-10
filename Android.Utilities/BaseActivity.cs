@@ -28,7 +28,7 @@ namespace Android.Utilities
 
             AndroidEnvironment.UnhandledExceptionRaiser += (s, a) =>
             {
-                a.Handled = true;
+                a.Handled = false;
                 System.Exception ex = a.Exception;
                 EasyTracker.Tracker.SendException(ex.Message, Throwable.FromException(ex), true);
                 FlurryAgent.OnError(ex.GetType().Name, ex.Message, Throwable.FromException(ex));
