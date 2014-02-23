@@ -82,8 +82,8 @@ namespace WallpaperGenerator.App.Android
 
         private void InitAdView()
         {
-            AdRequest adRequest = new AdRequest();
-            _adView.LoadAd(adRequest);
+            //AdRequest adRequest = new AdRequest();
+            //_adView.LoadAd(adRequest);
         }
 
         private void InitButtonBar()
