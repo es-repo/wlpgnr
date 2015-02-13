@@ -83,7 +83,7 @@ namespace WallpaperGenerator.App.Windows.MainWindowControls
             };
             ImageSizeControl = new SizeControl();
             sizeAndRandomPanel.Children.Add(ImageSizeControl);
-            RandomizeCheckBox = new CheckBox { Content = "Randomize", Margin = new Thickness { Top = 10, Bottom = 5}, IsChecked = true };
+            RandomizeCheckBox = new CheckBox { Content = "Randomize", Margin = new Thickness { Top = 10, Bottom = 5}, IsChecked = false };
             sizeAndRandomPanel.Children.Add(RandomizeCheckBox);
             panel.Children.Add(sizeAndRandomPanel);
 
