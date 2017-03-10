@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using MbUnit.Framework;
+using NUnit.Framework;
 using WallpaperGenerator.Utilities.FormalGrammar;
 
 namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
@@ -12,7 +12,7 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
             foreach (Symbol<T>[] expectedSequence in expectedSequences)
             {
                 IEnumerable<Symbol<T>> sequence = rule.Produce();
-                Assert.AreElementsEqual(expectedSequence, sequence.ToArray());
+                CollectionAssert.AreEqual(expectedSequence, sequence.ToArray());
             }
         }
     }

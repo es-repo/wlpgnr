@@ -1,4 +1,4 @@
-﻿using MbUnit.Framework;
+﻿using NUnit.Framework;
 using WallpaperGenerator.Formulas.Operators;
 
 namespace WallpaperGenerator.Formulas.Testing.Operators
@@ -7,9 +7,9 @@ namespace WallpaperGenerator.Formulas.Testing.Operators
     public class ConstantTests
     {
         [Test]
-        [Row(0, 0)]
-        [Row(2, 2)]
-        [Row(-2, -2)]
+        [TestCase(0, 0)]
+        [TestCase(2, 2)]
+        [TestCase(-2, -2)]
         public void TestConstant(double a, double expected)
         {
             Constant constant = new Constant(a);

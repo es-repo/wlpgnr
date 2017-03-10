@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using MbUnit.Framework;
+using NUnit.Framework;
 using Moq;
 using WallpaperGenerator.Formulas;
 using WallpaperGenerator.Formulas.Operators;

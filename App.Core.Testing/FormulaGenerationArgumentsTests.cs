@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using MbUnit.Framework;
+using NUnit.Framework;
 using WallpaperGenerator.Formulas;
 using WallpaperGenerator.Formulas.Operators;
 using WallpaperGenerator.Utilities;
@@ -39,8 +39,8 @@ namespace WallpaperGenerator.App.Core.Testing
             Assert.AreEqual(9.5, args.CreateConstant());
             Assert.AreEqual(5, args.DimensionsCount);
             Assert.AreEqual(8, args.MinimalDepth);
-            Assert.AreApproximatelyEqual(0.29, args.LeafProbability, 0.01);
-            Assert.AreApproximatelyEqual(0.49, args.ConstantProbability, 0.01);
+            Assert.AreEqual(0.29, args.LeafProbability, 0.01);
+            Assert.AreEqual(0.49, args.ConstantProbability, 0.01);
         }
     }
 }

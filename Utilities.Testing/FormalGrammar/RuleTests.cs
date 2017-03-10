@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using MbUnit.Framework;
+using NUnit.Framework;
 using WallpaperGenerator.Utilities.FormalGrammar;
 using WallpaperGenerator.Utilities.FormalGrammar.Rules;
 
@@ -21,7 +21,7 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
             IEnumerable<Symbol<string>> to = rule.Produce();
             string[] sequence = to.Select(s => s.Value).ToArray();
             string[] expectedSequence = { "a", "b", "c"};
-            Assert.AreElementsEqual(expectedSequence, sequence);
+            CollectionAssert.AreEqual(expectedSequence, sequence);
         }
 
         [Test]
@@ -33,7 +33,7 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
             IEnumerable<Symbol<int>> to = rule.Produce();
             int[] sequence = to.Select(s => s.Value).ToArray();
             int[] expectedSequence = {0, 2, 4, 6, 8};
-            Assert.AreElementsEqual(expectedSequence, sequence);
+            CollectionAssert.AreEqual(expectedSequence, sequence);
         }
 
         [Test]

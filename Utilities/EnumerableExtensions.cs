@@ -41,18 +41,20 @@ namespace WallpaperGenerator.Utilities
         public static IEnumerable<T> Repeat<T>(this IEnumerable<T> items, int? count = null)
         {
             if (!items.Any())
-                throw new ArgumentException("Sequence is empty.", "items");
+                yield break;
 
-            int i = 0;
             while (true)
             {
-                if (count != null && i >= count)
-                    break;
+                if (count != null)
+                {
+                    if (count == 0)
+                        break;
+                    else
+                        count--;
+                }
 
                 foreach (T item in items)
                     yield return item;
-
-                i++;
             }
         }
 

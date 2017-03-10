@@ -1,4 +1,4 @@
-﻿using MbUnit.Framework;
+﻿using NUnit.Framework;
 using WallpaperGenerator.Utilities.DataStructures.Trees;
 
 namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees

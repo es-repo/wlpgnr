@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using MbUnit.Framework;
+using NUnit.Framework;
 using WallpaperGenerator.Utilities.DataStructures.Trees;
 
 namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees
@@ -12,7 +12,7 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees
         private TreeNode<int> _rootForTraverseDepthFirstPostOrder;
         private TreeNode<int> _rootForTraverseBredthFirstPreOrder;
         
-        [FixtureSetUp]
+        [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
             //                      0
@@ -80,19 +80,19 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees
 
             int[] expectedValues = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
             int[] values = traversedNodes.Select(ni => ni.Node.Value).ToArray();
-            Assert.AreElementsEqual(expectedValues, values);
+            CollectionAssert.AreEqual(expectedValues, values);
 
             int[] expectedIndexesAmongSiblings = { 0, 0, 0, 1, 2, 1, 0, 1, 2, 2, 0, 1, 2 };
             int[] indexesAmongSiblings = traversedNodes.Select(ni => ni.IndexAmongSiblings).ToArray();
-            Assert.AreElementsEqual(expectedIndexesAmongSiblings, indexesAmongSiblings);
+            CollectionAssert.AreEqual(expectedIndexesAmongSiblings, indexesAmongSiblings);
 
             int[] expectedParentValues = { -1, 0, 1, 1, 1, 0, 5, 5, 5, 0, 9, 9, 9 };
             int[] parentValues = traversedNodes.Select(ni => ni.ParentNode == null ? -1 : ni.ParentNode.Value).ToArray();
-            Assert.AreElementsEqual(expectedParentValues, parentValues);
+            CollectionAssert.AreEqual(expectedParentValues, parentValues);
             
             int[] expectedDepthes = { 0, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2 };
             int[] depthes = traversedNodes.Select(ni => ni.Depth).ToArray();
-            Assert.AreElementsEqual(expectedDepthes, depthes);
+            CollectionAssert.AreEqual(expectedDepthes, depthes);
         }
 
         [Test]
@@ -105,19 +105,19 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees
 
             int[] expectedValues = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
             int[] values = traversedNodes.Select(ni => ni.Node.Value).ToArray();
-            Assert.AreElementsEqual(expectedValues, values);
+            CollectionAssert.AreEqual(expectedValues, values);
 
             int[] expectedIndexesAmongSiblings = { 0, 1, 2, 0, 0, 1, 2, 1, 0, 1, 2, 2, 0 };
             int[] indexesAmongSiblings = traversedNodes.Select(ni => ni.IndexAmongSiblings).ToArray();
-            Assert.AreElementsEqual(expectedIndexesAmongSiblings, indexesAmongSiblings);
+            CollectionAssert.AreEqual(expectedIndexesAmongSiblings, indexesAmongSiblings);
 
             int[] expectedParentValues = { 3, 3, 3, 12, 7, 7, 7, 12, 11, 11, 11, 12, -1 };
             int[] parentValues = traversedNodes.Select(ni => ni.ParentNode == null ? -1 : ni.ParentNode.Value).ToArray();
-            Assert.AreElementsEqual(expectedParentValues, parentValues);
+            CollectionAssert.AreEqual(expectedParentValues, parentValues);
 
             int[] expectedDepthes = { 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 0 };
             int[] depthes = traversedNodes.Select(ni => ni.Depth).ToArray();
-            Assert.AreElementsEqual(expectedDepthes, depthes);
+            CollectionAssert.AreEqual(expectedDepthes, depthes);
         }
 
         [Test]
@@ -130,19 +130,19 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees
 
             int[] expectedValues = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
             int[] values = traversedNodes.Select(ni => ni.Node.Value).ToArray();
-            Assert.AreElementsEqual(expectedValues, values);
+            CollectionAssert.AreEqual(expectedValues, values);
 
             int[] expectedIndexesAmongSiblings = { 0, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2 };
             int[] indexesAmongSiblings = traversedNodes.Select(ni => ni.IndexAmongSiblings).ToArray();
-            Assert.AreElementsEqual(expectedIndexesAmongSiblings, indexesAmongSiblings);
+            CollectionAssert.AreEqual(expectedIndexesAmongSiblings, indexesAmongSiblings);
 
             int[] expectedParentValues = { -1, 0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3 };
             int[] parentValues = traversedNodes.Select(ni => ni.ParentNode == null ? -1 : ni.ParentNode.Value).ToArray();
-            Assert.AreElementsEqual(expectedParentValues, parentValues);
+            CollectionAssert.AreEqual(expectedParentValues, parentValues);
 
             int[] expectedDepthes = { 0, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2 };
             int[] depthes = traversedNodes.Select(ni => ni.Depth).ToArray();
-            Assert.AreElementsEqual(expectedDepthes, depthes);
+            CollectionAssert.AreEqual(expectedDepthes, depthes);
         }
 
         [Test]

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using MbUnit.Framework;
+using NUnit.Framework;
 using WallpaperGenerator.Utilities.DataStructures.Trees;
 using WallpaperGenerator.Utilities.DataStructures.Trees.TreeGenerating;
 using WallpaperGenerator.Utilities.FormalGrammar;
@@ -11,9 +11,8 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees.TreeGenerati
     [TestFixture]
     public class TreeGeneratorTests
     {
-        [Test]
-        [Row(4, "1 2 1 0 2 0 0")]
-        [Row(5, "1 2 1 2 0 0 1 2 0 0")]
+        [TestCase(4, "1 2 1 0 2 0 0")]
+        [TestCase(5, "1 2 1 2 0 0 1 2 0 0")]
         public void TestGenerateTree(int treeDepth, string expectedSequenceString)
         {
             SymbolsSet<string> s = new SymbolsSet<string>(new[]
@@ -61,9 +60,8 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees.TreeGenerati
             Assert.AreEqual(expectedSequenceString, string.Join(" ", traversedTree.ToArray()));
         }
 
-        [Test]
-        [Row(4, "1 2 1 0 1 0")]
-        [Row(5, "1 2 1 2 0 0 1 2 0 0")]
+        [TestCase(4, "1 2 1 0 1 0")]
+        [TestCase(5, "1 2 1 2 0 0 1 2 0 0")]
         public void TestGenerateTreeWithSeveralTreeGenerationRules(int treeDepth, string expectedSequenceString)
         {
             SymbolsSet<string> s = new SymbolsSet<string>(new[]
@@ -116,9 +114,8 @@ namespace WallpaperGenerator.Utilities.Testing.DataStructures.Trees.TreeGenerati
             Assert.AreEqual(expectedSequenceString, string.Join(" ", traversedTree.ToArray()));
         }
 
-        [Test]
-        [Row(4, "1 2 0 2 0 0")]
-        [Row(5, "1 2 0 2 1 2 0 0 1 2 0 0")]
+        [TestCase(4, "1 2 0 2 0 0")]
+        [TestCase(5, "1 2 0 2 1 2 0 0 1 2 0 0")]
         public void TestGenerateTreeWithSubTreeRules(int treeDepth, string expectedSequenceString)
         {
             SymbolsSet<string> s = new SymbolsSet<string>(new[]

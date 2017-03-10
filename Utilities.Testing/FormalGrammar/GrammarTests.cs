@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using MbUnit.Framework;
+using NUnit.Framework;
 using WallpaperGenerator.Utilities.FormalGrammar;
 using WallpaperGenerator.Utilities.FormalGrammar.Rules;
 
@@ -10,10 +10,10 @@ namespace WallpaperGenerator.Utilities.Testing.FormalGrammar
     public class GrammarTests
     {
         [Test]
-        [Row("A0", "x")]
-        [Row("A1", "sin atan sin sum x y")]
-        [Row("A2", "sum x y")]
-        [Row("Inf", "sum sum sum sum sum sum sum sum sum sum")]
+        [TestCase("A0", "x")]
+        [TestCase("A1", "sin atan sin sum x y")]
+        [TestCase("A2", "sum x y")]
+        [TestCase("Inf", "sum sum sum sum sum sum sum sum sum sum")]
         public void TestProduce(string startSymbol, string expectedSequence)
         {
             SymbolsSet<string> s = new SymbolsSet<string>(new[]

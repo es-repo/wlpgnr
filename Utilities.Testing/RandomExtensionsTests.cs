@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MbUnit.Framework;
+using NUnit.Framework;
 
 namespace WallpaperGenerator.Utilities.Testing
 {
     [TestFixture]
     public class RandomExtensionsTests
     {
-        [Test]
-        [Row(0.9)]
-        [Row(0.1)]
-        [Row(1)]
-        [Row(0)]
+        [TestCase(0.9)]
+        [TestCase(0.1)]
+        [TestCase(1)]
+        [TestCase(0)]
         public void TestGetRandomBetweenTwo(double expectedSecondProbability)
         {
             Random random = new Random();
@@ -30,7 +29,8 @@ namespace WallpaperGenerator.Utilities.Testing
             if (eqaulWithInaccuracy)
             {
                 const double inaccuracy = 0.1;
-                Assert.Between(secondProbability, expectedSecondProbability - inaccuracy, expectedSecondProbability + inaccuracy);
+                Assert.That(secondProbability, 
+                    Is.InRange(expectedSecondProbability - inaccuracy, expectedSecondProbability + inaccuracy));
             }
             else
             {
@@ -38,12 +38,11 @@ namespace WallpaperGenerator.Utilities.Testing
             }
         }
 
-        [Test]
-        [Row(0.3, 0.3)]
-        [Row(0.5, 0.5)]
-        [Row(1, 0)]
-        [Row(0, 1)]
-        [Row(0, 0)]
+        [TestCase(0.3, 0.3)]
+        [TestCase(0.5, 0.5)]
+        [TestCase(1, 0)]
+        [TestCase(0, 1)]
+        [TestCase(0, 0)]
         public void TestGetRandomBetweenThree(double expectedSecondProbability, double expectedThirdProbability)
         {
             Random random = new Random();
@@ -63,8 +62,8 @@ namespace WallpaperGenerator.Utilities.Testing
             if (eqaulWithInaccuracy)
             {
                 const double inaccuracy = 0.15;
-                Assert.Between(secondProbability, expectedSecondProbability - inaccuracy, expectedSecondProbability + inaccuracy);
-                Assert.Between(thirdProbability, expectedThirdProbability - inaccuracy, expectedThirdProbability + inaccuracy);
+                Assert.That(secondProbability,
+                    Is.InRange(expectedSecondProbability - inaccuracy, expectedSecondProbability + inaccuracy));
             }
             else
             {
@@ -73,18 +72,22 @@ namespace WallpaperGenerator.Utilities.Testing
             }
         }
 
-        [Test]
-        [Row(new int[] {}, 0, new int[] {})]
-        [Row(new[] { 1 }, 2, new int[] {}, ExpectedException = typeof (ArgumentException))]
-        [Row(new[] { 1, 2, 3, 4, 5 }, 0, new int[] {})]
-        [Row(new[] { 1, 2, 3, 4, 5 }, 1, new [] { 5 })]
-        [Row(new[] { 1, 2, 3, 4, 5 }, 3, new[] { 5, 1, 4 })]
-        [Row(new[] { 1, 2, 3, 4, 5 }, 5, new[] { 5, 1, 4, 3, 2 })]
+        [TestCase(new int[] {}, 0, new int[] {})]
+        [TestCase(new[] { 1, 2, 3, 4, 5 }, 0, new int[] {})]
+        [TestCase(new[] { 1, 2, 3, 4, 5 }, 1, new [] { 5 })]
+        [TestCase(new[] { 1, 2, 3, 4, 5 }, 3, new[] { 5, 1, 4 })]
+        [TestCase(new[] { 1, 2, 3, 4, 5 }, 5, new[] { 5, 1, 4, 3, 2 })]
         public void TestTakeDistinctRandom(int[] source, int count, int[] expected)
         {
             Random random = RandomMock.Setup(new[] {0.9, 0.1, 0.8});
             int[] result = random.TakeDistinct(source, count).ToArray();
-            Assert.AreEqual(expected, result);
+            CollectionAssert.AreEqual(expected, result);
+        }
+
+        [Test]
+        public void TestTakeDistinctRandomFailed()
+        {
+            Assert.Throws<ArgumentException>(() => new Random().TakeDistinct(new[] { 1 }, 2).ToArray());
         }
     }
 }

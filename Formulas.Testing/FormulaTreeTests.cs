@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using NUnit.Framework;
+using System.Collections.Generic;
 using System.Linq;
-using MbUnit.Framework;
 using WallpaperGenerator.Formulas.Operators;
 using WallpaperGenerator.Utilities.DataStructures.Trees;
 
@@ -38,12 +38,11 @@ namespace WallpaperGenerator.Formulas.Testing
         {
             string[] variableNames = FormulaTree.SelectVariables(_formulaRoot).Select(v => v.Name).ToArray();
             string[] expectedVariableNames = {_xVariable.Name, _yVariable.Name};
-            Assert.AreElementsEqual(expectedVariableNames, variableNames);
+            CollectionAssert.AreEqual(expectedVariableNames, variableNames);
         }
         
-        [Test]
-        [Row(5.0, 3.0, 24)]
-        [Row(0.0, 0.0, 0.0)]
+        [TestCase(5.0, 3.0, 24)]
+        [TestCase(0.0, 0.0, 0.0)]
         public void TestEvaluate(double xVariableValue, double yVariableValue, double expectedResult)
         {
             FormulaTree formulaTree = new FormulaTree(_formulaRoot);
@@ -53,10 +52,9 @@ namespace WallpaperGenerator.Formulas.Testing
             Assert.AreEqual(expectedResult, result);
         }
 
-        [Test]
-        [Row("sum x x", 1, 3, -1, 3, -1, -1, 3, 3, new[] { 2.0, 2.0, 2.0, 4.0, 4.0, 4.0, 6.0, 6.0, 6.0 })]
-        [Row("sum x y", 1, 3, 1, 3, -1, -1, 3, 3, new[] { 2.0, 3.0, 4.0, 3.0, 4.0, 5.0, 4.0, 5.0, 6.0 })]
-        [Row("sum sum x y z", 1, 3, 1, 3, -3, 3, 3, 3, new[] { -1.0, 0.0, 1.0, 1.0, 2.0, 3.0, 3.0, 4.0, 5.0 })]
+        [TestCase("sum x x", 1, 3, -1, 3, -1, -1, 3, 3, new[] { 2.0f, 2.0f, 2.0f, 4.0f, 4.0f, 4.0f, 6.0f, 6.0f, 6.0f })]
+        [TestCase("sum x y", 1, 3, 1, 3, -1, -1, 3, 3, new[] { 2.0f, 3.0f, 4.0f, 3.0f, 4.0f, 5.0f, 4.0f, 5.0f, 6.0f })]
+        [TestCase("sum sum x y z", 1, 3, 1, 3, -3, 3, 3, 3, new [] { -1.0f, 0.0f, 1.0f, 1.0f, 2.0f, 3.0f, 3.0f, 4.0f, 5.0f })]
         public void TestEvaluateRangesIn2DProjection(string formula, double rangeXStart, double rangeXEnd,
             double rangeYStart, double rangeYEnd,
             double rangeZStart, double rangeZEnd,
@@ -75,7 +73,7 @@ namespace WallpaperGenerator.Formulas.Testing
 
             float[] results = new float[xCount * yCount];
             formulaTree.EvaluateRangesIn2DProjection(ranges.ToArray(), xCount, 0, yCount, results);
-            Assert.AreElementsEqual(expectedResults, results);
+            CollectionAssert.AreEqual(expectedResults, results);
         }
     }
 }

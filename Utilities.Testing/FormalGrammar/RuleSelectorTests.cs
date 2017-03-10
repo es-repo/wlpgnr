@@ -1,4 +1,4 @@
-﻿using MbUnit.Framework;
+﻿using NUnit.Framework;
 using WallpaperGenerator.Utilities.FormalGrammar;
 
 namespace WallpaperGenerator.Utilities.Testing.FormalGrammar

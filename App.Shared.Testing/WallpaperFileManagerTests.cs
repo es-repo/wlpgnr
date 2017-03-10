@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using MbUnit.Framework;
+using NUnit.Framework;
 using WallpaperGenerator.App.Core;
 using WallpaperGenerator.App.Core.Testing;
 using WallpaperGenerator.Utilities;

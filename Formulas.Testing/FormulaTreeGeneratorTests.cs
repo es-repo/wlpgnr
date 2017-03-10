@@ -1,7 +1,7 @@
-﻿using System;
+﻿using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using MbUnit.Framework;
 using WallpaperGenerator.Formulas.Operators;
 using WallpaperGenerator.Utilities;
 using WallpaperGenerator.Utilities.DataStructures.Collections;
@@ -46,7 +46,7 @@ namespace WallpaperGenerator.Formulas.Testing
             IDictionary<Operator, double> operatorAndProbabilityMap = new DictionaryExt<Operator, double>(operators.Select((op, i) => new KeyValuePair<Operator, double>(op, i % 2 + 1)));
             Grammar<Operator> grammar = FormulaTreeGenerator.CreateGrammar(random, operatorAndProbabilityMap, () => 0, 1, false, 0.3, 0.3);
             IEnumerable<string> fromSymbols = grammar.Rules.Select(r => r.From.Name).OrderBy(s => s);
-            Assert.AreElementsEqual(expectedFromSymbols.ToArray(), fromSymbols.ToArray());
+            CollectionAssert.AreEqual(expectedFromSymbols.ToArray(), fromSymbols.ToArray());
         }
 
         [Test]
@@ -108,7 +108,7 @@ namespace WallpaperGenerator.Formulas.Testing
             };
             double[] expectedOpNodeProbabilities = {80.0, 50};
             double[] opNodeProbabilities = FormulaTreeGenerator.GetOpNodeProbabilities(operatorAndProbabilityMap);
-            Assert.AreElementsEqual(expectedOpNodeProbabilities, opNodeProbabilities);
+            CollectionAssert.AreEqual(expectedOpNodeProbabilities, opNodeProbabilities);
         }
     }
 }
