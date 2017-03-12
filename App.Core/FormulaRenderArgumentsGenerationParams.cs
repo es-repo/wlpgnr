@@ -12,7 +12,7 @@ namespace WallpaperGenerator.App.Core
         public Bounds<int> MinimalDepthBoundsForUnBinOpBalancedTree = new Bounds<int>(9, 15);
         public Bounds ConstantBounds = new Bounds(-10, 10);
         public Bounds ConstantProbabilityBounds = new Bounds(0, 0.5);
-        public Bounds LeafProbabilityBounds = new Bounds(0, 0.5);
+        public Bounds LeafProbabilityBounds = new Bounds(0.25, 0.75);
         public Bounds RangeBounds = new Bounds(-30, 30);
         public Bounds ColorChannelPolinomialTransformationCoefficientBounds = new Bounds(-10, 10);
         public double ColorChannelZeroProbabilty = 0.17;
@@ -23,7 +23,7 @@ namespace WallpaperGenerator.App.Core
         {
             {OperatorsLibrary.Sum, new Bounds(0, 1)},
             {OperatorsLibrary.Sub, new Bounds(0, 1)},
-            {OperatorsLibrary.Mul, new Bounds(0, 0.6)},
+            {OperatorsLibrary.Mul, new Bounds(0, 0.25)},
             //{OperatorsLibrary.Div, new Bounds(0, 0.1)},
             {OperatorsLibrary.Max, new Bounds(0, 0.3)},
             //{OperatorsLibrary.Pow, new Bounds(0, 0.3)},
@@ -31,8 +31,8 @@ namespace WallpaperGenerator.App.Core
             {OperatorsLibrary.Abs, new Bounds(0, 0.07)},
             {OperatorsLibrary.Sin, new Bounds(0.15, 1)},
             {OperatorsLibrary.Cos, new Bounds(0, 1)},
-            {OperatorsLibrary.Atan, new Bounds(0, 0.15)},
-            //{OperatorsLibrary.Ln, new Bounds(0, 0.5)},
+            {OperatorsLibrary.Atan, new Bounds(0, 0.1)},
+            {OperatorsLibrary.Ln, new Bounds(0, 0.07)},
             //{OperatorsLibrary.Sqrt, new Bounds(0, 1)},
             //{OperatorsLibrary.Cbrt, new Bounds(0, 1)},
             //{OperatorsLibrary.Pow2, new Bounds(0, 0.3)},
