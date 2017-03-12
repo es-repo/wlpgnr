@@ -16,7 +16,7 @@ namespace WallpaperGenerator.App.Core
         private FormulaRenderArguments _formulaRenderArguments;
         private FormulaRenderResult _formulaRenderResult;
         private FormulaBitmap _bitmap;
-        private readonly Func<Size, FormulaBitmap> _createFormulaBitmap; 
+        private readonly Func<Size, FormulaBitmap> _createFormulaBitmap;
         private bool _reevaluateValues;
         private int _generatedFormulasCount;
 
@@ -40,7 +40,7 @@ namespace WallpaperGenerator.App.Core
         public FormulaRenderArguments FormulaRenderArguments
         {
             get { return _formulaRenderArguments; }
-            set 
+            set
             {
                 if (_formulaRenderArguments == null || _formulaRenderArguments.ToString() != value.ToString())
                 {
@@ -88,53 +88,28 @@ namespace WallpaperGenerator.App.Core
 
         public FormulaRenderArguments GenerateFormulaRenderArguments()
         {
-            FormulaRenderArguments args = GenerationParams.PredefinedFormulaRenderingArgumentsEnabled ? GetPredefinedFormulaRenderArguments() : null;
-            
-            if (args == null)
+            FormulaRenderArguments args = null;
+            const int attemptCount = 10;
+            using (ProgressReporter.CreateScope(attemptCount))
             {
-                const int attemptCount = 10;
-                using (ProgressReporter.CreateScope(attemptCount))
+                args = FuncUtilities.Repeat(() =>
                 {
-                    args = FuncUtilities.Repeat(() =>
-                    {
-                        FormulaTree f = CreateRandomFormulaTree();
-                        Range[] ranges = CreateRandomRanges(f.Variables.Length);
-                        ColorTransformation colorTransformation = CreateRandomColorTransformation();
-                        args = new FormulaRenderArguments(f, ranges, colorTransformation);
-                        return args;
-                    },
-                    f =>
-                    {                            
-                        bool res = _formulaRenderArgumentsGoodnessAnalyzer.Analyze(args);
-                        ProgressReporter.Increase();
-                        return res;
-                    }, attemptCount);
-                }
+                    FormulaTree f = CreateRandomFormulaTree();
+                    Range[] ranges = CreateRandomRanges(f.Variables.Length);
+                    ColorTransformation colorTransformation = CreateRandomColorTransformation();
+                    args = new FormulaRenderArguments(f, ranges, colorTransformation);
+                    return args;
+                },
+                f =>
+                {
+                    bool res = _formulaRenderArgumentsGoodnessAnalyzer.Analyze(args);
+                    ProgressReporter.Increase();
+                    return res;
+                }, attemptCount);
             }
 
             _generatedFormulasCount++;
             return FormulaRenderArguments = args;
-        }
-
-        private FormulaRenderArguments GetPredefinedFormulaRenderArguments()
-        {
-            if (_generatedFormulasCount < GenerationParams.FirstPredefinedFormulaRenderingArgumentsCount)
-            {
-                string s = GenerationParams.PredefinedFormulaRenderingFormulaRenderArgumentStrings.TakeRandom(_random);
-                FormulaRenderArguments args = FormulaRenderArguments.FromString(s);
-                return TransformRanges(args);
-            }
-
-            if ((_generatedFormulasCount - GenerationParams.FirstPredefinedFormulaRenderingArgumentsCount + 1) %
-                     GenerationParams.RepeatPredefinedFormulaRenderingArgumentsAfterEvery == 0)
-            {
-                string s = GenerationParams.PredefinedFormulaRenderingFormulaRenderArgumentStrings.TakeRandom(_random);
-                FormulaRenderArguments args = FormulaRenderArguments.FromString(s);
-                args = TransformRanges(args);
-                return ChangeColors(args);
-            }
-
-            return null;
         }
 
         public FormulaRenderArguments ChangeColors()
@@ -178,7 +153,7 @@ namespace WallpaperGenerator.App.Core
         {
             bool isUnBinOpBalancedTree = _random.NextDouble() < GenerationParams.UnBinOpBalancedTreeProbability;
             FormulaGenerationArguments args = FormulaGenerationArguments.CreateRandom(_random, GenerationParams.DimensionCountBounds,
-                isUnBinOpBalancedTree ? GenerationParams.MinimalDepthBoundsForUnBinOpBalancedTree : GenerationParams.MinimalDepthBounds, 
+                isUnBinOpBalancedTree ? GenerationParams.MinimalDepthBoundsForUnBinOpBalancedTree : GenerationParams.MinimalDepthBounds,
                 GenerationParams.LeafProbabilityBounds, GenerationParams.ConstantProbabilityBounds,
                 GenerationParams.ConstantBounds, GenerationParams.OperatorAndMaxProbabilityBoundsMap,
                 GenerationParams.ObligatoryOperators,
@@ -221,7 +196,7 @@ Sub Sqrt Sqrt Cos Sub Sub Sub Sum Cos Atan Ln Cos Sub x5 x0 Cos Atan Pow3 Cbrt S
                 IsImageRendering = true;
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
-            
+
                 double formulaGenerationrProgressSpan = 0;
                 if (generateNew)
                 {
