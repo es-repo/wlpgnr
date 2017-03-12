@@ -5,11 +5,10 @@ namespace WallpaperGenerator.Formulas.Operators.Trigonometric
 {
     public class Cos : UnaryOperator
     {
-        private readonly Expression<Func<double, double>> _evalExpr = a => Math.Cos(a);
+        private static readonly Expression<Func<double, double>> _evalExpr = a => Math.Cos(a);
 
-        public Cos() //: base(_evalExpr)
+        public Cos() : base(_evalExpr)
         {
-            EvalExpr = _evalExpr;
         }
 
         public override Func<double> Evaluate(params Func<double>[] operands)

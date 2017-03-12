@@ -5,11 +5,10 @@ namespace WallpaperGenerator.Formulas.Operators.Trigonometric
 {
     public class Sin : UnaryOperator
     {
-        private readonly Expression<Func<double, double>> _evalExpr = a => Math.Sin(a);
+        private static readonly Expression<Func<double, double>> _evalExpr = a => Math.Sin(a);
 
-        public Sin()// : base(_evalExpr)
+        public Sin() : base(_evalExpr)
         {
-            EvalExpr = _evalExpr;
         }
 
         public override Func<double> Evaluate(params Func<double>[] operands)
