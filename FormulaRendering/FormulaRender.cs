@@ -3,7 +3,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using WallpaperGenerator.Formulas;
+using WallpaperGenerator.Formulas.Operators;
+using WallpaperGenerator.Formulas.Operators.Arithmetic;
+using WallpaperGenerator.Formulas.Operators.Trigonometric;
 using WallpaperGenerator.Utilities;
+using WallpaperGenerator.Utilities.DataStructures.Trees;
 using WallpaperGenerator.Utilities.ProgressReporting;
 
 namespace WallpaperGenerator.FormulaRendering
@@ -21,6 +25,7 @@ namespace WallpaperGenerator.FormulaRendering
             int xCount = areaSize.Width;
             int yCount = areaSize.Height;
 
+            //threadsCount = 1;
             if (threadsCount < 1)
                 threadsCount = 1;
 
@@ -40,7 +45,10 @@ namespace WallpaperGenerator.FormulaRendering
                     int li = i;
                     tasks[i] = Task.Run(() =>
                     {
-                        FormulaTree ft = li == 0 ? formulaTree : FormulaTreeSerializer.Deserialize(FormulaTreeSerializer.Serialize(formulaTree));
+                        FormulaTree ft = li == 0
+                            ? formulaTree :
+                            FormulaTreeSerializer.Deserialize(FormulaTreeSerializer.Serialize(formulaTree));
+
                         int yStart = li * yStepCount;
                         ProgressReporter.Subscribe(progressObserver);
                         ft.EvaluateRangesIn2DProjection(ranges, xCount, yStart, yStepCount,
@@ -65,31 +73,6 @@ namespace WallpaperGenerator.FormulaRendering
                 }
                 Task.WaitAll();
             }
-
-            //double x = 1;
-            //double y = 2;
-            //double z = 3;
-            //double w = 4;
-            //double x1 = -1;
-            //double y1 = -2;
-            //double z1 = -3;
-            //double w1 = -4;
-            //Stopwatch stopwatch2 = new Stopwatch();
-            //stopwatch2.Start();
-            //double[] arr = new double[Ranges[0].Count*Ranges[1].Count];
-            //for (int i = 0; i < arr.Length; i++)
-            //{
-            //    arr[i] = Math.Sqrt((Math.Sin(x) * Math.Sin(y) + Math.Sin(z) * Math.Sin(w)) * (Math.Sin(x1) * Math.Sin(y1) + Math.Sin(z1) * Math.Sin(w1)));
-            //    x += 0.1;
-            //    y += 0.1;
-            //    z += 0.1;
-            //    w += 0.1;
-            //    x1 += 0.3;
-            //    y1 += 0.3;
-            //    z1 += 0.3;
-            //    w1 += 0.3;
-            //}
-            //stopwatch2.Stop();
 
             evaluationStopwatch.Stop();
         }

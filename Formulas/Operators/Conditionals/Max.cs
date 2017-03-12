@@ -1,9 +1,16 @@
 ﻿using System;
+using System.Linq.Expressions;
 
 namespace WallpaperGenerator.Formulas.Operators.Conditionals
 {
     public class Max : BinaryOperator
     {
+        private static readonly Expression<Func<double, double, double>> _evalExpr = (a, b) => a > b ? a : b;
+
+        public Max() : base (_evalExpr)
+        {
+        }
+
         public override Func<double> Evaluate(params Func<double>[] operands)
         {
             Func<double> op0 = operands[0];

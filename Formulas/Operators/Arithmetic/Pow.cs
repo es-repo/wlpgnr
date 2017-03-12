@@ -1,9 +1,16 @@
 ﻿using System;
+using System.Linq.Expressions;
 
 namespace WallpaperGenerator.Formulas.Operators.Arithmetic
 {
     public class Pow : BinaryOperator
     {
+        private static readonly Expression<Func<double, double, double>> _evalExpr = (a, b) => Math.Pow(a > 0 ? a : -a, b);
+
+        public Pow() : base (_evalExpr)
+        {
+        }
+
         public override Func<double> Evaluate(params Func<double>[] operands)
         {
             Func<double> op0 = operands[0];

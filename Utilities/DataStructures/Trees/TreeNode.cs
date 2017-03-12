@@ -16,9 +16,7 @@ namespace WallpaperGenerator.Utilities.DataStructures.Trees
             get { return Children.Count == 0; }
         }
 
-// ReSharper disable UnusedParameter.Local
         private TreeNode(T value, IEnumerable<TreeNode<T>> children, bool overloadedConstructorMarker)
-// ReSharper restore UnusedParameter.Local
         {
             Value = value;
             _children = children.ToList();

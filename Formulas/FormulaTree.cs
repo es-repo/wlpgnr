@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using WallpaperGenerator.Formulas.Operators;
 using WallpaperGenerator.Utilities.DataStructures.Trees;
 using WallpaperGenerator.Utilities.ProgressReporting;
@@ -27,7 +28,19 @@ namespace WallpaperGenerator.Formulas
             : base(root)
         {
             Variables = SelectVariables(Root).ToArray();
-            _compiledFormula = CompileFormula();
+
+            Stack<Expression> stack = new Stack<Expression>();
+            foreach(Operator op in Traverse(TraversalOrder.DepthFirstPostOrder).Select(n => n.Node.Value))
+            {
+                Expression e = op.Evaluate(stack);
+                stack.Push(e);
+            }
+
+            if (stack.Count != 1)
+                throw new ArgumentException("Formula can't be evaluated.");
+
+            Expression expression = stack.Pop();
+            _compiledFormula = Expression.Lambda<Func<double>>(expression).Compile();
         }
 
         #endregion
@@ -94,29 +107,6 @@ namespace WallpaperGenerator.Formulas
         public double Evaluate()
         {
             return _compiledFormula();
-        }
-
-        //public double Evaluate()
-        //{
-        //    return Fold((TreeNodeInfo<Operator> ni, double[] c) => ni.Node.Value.Evaluate(c));
-        //}
-
-        public Func<double> CompileFormula()
-        {
-            return Fold(
-                (TreeNodeInfo<Operator> ni, Func<double>[] operands) =>
-                    {
-                        Operator op = ni.Node.Value;
-                        return GetNodeHeight(ni.Node) == 2 
-                            ? op.Evaluate(ni.Node.Children.Select(n => (ZeroArityOperator)n.Value).ToArray()) 
-                            : op.Evaluate(operands);
-                    });
-        }
-
-        public static FormulaTree Build(IEnumerable<Operator> operators, TraversalOrder nodeValuesOrder = TraversalOrder.DepthFirstPreOrder)
-        {
-            TreeNode<Operator> root = Build(operators, op => op.Arity, nodeValuesOrder);
-            return new FormulaTree(root);
         }
 
         #endregion

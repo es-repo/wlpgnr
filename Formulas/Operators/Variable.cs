@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 
 namespace WallpaperGenerator.Formulas.Operators
@@ -13,6 +14,9 @@ namespace WallpaperGenerator.Formulas.Operators
         {
             if (!IsNameValid(name))
                 throw new ArgumentException("Variable name is invalid.");
+
+            Expression<Func<double>> expr = () => Value;
+            EvalExpr = expr.Body;
         }
 
         public override Func<double> Evaluate(params Func<double>[] operands)

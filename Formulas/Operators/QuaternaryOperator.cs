@@ -1,9 +1,11 @@
-﻿namespace WallpaperGenerator.Formulas.Operators
+﻿using System;
+using System.Linq.Expressions;
+
+namespace WallpaperGenerator.Formulas.Operators
 {
     public abstract class QuaternaryOperator : Operator 
     {
-        protected QuaternaryOperator()
-            : base(4)
+        protected QuaternaryOperator(Expression evalExpr = null) : base(4, evalExpr)
         {
         }
     }

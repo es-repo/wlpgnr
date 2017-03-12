@@ -10,7 +10,7 @@ namespace WallpaperGenerator.Formulas.Operators
     {                
         #region Arithmetic Operators
 
-        public static readonly Minus Minus = new Minus();
+        public static readonly Neg Neg = new Neg();
         public static readonly Abs Abs = new Abs();
         public static readonly Sum Sum = new Sum();
         public static readonly Sub Sub = new Sub();

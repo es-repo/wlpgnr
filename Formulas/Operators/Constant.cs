@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq.Expressions;
 
 namespace WallpaperGenerator.Formulas.Operators
 {
     public sealed class Constant : ZeroArityOperator
     {
         public Constant(double value)
-            : this(value, value.ToString(CultureInfo. InvariantCulture)) 
-        {
-        }
-
-        public Constant(double value, string name)
-            : base(name)
+            : base(value.ToString("R", CultureInfo.InvariantCulture), Expression.Constant(value, typeof(double)))
         {
             Value = value;
         }

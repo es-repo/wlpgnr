@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace WallpaperGenerator.Formulas.Operators.Arithmetic
 {
@@ -16,6 +18,11 @@ namespace WallpaperGenerator.Formulas.Operators.Arithmetic
             ZeroArityOperator op0 = operands[0];
             ZeroArityOperator op1 = operands[1];
             return () => op0.Value * op1.Value;
+        }
+
+        public override Expression Evaluate(Stack<Expression> operands)
+        {
+            return Expression.Multiply(operands.Pop(), operands.Pop());
         }
     }
 }

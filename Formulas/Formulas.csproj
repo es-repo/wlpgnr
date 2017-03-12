@@ -43,7 +43,7 @@
     <Compile Include="Operators\Arithmetic\Cbrt.cs" />
     <Compile Include="Operators\Arithmetic\Pow3.cs" />
     <Compile Include="Operators\Arithmetic\Pow2.cs" />
-    <Compile Include="Operators\Arithmetic\Minus.cs" />
+    <Compile Include="Operators\Arithmetic\Neg.cs" />
     <Compile Include="Operators\Arithmetic\Sqrt.cs" />
     <Compile Include="Operators\Arithmetic\Ln.cs" />
     <Compile Include="Operators\Arithmetic\Div.cs" />

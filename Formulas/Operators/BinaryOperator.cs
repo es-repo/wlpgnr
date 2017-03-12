@@ -1,8 +1,10 @@
-﻿namespace WallpaperGenerator.Formulas.Operators
+﻿using System.Linq.Expressions;
+
+namespace WallpaperGenerator.Formulas.Operators
 {
     public abstract class BinaryOperator : Operator 
     {
-        protected BinaryOperator() : base(2)
+        protected BinaryOperator(Expression evalExpr = null) : base(2, evalExpr)
         {
         }
     }

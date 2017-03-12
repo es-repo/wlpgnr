@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace WallpaperGenerator.Formulas.Operators.Arithmetic
 {
-    public class Minus : UnaryOperator 
+    public class Neg : UnaryOperator 
     {
         public override Func<double> Evaluate(params Func<double>[] operands)
         {
@@ -14,6 +16,11 @@ namespace WallpaperGenerator.Formulas.Operators.Arithmetic
         {
             ZeroArityOperator op0 = operands[0];
             return () => -op0.Value;
+        }
+
+        public override Expression Evaluate(Stack<Expression> operands)
+        {
+            return Expression.Negate(operands.Pop());
         }
     }
 }
