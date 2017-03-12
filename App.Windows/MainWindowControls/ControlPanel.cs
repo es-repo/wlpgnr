@@ -40,7 +40,7 @@ namespace WallpaperGenerator.App.Windows.MainWindowControls
         public Slider UnaryVsBinaryOperatorsProbabilitySlider { get; private set; }
 
         public IEnumerable<OperatorControl> OperatorControls { get; private set; }
-    
+
         #endregion
 
         #region Constructors
@@ -61,35 +61,58 @@ namespace WallpaperGenerator.App.Windows.MainWindowControls
                 Orientation = Orientation.Vertical,
                 VerticalAlignment = VerticalAlignment.Stretch,
                 Width = 280
-           };
+            };
 
-            GenerateFormulaButton = CreateButton(panel, "Generate");
-            TransformButton = CreateButton(panel, "Transform");
-            ChangeColorButton = CreateButton(panel, "Change colors");
-            RenderFormulaButton = CreateButton(panel, "Render");
+            StackPanel buttonGridPanel = new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+            };
+            panel.Children.Add(buttonGridPanel);
 
-            const string stopAnimationText = "Stop animation"; 
+            StackPanel buttons1Panel = new StackPanel
+            {
+                Orientation = Orientation.Vertical,
+                VerticalAlignment = VerticalAlignment.Stretch,
+                Width = 140
+            };
+            GenerateFormulaButton = CreateButton(buttons1Panel, "Generate");
+            TransformButton = CreateButton(buttons1Panel, "Transform");
+            ChangeColorButton = CreateButton(buttons1Panel, "Change colors");
+            buttonGridPanel.Children.Add(buttons1Panel);
+
+            StackPanel buttons2Panel = new StackPanel
+            {
+                Orientation = Orientation.Vertical,
+                VerticalAlignment = VerticalAlignment.Stretch,
+                Width = 140
+            };
+            RenderFormulaButton = CreateButton(buttons2Panel, "Render");
+
+            const string stopAnimationText = "Stop animation";
             const string animateSmoothlyText = "Animate smoothly";
 
-            StartStopSmoothAnimationButton = CreateButton(panel, animateSmoothlyText);
+            StartStopSmoothAnimationButton = CreateButton(buttons2Panel, animateSmoothlyText);
             StartStopSmoothAnimationButton.Click +=
                 (s, a) => StartStopSmoothAnimationButton.Content = StartStopSmoothAnimationButton.Content.ToString() == animateSmoothlyText ? stopAnimationText : animateSmoothlyText;
 
-            SaveButton = CreateButton(panel, "Save");
+            SaveButton = CreateButton(buttons2Panel, "Save");
 
+            buttonGridPanel.Children.Add(buttons2Panel);
+
+            
             StackPanel sizeAndRandomPanel = new StackPanel
             {
                 Orientation = Orientation.Horizontal
             };
             ImageSizeControl = new SizeControl();
             sizeAndRandomPanel.Children.Add(ImageSizeControl);
-            RandomizeCheckBox = new CheckBox { Content = "Randomize", Margin = new Thickness { Top = 10, Bottom = 5}, IsChecked = false };
+            RandomizeCheckBox = new CheckBox { Content = "Randomize", Margin = new Thickness { Top = 10, Bottom = 5 }, IsChecked = false };
             sizeAndRandomPanel.Children.Add(RandomizeCheckBox);
             panel.Children.Add(sizeAndRandomPanel);
 
-            DimensionsCountSlider = CreateSliderControlsBlock(panel,1, 100, 8, "Dimensions");
+            DimensionsCountSlider = CreateSliderControlsBlock(panel, 1, 100, 8, "Dimensions");
 
-            MinimalDepthSlider = CreateSliderControlsBlock(panel,1, 100, 14, "Minimal depth");
+            MinimalDepthSlider = CreateSliderControlsBlock(panel, 1, 100, 14, "Minimal depth");
 
             LeafProbabilitySlider = CreateSliderControlsBlock(panel, 0, 100, 20, "Leaf probability");
 
@@ -107,9 +130,9 @@ namespace WallpaperGenerator.App.Windows.MainWindowControls
                 Orientation = Orientation.Vertical,
                 VerticalAlignment = VerticalAlignment.Stretch,
                 Width = 280,
-                Margin = new Thickness { Left = 20 }  
+                Margin = new Thickness { Left = 20 }
             };
-            
+
             IEnumerable<KeyValuePair<string, IEnumerable<OperatorControl>>> categoryAndOperatorControlsMap = CreateOperatorControls().ToArray();
             List<OperatorControl> operatorControls = new List<OperatorControl>();
             foreach (KeyValuePair<string, IEnumerable<OperatorControl>> entry in categoryAndOperatorControlsMap)
@@ -148,11 +171,11 @@ namespace WallpaperGenerator.App.Windows.MainWindowControls
 
         private Slider CreateSliderControlsBlock(Panel parentPanel, int minimumValue, int maximumValue, int defaultValue, string label)
         {
-            TextBlock labelTextBlock = new TextBlock 
-            { 
-                Text = label, 
+            TextBlock labelTextBlock = new TextBlock
+            {
+                Text = label,
                 FontWeight = FontWeight.FromOpenTypeWeight(999),
-                Margin = new Thickness { Right = 10 }               
+                Margin = new Thickness { Right = 10 }
             };
             SliderWithValueText sliderWithValueText = new SliderWithValueText(250, minimumValue, maximumValue, defaultValue);
             parentPanel.Children.Add(labelTextBlock);
@@ -165,7 +188,7 @@ namespace WallpaperGenerator.App.Windows.MainWindowControls
             return OperatorsLibrary.AllByCategories.Select(p =>
                 new KeyValuePair<string, IEnumerable<OperatorControl>>(
                     p.Key,
-                    p.Value.Select(op => new OperatorControl(op) )));
+                    p.Value.Select(op => new OperatorControl(op))));
         }
 
         public void LoadState(FormulaRenderArgumentsGenerationParams generationParams)
@@ -173,7 +196,7 @@ namespace WallpaperGenerator.App.Windows.MainWindowControls
             DimensionsCountSlider.Value = generationParams.DimensionCountBounds.Low;
             MinimalDepthSlider.Value = generationParams.MinimalDepthBounds.Low;
             ConstantProbabilitySlider.Value = generationParams.ConstantProbabilityBounds.Low * 100;
-            LeafProbabilitySlider.Value = generationParams.LeafProbabilityBounds.Low*100;
+            LeafProbabilitySlider.Value = generationParams.LeafProbabilityBounds.Low * 100;
             UnaryVsBinaryOperatorsProbabilitySlider.Value = generationParams.UnaryVsBinaryOperatorsProbabilityBounds.Low * 100;
 
             foreach (OperatorControl opCtrl in OperatorControls)
